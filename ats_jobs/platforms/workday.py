@@ -52,7 +52,7 @@ class Workday(Platform):
     actor = 'workday-job-search'
     board_example = 'https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite'
     job_example = 'https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/US-CA-Santa-Clara/Senior-Engineer_JR1'
-    concurrency = 128            # a word search takes Workday about 5 s, and nothing throttles it
+    concurrency = 64             # Workday holds a run to about 10 calls a second: 128 only doubled the wait and added errors
     server_search = True
     newest_first = True
     ranked_search = True
