@@ -20,6 +20,7 @@ import json
 import math
 import time
 import zlib
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
 
 from apify import Actor
@@ -473,6 +474,9 @@ class Run:
 
 async def main(platform_key: str) -> None:
     platform = PLATFORMS[platform_key]()
+    # every company is its own hostname, and each name is looked up on this pool, 5 threads by default on a small
+    # container: the lookups, not the job sites, set the pace of a run
+    asyncio.get_running_loop().set_default_executor(ThreadPoolExecutor(max_workers=platform.concurrency))
     async with Actor:
         raw = await Actor.get_input() or {}
         boards, updated = platform.boards()
