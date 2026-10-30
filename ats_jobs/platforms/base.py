@@ -21,6 +21,8 @@ class Platform:
     concurrency = 24         # boards read at once
     server_search = False    # the platform searches words itself, so pages() gets one term at a time
     newest_first = False     # pages come newest first, so a board can stop at the jobs that can no longer make the cut
+    ranked_search = False    # a word search comes back by relevance, so only a list with no word is newest first
+    page_cap: int | None = None    # pages read per board and word, unless every match was asked for
     never: tuple = ()        # row fields this platform never publishes: left out of its rows
 
     def boards(self) -> tuple[list[Board], str | None]:
@@ -38,6 +40,10 @@ class Platform:
                 boards.append(Board(parts[0].strip(), name or parts[0].strip(),
                                     (parts[2].strip() or None) if len(parts) > 2 else None))
         return boards, updated
+
+    def vague_place(self, job: dict) -> bool:
+        """The list does not say where this job is ("2 Locations"), so a place filter needs details() first."""
+        return False
 
     def aliases(self, board: Board) -> list[str]:
         """Words that find this board in the companies field, besides its name and key."""

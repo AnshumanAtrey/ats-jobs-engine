@@ -20,11 +20,11 @@ import json
 import math
 import time
 import zlib
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 from apify import Actor
 
-from .http import BoardError, client
+from .http import BoardError, BoardMissing, client
 from .inputs import Config, parse_input
 from .platforms import PLATFORMS, Board, Platform
 from .rows import Filters, dedupe_key, job_row, link_row, parse_time
@@ -180,6 +180,7 @@ class Run:
         terms = (cfg.search_terms if platform.server_search and cfg.search_terms else [None])
         # a job dated yesterday can be under a day old, so the platform is asked for a day more
         days = math.ceil(cfg.posted_within_days) + 1 if cfg.posted_within_days is not None else None
+        window = now - timedelta(days=days) if days else None
         heap: list = []                     # (posted, order, board, job): the newest maxJobs so far
         kept: list = []                     # every match when maxJobs is empty
         texts: dict[tuple, bytes] = {}      # (board, job id) -> compressed description, with details on
@@ -231,6 +232,14 @@ class Run:
         async with client(platform.actor) as http:
             sem = asyncio.Semaphore(platform.concurrency)
 
+            async def placed(session, jobs: list[dict]) -> list[dict]:
+                """With a place filter, a job whose title can match and whose list entry names no place is opened."""
+                if filters.places:
+                    for i, job in enumerate(jobs):
+                        if platform.vague_place(job) and filters.title_ok(job.get('title'), job.get('description')):
+                            jobs[i] = await platform.details(http, session, job)
+                return jobs
+
             async def one(board: Board) -> None:
                 async with sem:
                     if self.out_of_time():
@@ -244,13 +253,26 @@ class Run:
                         if cfg.include_details:
                             sessions[board.key] = session
                         for term in terms:
+                            page = 0
                             async for jobs in platform.pages(http, session, term, days):
-                                hit = take(board, jobs, term is not None) or hit
-                                if self.out_of_time():
+                                page += 1
+                                jobs = await placed(session, jobs)
+                                on_page = take(board, jobs, term is not None)
+                                hit = hit or on_page
+                                if self.out_of_time() or not jobs:
                                     break
-                                cut, last = floor(), parse_time(jobs[-1].get('postedAt')) if jobs else None
-                                if platform.newest_first and cut and last and last < cut:
+                                # ranked by relevance, a page with no job for this word means the rest have none
+                                if term and platform.ranked_search and not on_page and not cfg.search_descriptions:
                                     break
+                                if cfg.max_jobs is not None and platform.page_cap and page >= platform.page_cap:
+                                    break
+                                # a page of a newest-first board can end older than anything still wanted
+                                last, cut = parse_time(jobs[-1].get('postedAt')) or OLDEST, floor()
+                                by_date = platform.newest_first and not (term and platform.ranked_search)
+                                if by_date and ((cut and last < cut) or (window and last < window)):
+                                    break
+                    except BoardMissing:
+                        self.boards_missing.append(board.key)
                     except BoardError as exc:
                         self.board_error(board.key, exc)
                     finally:
@@ -266,7 +288,12 @@ class Run:
 
         self.phase = 'saving'
         rows = []
+        delivered = set()
         for _, _, board, job in chosen:
+            key = (board.name.casefold(), *dedupe_key(job))
+            if key in delivered:         # an older copy that was kept before the newer one came
+                continue
+            delivered.add(key)
             has_details = cfg.include_details and bool(job.get('description') or job.get('descriptionHtml'))
             rows.append((self.row(board, job, cfg.include_details), DETAILS_EVENT if has_details else LINK_EVENT))
         await self.deliver_all(rows)

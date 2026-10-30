@@ -11,6 +11,10 @@ class BoardError(Exception):
     """A board that could not be read after the retries (network or server trouble, not a missing board)."""
 
 
+class BoardMissing(Exception):
+    """The platform says this board does not exist."""
+
+
 def client(actor: str, connections: int = 64) -> httpx.AsyncClient:
     limits = httpx.Limits(max_connections=connections, max_keepalive_connections=connections)
     agent = f'Mozilla/5.0 (compatible; {actor}/1.0; +https://apify.com/anshumanatrey/{actor})'
