@@ -2,11 +2,12 @@
 Matching and output rows, for every platform. Pure module: no Apify or network import, so the tests run offline.
 
 A platform turns its own records into one job shape (a plain dict):
-  id, title, location, otherLocations, places, workType, employmentType, department, team, salary, salaryMin,
+  id, company, title, location, otherLocations, places, workType, employmentType, department, team, salary, salaryMin,
   salaryMax, salaryCurrency, salaryPeriod, offersEquity, postedAt, expiresAt, dateOnly, jobUrl, applyUrl, reference,
   description, descriptionHtml.
 places is every place the job names: {'name': text, 'city': ..., 'region': ..., 'country': name or code}.
-dateOnly says postedAt holds a day and no time. Missing keys read as unknown.
+dateOnly says postedAt holds a day and no time. Missing keys read as unknown. company is for a platform that names the
+company itself, so a board that is not on our list still shows it.
 
 Matching is by words, not by a list of job titles: a search term matches a title when every word of
 the term is in it. Words are cut at anything that is not a letter or digit (C++ and C# keep their
@@ -336,7 +337,7 @@ def job_row(platform: str, company: dict, job: dict, checked_at: str, details: b
     numbers and the structured place."""
     row = {
         'title': (job.get('title') or '').strip(),
-        'company': company.get('name'),
+        'company': job.get('company') or company.get('name'),
         'location': job.get('location'),
         'otherLocations': job.get('otherLocations') or [],
         'workType': work_type(job),

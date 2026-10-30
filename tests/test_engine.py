@@ -91,6 +91,19 @@ class Delivery(unittest.TestCase):
         run = search(Fake({'a': [[job('old', posted=5), job('new', posted=1)]]}), {})
         self.assertEqual([i for i, _ in run.delivery.pushed], ['new'])
 
+    def test_a_replaced_copy_leaves_no_gap_in_the_list(self):
+        sites = {'acme/1': [[job('old', posted=2)]],
+                 'acme/2': [[job('new', posted=1), job('3', 'Three', 3), job('4', 'Four', 4)]]}
+        run = search(Fake(sites, concurrency=1), {'maxJobs': 3})
+        self.assertEqual([i for i, _ in run.delivery.pushed], ['new', '3', '4'])
+        self.assertEqual(run.duplicates, 1)
+
+    def test_a_replaced_copy_does_not_stretch_the_list_past_max_jobs(self):
+        sites = {'acme/1': [[job('old', posted=2)]],
+                 'acme/2': [[job('new', posted=1), job('3', 'Three', 3), job('4', 'Four', 4)]]}
+        run = search(Fake(sites, concurrency=1), {'maxJobs': 2})
+        self.assertEqual([i for i, _ in run.delivery.pushed], ['new', '3'])
+
     def test_one_job_on_two_sites_of_a_company_is_one_row(self):
         run = search(Fake({'acme/1': [[job('1')]], 'acme/2': [[job('1b')]], 'other/1': [[job('2')]]}), {})
         self.assertEqual(run.delivery.rows, 2)

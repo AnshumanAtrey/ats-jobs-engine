@@ -120,6 +120,7 @@ class Run:
         self.phase = ''
         self.boards_total = self.boards_read = self.boards_matched = self.details_read = self.details_wanted = 0
         self.jobs_listed = self.matching = self.duplicates = 0
+        self.older_copies = 0              # jobs held twice: a newer copy came after the older was kept
         self.companies_matched: set[str] = set()
         self.boards_missing: list[str] = []
         self.board_errors: list[dict] = []
@@ -191,7 +192,7 @@ class Run:
 
         def floor() -> datetime | None:
             """The date a job must beat to be delivered; None until maxJobs are held."""
-            return heap[0][0] if cfg.max_jobs and len(heap) >= cfg.max_jobs else None
+            return heap[0][0] if cfg.max_jobs and len(heap) >= cfg.max_jobs + self.older_copies else None
 
         def nothing_can_beat_this() -> bool:
             """maxJobs jobs dated today are held: no other board can have a newer one."""
@@ -208,7 +209,7 @@ class Run:
             if cfg.max_jobs is None:
                 kept.append(item)
             elif cfg.max_jobs > 0:
-                if len(heap) < cfg.max_jobs:
+                if len(heap) < cfg.max_jobs + self.older_copies:
                     heapq.heappush(heap, item)
                 else:
                     dropped = heapq.heappushpop(heap, item)
@@ -228,6 +229,7 @@ class Run:
                     self.duplicates += 1
                     if posted <= seen[key]:
                         continue
+                    self.older_copies += 1
                 else:
                     self.matching += 1
                 seen[key] = posted
@@ -291,21 +293,27 @@ class Run:
             self.phase = 'boards'
             await self.run_all([one(b) for b in targets])
 
-            chosen = sorted(kept if cfg.max_jobs is None else heap, key=lambda item: (item[0], item[1]), reverse=True)
+            chosen = self.newest_copies(sorted(kept if cfg.max_jobs is None else heap,
+                                               key=lambda item: (item[0], item[1]), reverse=True))
             if cfg.include_details:
                 await self.read_details(http, chosen, texts, sessions)
 
         self.phase = 'saving'
         rows = []
-        delivered = set()
         for _, _, board, job in chosen:
-            key = (board.name.casefold(), *dedupe_key(job))
-            if key in delivered:         # an older copy that was kept before the newer one came
-                continue
-            delivered.add(key)
             has_details = cfg.include_details and bool(job.get('description') or job.get('descriptionHtml'))
             rows.append((self.row(board, job, cfg.include_details), DETAILS_EVENT if has_details else LINK_EVENT))
         await self.deliver_all(rows)
+
+    def newest_copies(self, items: list) -> list:
+        """Newest first -> each job once, up to maxJobs: an older copy is still held when a newer one came after it."""
+        copies, chosen = set(), []
+        for item in items:
+            key = (item[2].name.casefold(), *dedupe_key(item[3]))
+            if key not in copies:
+                copies.add(key)
+                chosen.append(item)
+        return chosen[:self.cfg.max_jobs]
 
     async def read_details(self, http, chosen: list, texts: dict, sessions: dict) -> None:
         platform = self.platform

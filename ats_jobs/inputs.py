@@ -38,7 +38,7 @@ JOB_TYPES = ('full-time', 'part-time', 'contract', 'intern', 'temporary')
 JOB_TYPE_ALIASES = {
     'full time': 'full-time', 'fulltime': 'full-time', 'full-time': 'full-time', 'permanent': 'full-time',
     'part time': 'part-time', 'parttime': 'part-time', 'part-time': 'part-time',
-    'contract': 'contract', 'contractor': 'contract', 'freelance': 'contract', 'freelancer': 'contract',
+    'contract': 'contract', 'contractor': 'contract', 'consultant': 'contract', 'freelance': 'contract', 'freelancer': 'contract',
     'intern': 'intern', 'internship': 'intern', 'internships': 'intern', 'co-op': 'intern', 'coop': 'intern',
     'temporary': 'temporary', 'temp': 'temporary', 'seasonal': 'temporary',
 }
