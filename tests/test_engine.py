@@ -67,7 +67,7 @@ def job(job_id, title='Engineer', posted=0, where='Berlin'):
 
 def search(platform, raw, boards=None):
     @asynccontextmanager
-    async def no_client(actor):
+    async def no_client(actor, connections=64):
         yield None
     keys = boards or list(platform.sites)
     run = engine.Run(platform, parse_input(raw, platform), [Board(k, k.split('/')[0]) for k in keys], None, Delivered())
@@ -115,7 +115,7 @@ class Paging(unittest.TestCase):
         return [[job(f'{p}-{i}', title=f'Engineer {p} {i}', posted=p * 10) for i in range(2)] for p in range(n)]
 
     def test_a_newest_first_board_stops_once_it_cannot_make_the_cut(self):
-        platform = Fake({'a': [[job('x', title='Engineer X'), job('y', title='Engineer Y')]], 'b': self.pages()}, newest_first=True, concurrency=1)
+        platform = Fake({'a': [[job('x', 'Engineer X', 5), job('y', 'Engineer Y', 5)]], 'b': self.pages()}, newest_first=True, concurrency=1)
         search(platform, {'maxJobs': 2})
         self.assertEqual([r for r in platform.read if r[0] == 'b'], [('b', None, 1), ('b', None, 2)])
 
@@ -134,7 +134,7 @@ class Paging(unittest.TestCase):
         self.assertEqual(len(platform.read), 3)
 
     def test_a_word_search_ranked_by_relevance_is_not_cut_by_date(self):
-        platform = Fake({'a': [[job('x', title='Engineer X'), job('y', title='Engineer Y')]], 'b': self.pages()},
+        platform = Fake({'a': [[job('x', 'Engineer X', 5), job('y', 'Engineer Y', 5)]], 'b': self.pages()},
                         newest_first=True, ranked_search=True, concurrency=1)
         search(platform, {'searchTerms': ['engineer'], 'maxJobs': 2})
         self.assertEqual(len([r for r in platform.read if r[0] == 'b']), 3)

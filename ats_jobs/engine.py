@@ -235,7 +235,7 @@ class Run:
                 keep(posted, board, job)
             return hit
 
-        async with client(platform.actor) as http:
+        async with client(platform.actor, platform.concurrency * 2) as http:
             sem = asyncio.Semaphore(platform.concurrency)
 
             async def placed(session, jobs: list[dict]) -> list[dict]:
@@ -353,7 +353,7 @@ class Run:
         found: dict[tuple, tuple] = {}     # (board, job id) -> (status, job)
         sem = asyncio.Semaphore(platform.concurrency)
 
-        async with client(platform.actor) as http:
+        async with client(platform.actor, platform.concurrency * 2) as http:
             async def one(key: str, job_ids: list[str]) -> None:
                 async with sem:
                     try:
