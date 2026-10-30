@@ -148,6 +148,28 @@ class Paging(unittest.TestCase):
         self.assertEqual(len(platform.read), 9)
 
 
+class Enough(unittest.TestCase):
+    def test_a_run_stops_once_today_fills_the_list(self):
+        sites = {f'c{i}': [[job(f'{i}-{n}', f'Job {i} {n}') for n in range(5)]] for i in range(9)}
+        platform = Fake(sites, concurrency=1)
+        run = search(platform, {'maxJobs': 5})
+        self.assertEqual(run.delivery.rows, 5)
+        self.assertTrue(run.enough)
+        self.assertEqual(len(platform.read), 1)
+
+    def test_older_jobs_do_not_end_the_run(self):
+        sites = {f'c{i}': [[job(f'{i}-{n}', f'Job {i} {n}', posted=2) for n in range(5)]] for i in range(3)}
+        platform = Fake(sites, concurrency=1)
+        run = search(platform, {'maxJobs': 5})
+        self.assertFalse(run.enough)
+        self.assertEqual(len(platform.read), 3)
+
+    def test_jobs_with_an_exact_time_do_not_end_the_run(self):
+        sites = {f'c{i}': [[dict(job(f'{i}-{n}', f'Job {i} {n}'), postedAt=f'{TODAY}T08:00:00+00:00', dateOnly=False) for n in range(5)]] for i in range(3)}
+        platform = Fake(sites, concurrency=1)
+        self.assertFalse(search(platform, {'maxJobs': 5}).enough)
+
+
 class Places(unittest.TestCase):
     def test_a_job_that_names_no_place_is_opened_for_a_place_filter(self):
         class Vague(Fake):

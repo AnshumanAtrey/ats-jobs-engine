@@ -1,10 +1,15 @@
 """HTTP for public job sites: one client per run, and retries for the answers that pass by themselves."""
 import asyncio
+import time
+from collections import Counter
 
 import httpx
 
 RETRY_STATUS = {429, 500, 502, 503, 504}
 BACKOFF_S = (1, 3, 7)
+
+
+STATS = {'calls': 0, 'seconds': 0.0, 'retries': Counter()}      # one run's traffic, for the OUTPUT record
 
 
 class BoardError(Exception):
@@ -26,13 +31,18 @@ async def send(http: httpx.AsyncClient, method: str, url: str, **kwargs) -> http
     """The answer, whatever its status, after retrying what can pass. BoardError when nothing came back."""
     last = None
     for attempt in range(len(BACKOFF_S) + 1):
+        started = time.monotonic()
         try:
             response = await http.request(method, url, **kwargs)
+            STATS['calls'] += 1
+            STATS['seconds'] += time.monotonic() - started
             if response.status_code not in RETRY_STATUS:
                 return response
             last = f'HTTP {response.status_code}'
+            STATS['retries'][str(response.status_code)] += 1
         except httpx.HTTPError as exc:
             last = f'{type(exc).__name__}: {exc}'[:200]
+            STATS['retries'][type(exc).__name__] += 1
         if attempt < len(BACKOFF_S):
             await asyncio.sleep(BACKOFF_S[attempt])
     raise BoardError(last or 'no answer')

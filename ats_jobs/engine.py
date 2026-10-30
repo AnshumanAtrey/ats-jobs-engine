@@ -24,7 +24,7 @@ from datetime import datetime, timedelta, timezone
 
 from apify import Actor
 
-from .http import BoardError, BoardMissing, client
+from .http import STATS, BoardError, BoardMissing, client
 from .inputs import Config, parse_input
 from .platforms import PLATFORMS, Board, Platform
 from .rows import Filters, dedupe_key, job_row, link_row, parse_time
@@ -116,6 +116,7 @@ class Run:
         self.started = time.monotonic()
         self.checked_at = now_iso()
         self.stop: str | None = None
+        self.enough = False
         self.phase = ''
         self.boards_total = self.boards_read = self.boards_matched = self.details_read = self.details_wanted = 0
         self.jobs_listed = self.matching = self.duplicates = 0
@@ -192,6 +193,11 @@ class Run:
             """The date a job must beat to be delivered; None until maxJobs are held."""
             return heap[0][0] if cfg.max_jobs and len(heap) >= cfg.max_jobs else None
 
+        def nothing_can_beat_this() -> bool:
+            """maxJobs jobs dated today are held: no other board can have a newer one."""
+            cut = floor()
+            return cut is not None and cut.date() >= now.date() and cut.time() == OLDEST.time()
+
         def keep(posted: datetime, board: Board, job: dict) -> None:
             if cfg.include_details:
                 texts[(board.key, job['id'])] = zlib.compress(json.dumps(
@@ -243,6 +249,9 @@ class Run:
             async def one(board: Board) -> None:
                 async with sem:
                     if self.out_of_time():
+                        return
+                    if nothing_can_beat_this():
+                        self.enough = True
                         return
                     hit = False
                     try:
@@ -410,6 +419,8 @@ class Run:
                 text = f'Found {plural(self.matching, "matching job")} on {where} in {seconds} s (maxJobs is 0).'
             else:
                 text = f'No open job matched on {where} in {seconds} s. Try fewer words, another place or a longer period.'
+        if self.enough:
+            text += f' It stopped reading there: {cfg.max_jobs:,} jobs from today were found, and nothing can be newer.'
         if self.stop:
             text += f' Stopped early: {STOP_REASONS[self.stop]}'
         if cfg.companies and self.boards_missing:
@@ -447,6 +458,8 @@ class Run:
                 'companies': cfg.companies,
             },
             'companyList': {'boards': len(self.boards), 'updated': self.updated},
+            'traffic': {'calls': STATS['calls'], 'averageSeconds': round(STATS['seconds'] / (STATS['calls'] or 1), 2),
+                        'retries': dict(STATS['retries'])},
             'finishedAt': now_iso() if status != 'running' else None,
         }
 
