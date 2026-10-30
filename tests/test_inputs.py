@@ -26,6 +26,13 @@ def parse(raw: dict):
     return parse_input(raw, P, NAMES)
 
 
+class CompanyNames(unittest.TestCase):
+    def test_the_start_of_a_name_finds_the_company(self):
+        keys, note = read_company('world bank', P, {'world bank group': ['worldbankgroup/1', 'worldbankgroup/2']})
+        self.assertEqual(keys, ['worldbankgroup/1', 'worldbankgroup/2'])
+        self.assertIn('world bank', note)
+
+
 class Defaults(unittest.TestCase):
     def test_empty_form_searches_everything(self):
         cfg = parse({})

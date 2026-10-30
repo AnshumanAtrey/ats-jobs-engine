@@ -1,7 +1,9 @@
 """Cornerstone: links, dates, places and rows, on answers shaped like csod.com's own (2026-10-30)."""
 import asyncio
 import unittest
+from unittest.mock import patch
 
+from ats_jobs.http import BoardError
 from ats_jobs.platforms.base import Board
 from ats_jobs.platforms.cornerstone import Cornerstone, text_of, us_date
 
@@ -68,12 +70,19 @@ class Parsing(unittest.TestCase):
         self.assertEqual(job['otherLocations'], ['Shanghai, SHANGHAI, CN'])
 
 
-class FakeResponse:
-    def __init__(self, status_code, data=None):
-        self.status_code, self._data = status_code, data
+class NoAddress(unittest.TestCase):
+    def test_a_company_with_no_address_is_a_missing_board(self):
+        async def gone(*args, **kwargs):
+            raise BoardError('ConnectError: [Errno -2] Name or service not known')
+        with patch('ats_jobs.platforms.cornerstone.send', gone):
+            self.assertIsNone(asyncio.run(P.open(None, Board('acme/1', 'Acme'))))
 
-    def json(self):
-        return self._data
+    def test_a_network_failure_stays_an_error(self):
+        async def down(*args, **kwargs):
+            raise BoardError('HTTP 503')
+        with patch('ats_jobs.platforms.cornerstone.send', down):
+            with self.assertRaises(BoardError):
+                asyncio.run(P.open(None, Board('acme/1', 'Acme')))
 
 
 class Lookup(unittest.TestCase):

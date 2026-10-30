@@ -281,6 +281,10 @@ def read_company(token: str, platform, names: dict[str, list[str]] | None = None
     if found:
         quiet = any(key.lower() == text.lower() for key in found)
         return found, None if quiet else f'Read the company "{text}" as {", ".join(found[:5])}.'
+    start = f'{" ".join(text.lower().split())} '          # "world bank" finds World Bank Group
+    longer = [key for name, keys in names.items() if name.startswith(start) for key in keys]
+    if longer:
+        return list(dict.fromkeys(longer)), f'Read the company "{text}" as {", ".join(longer[:5])}.'
     guess = platform.guess_board(' '.join(text.split()))
     if guess:
         return [guess], None

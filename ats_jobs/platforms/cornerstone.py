@@ -30,6 +30,7 @@ HOST = re.compile(r'^([a-z0-9-]+)\.csod\.com$', re.I)
 PATH = re.compile(r'/careersite/(\d+)(?:/home(?:/requisition/(\d+))?)?', re.I)
 CLASSIC_JOB = re.compile(r'jobdetails\.aspx', re.I)
 SLUG = re.compile(r'^[a-z0-9][a-z0-9-]*$', re.I)
+NO_SUCH_HOST = re.compile(r'name or service not known|nodename nor servname|name does not resolve|no address associated', re.I)
 PAGE_SIZE = 100
 EN_US = {'cultureId': 1, 'cultureName': 'en-US'}
 OPEN = 2
@@ -66,7 +67,7 @@ class Cornerstone(Platform):
     actor = 'cornerstone-jobs-search'
     board_example = 'https://newcold.csod.com/ux/ats/careersite/5/home?c=newcold'
     job_example = 'https://newcold.csod.com/ux/ats/careersite/5/home/requisition/3110?c=newcold'
-    concurrency = 32
+    concurrency = 64
     server_search = True
     newest_first = True
     never = ('employmentType', 'department', 'team', 'salary', 'salaryMin', 'salaryMax', 'salaryCurrency',
@@ -95,7 +96,12 @@ class Cornerstone(Platform):
 
     async def open(self, http, board):
         corp, _, site = board.key.partition('/')
-        response = await send(http, 'GET', HOME.format(corp=corp, site=site or 1))
+        try:
+            response = await send(http, 'GET', HOME.format(corp=corp, site=site or 1))
+        except BoardError as exc:
+            if NO_SUCH_HOST.search(str(exc)):       # every company has its own subdomain: no address, no company
+                return None
+            raise
         found = CONTEXT.search(response.text) if response.status_code == 200 else None
         if not found:
             return None
