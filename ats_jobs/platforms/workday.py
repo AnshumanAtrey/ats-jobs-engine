@@ -52,7 +52,7 @@ class Workday(Platform):
     actor = 'workday-job-search'
     board_example = 'https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite'
     job_example = 'https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/US-CA-Santa-Clara/Senior-Engineer_JR1'
-    concurrency = 64             # 128 kept the same 9 to 10 calls a second, doubled the wait and added connection errors
+    concurrency = 64             # on Apify a run gets 8 to 10 calls a second: 128 only doubled the wait and added errors
     server_search = True
     newest_first = True
     ranked_search = True
