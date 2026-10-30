@@ -1,0 +1,368 @@
+"""
+What people type -> a clean run configuration (manager/rules/SEO.md section 11.5).
+
+No field is required and no input stops a run (owner rule, 2026-10-01: type one keyword, press Start,
+get the newest jobs). An empty form returns the newest jobs from every company. Accepted as typed:
+several entries on one line split by commas, a pasted Google dork (site:<host> intext:frontend reads as
+the keyword frontend), board links instead of company names, work types and job types in everyday words
+("offline" is onsite, "internship" is intern), "remote" typed as a location, and periods such as "24h",
+"2 weeks" or a number of days. Anything that cannot be read falls back to the field's default, and the
+OUTPUT record and the log say what was read and how.
+
+Links belong to a platform: Platform.read_link says whether a text is one of its links and what it names.
+
+Pure module: no Apify or network import, so the tests run offline.
+"""
+import re
+from dataclasses import dataclass, field
+
+from . import places
+from .rows import classify_place
+
+DEFAULT_MAX_JOBS = 100
+MAX_JOBS_CAP = 100_000             # our guard: more than every open job on one platform we read
+SPLIT = re.compile(r'[,;\n\r\t]+')
+IS_URL = re.compile(r'^[a-z][a-z0-9+.-]*://', re.I)
+DORK_OPERATOR = re.compile(r'\b(?:site|inurl|filetype|ext|before|after|cache|related):\S+', re.I)
+DORK_TEXT = re.compile(r'\b(?:intext|intitle|allintext|allintitle):', re.I)
+
+WORK_TYPES = ('remote', 'hybrid', 'onsite')
+WORK_TYPE_ALIASES = {
+    'remote': 'remote', 'fully remote': 'remote', 'remote only': 'remote', 'wfh': 'remote',
+    'work from home': 'remote', 'anywhere': 'remote', 'distributed': 'remote',
+    'hybrid': 'hybrid', 'flexible': 'hybrid',
+    'onsite': 'onsite', 'on site': 'onsite', 'on-site': 'onsite', 'in office': 'onsite', 'in-office': 'onsite',
+    'office': 'onsite', 'offline': 'onsite', 'in person': 'onsite', 'in-person': 'onsite',
+}
+JOB_TYPES = ('full-time', 'part-time', 'contract', 'intern', 'temporary')
+JOB_TYPE_ALIASES = {
+    'full time': 'full-time', 'fulltime': 'full-time', 'full-time': 'full-time', 'permanent': 'full-time',
+    'part time': 'part-time', 'parttime': 'part-time', 'part-time': 'part-time',
+    'contract': 'contract', 'contractor': 'contract', 'freelance': 'contract', 'freelancer': 'contract',
+    'intern': 'intern', 'internship': 'intern', 'internships': 'intern', 'co-op': 'intern', 'coop': 'intern',
+    'temporary': 'temporary', 'temp': 'temporary', 'seasonal': 'temporary',
+}
+PERIOD = re.compile(r'^(?:last|past)?\s*(\d+(?:\.\d+)?)?\s*(h|hr|hrs|hour|hours|d|day|days|w|wk|week|weeks|m|mo|month|months)?$')
+PERIOD_DAYS = {'h': 1 / 24, 'hr': 1 / 24, 'hrs': 1 / 24, 'hour': 1 / 24, 'hours': 1 / 24, 'd': 1, 'day': 1,
+               'days': 1, 'w': 7, 'wk': 7, 'week': 7, 'weeks': 7, 'm': 30, 'mo': 30, 'month': 30, 'months': 30}
+ANY_TIME = {'', 'any', 'any time', 'anytime', 'all', 'all time', 'ever', 'none', '0'}
+EVERY = {'any', 'all', 'every', 'both', 'either', 'any type', 'all types', 'no preference'}
+
+
+@dataclass
+class Config:
+    search_terms: list[str] = field(default_factory=list)
+    exclude_terms: list[str] = field(default_factory=list)
+    locations: list[str] = field(default_factory=list)
+    work_types: list[str] = field(default_factory=list)       # empty: every work type
+    job_types: list[str] = field(default_factory=list)        # empty: every job type
+    posted_within_days: float | None = None                  # None: any time
+    max_jobs: int | None = DEFAULT_MAX_JOBS                  # None: every match
+    include_details: bool = False
+    search_descriptions: bool = False
+    companies: list[str] = field(default_factory=list)        # board keys; empty: every known company
+    job_urls: list[tuple[str, str, str]] = field(default_factory=list)   # (board key, job id, as typed)
+    notes: list[str] = field(default_factory=list)
+    skipped: list[tuple[str, str]] = field(default_factory=list)
+
+
+def _items(value) -> list[str]:
+    """A list, or one string, -> the separate entries (commas, semicolons and new lines split)."""
+    raw = value if isinstance(value, list) else [value] if isinstance(value, (str, int, float)) else []
+    return [part.strip() for item in raw if isinstance(item, (str, int, float))
+            for part in SPLIT.split(str(item)) if part.strip()]
+
+
+def _clean(text: str) -> str:
+    return text.strip().strip('"\'<>()[]{}').strip()
+
+
+def read_search_term(token: str, platform=None) -> tuple[str | None, str | None, str | None]:
+    """One entry -> (search term, note, board). A pasted Google dork keeps only its words:
+    'site:newcold.csod.com intext:"frontend"' reads as frontend, and a site: that names one board
+    also limits the search to that company."""
+    text = _clean(token)
+    if DORK_OPERATOR.search(text) or DORK_TEXT.search(text):
+        board = None
+        for site in re.findall(r'\bsite:(\S+)', text, re.I):
+            link = platform.read_link(site.strip('"\'')) if platform else None
+            if link and link[0]:
+                board = link[0]
+        words = DORK_TEXT.sub(' ', DORK_OPERATOR.sub(' ', text)).replace('"', ' ').replace("'", ' ')
+        words = ' '.join(w for w in words.split() if w.upper() not in ('OR', 'AND', '|'))
+        where = f' on the {board} board' if board else ''
+        if not words:
+            if board:
+                return None, f'Read the Google dork "{text}" as every job{where}.', board
+            return None, f'"{text}" is a Google dork with no keyword in it, such as intext:frontend.', None
+        return words, f'Read the Google dork "{text}" as the keyword "{words}"{where}.', board
+    return (text, None, None) if text else (None, None, None)
+
+
+def parse_terms(value, key: str, notes: list[str], skipped: list[tuple[str, str]],
+                boards: list[str] | None = None, platform=None) -> list[str]:
+    """Search words -> terms. Boards named by a pasted dork are added to boards."""
+    terms, seen = [], set()
+    for token in _items(value):
+        term, note, board = read_search_term(token, platform)
+        if board is not None and boards is not None and board.lower() not in (b.lower() for b in boards):
+            boards.append(board)
+        if term is None:
+            if note and board is None:
+                skipped.append((token, note))
+            elif note:
+                notes.append(note)
+            continue
+        if not re.search(r'[A-Za-z0-9]', term):
+            skipped.append((token, f'"{term}" in {key} has no letters or digits to match.'))
+            continue
+        if note:
+            notes.append(note)
+        if term.lower() not in seen:
+            seen.add(term.lower())
+            terms.append(term)
+    return terms
+
+
+def route_links(value, platform, notes: list[str]) -> tuple[list[str], list[str], list[str]]:
+    """Main search box -> (words, job links, board links). A link of this platform pasted there is read
+    for what it is: a job link is checked, a board link searches that company."""
+    words, jobs, boards = [], [], []
+    for token in _items(value):
+        text = _clean(token)
+        link = None if DORK_OPERATOR.search(text) or DORK_TEXT.search(text) else platform.read_link(text)
+        if link and link[1]:
+            jobs.append(text)
+            notes.append(f'Read {text} in searchTerms as a job link to check.')
+            continue
+        if link and link[0]:
+            boards.append(text)
+            notes.append(f'Read {text} in searchTerms as the {link[0]} board.')
+            continue
+        words.append(token)
+    return words, jobs, boards
+
+
+def _alias(text: str, aliases: dict[str, str]) -> str | None:
+    key = ' '.join(text.lower().replace('_', ' ').split())
+    return aliases.get(key) or aliases.get(key.replace(' ', '')) or aliases.get(key.replace(' ', '-'))
+
+
+def parse_choices(value, key: str, allowed: tuple[str, ...], aliases: dict[str, str], notes: list[str]) -> list[str]:
+    """Work types or job types in everyday words -> the fixed values, empty for every one. Unknown words
+    are dropped with a note; when none is known, every one is kept."""
+    chosen, unknown = [], []
+    for token in _items(value):
+        if ' '.join(token.lower().split()) in EVERY:
+            return []
+        name = _alias(token, aliases)
+        if name is None:
+            unknown.append(token)
+            continue
+        if token.strip().lower() not in allowed:
+            notes.append(f'Read "{token}" in {key} as {name}.')
+        if name not in chosen:
+            chosen.append(name)
+    if unknown and chosen:
+        notes.append(f'{key} has no option {", ".join(unknown)}, so it was left out.')
+    if unknown and not chosen:
+        notes.append(f'{key} has no option {", ".join(unknown)}, so every one is kept. The options are '
+                     f'{", ".join(allowed)}.')
+    return chosen if len(chosen) < len(allowed) else []
+
+
+REMOTE_WORDS = re.compile(r'\b(?:fully\s+)?remote(?:ly)?\b|\bwfh\b', re.I)
+
+
+def parse_locations(value, work_types: list[str], notes: list[str]) -> tuple[list[str], list[str]]:
+    """Places -> (places, work types). "Remote" typed as a place asks for remote jobs, so it moves to
+    the work type (a place next to it still filters, as in "Remote, United States" or "Remote EMEA").
+    "Worldwide", "Anywhere" and "Global" stay places: they find the jobs open everywhere."""
+    chosen, moved = [], list(work_types)
+    for token in _items(value):
+        text = _clean(token)
+        toks = places.tokens(text)
+        if places.world_query(toks):
+            notes.append(f'Read "{text}" in location as jobs open worldwide: marked worldwide, global or anywhere, '
+                         f'or just "Remote" with no country.')
+        else:
+            kind = _alias(text, WORK_TYPE_ALIASES)
+            if kind:
+                if kind not in moved:
+                    moved.append(kind)
+                notes.append(f'Read "{text}" in location as the {kind} work type.')
+                continue
+            rest = REMOTE_WORDS.sub(' ', text)
+            if rest != text:                                         # "Remote EMEA", "Remote - US", "Remote 100%"
+                rest = re.sub(r'^(?:in|within|from)\s+', '', rest.strip(' \t-–—:,()%'), flags=re.I).strip(' \t-–—:,()%')
+                if 'remote' not in moved:
+                    moved.append('remote')
+                if not re.search(r'[^\W\d_]', rest):
+                    notes.append(f'Read "{text}" in location as the remote work type.')
+                    continue
+                notes.append(f'Read "{text}" in location as the remote work type in {rest}.')
+                text = rest
+            place, countries = classify_place(text)
+            if place == 'region':
+                notes.append(f'Read "{text}" in location as a region of {len(countries)} countries: it finds jobs in '
+                             f'them, jobs posted for the region and jobs open worldwide.')
+        if text and text.lower() not in (p.lower() for p in chosen):
+            chosen.append(text)
+    if len(moved) == len(WORK_TYPES):
+        moved = []
+    return chosen, moved
+
+
+def parse_period(value, notes: list[str]) -> float | None:
+    """'24 hours', '24h', '7 days', '2 weeks', 'month', 3, 'any time' -> days, or None for any time."""
+    if value is None or isinstance(value, bool):
+        return None
+    if isinstance(value, (int, float)):
+        return float(value) if value > 0 else None
+    text = ' '.join(str(value).strip().lower().replace('_', ' ').split())
+    if text in ANY_TIME:
+        return None
+    if text in ('today', '24 hours', 'day', 'past day', 'last day'):
+        return 1.0
+    m = PERIOD.match(text)
+    if m and (m.group(1) or m.group(2)):
+        number = float(m.group(1)) if m.group(1) else 1.0
+        days = number * PERIOD_DAYS[m.group(2) or 'd']
+        if days > 0:
+            return days
+    notes.append(f'Could not read "{value}" as a period such as 24 hours, 7 days or 30 days, so any posting '
+                 f'date is kept.')
+    return None
+
+
+def parse_max_jobs(value, notes: list[str]) -> int | None:
+    """Missing -> 100. Empty, 0 or "all" -> every match. A number -> that many, newest first."""
+    if value is None:
+        return DEFAULT_MAX_JOBS
+    if str(value).strip().lower() in ('', 'all', '0', 'every', 'unlimited'):
+        return None
+    try:
+        n = int(float(str(value).strip().replace(',', '')))
+    except ValueError:
+        notes.append(f'Could not read maxJobs "{value}" as a number, so it is {DEFAULT_MAX_JOBS}.')
+        return DEFAULT_MAX_JOBS
+    if n < 0:
+        notes.append(f'maxJobs {n} is below 0, so it is {DEFAULT_MAX_JOBS}.')
+        return DEFAULT_MAX_JOBS
+    if n > MAX_JOBS_CAP:
+        notes.append(f'maxJobs {n:,} is above {MAX_JOBS_CAP:,}, so every match is returned.')
+        return None
+    return n
+
+
+def parse_bool(value, default: bool) -> bool:
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str) and value.strip().lower() in ('true', 'yes', 'on', '1'):
+        return True
+    if isinstance(value, str) and value.strip().lower() in ('false', 'no', 'off', '0'):
+        return False
+    return default
+
+
+def read_company(token: str, platform, names: dict[str, list[str]] | None = None) -> tuple[list[str], str | None]:
+    """One entry -> (board keys, note). Accepts a board link, a company name we know, or a board name. One
+    company can have several boards, and a name finds all of them."""
+    text = _clean(token)
+    names = names or {}
+    link = platform.read_link(text)
+    if link is not None:
+        if link[0]:
+            return names.get(link[0].lower()) or [link[0]], None
+        return [], f'"{text}" is a {platform.name} link with no company in it. Paste a link such as {platform.board_example}.'
+    if IS_URL.match(text) or '/' in text:
+        return [], f'"{text}" is not a {platform.name} link. Type the company name, or paste a link such as {platform.board_example}.'
+    found = names.get(text.lower()) or names.get(re.sub(r'[^a-z0-9]', '', text.lower()))
+    if found:
+        quiet = any(key.lower() == text.lower() for key in found)
+        return found, None if quiet else f'Read the company "{text}" as {", ".join(found[:5])}.'
+    guess = platform.guess_board(' '.join(text.split()))
+    if guess:
+        return [guess], None
+    return [], f'"{text}" is not a company name or board link.'
+
+
+def parse_companies(value, platform, names, notes, skipped) -> list[str]:
+    companies, seen = [], set()
+    for token in _items(value):
+        keys, note = read_company(token, platform, names)
+        if not keys:
+            skipped.append((token, note))
+            continue
+        if note:
+            notes.append(note)
+        for key in keys:
+            if key.lower() not in seen:
+                seen.add(key.lower())
+                companies.append(key)
+    return companies
+
+
+def read_job_url(token: str, platform) -> tuple[tuple[str, str] | None, str | None]:
+    """A job link -> ((board key, job id), None), or (None, reason)."""
+    text = _clean(token)
+    link = platform.read_link(text)
+    if link is None:
+        return None, f'"{text}" is not a {platform.name} job link. Paste links such as {platform.job_example}.'
+    if link[0] and link[1]:
+        return (link[0], link[1]), None
+    return None, f'"{text}" is a {platform.name} link without a job in it. Paste the link of one job.'
+
+
+def parse_job_urls(value, platform, skipped) -> list[tuple[str, str, str]]:
+    urls, seen = [], set()
+    for token in _items(value):
+        found, why = read_job_url(token, platform)
+        if found is None:
+            skipped.append((token, why))
+            continue
+        if found not in seen:
+            seen.add(found)
+            urls.append((found[0], found[1], _clean(token)))
+    return urls
+
+
+def parse_input(raw: dict | None, platform, company_names: dict[str, list[str]] | None = None) -> Config:
+    raw = raw or {}
+    notes: list[str] = []
+    skipped: list[tuple[str, str]] = []
+    words, pasted_jobs, pasted_boards = route_links(raw.get('searchTerms'), platform, notes)
+    job_urls = parse_job_urls(_items(raw.get('jobUrls')) + pasted_jobs, platform, skipped)
+    if _items(raw.get('jobUrls')) and not job_urls:
+        notes.append('None of the job links could be read, so the run searched instead. ' + skipped[0][1])
+    work_types = parse_choices(raw.get('workType'), 'workType', WORK_TYPES, WORK_TYPE_ALIASES, notes)
+    locations, work_types = parse_locations(raw.get('location'), work_types, notes)
+    companies = parse_companies(_items(raw.get('companies')) + pasted_boards, platform, company_names, notes, skipped)
+    if _items(raw.get('companies')) and not companies:
+        notes.append('None of the companies could be read, so every company was searched. ' + skipped[-1][1])
+    from_dork: list[str] = []
+    search_terms = parse_terms(words, 'searchTerms', notes, skipped, from_dork, platform)
+    for key in parse_companies(from_dork, platform, company_names, notes, skipped):
+        if key.lower() not in (c.lower() for c in companies):
+            companies.append(key)
+    cfg = Config(
+        search_terms=search_terms,
+        exclude_terms=parse_terms(raw.get('excludeTerms'), 'excludeTerms', notes, skipped, platform=platform),
+        locations=locations,
+        work_types=work_types,
+        job_types=parse_choices(raw.get('employmentType'), 'employmentType', JOB_TYPES, JOB_TYPE_ALIASES, notes),
+        posted_within_days=parse_period(raw.get('postedWithin'), notes),
+        max_jobs=parse_max_jobs(raw.get('maxJobs'), notes),
+        include_details=parse_bool(raw.get('includeDetails'), False),
+        search_descriptions=parse_bool(raw.get('searchDescriptions'), False),
+        companies=companies,
+        job_urls=job_urls,
+        notes=notes,
+        skipped=skipped,
+    )
+    if cfg.job_urls and (cfg.search_terms or cfg.locations or cfg.companies):
+        cfg.notes.append('Job links were given, so the run checks those links and does not search. '
+                         'Run again without job links to search.')
+    if cfg.search_descriptions and not cfg.search_terms:
+        cfg.search_descriptions = False
+    return cfg

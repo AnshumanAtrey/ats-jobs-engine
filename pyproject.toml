@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ats-jobs-engine"
+version = "0.1.0"
+description = "One search engine for applicant tracking systems: every platform's jobs in one shape, read live."
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = ["apify>=4.1,<5", "httpx==0.28.1", "pycountry==26.2.16"]
+
+[tool.setuptools.packages.find]
+include = ["ats_jobs*"]
+
+[tool.setuptools.package-data]
+ats_jobs = ["data/*.tsv"]
