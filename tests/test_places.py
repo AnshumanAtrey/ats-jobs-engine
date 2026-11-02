@@ -72,6 +72,11 @@ class Regions(unittest.TestCase):
         atlanta = job('Atlanta, Georgia', country='United States', workplace='OnSite')
         self.assertFalse(finds('EMEA', atlanta))
         self.assertTrue(finds('Georgia', atlanta))                                    # still found by its words
+        written = job('Atlanta, Georgia, United States', workplace='OnSite')       # Greenhouse: text only
+        self.assertFalse(finds('EMEA', written))
+        self.assertTrue(finds('United States', written))
+        self.assertTrue(finds('Georgia', written))
+        self.assertTrue(finds('Georgia', job('Tbilisi, Georgia')))                   # the country stays the country
 
     def test_typed_places_are_read_by_kind(self):
         self.assertEqual(classify_place('EU')[0], 'region')
