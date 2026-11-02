@@ -1,22 +1,24 @@
 """
 Rebuild ats_jobs/data/workable.tsv: every Workable account we can find, each checked live.
 
-Workable lists no accounts. Candidates come from three places. Workable's own public feed of its job board
-(www.workable.com/boards/workable.xml) names each listed job's company and links the job as
-apply.workable.com/j/<shortcode>, which redirects to /<account>/j/<shortcode>: one redirect per company gives its
-account. The feed is 861 MB with the oldest listings first, and from a slow line the download is cut at about 60 s, so
-the part that arrives is read. The site:apply.workable.com dork as an index query: Common Crawl's raw index of
-apply.workable.com and <account>.workable.com in the latest crawls. And the accounts already in the file, so an account
-found once stays until Workable stops answering for it; accounts given on the command line are added. Each account is
-checked with its career page's JSON (the widget): its name and its open jobs; 404 drops it; the website is the one
-the feed gives the company. Workable allows about 3 calls a second to apply.workable.com from one address, so calls
-start PACE apart (8 waiting for answers at once). Biggest first, so a run for the newest jobs reaches the jobs posted
-today soonest.
+Workable lists no accounts. Candidates come from four places. The accounts already in the file, so an account found
+once stays until Workable stops answering for it. The site:apply.workable.com dork as an index query: Common Crawl's raw
+index of every workable.com host (apply.workable.com/<account> and <account>.workable.com) in CRAWLS. Accounts given on
+the command line or in a file of one account a line (--accounts). And Workable's own public feed of its job board
+(www.workable.com/boards/workable.xml), which names each listed job's company and links the job as
+apply.workable.com/j/<shortcode>, a link that redirects to /<account>/j/<shortcode>. Each candidate account is checked
+with its career page's JSON (the widget): its name and its open jobs (one per shortcode); 404 drops it. A feed company
+whose name is the name of no live account is then resolved with one redirect and checked the same way, so the feed costs
+calls only for what the archives missed. The website is the one the feed gives the company. Workable allows about 3
+calls a second to apply.workable.com from one address and a burst can ban an address for a day, so calls start PACE
+apart (8 waiting for answers at once), and a run that loses its answers stops without writing. Biggest first, so a run
+for the newest jobs reaches the jobs posted today soonest.
 
 On 2026-11-02: FILLED_BY_THE_RUN
 
-Run: python3 scripts/refresh_workable.py [account ...] [--feed <saved copy of the feed, .xml, .xml.gz or .xml.br>]
-(needs httpx and brotli; writes the file, prints a summary; about 1.5 hours). Workable refuses an address for an hour
+Run: python3 scripts/refresh_workable.py [account ...] [--accounts <file>] [--feed <saved copy of the feed: .xml,
+.xml.gz or .xml.br>]   (needs httpx and brotli; writes the file, prints a summary; about 1.5 hours). From a slow
+line the feed download is cut at about 60 s and the part that arrived is read; Workable refuses an address for an hour
 after a few downloads of its feed, so --feed reads a copy saved earlier.
 """
 import asyncio
@@ -28,7 +30,6 @@ import time
 import urllib.request
 import xml.etree.ElementTree as ET
 import zlib
-from collections import Counter
 from datetime import date
 from pathlib import Path
 
@@ -43,11 +44,13 @@ OUT = ROOT / 'ats_jobs' / 'data' / 'workable.tsv'
 FEED_URL = 'https://www.workable.com/boards/workable.xml'
 AGENT = 'Mozilla/5.0 (compatible; ats-jobs-engine/1.0; +https://github.com/AnshumanAtrey/ats-jobs-engine)'
 PACE = 0.45                     # seconds between calls to apply.workable.com
-CRAWLS = ('CC-MAIN-2026-43', 'CC-MAIN-2026-39')
-PREFIXES = ('com,workable,apply)/', 'com,workable,')
+CRAWLS = ('CC-MAIN-2026-43', 'CC-MAIN-2026-39', 'CC-MAIN-2026-30', 'CC-MAIN-2026-21', 'CC-MAIN-2026-17',
+          'CC-MAIN-2026-12', 'CC-MAIN-2026-08', 'CC-MAIN-2025-51', 'CC-MAIN-2025-47')
+PREFIX = 'com,workable,'        # every workable.com host: apply.workable.com and <account>.workable.com
 CC = 'https://data.commoncrawl.org/cc-index/collections/{crawl}/indexes/'
 CODES_PER_COMPANY = 3           # a company's first job can close between the feed and the redirect
 IN_FLIGHT = 8                   # calls waiting for their answer at once; their starts stay PACE apart
+MOST_UNANSWERED = 0.02          # more calls than this share without an answer: Workable refused us, nothing is written
 
 
 def known() -> dict[str, tuple[str, str | None]]:
@@ -96,7 +99,8 @@ def common_crawl(crawl: str, prefix: str) -> set[str]:
         position += 600_000 - 2000
     urls = set()
     for name, offset, length in blocks:
-        text = gzip.decompress(get_range(CC.format(crawl=crawl) + name, offset, offset + length - 1)).decode('utf-8', 'ignore')
+        block = get_range(CC.format(crawl=crawl) + name, offset, offset + length - 1)
+        text = gzip.decompress(block).decode('utf-8', 'ignore')
         for line in text.split('\n'):
             if line.startswith(prefix):
                 try:
@@ -109,17 +113,16 @@ def common_crawl(crawl: str, prefix: str) -> set[str]:
 def archive_accounts(platform: Workable) -> set[str]:
     found = set()
     for crawl in CRAWLS:
-        for prefix in PREFIXES:
-            try:
-                urls = common_crawl(crawl, prefix)
-            except (OSError, RuntimeError, KeyError) as exc:
-                print(f'{crawl} {prefix}: {exc}')
-                continue
-            for url in urls:
-                link = platform.read_link(url)
-                if link and link[0] and link[0] != '*':
-                    found.add(link[0])
-            print(f'{crawl} {prefix}: {len(urls):,} urls, {len(found):,} accounts so far', flush=True)
+        try:
+            urls = common_crawl(crawl, PREFIX)
+        except (OSError, RuntimeError, KeyError) as exc:
+            print(f'{crawl} {PREFIX}: {exc}')
+            continue
+        for url in urls:
+            link = platform.read_link(url)
+            if link and link[0] and link[0] != '*':
+                found.add(link[0])
+        print(f'{crawl} {PREFIX}: {len(urls):,} urls, {len(found):,} accounts so far', flush=True)
     return found
 
 
@@ -154,8 +157,8 @@ class Companies:
                 code, name = fields.get('referencenumber', '').upper(), clean(fields.get('company'))
                 if re.match(r'^[0-9A-F]{10}$', code) and name:
                     self.entries += 1
-                    entry = self.by_name.setdefault(name.casefold(), {'name': name, 'website': clean(fields.get('website')) or None,
-                                                                      'jobs': set(), 'codes': []})
+                    entry = self.by_name.setdefault(name.casefold(), {
+                        'name': name, 'website': clean(fields.get('website')) or None, 'jobs': set(), 'codes': []})
                     entry['jobs'].add(code)
                     if code not in entry['codes'] and len(entry['codes']) < CODES_PER_COMPANY:
                         entry['codes'].append(code)
@@ -206,15 +209,18 @@ class Turns:
 
 
 async def account_of(http, turns: Turns, codes: list[str]) -> str | None:
+    """The account a feed company's jobs redirect to; {'error'} when Workable answered none of them."""
+    unanswered = 0
     for code in codes:
         try:
             response = await turns.send(http, SHORT_LINK.format(code=code), follow_redirects=False)
         except BoardError:
+            unanswered += 1
             continue
         found = re.match(r'^(?:https://apply\.workable\.com)?/([a-z0-9-]+)/j/', response.headers.get('location') or '')
         if found and found.group(1) not in NOT_ACCOUNTS:
             return found.group(1)
-    return None
+    return {'error': 'no answer'} if unanswered == len(codes) else None
 
 
 async def career_page(http, turns: Turns, account: str) -> dict | None:
@@ -235,7 +241,7 @@ async def career_page(http, turns: Turns, account: str) -> dict | None:
 
 async def paced(items, work, label: str) -> list:
     """work(item) for every item, IN_FLIGHT at a time; Turns spaces their starts, so slow answers overlap."""
-    gate, done, results = asyncio.Semaphore(IN_FLIGHT), [0], []
+    gate, done = asyncio.Semaphore(IN_FLIGHT), [0]
 
     async def one(item):
         async with gate:
@@ -244,8 +250,11 @@ async def paced(items, work, label: str) -> list:
             if done[0] % 1000 == 0:
                 print(f'{done[0]:,} of {len(items):,} {label}', flush=True)
             return result
-    results = await asyncio.gather(*[one(item) for item in items])
-    return list(results)
+    return list(await asyncio.gather(*[one(item) for item in items]))
+
+
+def unanswered(results: list) -> int:
+    return sum(1 for r in results if isinstance(r, dict) and 'error' in r)
 
 
 async def main(extra: list[str], feed_file: str | None) -> None:
@@ -254,53 +263,71 @@ async def main(extra: list[str], feed_file: str | None) -> None:
     platform._known = {}
     file_rows = known()
     archive = archive_accounts(platform)
+    given = {a.strip().lower() for a in extra if a.strip()}
     turns = Turns()
     limits = httpx.Limits(max_connections=IN_FLIGHT * 2, max_keepalive_connections=IN_FLIGHT * 2)
     async with httpx.AsyncClient(timeout=httpx.Timeout(30, connect=15), limits=limits, follow_redirects=True,
                                  headers={'User-Agent': AGENT, 'Accept-Encoding': 'gzip'}) as http:
         companies = await read_feed(http, feed_file)
         print(f'feed: {companies.entries:,} entries of {len(companies.by_name):,} companies read', flush=True)
-        ranked = sorted(companies.by_name.values(), key=lambda c: -len(c['jobs']))
+        first = sorted(a for a in archive | set(file_rows) | given if ACCOUNT.match(a))
+        print(f'{len(first):,} accounts from the file, the archives and the command line to check', flush=True)
+        results = await paced(first, lambda a: career_page(http, turns, a), 'accounts checked')
+        pages = dict(zip(first, results))
+        names = {p['name'].casefold() for p in results if p and 'error' not in p}
+        ranked = sorted((c for c in companies.by_name.values() if c['name'].casefold() not in names),
+                        key=lambda c: -len(c['jobs']))
+        print(f'{len(companies.by_name) - len(ranked):,} feed companies are live accounts already; '
+              f'{len(ranked):,} to resolve', flush=True)
         found = await paced(ranked, lambda c: account_of(http, turns, c['codes']), 'feed companies resolved')
         named = {}                                   # account -> the feed's company, for its website
         for company, account in zip(ranked, found):
-            if account:
+            if isinstance(account, str):
                 named.setdefault(account, company)
-        from_feed = set(named)
-        websites = {c['name'].casefold(): c['website'] for c in companies.by_name.values()}
-        candidates = sorted(a for a in (archive | set(file_rows) | set(extra) | from_feed) if ACCOUNT.match(a))
-        print(f'{len(from_feed):,} accounts from the feed; {len(candidates):,} accounts to check', flush=True)
-        pages = await paced(candidates, lambda a: career_page(http, turns, a), 'accounts checked')
-        accounts: dict[str, dict] = {}
-        errors = 0
-        for account, page in zip(candidates, pages):
-            if page is not None and 'error' in page:
-                errors += 1
-                if account in file_rows:          # Workable did not answer: keep what the file knew
-                    name, website = file_rows[account]
-                    accounts[account] = {'name': name, 'website': website, 'jobs': 0}
-            elif page is not None:
-                website = websites.get(page['name'].casefold()) or (named.get(account) or {}).get('website') \
-                    or file_rows.get(account, (None, None))[1]
-                accounts[account] = {'name': page['name'], 'website': website, 'jobs': page['jobs']}
+        new = sorted(a for a in named if a not in pages and ACCOUNT.match(a))
+        results += (more := await paced(new, lambda a: career_page(http, turns, a), 'feed accounts checked'))
+        pages.update(zip(new, more))
+    calls = len(results) + len(found)
+    lost = unanswered(results) + unanswered(found)
+    if lost > MOST_UNANSWERED * calls:
+        sys.exit(f'{lost:,} of {calls:,} calls got no answer: Workable refused this address. Nothing was written; '
+                 'run again later.')
+    websites = {c['name'].casefold(): c['website'] for c in companies.by_name.values()}
+    accounts: dict[str, dict] = {}
+    for account, page in pages.items():
+        if page is not None and 'error' in page:
+            if account in file_rows:          # Workable did not answer: keep what the file knew
+                name, website = file_rows[account]
+                accounts[account] = {'name': name, 'website': website, 'jobs': 0}
+        elif page is not None:
+            website = websites.get(page['name'].casefold()) or (named.get(account) or {}).get('website') \
+                or file_rows.get(account, (None, None))[1]
+            accounts[account] = {'name': page['name'], 'website': website, 'jobs': page['jobs']}
     live = sorted(accounts.items(), key=lambda kv: (-kv[1]['jobs'], kv[1]['name'].lower(), kv[0]))
-    hiring = sum(1 for _, a in live if a['jobs'])
+    hiring = {account for account, a in live if a['jobs']}
     jobs = sum(a['jobs'] for _, a in live)
-    sources = Counter()
-    for account, a in live:
-        if a['jobs']:
-            sources['feed' if account in from_feed else 'archive' if account in archive else 'file or given'] += 1
-    lines = [f'# Workable accounts, updated {date.today().isoformat()}: every account found through Workable\'s feed or '
-             'the archives that answers today, biggest first.',
-             '# Columns: board key (the account, lower case), company name, website. Rebuilt by scripts/refresh_workable.py;',
-             f'# {len(live):,} accounts, {hiring:,} hiring, {jobs:,} open jobs on their career pages before duplicates.']
+    feed_names = set(companies.by_name)
+    seen = {'the feed': {a for a in hiring if a in named or accounts[a]['name'].casefold() in feed_names},
+            'Common Crawl': hiring & archive, 'the list before': hiring & set(file_rows), 'given': hiring & given}
+    by_source = ', '.join(f'{k} {len(v):,} ({len(v - set().union(*(w for j, w in seen.items() if j != k))):,} only '
+                          'there)' for k, v in seen.items() if v)
+    lines = [f'# Workable accounts, updated {date.today().isoformat()}: every account found through Workable\'s feed, '
+             'Common Crawl or the list before that answers today, biggest first.',
+             '# Columns: board key (the account, lower case), company name, website. Rebuilt by '
+             'scripts/refresh_workable.py;',
+             f'# {len(live):,} accounts, {len(hiring):,} hiring, {jobs:,} open jobs on their career pages before '
+             'duplicates.',
+             f'# Hiring accounts by source: {by_source}.']
     lines += [f'{account}\t{a["name"]}\t{a["website"] or ""}' for account, a in live]
     OUT.write_text('\n'.join(lines) + '\n', encoding='utf-8')
-    print(f'{len(live):,} live accounts, {hiring:,} hiring, {jobs:,} jobs; hiring accounts by source {dict(sources)}; '
-          f'{errors} not answered; {round(time.monotonic() - started)} s')
+    print(f'{len(live):,} live accounts, {len(hiring):,} hiring, {jobs:,} jobs; hiring accounts by source: '
+          f'{by_source}; {lost} of {calls:,} calls not answered; {round(time.monotonic() - started)} s')
 
 
 if __name__ == '__main__':
     args = sys.argv[1:]
-    saved = args[args.index('--feed') + 1] if '--feed' in args else None
-    asyncio.run(main([a for a in args if a not in ('--feed', saved)], saved))
+    options = {flag: args[args.index(flag) + 1] for flag in ('--feed', '--accounts') if flag in args}
+    listed = Path(options['--accounts']).read_text(encoding='utf-8').split() if '--accounts' in options \
+        else []
+    given = [a for a in args if a not in options and a not in options.values()]
+    asyncio.run(main(given + listed, options.get('--feed')))
