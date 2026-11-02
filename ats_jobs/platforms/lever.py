@@ -188,7 +188,8 @@ def pay(record: dict) -> dict:
         return {}
     currency = (found.get('currency') or '').strip().upper() or None
     period, said = PERIOD.get(found.get('interval') or '', (None, ''))
-    return {'salary': f'{pay_text(low, high, currency or "")} {said}'.strip(), 'salaryMin': low, 'salaryMax': high,
+    shown = pay_text(low, None if high == low else high, currency or '')     # 17.95 to 17.95 is one amount
+    return {'salary': f'{shown} {said}'.strip(), 'salaryMin': low, 'salaryMax': high,
             'salaryCurrency': currency, 'salaryPeriod': period}
 
 

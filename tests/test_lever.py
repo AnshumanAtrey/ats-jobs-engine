@@ -176,6 +176,8 @@ class Parsing(unittest.TestCase):
                                        'salaryCurrency': 'USD', 'salaryPeriod': 'year'})
         hourly = pay({'salaryRange': {'min': 22.5, 'max': 30, 'currency': 'CAD', 'interval': 'per-hour-wage'}})
         self.assertEqual((hourly['salary'], hourly['salaryPeriod']), ('CAD 22.50 - 30 per hour', 'hour'))
+        one = pay({'salaryRange': {'min': 17.95, 'max': 17.95, 'currency': 'USD', 'interval': 'per-hour-wage'}})
+        self.assertEqual((one['salary'], one['salaryMin'], one['salaryMax']), ('USD 17.95 per hour', 17.95, 17.95))
 
     def test_a_period_lever_names_but_we_do_not_guess(self):
         biweekly = pay({'salaryRange': {'min': 2000, 'max': None, 'currency': 'USD', 'interval': 'bi-week-salary'}})
