@@ -56,7 +56,7 @@ from urllib.parse import parse_qs, urlparse
 from .. import places
 from ..http import BoardError, BoardMissing, send
 from ..inputs import JOB_TYPE_ALIASES
-from ..rows import Term, country_code, index, is_country, words
+from ..rows import WORD, Term, country_code, index, is_country
 from .base import Platform
 from .cornerstone import text_of
 
@@ -388,7 +388,7 @@ class SmartRecruiters(Platform):
         if days:
             after = datetime.now(timezone.utc) - timedelta(days=days)
             params['releasedAfter'] = after.strftime('%Y-%m-%dT%H:%M:%S.000Z')
-        said = words(term) if term else []
+        said = WORD.findall(term.casefold()) if term else []     # sent with its accents: SmartRecruiters minds them
         if not said:
             async for page in self._pages(http, session, params):
                 yield page

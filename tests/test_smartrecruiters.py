@@ -419,6 +419,12 @@ class Reading(unittest.TestCase):
         self.assertEqual(params['q'], 'c++ developer')
         self.assertRegex(params['releasedAfter'], r'^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\.000Z$')
 
+    def test_a_word_is_sent_with_its_accents(self):
+        # SmartRecruiters' own search is not blind to accents: at Sopra Steria ingénieur finds 243, ingenieur 196
+        # (2026-11-03); the engine folds them only when it checks the titles
+        _, calls = run(collect(P, dict(SESSION), 'Ingénieur Développeur'), [listing([])])
+        self.assertEqual(calls[0][1]['q'], 'ingénieur développeur')
+
     def test_operators_typed_in_a_term_are_not_sent(self):
         _, calls = run(collect(P, dict(SESSION), 'sales && "marketing" -remote'), [listing([])])
         self.assertEqual(calls[0][1]['q'], 'sales marketing remote')
