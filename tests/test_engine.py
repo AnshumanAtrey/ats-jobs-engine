@@ -184,17 +184,17 @@ class Enough(unittest.TestCase):
 
 
 class Descriptions(unittest.TestCase):
-    def test_a_platform_hears_that_descriptions_are_searched(self):
+    def test_a_platform_hears_the_words_of_a_description_search(self):
         class Listening(Fake):
             heard = []
 
             async def pages(self, http, session, term, days):
-                Listening.heard.append(self.search_descriptions)
+                Listening.heard.append(self.description_terms)
                 async for page in super().pages(http, session, term, days):
                     yield page
         search(Listening({'a': [[job('1')]]}), {'searchTerms': ['engineer'], 'searchDescriptions': True})
         search(Listening({'a': [[job('1')]]}), {'searchTerms': ['engineer']})
-        self.assertEqual(Listening.heard, [True, False])
+        self.assertEqual(Listening.heard, [('engineer',), ()])
 
 
 class Places(unittest.TestCase):

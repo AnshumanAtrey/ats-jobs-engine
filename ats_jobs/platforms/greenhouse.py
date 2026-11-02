@@ -286,7 +286,7 @@ class Greenhouse(Platform):
         }
 
     async def pages(self, http, session, term, days):
-        params = {'pay_transparency': 'true', **({'content': 'true'} if self.search_descriptions else {})}
+        params = {'pay_transparency': 'true', **({'content': 'true'} if self.description_terms else {})}
         response = await self.get(http, f'{session["token"]}/jobs', params)
         if response.status_code == 404:
             raise BoardMissing(session['token'])

@@ -261,7 +261,7 @@ class Reading(unittest.TestCase):
 
     def test_descriptions_are_asked_for_only_when_searched(self):
         p = platform()
-        p.search_descriptions = True
+        p.description_terms = ('platform engineer',)
         _, calls = self.collect([Response(200, {'jobs': []})], p)
         self.assertEqual(calls[0][1], {'pay_transparency': 'true', 'content': 'true'})
 
