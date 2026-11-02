@@ -119,17 +119,27 @@ def slug(title: str) -> str:
     return re.sub(r'[^a-z0-9]+', '-', plain)
 
 
-def clean(text: str | None) -> str:
-    text = ' '.join((text or '').split())
+def obj(value) -> dict:
+    """A field that should be an object; anything else reads as empty (no live record had another shape, 2026-11-03)."""
+    return value if isinstance(value, dict) else {}
+
+
+def clean(text) -> str:
+    """Spaces squeezed and entities read. A number reads as its digits; any other value that is not text as nothing."""
+    if isinstance(text, (int, float)) and not isinstance(text, bool):
+        text = str(text)
+    if not isinstance(text, str):
+        return ''
+    text = ' '.join(text.split())
     return htmllib.unescape(text) if ENTITY.search(text) else text
 
 
 def country_name(code: str | None, full: str | None) -> str | None:
     """'cn', 'Shanghai, Shanghai, China' -> 'China': SmartRecruiters' word when it names that country, else ISO's."""
-    code = (code or '').strip().upper()
+    code = code.strip().upper() if isinstance(code, str) else ''
     if not code:
         return None
-    last = (full or '').rsplit(',', 1)[-1].strip()
+    last = full.rsplit(',', 1)[-1].strip() if isinstance(full, str) else ''
     if last and country_code(last, allow_codes=False) == code:
         return last
     found = pycountry.countries.get(alpha_2=code) if pycountry else None
@@ -159,13 +169,13 @@ def place(location: dict) -> dict | None:
 
 
 def job_type(kind: dict | None) -> str | None:
-    kind = kind or {}
-    return JOB_TYPE.get(kind.get('id') or '') or JOB_TYPE_ALIASES.get(' '.join((kind.get('label') or '').lower().split()))
+    kind = obj(kind)
+    return JOB_TYPE.get(clean(kind.get('id'))) or JOB_TYPE_ALIASES.get(clean(kind.get('label')).lower())
 
 
 def pay(compensation: dict | None) -> dict:
     """{'min': 60000, 'max': 70000, 'currency': 'USD', 'period': 'YEARLY'} -> the salary fields. 0 to 0 is no pay."""
-    comp = compensation or {}
+    comp = obj(compensation)
     comp = comp.get('salary') if isinstance(comp.get('salary'), dict) else comp
     low, high = (v if isinstance(v, (int, float)) and v > 0 else None for v in (comp.get('min'), comp.get('max')))
     if low is None and high is None:
@@ -180,11 +190,11 @@ def pay(compensation: dict | None) -> dict:
 
 def job_ad(record: dict) -> str | None:
     """The four sections of the job ad as one HTML text, each under its own heading."""
-    sections = ((record.get('jobAd') or {}).get('sections')) or {}
+    sections = obj(obj(record.get('jobAd')).get('sections'))
     parts = []
     for key in SECTIONS:
-        section = sections.get(key) or {}
-        text = (section.get('text') or '').strip()
+        section = obj(sections.get(key))
+        text = section.get('text').strip() if isinstance(section.get('text'), str) else ''
         if text:
             title = htmllib.escape(clean(section.get('title')))
             parts.append(f'<h3>{title}</h3>{text}' if title else text)
@@ -293,7 +303,7 @@ class SmartRecruiters(Platform):
         except BoardMissing:
             return None
         if newest:
-            return {'company': (newest[0].get('company') or {}).get('identifier') or board.key}
+            return {'company': clean(obj(obj(newest[0]).get('company')).get('identifier')) or board.key}
         response = await send(http, 'GET', NAME_LOOKUP, params={'q': board.key})
         if response.status_code != 200:
             raise BoardError(f'HTTP {response.status_code}')
@@ -304,12 +314,13 @@ class SmartRecruiters(Platform):
         return {'company': found['identifier']} if isinstance(found, dict) and found.get('identifier') else None
 
     def job(self, session: dict, record: dict) -> dict:
-        location = record.get('location') or {}
+        location = obj(record.get('location'))
         spot = place(location)
-        company = record.get('company') or {}
+        company = obj(record.get('company'))
         job_id = str(record.get('id') or '')
-        title = clean(record.get('name'))
-        link = JOB_LINK.format(company=company.get('identifier') or session['company'],
+        title = clean(record.get('name')) if isinstance(record.get('name'), str) else ''
+        posted = record.get('releasedDate') if isinstance(record.get('releasedDate'), str) else None
+        link = JOB_LINK.format(company=clean(company.get('identifier')) or session['company'],
                                job=f'{job_id}-{slug(title)}' if re.search(r'[a-z0-9]', slug(title)) else job_id)
         return {
             'id': job_id,
@@ -319,8 +330,8 @@ class SmartRecruiters(Platform):
             'places': [spot] if spot else [],
             'workType': 'remote' if location.get('remote') else 'hybrid' if location.get('hybrid') else 'onsite',
             'employmentType': job_type(record.get('typeOfEmployment')),
-            'department': clean((record.get('department') or {}).get('label')) or None,
-            'postedAt': record.get('releasedDate'),
+            'department': clean(obj(record.get('department')).get('label')) or None,
+            'postedAt': posted,
             'dateOnly': False,
             'jobUrl': link,
             'applyUrl': f'{link}?oga=true',
@@ -330,8 +341,8 @@ class SmartRecruiters(Platform):
     def enrich(self, job: dict, record: dict) -> dict:
         html = job_ad(record)
         return {**job, **pay(record.get('compensation')),
-                'jobUrl': record.get('postingUrl') or job.get('jobUrl'),
-                'applyUrl': record.get('applyUrl') or job.get('applyUrl'),
+                'jobUrl': clean(record.get('postingUrl')) or job.get('jobUrl'),
+                'applyUrl': clean(record.get('applyUrl')) or job.get('applyUrl'),
                 'description': text_of(html), 'descriptionHtml': html}
 
     async def _list(self, http, session: dict, params: dict) -> dict:

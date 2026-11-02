@@ -273,6 +273,18 @@ class Parsing(unittest.TestCase):
                          ('1', '', None, None, [], None))
         self.assertEqual(job['jobUrl'], 'https://jobs.smartrecruiters.com/BoschGroup/1')
 
+    def test_fields_of_an_unexpected_shape_read_as_unknown(self):
+        # no live record has these shapes (242,866 read on 2026-11-03), but one would have failed the whole run
+        odd = {'id': 7, 'name': ['Engineer'], 'releasedDate': 1730000000, 'location': 'Remote', 'company': 'Acme',
+               'department': 'Sales', 'typeOfEmployment': 'Full-time', 'refNumber': {'x': 1}}
+        job = P.job(SESSION, odd)
+        self.assertEqual((job['id'], job['title'], job['postedAt'], job['location'], job['company'], job['department'],
+                          job['employmentType'], job['reference']), ('7', '', None, None, None, None, None, None))
+        spot = place({'city': 12, 'region': None, 'country': 49, 'fullLocation': ['x']})
+        self.assertEqual(spot, {'name': '12', 'city': '12', 'region': None, 'country': None})
+        self.assertEqual(P.enrich(job, {'jobAd': 'text', 'compensation': 'USD 5', 'postingUrl': None})['description'], None)
+        self.assertEqual(job_ad({'jobAd': {'sections': {'jobDescription': 'x', 'qualifications': {'text': 5}}}}), None)
+
     def test_details_add_the_ad_pay_and_links(self):
         job = P.enrich(P.job(SESSION, RECORD), DETAIL)
         self.assertEqual((job['salary'], job['salaryPeriod'], job['applyUrl']),
