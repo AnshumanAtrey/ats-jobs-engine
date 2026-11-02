@@ -24,7 +24,9 @@ company through Workable's public jobs feed. No key. Measured from this laptop o
 - GET https://jobs.workable.com/api/v1/jobs/<id>: one job of Workable's job board (the links people paste from
   jobs.workable.com): created, workplace, pay; 410 is a job gone, 404 one that never was. Its search
   (/api/v1/jobs?query=...) is not used: after 400 to 600 searches it refused each address of this laptop for a day
-  ("contact us ... for our jobs XML feed", Retry-After 86,400), and a keyword with a place needed 356 searches.
+  ("contact us ... for our jobs XML feed", Retry-After 86,400), and a keyword with a place needed 356 searches. The
+  penalty also reached that address's job answers and /j/ redirects on apply.workable.com, now and then, while its
+  career pages kept answering.
 
 Each run takes the route that fits it. A word, a place, a work type or a job type needs every company: the feed, read
 once (dates have a time); when it cannot be read, the career pages of the biggest companies for FALLBACK_SECONDS, and
