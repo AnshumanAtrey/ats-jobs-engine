@@ -22,7 +22,8 @@ created in 2009 and still open included, while the XML feed's post_date is a lat
 interval (per-year-salary, per-hour-wage, ...), so the period is stated, never guessed. workplaceType is onsite, remote,
 hybrid or unspecified (the documentation says on-site). commitment is each company's own words (Full-time, CDI,
 Contract: Part-Time, Full Time/Part Time), read as a job type only where the words say one. country is the primary
-location's ISO code.
+location's ISO code. No expiry date, requisition number, equity flag or company website: the job site's logo link
+points back to Lever on 76 of 100 sites and to the company on 10.
 
 No 429 and no Retry-After: 1,280 calls at 128 at once on api.lever.co, and full passes through Cloudflare at 12, 32 and
 64 at once with no refusal. Cloudflare does filter clients: it answers Python's urllib agent with 403 while the
@@ -240,7 +241,7 @@ class Lever(Platform):
     board_example = 'https://jobs.lever.co/palantir'
     job_example = 'https://jobs.lever.co/palantir/5168e8fd-fec1-4fea-b7a1-81bdaea65850'
     concurrency = 32             # the fastest on a laptop: 64 at once was no faster and no refusal came at 64 or 128
-    never = ('expiresAt', 'reference', 'offersEquity', 'city', 'region')
+    never = ('expiresAt', 'reference', 'offersEquity', 'city', 'region', 'companyWebsite')
 
     def __init__(self):
         self._known: set[str] | None = None

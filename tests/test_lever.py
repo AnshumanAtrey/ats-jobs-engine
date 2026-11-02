@@ -11,7 +11,7 @@ from ats_jobs.platforms import PLATFORMS
 from ats_jobs.platforms.base import Board
 from ats_jobs.platforms.lever import (PAGE_SIZE, SWITCH_AFTER, Lever, country_name, description_html,
                                       description_text, job_type, pay, places, posted, tidy)
-from ats_jobs.rows import job_area, job_places
+from ats_jobs.rows import job_area, job_places, job_row
 
 JOB_ID = '5168e8fd-fec1-4fea-b7a1-81bdaea65850'
 JSON = {'content-type': 'application/json; charset=utf-8'}
@@ -234,6 +234,19 @@ class Parsing(unittest.TestCase):
                          (f'https://jobs.eu.lever.co/AIFund/{JOB_ID}', f'https://jobs.eu.lever.co/AIFund/{JOB_ID}/apply', 'AI Fund'))
         self.assertIsNone(job['description'])
         self.assertNotIn('salary', job)
+
+    def test_the_fields_a_row_carries(self):
+        job = Lever().job({'site': 'leverdemo', 'region': 'global', 'link': 'https://jobs.lever.co/leverdemo'}, RECORD)
+        company = {'name': 'Lever Demo', 'slug': 'leverdemo', 'website': None}
+        listed = {k for k in job_row('lever', company, job, 'now', False) if k not in Lever.never}
+        detailed = {k for k in job_row('lever', company, job, 'now', True) if k not in Lever.never}
+        self.assertEqual(listed, {'title', 'company', 'location', 'otherLocations', 'workType', 'employmentType',
+                                  'department', 'team', 'salary', 'postedAt', 'jobUrl', 'applyUrl', 'status', 'platform',
+                                  'companySlug', 'jobId', 'checkedAt'})
+        self.assertEqual(detailed - listed, {'description', 'descriptionHtml', 'salaryMin', 'salaryMax', 'salaryCurrency',
+                                             'salaryPeriod', 'country', 'countryCode'})
+        row = job_row('lever', company, job, 'now', True)
+        self.assertEqual((row['country'], row['countryCode']), ('United States', 'US'))
 
     def test_the_documented_and_the_measured_work_type(self):
         for said, kind in (('onsite', 'onsite'), ('on-site', 'onsite'), ('Remote', 'remote'), ('hybrid', 'hybrid'),
