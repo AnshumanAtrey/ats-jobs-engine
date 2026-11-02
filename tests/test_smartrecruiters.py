@@ -104,6 +104,18 @@ class Links(unittest.TestCase):
                      f'https://jobs.smartrecruiters.com/BoschGroup/{UUID.upper()}'):
             self.assertEqual(P.read_link(text), ('BoschGroup', UUID), text)
 
+    def test_a_uuid_whose_first_group_is_all_digits_is_still_the_uuid(self):
+        # 56 of 2,400 live uuids start with eight digits (2026-11-03). Read as the numeric id 25250225, Bosch's open
+        # 'Senior HR Business Partner' answered 404 and was reported not found; the whole uuid answers 200
+        digits = '25250225-d0ed-4359-b409-c15d6b4bc604'
+        for text in (f'https://jobs.smartrecruiters.com/ni/BoschGroup/{digits}-senior-hr-business-partner',
+                     f'https://jobs.smartrecruiters.com/oneclick-ui/company/BoschGroup/publication/{digits}?dcr_ci=BoschGroup',
+                     f'https://jobs.smartrecruiters.com/external-referrals/company/BoschGroup/publication/{digits}',
+                     f'https://api.smartrecruiters.com/v1/companies/BoschGroup/postings/{digits}',
+                     f'https://jobs.smartrecruiters.com/BoschGroup/{digits}'):
+            self.assertEqual(P.read_link(text), ('BoschGroup', digits), text)
+        self.assertEqual(posting_id('25250225-senior-hr-business-partner'), '25250225')
+
     def test_an_old_short_id_is_a_job(self):
         self.assertEqual(P.read_link('https://jobs.smartrecruiters.com/AUDIENCEX/95757342'), ('AUDIENCEX', '95757342'))
 

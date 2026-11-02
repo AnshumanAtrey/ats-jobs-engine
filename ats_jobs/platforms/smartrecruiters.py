@@ -104,8 +104,9 @@ def dormant_sites(text: str) -> dict[str, str]:
 
 
 def posting_id(part: str) -> str | None:
-    """'744000159116379-pmi-project-lead-em' -> '744000159116379'; '<uuid>-process-workers' -> the uuid."""
-    found = POSTING.match(part) or UUID.match(part)
+    """'744000159116379-pmi-project-lead-em' -> '744000159116379'; '<uuid>-process-workers' -> the uuid. The uuid is
+    tried first: 2.3% of uuids start with eight digits (25250225-d0ed-...), which would read as a numeric id."""
+    found = UUID.match(part) or POSTING.match(part)
     return found.group(1).lower() if found else None
 
 
