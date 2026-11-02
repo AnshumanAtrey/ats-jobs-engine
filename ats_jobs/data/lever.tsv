@@ -1,6 +1,6 @@
 # Lever job sites, updated 2026-11-02: every jobs.lever.co and jobs.eu.lever.co site we could find whose API and job site answer today, biggest first.
 # Columns: board key (the site name, its case matters; an EU site ends in /eu), company name. Rebuilt by scripts/refresh_lever.py;
-# 2,333 sites of 2,328 companies, 2,032 hiring, 77,551 open jobs before duplicates. Left out: 408 sites the API answers for whose job site answers 404 (2,250 postings with dead links) and 7 demo and test sites of Lever (interim: counts before that).
+# 2,396 sites of 2,392 companies, 2,061 hiring, 76,549 open jobs before duplicates. Left out: 336 sites the API answers for whose job site answers 404 (2,149 postings with dead links) and 6 demo and test sites with template postings.
 boxlunch	BoxLunch & Hot Topic
 jobgether	Jobgether
 tsmg	TSMG
@@ -9,13 +9,13 @@ vohra	Vohra Physicians
 usasurveyjob	Toward Jobs
 cgsfederal	Contact Government Services, LLC
 lifestance	LifeStance Health
-insomniacookies	Insomnia Cookies
 paytmpayments	Paytm Payments Services
+insomniacookies	Insomnia Cookies
 gopuff	Gopuff
 shieldai	Shield AI
 bluelightconsulting	Bluelight Consulting
-destinationknot	Destination Careers
 ivcevidensia/eu	IVC
+destinationknot	Destination Careers
 lyrahealth	Lyra Health
 cscgeneration-2	CSC Generation
 weloglobal	Welo Global
@@ -30,18 +30,18 @@ gorh	Go RH
 palantir	Palantir Technologies
 sunsrce	SunSource
 simonmed	SimonMed Imaging
-solidcore	[solidcore]
-arcteryx.com	ARC'TERYX
-buckmason	Buck Mason
 abtaba	Above and Beyond Therapy
+buckmason	Buck Mason
+arcteryx.com	ARC'TERYX
+solidcore	[solidcore]
 distro	Distro
 zoox	Zoox
 sila	Sila Services
 Aprio	Aprio
-brillio-2	Brillio
 beautybarrage	Beauty Barrage
-csmcy/eu	Columbia Shipmanagement
+brillio-2	Brillio
 menta	The Menta Education Group
+csmcy/eu	Columbia Shipmanagement
 paytm	Paytm
 xsolla	Xsolla
 InfrastructureandCapitalProjects	Accenture Construct
@@ -49,8 +49,8 @@ agile-defense	Agile Defense
 ajax	Ajax Systems
 mobileye/eu	Mobileye
 daniels-sharpsmart	Daniels Health
-flynncompanies	Flynn Group of Companies
 octoenergy	Octopus Energy Group
+flynncompanies	Flynn Group of Companies
 lsaweb	Language Services Associates, Inc.
 momentshospice-2	Moments Hospice
 rws	RWS TrainAI
@@ -61,30 +61,29 @@ ninjavan	Ninja Van
 lalamove	Lalamove
 wachter	Wachter, Inc.
 cfsenergy	Commonwealth Fusion Systems
-givinghhc	Giving Home Health Care
-woven-by-toyota	Woven by Toyota
 fyzicalhq	FYZICAL Therapy & Balance Centers
+woven-by-toyota	Woven by Toyota
+givinghhc	Giving Home Health Care
 murgadoautomotive	Murgado Automotive Group
-theodo	Theodo
 mosaictherapy	Mosaic Pediatric Therapy
+theodo	Theodo
 standtogether	Stand Together
 pigment	Pigment
-wadetrim	Wade Trim
-ghj	GHJ
 quantinuum/eu	Quantinuum
+ghj	GHJ
+wadetrim	Wade Trim
 despegar	Despegar
 jobtwine	JobTwine Inc
 cirrus/eu	Cirrus Logic
-getfivestar	Five Star Solutions
-linkrehabwellness	Link Rehab and Wellness
 tandh	Thomas & Hutton
 filevine	Filevine
 insiderone	Insider One
 lb-capital	LB Capital
-tomjames	Tom James Company
-amityfdn	Amity Foundation
-lessen	Lessen
 sonarsource	Sonar
+amityfdn	Amity Foundation
+linkrehabwellness	Link Rehab and Wellness
+tomjames	Tom James Company
+lessen	Lessen
 Yassir	Yassir
 zeeco	Zeeco
 spear	Spear Physical and Occupational Therapy
@@ -96,92 +95,93 @@ veepee	Veepee
 gohighlevel	HighLevel
 andersencorp	Andersen Corporation/Renewal by Andersen
 espace	E-Space
-lansingschools	Lansing School District
-amtengineering	AMT Engineering
 seb/eu	SEB
+amtengineering	AMT Engineering
+lansingschools	Lansing School District
 csit	Centre for Strategic Infocomm Technologies
 creatio/eu	Creatio
 field-ai	FieldAI
+getfivestar	Five Star Solutions
 crosscountry-consulting	CrossCountry Consulting
 idt	IDT
 kpler	Kpler
-kyivstar	Kyivstar
 rocketship	Rocketship Public Schools
+kyivstar	Kyivstar
 stanleygroup	Stanley Consultants
-pattern	Pattern
-pingwind	PingWind
 crypto	Crypto.com
+pattern	Pattern
 roshalimaging	Roshal Health
 dnb	Dun & Bradstreet
 waremalcomb	Ware Malcomb
-premiertruck	Premier Truck Group
-cagents	CAI
 dnllc	DN LLC
-hightechhigh	High Tech High
-lunaphysicaltherapy	Luna Physical Therapy
-jushico	Jushi
-mainspringenergy	Mainspring Energy
+pingwind	PingWind
 heyrowan	Rowan
-spineandsportsmed	SportsMed Physical Therapy
-disher	DISHER
+cagents	CAI
+jushico	Jushi
+lunaphysicaltherapy	Luna Physical Therapy
+premiertruck	Premier Truck Group
+hightechhigh	High Tech High
 prima/eu	Prima
-waabi	Waabi
-pnlfin/eu	Finom
+spineandsportsmed	SportsMed Physical Therapy
+mainspringenergy	Mainspring Energy
+disher	DISHER
+parnalllaw	Parnall Law
 ion	ION Group
-bfsaulhotels	B.F. Saul Company Hospitality Group
+waabi	Waabi
 coins	Coins.ph
-qualysoft	Qualysoft
+bfsaulhotels	B.F. Saul Company Hospitality Group
+Bosta	Bosta
+pnlfin/eu	Finom
 tkda	TKDA
 mujininc	Mujin
-Bosta	Bosta
+qualysoft	Qualysoft
 cargo-partner	cargo-partner
 extremenetworks	Extreme Networks
 payjoy	PayJoy
 spotify	Spotify
 cfgi	CFGI
 westernacher/eu	Westernacher Consulting
+sophos	Sophos
 cwsc	Computer World Services
 kidsdentalbrands	Kids Dental Brands
-sophos	Sophos
-shopback-2	ShopBack
-eqbank	EQ Bank | Canada's Challenger Bank
 ableserve	ABM Industries
+shopback-2	ShopBack
+hermeus	Hermeus
 highbarhealth	Highbar Physical Therapy
 magicalbeginningslc	Magical Beginnings
 tutorintelligence	Tutor Intelligence
-hermeus	Hermeus
+eqbank	EQ Bank | Canada's Challenger Bank
 happyhiller	Hiller Plumbing, Heating, Cooling & Electrical
-elfbeauty	e.l.f. Beauty
 gojob	Gojob
 larian	Larian Studios
-springoakliving	Spring Oak Senior Living
-immiland-canada-inc	Immiland Canada Inc.
 brighterstridesaba	Brighter Strides ABA
+elfbeauty	e.l.f. Beauty
+immiland-canada-inc	Immiland Canada Inc.
+springoakliving	Spring Oak Senior Living
 Civitta	Civitta
 ltjgroup	Latin Top Jobs Group
-emma-sleep	Emma – The Sleep Company
-gtifabrication	GTI Fabrication
-loftorbital	Loft Orbital Solutions
 protolabs	Protolabs
+gtifabrication	GTI Fabrication
 bcipkg	Buckeye Corrugated, Inc.
+emma-sleep	Emma – The Sleep Company
+penumbrainc	Penumbra
+anavationllc	AnaVation
 hive	Deploy
 tryjeeves	Jeeves
 medcarepediatric	MedCare Pediatric
-penumbrainc	Penumbra
 skillerszone	Skillerszone
-anavationllc	AnaVation
 bluebottlecoffee	Blue Bottle Coffee
-keyloop	Keyloop
-bonedry	Bone Dry Roofing
 hypersonica-prod	Hypersonica
-networkconnex	Network Connex
+loftorbital	Loft Orbital Solutions
 pointclickcare	PointClickCare
-expansia	Aether Aerospace
-lingarogroup	Lingaro
+bonedry	Bone Dry Roofing
+keyloop	Keyloop
 redhorsecorp	Redhorse Corporation
+lingarogroup	Lingaro
+expansia	Aether Aerospace
 hcvt	Holthouse
+networkconnex	Network Connex
 primee	Prime Electric
-qualdoc	Qualdoc
 componentrepairtechnologies	Component Repair Technologies
 foth	Foth
 nitra	nitra
@@ -190,166 +190,166 @@ zoyi	Channel Corp.
 littlesprouts	Little Sprouts, LLC
 xm/eu	XM Careers
 beghouconsulting	Beghou Consulting
-circlecareservices	Circle Care Services
 ippon	Ippon Technologies
-ircagroup	Irca Group
-actionlife	Action Property Management
 arsiem	ARSIEM
+circlecareservices	Circle Care Services
+actionlife	Action Property Management
 ispace-inc	ispace, inc.
-matchgroup	Match Group
 whymonster	Monster Tree Service
 xcimer	Xcimer Energy
-arrivelogistics	Arrive Logistics
 bannerbank	Banner Bank
 circadiahealth	Circadia Health
 feldinc	Feld Entertainment
-mantisinnovation	Mantis Innovation
+ircagroup	Irca Group
+matchgroup	Match Group
 purplelandmgmt	Purple Land Management
+qualdoc	Qualdoc
 sambatv	Samba
 source.ai	Source
 unlimit	Unlimit
+arrivelogistics	Arrive Logistics
 margo-group	MARGO
 megaport	Megaport
 avalerehealth	Avalere Health
-carewest	Carewest Innovative Healthcare
-quenchwater	Culligan Quench
 olx/eu	OLX
 ttecdigital	TTEC Digital
+woodardcurran	Woodard & Curran
+quenchwater	Culligan Quench
 allegiantair	Allegiant
 portagepointpartners	Portage Point Partners
-vohrawoundteam	Vohra Wound Physician Management
+carewest	Carewest Innovative Healthcare
+masterycharter	Mastery Schools
 omnidesigntech	Omni Design Technologies
-threattec	Threat Tec, LLC
-woodardcurran	Woodard & Curran
-amarbank	Amar Bank
-p3vetpartners	P3 Veterinary Partners
 thea.energy	Thea Energy
+vohrawoundteam	Vohra Wound Physician Management
+amarbank	Amar Bank
+mantisinnovation	Mantis Innovation
+p3vetpartners	P3 Veterinary Partners
+threattec	Threat Tec, LLC
 bpmcpa	BPM LLP
+karllagerfeld/eu	Karl Lagerfeld
 lionbridge/eu	Lionbridge
-ro	Ro
 true-environmental	True Environmental
 appletreedental	Apple Tree Dental
-capital	capital.com
 cimgroup	CIM Group, LP
 hevodata	Hevo Data
-karllagerfeld/eu	Karl Lagerfeld
 lendbuzz	Lendbuzz
-evr	Elk Valley Resources
-pharmachoicecanada	PharmaChoice Canada
-telesat	Telesat
-tenna	Tenna
-zeneducate	Zen Educate
-carolinacenterforaba	Kind Behavioral Health
 life	Life.Church
 mulberry	Mulberry
+ro	Ro
+telesat	Telesat
+capital	capital.com
+evr	Elk Valley Resources
+pharmachoicecanada	PharmaChoice Canada
+tenna	Tenna
+zeneducate	Zen Educate
+wearedream	DREAM
+carolinacenterforaba	Kind Behavioral Health
+meesho	Meesho
 myodetox	Myo
 reply	Reply
 velaura	Velaura
 weekdayworks	Weekday
 aldar	Aldar Properties PJSC
 cirquedusoleil	Cirque du Soleil Entertainment Group
-wearedream	DREAM
-meesho	Meesho
-acronaviation	Acron Aviation
 appen	CrowdGen by Appen
 dadavidson	D.A. Davidson
-jacquemus/eu	JACQUEMUS
-RyzLabs	RYZ Labs
 serverfarm	Serverfarm
 sfeir	SFEIR
-sqaservices	SQA Services
 akicita-cyber	Akicita Federal, LLC
 germanamerican	German American Bank
 glsllc	Global Lending Services
 includedhealth	Included Health
-mendix	Mendix
+jacquemus/eu	JACQUEMUS
 okanagan	Okanagan College
-steerbridge	SteerBridge
+acronaviation	Acron Aviation
+alice-bob	Alice & Bob
 dabsinc	DABS, Inc.
+infraservices	InfraServices
+mendix	Mendix
 orcabiosystems	Orca Bio
-protective	Protective
+parallelwireless	Parallel Wireless
+rivieradininggroup	Riviera Dining Group
+steerbridge	SteerBridge
 togetherhood	Togetherhood
 valdeseng	Valdes Architecture & Engineering
 wpromote	Wpromote
 carelinks-aba	Carelinks ABA
 fantom-corporation	Fantom Corporation
-knix	Knix
-rivieradininggroup	Riviera Dining Group
+RyzLabs	RYZ Labs
+sqaservices	SQA Services
 360learning	360Learning
 aeva	Aeva, Inc.
-alice-bob	Alice & Bob
 brightonjones	Brighton Jones
 clovirtualfashion	CLO Virtual Fashion
 fetchpackage	Fetch
 hawthorne-health	Hawthorne Health
-infraservices	InfraServices
+knix	Knix
 linkllc	Link, LLC
-masterycharter	Mastery Schools
-parallelwireless	Parallel Wireless
 plus-2	PlusAI
 synergyecp	Synergy ECP
+vo2-group	VO2 Group
 bloomwellcare	Bloomwell Autism Therapy
 farfetch	Farfetch
 jumpcloud	JumpCloud
-lvs1	Long View Systems
+protective	Protective
 silhouette	DNAM Brands
 sandboxvr	Sandbox VR
 singerlewak	SingerLewak
 tx-inc.com	TELEXISTENCE Inc.
+terrascend	TerrAscend
 velo3d	Velo3D
 apexaba	Apex ABA Therapy
 arootah	Arootah
-ceso	CESO, Inc.
 erg	ERG
 guidestareldercare	GuideStar Eldercare
 ifm-us	Institute of Foundation Models
-terrascend	TerrAscend
+lvs1	Long View Systems
+spawglass	SpawGlass
 xtb/eu	XTB
 atomcomputing	Atom Computing
 camstex	CAMS - Texas
 caseware	Caseware
+ceso	CESO, Inc.
 coupa	Coupa Software, Inc.
 GoToGroup	GoTo Group
 horizon-blue-aba	Horizon Blue ABA
 kickmaker	Kickmaker
-spawglass	SpawGlass
+trendyol	Trendyol
 verkor	Verkor
-vo2-group	VO2 Group
+walkerconsultants	Walker Consultants
 wwprosolutions	World Wide Professional Solutions
-aledade	Aledade PBC
 assist-world	Assist World
 diamondfoundry	Diamond Foundry
 lovehoneygroup/eu	Lovehoney Group
-magnetforensics	Magnet Forensics
+momsmeals	Mom's Meals
 nahc	nahc.io
 scottlogic	Scott Logic
-trendyol	Trendyol
 truezerotech	True Zero Technologies
-walkerconsultants	Walker Consultants
 windownation	Window Nation
 wr	World Relief
 AIFund	AIFund
+aledade	Aledade PBC
+cti-md	Constellation Technologies, Inc
 chipping-concrete	Express Chipping Inc
 jobandtalent	Job&Talent
+magnetforensics	Magnet Forensics
 petehealth	PeteHealth
-spreetail	Spreetail
-cti-md	Constellation Technologies, Inc
-epwealth	EP Wealth Advisors
-floqast	FloQast
-momsmeals	Mom's Meals
-bhhc	Berkshire Hathaway Homestate Companies
-candlinspection	C and L Inspection
 dreamgolf	dreamgolf
+floqast	FloQast
+spreetail	Spreetail
+candlinspection	C and L Inspection
+epwealth	EP Wealth Advisors
 fehrandpeers	Fehr & Peers
 richards-supply	Richards Building Supply
 skaylink/eu	Skaylink
 thinkingbox	Thinkingbox
 acceldata	Acceldata
 ahschc	Asian Health Services
+bhhc	Berkshire Hathaway Homestate Companies
 bisnow	Bisnow
 brindleyengineering	Brindley Engineering
 doctrine	Doctrine
-efficioconsulting/eu	Efficio
 fixinssoulkitchen	Fixins Soul Kitchen
 glacierfish	Glacier Fish
 muttdata	Muttdata
@@ -357,63 +357,63 @@ netlight	Netlight
 oddin	Oddin
 pp-la	Planned Parenthood Los Angeles
 provectus	Provectus
+servicewire	Service Wire
 Sprinto	Sprinto
 StudioThree	Studio Three
 upscale-ai	Upscale, Inc.
-ridezum	Zūm
-alimentiv-2	Alimentiv
-deltasands	Delta Solutions & Strategies
-dilitrust	DiliTrust
+angellist	AngelList
 drivetrain	Drivetrain
+efficioconsulting/eu	Efficio
 havenparkcommunities	Havenpark Communities
+heartbeathealth	Heartbeat Health
 hopeservices	Hope Services
 incompasshealth	In Compass Health
 kpmgnz	KPMG New Zealand
 scaleway	Scaleway
-servicewire	Service Wire
 syntronic	Syntronic
 USMobile	US Mobile
-zopa	Zopa
+ridezum	Zūm
+alimentiv-2	Alimentiv
 AMIRI	AMIRI
+deltasands	Delta Solutions & Strategies
+dilitrust	DiliTrust
 ekimetrics	Ekimetrics
-heartbeathealth	Heartbeat Health
+Legend	Legend
 lochgroup	Lochmueller Group
 nexuse-group	Nexus Engineering Group
-restaurant365	Restaurant365
-rover	Rover.com
-angellist	AngelList
+zopa	Zopa
 arraylabs.io	Array Labs
 certik	CertiK
 Complex	Complex
 Flex	Flex
 magnals	Magna Legal Services
 nextgenfed	NextGen Federal Systems
+restaurant365	Restaurant365
+rover	Rover.com
+solecp	Sole Construction Partners
 SpaceSystemsIntegration	Space Systems Integration
 sunrisefarms	Sunrise Farms
 swile	Swile
 titanwh	Titan Wealth Holdings Limited
 vitana-pediatric	Vitana Pediatric & Orthodontic Partners
 watchguard	WatchGuard Technologies, Inc.
-bounteous	Bounteous
 coinspaid/eu	Coinspaid
 fwgsolutions	FWG Solutions, Inc.
-kippsocal	KIPP SoCal Public Schools
 layup	Layup Parts
-Legend	Legend
-level99	Level99 Entertainment
 redwoodcu	Redwood Credit Union
+scholarrock	Scholar Rock
 skillcloudhcm	Skillcloud HCM
-solecp	Sole Construction Partners
-uft	United Flow Technologies
-vacancies	United Tech
+bounteous	Bounteous
 bricknetworks	BRICK Networks
 emburse	Emburse
 headlight.health	Headlight
 intersect	Intersect
+level99	Level99 Entertainment
 prophethomes	Prophet Homes
 qvest.us	Qvest US
 shyftlabs	ShyftLabs
 sysdig	Sysdig
+uft	United Flow Technologies
 vivenu	vivenu GmbH
 wmg	Warner Music Group
 wise-integration	WISE INTEGRATION
@@ -421,69 +421,68 @@ zeta	Zeta
 abzena/eu	Abzena Inc.
 Affinex-Financial	Affinex Financial
 BTSE	BTSE
-everbridge	Everbridge
 everseen/eu	Everseen
+finn	FINN
 dodmg	HRL Laboratories
 innophos	Innophos
+kippsocal	KIPP SoCal Public Schools
 kobie	Kobie Marketing
 objectway/eu	Objectway
-scholarrock	Scholar Rock
+significanceinc	Significance, Inc.
+vacancies	United Tech
 capitalsolutionsgroup	Capital Solutions Group
 clearedge	ClearEdge
 dijital-team-pty-ltd	Dijital Team
 felix-construction	Felix Construction
-finn	FINN
-flowlife	Flow
 hophr	Hop
 mactores	Mactores
+malt	Malt
 newwestern	New Western
+quadcode/eu	Quadcode
 serv-u-success	Serv-U-Success
 seranbio	Serán BioScience
-significanceinc	Significance, Inc.
 titanelectric-ga	Titan Electric
 toptal	Toptal
 AugustBioservices	August Bioservices
-dlocal	dLocal
-entrata	Entrata
 er-meds	Er-Meds
-gonetspeed	GoNetspeed
+everbridge	Everbridge
+flowlife	Flow
 lcbcchurch	LCBC Church
 MachinaLabs	Machina Labs
 mythic-ai.com	Mythic
 pivotal	Pivotal
-quadcode/eu	Quadcode
 rightsideup	Right Side Up
 smartenergy	Smart Energy Group
-venusaero	Venus Aerospace
 versapay	Versapay
 adunaglobal	Aduna Global
 ae-2	AE
 appen-2	Appen
 arundellodge	Arundel Lodge, Inc.
-canopy-ad	Canopy A&D
-celerion	Celerion
 dnwest	Donor Network West
 edgeofs	Edge OFS
 EnaraHealth	Enara Health
+entrata	Entrata
 freedompay	FreedomPay
+gonetspeed	GoNetspeed
+h1	H1
 laminarprojects	Laminar Projects
 longwall	Long Wall
 luxurypresence	Luxury Presence
 meds	Meds
-merlinlabs	Merlin Labs
 nium	Nium
-foresea-technologies	OVRSEA
 Pretto	Pretto
 restore-dispensaries	Restore Dispensaries
 solutuslegal	Solutus Legal Search
 tevora	Tevora
+venusaero	Venus Aerospace
 brevo	Brevo
+canopy-ad	Canopy A&D
+celerion	Celerion
 convergentresearch	Convergent Research
+dlocal	dLocal
 finix	Finix
-h1	H1
-malt	Malt
+merlinlabs	Merlin Labs
 opencast/eu	Opencast
-parnalllaw	Parnall Law
 q-ctrl	Q-CTRL
 ttxinc	Therma-Tron-X, Inc.
 vesync	Vesync
@@ -496,33 +495,34 @@ bluecatnetworks	BlueCat
 brightedge	BrightEdge
 brooksrunning	Brooks Running
 canarytechnologies	Canary Technologies Corp
-d-fendsolutions	D-Fend Solutions
 endpointclinical	Endpoint Clinical
 goodleap	GoodLeap
-kepler	Kepler Communications
 last-energy	Last Energy
+foresea-technologies	OVRSEA
 pditechnologies	PDI Technologies
 rise	RISE
 waterworks	Waterworks
-winamax	WINAMAX
 adlook	Adlook
 auw	Applied Underwriters
 capstan-medical	Capstan Medical, Inc.
 captivateiq	CaptivateIQ
+coderio	Coderio
+d-fendsolutions	D-Fend Solutions
 fireworkhq	Firework
 flashapp	Flash
 furientis	Furientis
+global-cxm	Global Certification & Verification Group
 iru	Iru
+kepler	Kepler Communications
 economicmodeling	Lightcast
 novaspace	Novaspace
-pmaconsultants	PMA Consultants Careers
 skylineconstruction	Skyline Construction
 sunshinesachs	Sunshine Sachs Morgan & Lylis
 tri	Toyota Research Institute
 uvcyber	UltraViolet Cyber
+winamax	WINAMAX
 aethoshotels	Aethos
 egen	Egen
-global-cxm	Global Certification & Verification Group
 haywardtyler	Hayward Tyler
 hhaexchange	HHAeXchange
 humble-robotics	Humble Robotics
@@ -532,17 +532,17 @@ matillion	Matillion
 milhouseinc	Milhouse Engineering and Construction, Inc.
 moonpay	MoonPay
 neowiz	Neowiz
-ppfa	Planned Parenthood Federation of America
 ppgny	Planned Parenthood of Greater New York
+pmaconsultants	PMA Consultants Careers
 safran-ai	Safran.AI
+smarsh	Smarsh
 soum	SOUM
+southshorecompanies	Southshore Enterprises, Inc.
 websummit	Web Summit
 anchorage	Anchorage Digital
 anybotics	ANYbotics
 apcoholdings	APCO Holdings
-bfsaul	B.F. Saul Company
 brightbee	BrightBee
-coderio	Coderio
 court-avenue	CourtAvenue
 dynamiccatholic	Dynamic Catholic
 fitzmark	FitzMark
@@ -556,23 +556,22 @@ madhappy	Madhappy
 manaycpa.com	Manay CPA
 osedea	OSEDEA
 ovoko/eu	Ovoko
+ppfa	Planned Parenthood Federation of America
 pphp	Planned Parenthood Hudson Peconic, Inc.
 porter	Porter Cares, Inc.
-smarsh	Smarsh
 solarlandscape	Solar Landscape
 sprymethods	Spry Methods
 tomtom/eu	TomTom
 trailappliances	Trail Appliances Ltd.
 veo	Veo
+walkme	WalkMe
 zocks	Zocks
 agicap	Agicap
 apryse	Apryse
 athenapsych	Athena
-centuria	Centuria
-colibrigroup	Colibri Group
+bfsaul	B.F. Saul Company
 cyderes	Cyderes
 eliyan	Eliyan
-lwolf	Lone Wolf Technologies
 lumafield	Lumafield
 massive-rocket	Massive Rocket
 merklescience	Merkle Science
@@ -583,39 +582,37 @@ ravl_io	RAVL
 Simfluent	Simfluent
 storiogroup	Storio group
 valpeo.com	VALPEO
-walkme	WalkMe
-wealthfront	Wealthfront
 westyost	West Yost
 wgsn	WGSN
 zimperium	Zimperium
+alertus	Alertus Technologies
 ajccanada	Allison Jones Consulting Services
 analyticpartners	Analytic Partners
 Catbird	Catbird
+centuria	Centuria
+colibrigroup	Colibri Group
+contentsquare	Contentsquare
 econstruct	econstruct
-eleks	Eleks
 equativ	Equativ
 foodsmart	Foodsmart
 hayeslocums	Hayes Locums
 kitware	Kitware
 netomi	Netomi
 outreach	Outreach
-profoundresearch	Profound Research
 make-rain	Rainmaker Technology Corporation
 safe	Safe Security
 sharpsmart	Sharpsmart
 skyways	Skyways
 systemex	Systemex
-teamshares	Teamshares
-virtualitics	Virtualitics, Inc
 viseven	Viseven
+wealthfront	Wealthfront
 wepclinical	WEP Clinical
 wintermute-trading	Wintermute
 zencore	Zencore
-alertus	Alertus Technologies
-arcadia	Arcadia
 BlackCloak	BlackCloak
 cologix	Cologix
 dozee	Dozee
+eleks	Eleks
 heartworksvt	Heartworks Early Education
 kariusdx	Karius
 kwalee/eu	Kwalee
@@ -624,21 +621,21 @@ mayer-llp	Mayer LLP
 metabase	Metabase
 mindtickle	Mindtickle
 peakgames	Peak
-quantum-health	Quantum Health, Inc.
+promiserobotics	Promise Robotics
 superiorexecutiveandlegalrecruiting	Superior Executive Legal Recruiting
+tangraminteriors	Tangram Interiors
 thuma	Thuma
-vida	Vida Health
+virtualitics	Virtualitics, Inc
 aeratechnology	Aera Technology
 azul	Azul
 brafton	Brafton
 campusworksinc	CampusWorks, Inc.
-contentsquare	Contentsquare
 cprime	Cprime
 dmautoleasing	D&M Auto Leasing
 deliverect	Deliverect
-deuna	DEUNA
 dialogdesign	DIALOG
 diamondlandscaping-2	Diamond Landscaping
+dutch	Dutch
 enablecomp	EnableComp
 rynoss	EverService Holdings, LLC
 fampay	Fam
@@ -652,17 +649,18 @@ runlaminar	Laminar
 lrdgonline	LRDG Language Research Development Group
 minders	Minders
 msconsultants	ms consultants, inc.
-promiserobotics	Promise Robotics
-Qover	Qover
-tangraminteriors	Tangram Interiors
+sait	SAIT
+teamshares	Teamshares
 texas-original	Texas Original
 thepeoplebrand	The People Brand
 tiberius	Tiberius Aerospace Inc.
 tusker	Tusker
 verygoodsecurity	VGS
+vida	Vida Health
 westair	Western Aircraft
 Zeller	Zeller
 appzen	AppZen, Inc.
+arcadia	Arcadia
 belvederetrading	Belvedere Trading
 caliza-financial-technologies	Caliza
 challengecharterschools	Challenge Preparatory Charter School
@@ -670,10 +668,9 @@ collate	Collate
 decilegroup	Decile Group
 doxel	Doxel
 dreamgames	Dream Games
-dutch	Dutch
 FixGroup	Fix Group Management
 Fliff	Fliff
-schmidt-entities	schmidt-entities
+lwolf	Lone Wolf Technologies
 mcgillstlaurent	McGill St Laurent
 myob-2	MYOB
 nainnorcal	NAI Northern California
@@ -681,10 +678,12 @@ next-health	Next Health
 odaseva	Odaseva
 omnisend	Omnisend
 picus	Picus
+Qover	Qover
+quantum-health	Quantum Health, Inc.
 rbanw	rbanw
 rgi	Reinventing Geospatial, Inc. (RGi)
-sait	SAIT
 sar	SAR Academy & SAR High School
+schmidt-entities	schmidt-entities
 SimbeRobotics	Simbe Robotics
 snappr	Snappr
 talent-2-win	Talent2Win
@@ -695,22 +694,24 @@ visioninvest	Vision Invest
 wahed.com	Wahed
 aavelabs/eu	Aave Labs
 airslate	airSlate
-bioagilytix	BioAgilytix
 redsox	Boston Red Sox
 canvasww	Canvas Worldwide
 datalabusa	Datalab USA
 dempseyuniform-2	Dempsey Uniform & Linen Supply
+deuna	DEUNA
 drivemode	Drivemode
+dulcedo	Dulcedo Management
+fieldfastener	Field Fastener
 fieldnation	Field Nation
 fullscript	Fullscript
 greenlight	Greenlight Financial Technology
 gridware	Gridware
 hkr/eu	HKR.TEAM
 Meirowitz-Wasserberg	Meirowitz & Wasserberg, LLP
+getmidas	Midas
 moneyboxapp	Moneybox
 novir	Novir
 numan/eu	Numan
-planettechnologies	Planet Technologies
 rezolutebio	Rezolute
 rigetti	Rigetti Computing
 springrecruits	Succession Planning for Railroads Investing in the Next Generation LLC
@@ -726,28 +727,27 @@ atibusinessgroup	ATI Business Group
 base-flowa	base | flowa
 BDG	BDG
 bee-talents	Bee Talents
-behaviorcaretherapy	BehaviorCare Therapy
+bioagilytix	BioAgilytix
 bloomon	Bloom & Wild Group
 brightmachines	Bright Machines
 chownow	ChowNow
 cic	CIC
 coalfire	Coalfire
 cyara	Cyara
-dulcedo	Dulcedo Management
 ecosystem	Ecosystem
 electricmind	Electric Mind
 equitasacademy	Equitas Academy Charter Schools
+everlywell	Everlywell
 exowatt	Exowatt
 Fairmat	Fairmat
-fieldfastener	Field Fastener
 great-gray-group	Great Gray
 jamcity	Jam City
 mantra	Mantra
 mcaconnect	MCA Connect
-getmidas	Midas
 neuron7	Neuron 7
 pine-services	Pine Services Group
 placemakr	Placemakr
+planettechnologies	Planet Technologies
 pplm	Planned Parenthood League of Massachusetts
 pyka	Pyka
 quandri	Quandri
@@ -767,13 +767,15 @@ atmosera	Atmosera
 bv	Banco BV
 Beamy	Beamy
 beedie	Beedie
+behaviorcaretherapy	BehaviorCare Therapy
 charcuterie	Charcuterie Artisans
 coatesgroup	Coates Group
+Coda	Coda
+coretechsecurity/eu	CoreTech Security Services
 cred	CRED
 diabolocom/eu	Diabolocom
 EnergyVault	Energy Vault
 entefy	Entefy
-everlywell	Everlywell
 foodstuffs	Foodstuffs North Island
 funxyz	fun.xyz
 Gantri	Gantri
@@ -781,15 +783,15 @@ Gogolook	Gogolook
 kgroupcompanies	K Group Companies
 Kyverna	Kyverna Therapeutics
 lucasmuseum	Lucas Museum of Narrative Art
-getmaple	Maple
-nacsworld	North America Construction (1993) Ltd. - NAC Constructors Ltd.
+nolapublicschools	NOLA Public Schools
+overhead-garage-door	OGD Overhead Garage Door
 onetogether-solutions	OneTogether Solutions
 oni/eu	ONI
+paramedicservices	Paramedic Services of Illinois
 ppil	Planned Parenthood of Illinois
 ppnne	Planned Parenthood of Northern New England
 ppsne	Planned Parenthood of Southern New England, Inc.
 ppwi	Planned Parenthood of Wisconsin, Inc.
-ppsat	Planned Parenthood South Atlantic
 princeton10	Princeton10
 proper	Proper
 quantco-	QuantCo
@@ -798,27 +800,22 @@ stradaeducation	Strada Education Foundation
 superside	Superside
 teambuilders	TeamBuilders Behavioral Health
 unisoninfra	Unison Infrastructure
-unzer/eu	Unzer
-viamericas	Viamericas
 Zanskar	Zanskar
 achievers	Achievers
 air-tek	Air-tek
-airalo	Airalo
 Allata	Allata
-apolloresearch	Apollo Research
 asapp-2	ASAPP
 biocatch	BioCatch
 blockslearning	Building Blocks Early Learning Center
 cleanspark	CleanSpark
-Coda	Coda
 companial	Companial
-compassx	CompassX Group
-coretechsecurity/eu	CoreTech Security Services
 crosslaketech	Crosslake Technologies LLC
-highlandfleets-2	Highland Electric Fleets
+hottopic	Hot Topic & BoxLunch
 iCodde	iCodde
 insify	Insify
 integrabeauty	Integra Beauty
+InteriorMarketingGroup	Interior Marketing Group
+intropic	Intropic
 januxrx	Janux Therapeutics
 justwatch	JustWatch
 kcasbio	KCAS Bio
@@ -829,31 +826,33 @@ macquarietechnologygroup	Macquarie Technology Group
 moorecolson	Moore Colson
 mytos	Mytos
 neighbor	Neighbor
-nolapublicschools	NOLA Public Schools
 Nomagic	Nomagic
+nacsworld	North America Construction (1993) Ltd. - NAC Constructors Ltd.
 objective	Objective Corporation
 offchainlabs	Offchain
-overhead-garage-door	OGD Overhead Garage Door
 outsight	Outsight
 panopto	Panopto
-paramedicservices	Paramedic Services of Illinois
 PhoenixTailings	Phoenix Tailings
-playbook	Playbook
+ppsat	Planned Parenthood South Atlantic
+profoundresearch	Profound Research
 promesaacademy	Promesa Academy
 researchinnovations.com	Research Innovations
 tovala	Tovala
 TrilogyFederal	Trilogy Federal
 totalsystech	TSTC
+unzer/eu	Unzer
 valarian	Valarian Technologies Limited
-Versana	Versana
+viamericas	Viamericas
 weride	WeRide.ai
 windfalldata	Windfall
 world-view-enterprises-inc.	World View
-activecampaign	ActiveCampaign
+apolloresearch	Apollo Research
 bluesight	Bluesight
 boardintelligence	Board Intelligence
 bold-orange	Bold Orange Company, LLC
 c12qe	C12 Quantum Electronics
+compassx	CompassX Group
+crescent-biopharma	Crescent Biopharma
 diversified-automation	Diversified Automation
 doonails	Doonails
 eastern-communications	Eastern Communications
@@ -863,22 +862,22 @@ freedomsolarpower	Freedom Power
 fp	Future Processing
 gausslabs	Gauss Labs
 gushwork	Gushwork
-hottopic	Hot Topic & BoxLunch
+highlandfleets-2	Highland Electric Fleets
 immuta	Immuta
 inkitt	Inkitt
-InteriorMarketingGroup	Interior Marketing Group
-intropic	Intropic
 kapta-space	Kapta Space
 levelup	LevelUp
+getmaple	Maple
 marshallreddick	Marshall Reddick Real Estate
 mega	Mega HR, Inc.
 missiongraduates	Mission Graduates
 olo	Olo
 OpenPayd	OpenPayd
 Packmatic	Packmatic GmbH
+playbook	Playbook
 pocketfm	Pocket Entertainment Corp
+PPA	Progressive Physician Associates
 prosper	Prosper
-regal.ai	Regal
 aventon	Ride Aventon
 Ridwell	Ridwell
 ScaleMicrogridSolutions	Scale Microgrid Solutions
@@ -894,20 +893,20 @@ theathletic	The Athletic Media Company
 too-lost	Too Lost
 ultrahealthproviders	Ultra Health
 until	Until
+Versana	Versana
 virginiagreen	Virginia Green
 wolverineconstruction	Wolverine Construction
 zilliz	Zilliz
+activecampaign	ActiveCampaign
 advancell	AdvanCell
 aipconnect	AIP Connect
+airalo	Airalo
 alifsemi	Alif Semiconductor
 alluxio	Alluxio
-bellotalabs	Bellota Labs
 bellwetheram-2	Bellwether
 boston-materials	Boston Materials
-charmindustrial	Charm Industrial
 civitech	Civitech
 cxnpl	Constantinople
-crescent-biopharma	Crescent Biopharma
 dailywire	Daily Wire
 dexterity	Dexterity
 digitalmediamanagement	Digital Media Management
@@ -915,8 +914,10 @@ DiversifiedRadiology	Diversified Radiology
 easybrain	Easybrain
 egenesisbio	eGenesis
 esalen	Esalen Institute
+factor	Factor
 faspac	Faspac
 firstup	Firstup
+forbrightbank	Forbright Bank
 futureof-life	Future of Life Organizations
 galepartners	GALE
 gradion	GRADION
@@ -931,9 +932,9 @@ lumotive	Lumotive
 max-ssm	MAX Surgical Specialty Management
 metergysolutions	Metergy Solutions
 milltownpartners	Milltown Partners
+mindful	Mindful
 mistplay	Mistplay
 moonpig	Moonpig
-mPower	mPower, Inc.
 multiplylabs	Multiply Labs
 okendo	Okendo
 oktopost	Oktopost
@@ -944,21 +945,20 @@ padsplit	PadSplit
 planned	Planned Parenthood of the Pacific Southwest
 promenade	Promenade
 protectenvironmental	Protect Environmental
+regal.ai	Regal
 regenxbio	REGENXBIO
 resilinc	Resilinc
 rightformula	Right Formula LTD
-riocan	RioCan
 royalambulance	Royal Ambulance
-sitetracker	Sitetracker
 smart-working-solutions	Smart Working Solutions
 spear-ai	Spear AI
 splend	Splend
 spyke-games	Spyke Games
 sdatasystems.com	Strategic Data Systems
 studypoint	StudyPoint
-tekton	Tekton
 theblacktux	The Black Tux
 therealdeal	The Real Deal
+univeris.com	Univeris
 valdera	Valdera
 veritran	Veritran
 worldscape-technology	Worldscape Technology Inc.
@@ -975,16 +975,14 @@ AustralianMotoringServices	Australian Motoring Services
 AviveSolutions	Avive
 bazaarvoice	Bazaarvoice
 beegreen	Bee Green Recycling & Supply
+bellotalabs	Bellota Labs
+blue	BlueCloud Services, Inc.
 bosonai	Boson AI
 cloudinary	Cloudinary
 CollectlyInc	Collectly
 daos-hub	Daos hub
-ekohealth	Eko
 esrtreit	Empire State Realty Trust
-evernest	Evernest
-factor	Factor
 fanatee	Fanatee
-forbrightbank	Forbright Bank
 freiheit-2	freiheit.com technologies
 goodamerican	Good American
 GurobiOptimization	Gurobi Optimization
@@ -1006,8 +1004,6 @@ corebts	NRI North America
 oowlish	Oowlish Technology
 orasio/eu	Orasio
 osaro	OSARO
-paradigm-health	Paradigm Health
-peoplegrove	PeopleGrove
 perrknight	Perr&Knight
 petdesk	PetDesk
 piccollage	PicCollage
@@ -1019,12 +1015,13 @@ purvis	PURVIS
 qwello.eu	Qwello
 redcanyonsoftware	Red Canyon Engineering & Software
 reekon-tools	REEKON Tools
-reign	Reign
 rfa-2	RFA
+riocan	RioCan
 roadrunner-studios	Roadrunner Venture Studio
 Sauce	Sauce
 serigraph	Serigraph
 seven-starling	Seven Starling
+sitetracker	Sitetracker
 snaplogic	SnapLogic
 solopulseco	SoloPulse
 streck	Streck, LLC
@@ -1033,9 +1030,7 @@ tramgroup	Tokai Rika Group
 totalexpert	Total Expert
 trueml	TrueML
 truv	Truv by Checkr
-univeris.com	Univeris
 valgenesis	ValGenesis
-vwgds/eu	Volkswagen Group Digital Solutions [Portugal]
 Wayground	Wayground (formerly Quizizz)
 workwave	WorkWave
 yuno	Yuno
@@ -1046,22 +1041,23 @@ alliedbeverage	Allied Beverage Group
 alloy	Alloy.ai
 landmarkbio	Artis BioSolutions
 ashoka	Ashoka
+ataccama	Ataccama
 aviyatech	Aviya Aerospace Systems
 belkins	Belkins
-bellese	Bellese
 blinq	Blinq
-blue	BlueCloud Services, Inc.
 BlueMatrix	BlueMatrix
 bogaardgroup	Bogaard Group International
 byborgenterprises/eu	Byborg Enterprises
 cmgx	Capital Markets Gateway
 carusoaffiliated	Caruso
+charmindustrial	Charm Industrial
+controlup	ControlUp
 delfidiagnostics	DELFI Diagnostics, Inc.
+ekohealth	Eko
 epoch-ai	Epoch AI
 fabertechnologies	Faber Work
 flux-mobility	Flux Mobility
 gmo	GMO
-harrisonst	Harrison Street
 Hively	Hively
 independencehl	Independence Home Loans, LLC.
 infinitygroup/eu	INFINITY GROUP
@@ -1073,10 +1069,11 @@ morningbrew	Morning Brew Inc.
 neon	Neon Pagamentos
 nibiru	Nibiru
 omnidian	Omnidian
+paradigm-health	Paradigm Health
+peoplegrove	PeopleGrove
 perforce	Perforce
 picklerobot	Pickle Robot Company
 ppgreatplains	Planned Parenthood Great Plains
-ppde	Planned Parenthood of Delaware
 ppmd	Planned Parenthood of Maryland
 ppmi	Planned Parenthood of Michigan
 plenti	Plenti
@@ -1086,12 +1083,12 @@ rapidmicrobio	Rapid Micro Biosystems
 redbee	redbee
 redwoodstrategygroup	Redwood Strategy Group, Inc.
 retro	Retro
-robbinsrecruiting	Robbins Recruiting
 rookcoffee	Rook Coffee
 rosaiclabs	RosaicLabs
 sapiosciences	Sapio Sciences
 sfmoma	SFMOMA
 sggc/eu	SG Growth Capital Pte Ltd
+sietefoods-2	Siete Foods
 skyboxlabs	SkyBox Labs
 skyralio	Skyral Group
 sofarsounds	Sofar Sounds
@@ -1099,6 +1096,7 @@ softworld	Softworld
 sportalliance/eu	Sport Alliance GmbH
 starcompliance	StarCompliance
 tala	Tala
+tekton	Tekton
 teleo	Teleo
 terrahq	Terra
 thesalesfactory	The Sales Factory
@@ -1107,6 +1105,7 @@ trainsweateat	TrainSweatEat
 trueplatform	True Platform
 gouspack	US Pack Services LLC
 vicicollection	VICI
+vwgds/eu	Volkswagen Group Digital Solutions [Portugal]
 vrchat	VRChat
 Way	Way
 willowhealth.com	Willow Health
@@ -1124,15 +1123,14 @@ artera-2	Artera
 atrium-therapeutics	Atrium Therapeutics
 avertium	Avertium
 bekk	Bekk
+bellese	Bellese
 bhg-inc	BHG Financial
 bloom	Bloom
 blueengine	Blue Engine
 britecore	BriteCore
 Burro	Burro
-cartrawler	CarTrawler
 cents	Cents
 Clozd	Clozd
-controlup	ControlUp
 convelio	Convelio
 CYE	Cye
 cypher-games	Cypher Games
@@ -1143,6 +1141,8 @@ easystreetcap	Easy Street Capital
 editorialist	Editorialist
 Emesent	Emesent
 envato-2	Envato
+enveda	Enveda
+evernest	Evernest
 evolved-aerospace/eu	Evolved Aerospace
 finch	Finch
 foxitsoftware	Foxit
@@ -1159,30 +1159,34 @@ massschoolbuildings	Massachusetts School Building Authority
 melitagroup	Melita Group
 mirego	Mirego
 mojave-energy-systems	Mojave Energy Systems
+mulhalls	Mulhalls
 orbaerospace	Orb Aerospace
 packagex	PackageX
 paralleldomain	Parallel Domain
 payugpo	PayU GPO
-pelmorex	Pelmorex
 pendulum	Pendulum™
+ppde	Planned Parenthood of Delaware
 planner5d	Planner5D
+reign	Reign
 reynoldsrowella	Reynolds + Rowella
 rivr	RIVR
+robbinsrecruiting	Robbins Recruiting
 seaportglobal	Seaport Global Holdings LLC
-sietefoods-2	Siete Foods
+simulmedia	Simulmedia
 solestial	Solestial, Inc.
 soniresources	Soni
 strategicgears	Strategic Gears
 subsense	Subsense
 swissborg	SwissBorg
+T6TalentPartners	T6 Talent Partners
 teamsnap	TeamSnap
 terawattinfrastructure	Terawatt Infrastructure
-thetrevorproject	The Trevor Project
 Trend-Health-Partners	Trend Health Partners
 turgon-ai	Turgon AI
 unusual	Unusual Ventures
 vendavo	Vendavo
 waveapps	Wave HQ
+wingtra-2	Wingtra AG
 younited	Younited
 zartis	Zartis
 adaptovate/eu	ADAPTOVATE
@@ -1192,19 +1196,16 @@ alector	Alector
 alpinestars	Alpinestars
 altaml	AltaML
 altarum	Altarum
-americantall	American Tall
 apex-paramedics	Apex Paramedics
 apex-ai	Apex.AI
 acds	Apprenticely
 asobostudio/eu	Asobo Studio
-ataccama	Ataccama
 auxia	Auxia
 beaverprocess	Beaver Process Equipment
-BeemEnergy	Beem
 betr	Betr
-blablacar	BlaBlaCar
 brainchildbio	BrainChild Bio
 capricor	Capricor Therapeutics
+cartrawler	CarTrawler
 Clearer	Clearer.io
 clevelandconstruction	Cleveland Construction
 coinmarketcap	Coin Market Cap Ltd
@@ -1215,16 +1216,15 @@ deleteme	DeleteMe
 dollskill	Dolls Kill
 doola	doola
 ElectrifiedThermalSolutions	Electrified Thermal
-ellevationeducation	Ellevation
+elementsolutions	Element Solutions
 elroyair	Elroy Air
-enveda	Enveda
 killbusyseason	Exponent
 findem	Findem
 founderscard	FoundersCard
 freedomprep	Freedom Preparatory Academy Charter Schools
 happyco	HappyCo
+harrisonst	Harrison Street
 hsag	Health Services Advisory Group, Inc.
-healthcare	HealthCare
 innogames/eu	InnoGames
 innovativesol-2	Innovative Solutions
 intrafi	IntraFi
@@ -1235,18 +1235,21 @@ kpaonline	KPA
 leversys	Leversys
 lexeotx	Lexeo Therapeutics
 mamamoney	Mama Money
+maverickx	MaverickX
 wearemeru	MERU
 metr	METR
 mindy	Mindy Support
 minesense	MineSense
 modeln	Model N
 moo	MOO
+mPower	mPower, Inc.
 mylaurelhealth	myLaurel
+nasafcu	NASA Federal Credit Union
 NJStateOfficeofInnovation	New Jersey Innovation Authority
 numeris	Numeris
 NuvoAir	NuvoAir
-optionmetrics	OptionMetrics
 pacificquest	Pacific Quest
+pelmorex	Pelmorex
 pentagrp	Penta Group
 PocketHealth	PocketHealth
 pibenchmark	PredictX
@@ -1255,13 +1258,10 @@ protrials	ProTrials Research, Inc.
 quantummetric	Quantum Metric
 questanalytics	Quest Analytics
 recordpoint	RecordPoint
-reviverx	ReviveRX and Ways2Well
 sanabenefits	Sana Benefits
 sarmal-inc	Sarmal Inc
 sep	SEP
-sequel-med-tech	Sequel Med Tech
 siho	SIHO Insurance Services
-simulmedia	Simulmedia
 skydance	Skydance
 sunstudio	SUN.STUDIO
 swingdev	SwingDev—a hippo company
@@ -1270,29 +1270,34 @@ tagup	Tagup
 heritagevt	The Heritage Automotive Group
 kingfish-company	The Kingfish Company
 thirdfort/eu	Thirdfort Limited
+todaytixgroup	TodayTix Group
 tracktik	Trackforce
 tradelink/eu	TradeLink
 trinityhunt	Trinity Hunt Partners
 get-vocal-pbc	Vocal Media
-wingtra-2	Wingtra AG
 wisdomtree-2	Wisdomtree UK
 zensurance	Zensurance
+hashtagpaid	#paid
 1inch	1inch
 4SIGHTSupplyChain	4SIGHT Supply Chain
 airdna	AirDNA
 airtm	Airtm
 ambirobotics	Ambi Robotics
+americantall	American Tall
 aqueduct-tech	Aqueduct Technologies Inc.
 audinate	Audinate
 people-ai	Backstory
 bare-funeral-group	Bare Funeral Group Pty Ltd
 bedrockenergy	Bedrock Energy
+BeemEnergy	Beem
 BestEgg	Best Egg
 biointellisense	Biointellisense
+blablacar	BlaBlaCar
 pslove-pte	Blood
 bluecore-energy	BlueCore Energy
 blueland	Blueland
 brightlyworks	Brightly Works
+cin7	Cin7
 clearcapital	Clear Capital | CubiCasa | restb.ai
 ClinicalHealthNetworkForTransformation	Clinical Health Network For Transformation
 craftwater	Craftwater
@@ -1303,10 +1308,10 @@ deputy	Deputy
 dynamic-connections	Dynamic Connections
 easol/eu	Easol
 ecldc	ECL
+ellevationeducation	Ellevation
 enable	Enable
 esper	Esper
 fatetherapeutics	Fate Therapeutics, Inc.
-fi	Fi
 firstent	First Entertainment Credit Union
 fluxergy-2	Fluxergy
 frontier/eu	Frontier Developments
@@ -1320,6 +1325,8 @@ gomaterials	GoMaterials
 gravisrobotics	Gravis Robotics
 Grid	Grid
 hasi	HASI
+havenpoint-health	HavenPoint Health
+healthcare	HealthCare
 hgen	Hgen
 Hivemapper	Hivemapper
 hivemind-capital	Hivemind Capital Partners
@@ -1330,14 +1337,16 @@ imo-online	IMO Health
 Instrumentl	Instrumentl
 jam-loop	Jamloop
 KingfishGroup	Kingfish Group
+lgt-cpa	Lane Gorman Trubitt
 launchhousing	Launch Housing
 launchsquad	LaunchSquad
 lever/eu	Lever
 markt-pilot/eu	MARKT-PILOT GmbH
+marquetteassociates	Marquette Associates
 medi.ci	Medici
 ModernIntelligence	Modern Intelligence
-nasafcu	NASA Federal Credit Union
 newzealandtradeandenterprise	New Zealand Trade and Enterprise
+optionmetrics	OptionMetrics
 Osmind	Osmind
 pexa	PEXA Group
 pinkoi	Pinkoi
@@ -1348,10 +1357,11 @@ qubicaamf/eu	QubicaAMF
 RaptStudio	Rapt Studio
 raya	Raya
 relayrobotics.com	Relay Robotics
+reviverx	ReviveRX and Ways2Well
 rhombus-systems	Rhombus
 scality	Scality
 seerinteractive	Seer Interactive
-sierraclub	Sierra Club
+sequel-med-tech	Sequel Med Tech
 silverbackstrategies	Silverback Strategies
 sogoodsoyou	So Good So You
 stellar/eu	Stellar Global
@@ -1359,6 +1369,7 @@ symphony/eu	Symphony
 tendo	Tendo
 termgrid	Termgrid Inc.
 text	Text
+thetrevorproject	The Trevor Project
 thrivecausemetics	Thrive Causemetics
 topdesk	TOPdesk
 truetandem	True Tandem
@@ -1373,7 +1384,6 @@ vivo-care	Vivo Care
 workinprogress	WorkInProgress
 xby2	X by 2
 adora	Adora Technologies Inc
-advocate	Advocate
 afero	Afero
 agatesoftware	Agate Software
 agtonomy	Agtonomy
@@ -1385,23 +1395,22 @@ artbio	ARTBIO
 basis	Basis
 blbglaw	Bernstein Litowitz Berger & Grossmann LLP
 binance	Binance
-bis	BIS Safety Software
 blackshark/eu	Blackshark.ai
 boxbot	Boxbot
 CatalystMobility	Catalyst Mobility
 charitywater	charity: water
 caslservice	Chinese American Service League
-cin7	Cin7
 coderpad	CoderPad
 coloradocoalition	Colorado Coalition for the Homeless
 crossfit	CrossFit, LLC
+crowdhealth	CrowdHealth
+cura	Cura
 CVRx	CVRx, Inc.
 cx2	CX2
 deepsky	Deep Sky
 dexcarehealth	DexCare
 didomi	Didomi
 disqo	DISQO
-duetti	Duetti
 getduranta	Duranta
 ethena	Ethena
 FairTradeRealEstate	Fair Trade Real Estate
@@ -1411,13 +1420,13 @@ galvanick	Galvanick
 gatorbio	Gator Bio
 gauntlet	Gauntlet
 genomines/eu	GENOMINES
-grantstreet	Grant Street Group
 heaten-germany-gmbh	HEATEN
+hellonanny	Hello Nanny!®
 highstreetit	Highstreet
 honkforhelp	HONK
 HowGood	HowGood
 inductivehealth	InductiveHealth
-intrepidcollegeprep	Intrepid College Prep Schools
+ironflow	Ironflow AI
 kenko	Kenko AI
 klearnow	KlearNow.ai
 koalahealth	Koala Health
@@ -1430,7 +1439,6 @@ Medchart	Marble
 medical-outsourcing-solutions	Medical Outsourcing Solutions
 miteksystems-2	Mitek Systems
 modernlife	Modern Life
-moka.care	Moka.Care
 npowermedicine	N-Power Medicine
 nationaljournal	National Journal
 nextech	Nextech
@@ -1447,6 +1455,7 @@ pppsgv	Planned Parenthood Pasadena and San Gabriel Valley, Inc.
 portpro	PortPro
 precede	Precede
 primeexecutiveoffice	Prime Executive Office
+quadlock	Quad Lock
 qwoted	Qwoted
 rapidai	RapidAI
 repurposeglobal	rePurpose Global
@@ -1457,6 +1466,7 @@ robust-ai	Robust.ai
 rovio-2	Rovio
 salvohealth	Salvo Health
 sfgiants	San Francisco Giants
+sierraclub	Sierra Club
 silverfin/eu	Silverfin
 smithmicro	Smith Micro Software, Inc.
 solfl	SOLFL
@@ -1469,14 +1479,11 @@ swapcard	Swapcard
 symplicity	Symplicity
 synapticure	Synapticure
 t5datacenters-2	T5 Properties LLC
-T6TalentPartners	T6 Talent Partners
 tali-ai	Tali AI
 tag	Technology Advancement Group
-todaytixgroup	TodayTix Group
 topazlabs	Topaz Labs
 torchdental	Torch Dental
 trackmind	Trackmind
-trility	Trility Consulting
 trivenibio	Triveni Bio
 vivrelle	Vivrelle
 wavicledata	Wavicle Data Solutions
@@ -1485,15 +1492,16 @@ wisecode	WISEcode
 wra-ca	WRA, Inc.
 zerorisc	zeroRISC
 zerotier	ZeroTier
-hashtagpaid	#paid
 6ix	6ix
 Academy	Academy
 activetheory	Active Theory
+advocate	Advocate
 arbitalhealth	Arbital Health
 arbitrumfoundation	Arbitrum Foundation
 artifactuprising.com	Artifact Uprising
 avalanchestudios	Avalanche Studios Group
 baselane	Baselane
+bis	BIS Safety Software
 braviantholdings	Braviant Holdings
 brilliant	Brilliant
 businesswire	Business Wire
@@ -1504,24 +1512,25 @@ charter-impact	Charter Impact
 clearpoint	ClearPoint
 copia	Copia Automation
 cruxocm	CruxOCM
-cura	Cura
+curai	Curai
 dataroid	Dataroid
 digital-matter	Digital Matter
 distru	Distru
+duetti	Duetti
 e184	e184
-elementsolutions	Element Solutions
 crgo	Enigma Aerospace
 EnvisionRPO	Envision RPO
 epsilon3	Epsilon3
+fi	Fi
 flourish-schools	Flourish Schools
 foundation-llm-technologies	Foundation EGI
 fulcrumpro	Fulcrum
 fullspectrumsoftware	Full Spectrum
 glass-health-inc	Glass Health Inc.
 globalstrategygroup	Global Strategy Group
+grantstreet	Grant Street Group
 grape-health/eu	grape insurance AG
-havenpoint-health	HavenPoint Health
-hellonanny	Hello Nanny!®
+HDVI	HDVI
 heyjane	Hey Jane
 Huckleberrylabs	Huckleberry Labs
 immutable	Immutable
@@ -1531,6 +1540,7 @@ InstituteforProteinInnovation	Institute for Protein Innovation
 instrument	Instrument
 intenseye	intenseye
 refugeerights/eu	International Refugee Assistance Project
+intrepidcollegeprep	Intrepid College Prep Schools
 invinity	Invinity Energy Systems
 joshstoysandgames	Josh's Toys & Games
 junoniapartners	Junonia Partners
@@ -1549,6 +1559,7 @@ metasite	Metasite Business Solutions
 hellomongoose	Mongoose
 motifsystems	Motif
 musixmatch	Musixmatch S.p.a
+neighbors-reliance	Neighbor's Reliance Insurance Services
 nobullproject	NOBULL
 novara	Novara
 octavefederal	Octave Federal
@@ -1559,6 +1570,7 @@ outlast	Outlast
 pacificoenergy	Pacifico Energy
 paralleladvisors	Parallel Advisors
 patch	Patch
+pillartechnology	Pillar Technology
 ppmw	Planned Parenthood of Metropolitan Washington, DC, Inc.
 ppmontana	Planned Parenthood of Montana, Inc.
 ppwp	Planned Parenthood of Western Pennsylvania
@@ -1567,15 +1579,14 @@ prestolabs	Presto
 propelsoftware	Propel Software Solutions
 qsic	QSIC
 radformation	Radformation
-redoxengine	Redox
 revefi	Revefi
+revelationssearch	Revelations Executive Search
 rezotx	Rezo Therapeutics
 rocketpartners	Rocket Partners
 sideinc	Side
 siteground	SiteGround
 skygrid	SkyGrid
 skywarditsolutions	Skyward IT Solutions, LLC
-slate	Slate
 softdocs	Softdocs
 sprucestreetcomp	Spruce Street Compliance
 startengine	StartEngine
@@ -1588,6 +1599,7 @@ Terraformation	Terraformation
 thebouqs.com	The Bouqs Company
 travertine	Travertine
 triallibrary	Trial Library
+trility	Trility Consulting
 trustarc	TrustArc
 txse	TXSE
 myubiquity	Ubiquity Retirement and Savings (dba Decimal Inc)
@@ -1597,6 +1609,7 @@ viget	Viget
 zippi	Zippi
 32Co	01Health
 4seasonstransport	4Seasons Transportation
+5amventures	5AM Ventures
 abovelending	Above Lending
 adjarabet	Adjarabet.com
 aerostrat	Aerostrat
@@ -1618,6 +1631,7 @@ beyondcloudconsulting	Beyond Cloud Consulting Inc.
 blackbirdinteractive	Blackbird Interactive
 blencorp	BLEN
 blinkux	Blink UX
+bluecoding	Blue Coding
 BreezeBio	BreezeBio
 BusaraCenter	Busara Center for Behavioral Economics
 careernowbrands	Career Now Brands
@@ -1631,21 +1645,23 @@ compstak	CompStak
 concurrency	Concurrency
 controlai/eu	ControlAI
 crypto-banter	Crypto Banter
-curai	Curai
 deltaairportconsultants	Delta Airport Consultants
+digitalfish	DigitalFish, Inc
 elk-marketing	elk Marketing
 emilyslist	EMILYs List
-employ	Employ
 ethree	Energy and Environmental Economics
 enter-rcm-llc	Enter
 evry-health	Evry Health
+Expana/eu	Expana
 Farcast	Farcast
 findigs	Findigs
 fgi	Fort Garry Industries
 fundrise	Fundrise
 rideonewheel	Future Motion
+futurenow	Future Now
 hannaandersson	Hanna Andersson
 headroyce	Head-Royce School
+hiringourheroes	Hiring Our Heroes
 hmbl-tech	HMBL
 imentor	iMentor
 incorta	Incorta
@@ -1658,7 +1674,6 @@ jobscan-2	Jobscan
 joltcharge	JOLT
 juneshine	JuneShine Brands
 keboola	Keboola
-lsa-hr	Language Services Associates, Inc.
 sgff.org	Lean In
 leantaas	LeanTaaS
 loopreturns	Loop
@@ -1670,18 +1685,19 @@ joycharter	Maureen Joy Charter School
 mcchrystalgroup	McChrystal Group
 mechanicalorchard	Mechanical Orchard
 mirastarfcu	Mirastar FCU
+moka.care	Moka.Care
 mti-inc	Monterey Technologies Inc
 mulliganfunding	Mulligan Funding
-neighbors-reliance	Neighbors Reliance Insurance Services
 Nestig	Nestig
 nomihealth	Nomi Health
 nuuds	nuuds
 myollie	Ollie
+onboarded	Onboarded
 ou-education-services	OU Education Services
 our-place	Our Place
 outcomesai	OutcomesAI
-AkashNetwork	Overclock Labs
 peerspace	Peerspace
+ppgr	Planned Parenthood Great Rivers
 ppkeystone	Planned Parenthood Keystone
 plooto	Plooto
 developintelligence	Pluralsight
@@ -1695,10 +1711,16 @@ purple-technology	Purple Team
 ranger	Ranger
 realself	RealSelf
 recognisebank	Recognise Bank
+redoxengine	Redox
 renofi	RenoFi
+ribbon	Ribbon.ai
 ROH	ROH
+schneidergis	Schneider Geospatial
+seattleartmuseum	Seattle Art Museum
 simpleventures	simpleventures
+skinny-dipped	Skinny Dipped
 skio	Skio
+slate	Slate
 sonrai-security	Sonrai Security
 SoundStack	SoundStack
 source	Source
@@ -1714,26 +1736,30 @@ Termius	Termius
 engine	The Engine
 thefp	The Free Press
 thefyndergroup	The Fynder Group
+thepieexecsearch	The PIE Executive Search
 uprightproject	The Upright Project
 thrive-therapies	Thrive Therapies Group
 thunkable	Thunkable
 tonkean	Tonkean
 tpgsi	Turning Point Global Solutions
 Ubiminds	Ubiminds
+utilityglobal	Utility Global
 vailsys	Vail Systems Inc.
 verisinsights	Veris Insights
 viabill	ViaBill
 vidsy	Vidsy
 villa-homes	Villa Homes
+vogo	Vogo
 voltalabs	Volta Labs, Inc.
 volta-medical/eu	Volta Medical
+wasatchglobal	Wasatch Global Investors
 project-wayfinder	Wayfinder
 whiterivertoyota	White River Toyota
 xentral/eu	Xentral
+zambezi	Zambezi
 zingtree	Zingtree
 15five	15Five
 2A	2A
-5amventures	5AM Ventures
 accesssoftek	Access Softek
 acord	ACORD Corporation
 actian	Actian Corporation
@@ -1755,15 +1781,14 @@ aviahealth	AVIA
 baoinc	BAO, Inc
 bighealth	Big Health
 bizlibrary	BizLibrary
-bluecoding	Blue Coding
 brighte	Brighte
 bkln	Brooklyn Investment Group
-buyboxexperts	Buy Box Experts
 cascademgt	Cascade Asset Management Company
 cascade-climate	Cascade Climate
 ChamberofProgress	Chamber of Progress
 checker	Checker
 ciellos	Ciellos
+go-cloudforce	Cloudforce
 cocollective	co:collective
 Cofactr	Cofactr
 collabora	Collabora
@@ -1772,6 +1797,7 @@ commonfuture	Common Future
 communityactionhouse	Community Action House
 computercare	ComputerCare
 conversica	Conversica
+corner-health	Corner Health
 creatordeck	Creator Deck
 crowdriff	CrowdRiff
 culturekings	Culture Kings
@@ -1780,17 +1806,19 @@ dualitas-therapeutics	Dualitas Therapeutics
 easypost-2	EasyPost
 edpuzzle	Edpuzzle
 elty	Elty
+employ	Employ
 encore-renewable-energy	Encore Renewable Energy
 energyrecovery	Energy Recovery
+epm	Equity Prime Mortgage
+evergreenstrategygroup	Evergreen Strategy Group
 evidentid	Evident ID
-Expana/eu	Expana
 fintual	Fintual
 futo-org	FUTO
 galatea-associates	Galatea Associates
 girlswhocode	Girls Who Code
 glow.co	Glow
+gofluent	goFluent
 gr0	GR0
-HDVI	HDVI
 influ2	Influ2
 insomniacookiesuk/eu	Insomnia Cookies UK Ltd
 iheartjane	Jane Technologies
@@ -1800,25 +1828,28 @@ joelefrank	Joele Frank
 kinsta	Kinsta
 kruzeconsulting	Kruze Consulting
 ladders	Ladders
+lsa-hr	Language Services Associates, Inc.
 listo	Listo
 logz	Logz.io
 lucidworks	Lucidworks
 lyrebirdstudio	Lyrebird Studio
+magnet-defense	Magnet Defense
 mahmee	Mahmee
 mangolanguage	Mango Languages
 marigoldhealth	Marigold Health
 max-retail	Max Retail
 mhnchicago	Medical Home Network
+metaprise.ai	Metaprise
 microvision	MicroVision
 milocredit	Milo
 mobile-action	MobileAction
-newwesterncorporate	New Western Corporate
 newton	Newton
 nimbletalent	Nimble Talent
 noblereach	NobleReach Foundation
 nobody	NOBODY
 oliverwyman	Oliver Wyman Labs
 onceuponafarm	Once Upon a Farm
+AkashNetwork	Overclock Labs
 pacific-environment	Pacific Environment
 ppau	Planned Parenthood Association of Utah
 ppmnj	Planned Parenthood of Metropolitan New Jersey
@@ -1849,10 +1880,11 @@ Snif	Snif
 stoneridgesoftware	Stoneridge Software
 sundrivesolar	Sundrive
 swave/eu	Swave
+SwiftlySystems	Swiftly
 swissblock	Swissblock
 thalolabs	Thalo Labs
 The-Battery-Network	The Battery Network
-thepieexecsearch	The PIE Executive Search
+theculinistas	The Culinistas
 thimble	Thimble
 tinybird	Tinybird
 toku	Toku
@@ -1863,11 +1895,9 @@ tribe-payments	Tribe Payments
 trustedhousesitters.com	TrustedHousesitters
 tuumplatform/eu	Tuum
 util-assist	Util-Assist Inc.
-utilityglobal	Utility Global
 verifiable	Verifiable
 viaseparations	Via Separations, Inc.
 viome	Viome Life Sciences
-visby	Visby Medical
 voltai	Volt
 wtads	Walz Tetrick Advertising
 wisdomtree	WisdomTree
@@ -1885,7 +1915,6 @@ bofcorp	B-O-F Corporation
 backerkit	BackerKit
 biobus.org	BioBus
 Black-White-Zebra	Black & White Zebra
-bolster	Bolster Inc.
 cambiumnetworks	Cambium Networks
 cardiosense	Cardiosense
 catalist	Catalist
@@ -1898,7 +1927,6 @@ cherre	Cherre
 chestnutcarbon	Chestnut Carbon
 churchatthepark	Church at the Park
 ppsworegon	Click Here to be Redirected to Planned Parenthood of Southwestern Oregon's New Career Center
-go-cloudforce	Cloudforce
 coingecko	CoinGecko
 copper-company	Copper
 crumbl	Crumbl
@@ -1909,11 +1937,12 @@ designetics	Designetics
 getdimension	Dimension
 doranjones	Doran Jones Inc.
 earthspecies	Earth Species Project
+eleostech	Eleos Technologies
 empassion.com	Empassion
 engene	enGene
 engine-ventures	Engine Ventures
+enhanced-us	Enhanced Games
 erpsuccesspartners	ERP Success Partners
-evergreenstrategygroup	Evergreen Strategy Group
 explodingkittens	Exploding Kittens
 familywellhealth	FamilyWell Health
 askfavor	Favor
@@ -1923,7 +1952,6 @@ fireflyon	Firefly
 fiscalnote	FiscalNote
 FlareTherapeutics	Flare Therapeutics
 fuellabs	Fuel Labs
-futurenow	Future Now
 genuine-health	Genuine Health
 healx	Healx
 hevo	HEVO
@@ -1942,6 +1970,7 @@ jupiterintel	Jupiter Intelligence, Inc.
 jvs-boston	JVS Boston
 karmacheck	KarmaCheck
 KeloniaTX	Kelonia Therapeutics
+kacl	Kenora Association for Community Living
 kitmanlabs	Kitman Labs
 lemnis	Lemnis
 Lumary	Lumary
@@ -1950,6 +1979,7 @@ mammothbiosci	Mammoth Biosciences
 marqvision	MarqVision
 Mediafly	Mediafly
 meili	Meilisearch
+mightyid	MightyID
 minted	Minted
 modulate	Modulate
 moltenindustries	Molten Industries
@@ -1957,12 +1987,14 @@ mothernewyork	Mother USA
 mtspartners	MTS Health Partners, L.P.
 mypassglobal	MyPass Global
 algorex	N1 Health
+newwesterncorporate	New Western Corporate
 nextovation	NextOvation
 niagenbioscience	Niagen Bioscience
 nimbus	Nimbus
 ole-management	Ole Life
 OstealTherapeutics	Osteal Therapeutics
 PacerPro	PacerPro
+paramobility	Para Mobility
 pathpoint	Pathpoint
 mcgovern	Patrick J McGovern Foundation
 peppy/eu	Peppy
@@ -1984,13 +2016,16 @@ richards-services	Richards Services
 rubyplay	Ruby Play
 tildei	Runhappy
 pansns	RxNS
+sakon	Sakon
 SatelliteInnovations	Satellite Innovations
 scale3c	ScaleTech
+simply-protein	Simply Protein for Pets, Inc
 skyslope	SkySlope
 Smile.io	Smile.io
 socratesglobal	Socrates Global
 solutiondesign	Solution Design Group
 soraschools	Sora Schools
+sphere-laboratories	Sphere Laboratories, Inc.
 catalate	Spotlio
 stackhawk	StackHawk
 staffingfitness	Staffing Fitness
@@ -2010,17 +2045,18 @@ twingate	Twingate
 txidigital	TXI
 gouconnect	uConnect
 unifyconsulting	Unify Consulting
+unitedaestheticsalliance	United Aesthetics Alliance
 UpMetrics	UpMetrics
 uqual	UQUAL
 vergesense	VergeSense
 vevo	Vevo
 vipdesk	VIPdesk Connect
 Virtus	Virtus
+visby	Visby Medical
 VRsystems	VR Systems, Inc
 whiterabbit	Whiterabbit.ai
 wilburlabs	Wilbur Labs
 WindsorManagement	Windsor Management
-yardzen	Yardzen
 yonexusa	Yonex USA
 zerion	Zerion
 zerohomes	Zero Homes
@@ -2032,6 +2068,7 @@ energy-by-5	5
 weareaccord	Accord Group
 accurate	Accurate Background
 adverum	Adverum Biotechnologies, Inc.
+aigen	Aigen
 aiwyn	Aiwyn
 meetalbert	Albert
 labelbox	Alignerr
@@ -2055,10 +2092,12 @@ avero	Avero
 avioconsulting	AVIO Consulting
 Ayr	Ayr
 badgermapping	Badger Maps
+bananajobs	Banana Jobs
 Betstamp	Betstamp
 blox-route	bloXroute Labs
 honeybeerobotics	Blue Origin Early Career Programs
 bluerocktx	BlueRock Therapeutics
+bolster	Bolster Inc.
 bonsaileadershipgroup	Bonsai Leadership Group
 brainstorminc	BrainStorm, Inc.
 BreakwaterTech	Breakwater Technology
@@ -2066,6 +2105,7 @@ brighthire	BrightHire
 brotherhoodcrusade	Brotherhood Crusade
 buoysoftware	Buoy Software
 burga	BURGA
+buyboxexperts	Buy Box Experts
 carboncapture	CarbonCapture Inc.
 careology	Careology
 carlyriangroup	Carly Rian Group
@@ -2109,6 +2149,7 @@ dzen	Dzen
 Eastwall	Eastwall
 easyagile	Easy Agile
 edera	Edera
+electric-twin	Electric Twin
 emersoncollective	Emerson Collective
 emersonhc	Emerson Human Capital Consulting
 empiricotx	Empirico
@@ -2149,6 +2190,7 @@ hihello	HiHello
 hint	Hint Health
 hopelab	Hopelab
 Hyperlane	Hyperlane
+idearoom	IdeaRoom
 ideasunited	Ideas United
 ilek.fr	ilek
 illumination	Illumination
@@ -2164,11 +2206,15 @@ kasada	Kasada
 kasheesh	Kasheesh
 Kibeam	Kibeam, Inc.
 kimiatherapeutics	Kimia Therapeutics
+Kimmeridge	Kimmeridge
 kochava	Kochava
 kontakt	Kontakt.io
+kpmg	KPMG LLP
 kto/eu	KTO
 kubra	KUBRA
+lacocinasf.org	La Cocina
 lavictoria	La Victoria Lab
+lever-for-change	Lever for Change
 limitbreak	Limit Break
 lionheartkid	Lionheart Children’s Academy
 liveoakfiber	LiveOak Fiber
@@ -2176,6 +2222,7 @@ livingcarbon	Living Carbon
 longtail-ai	Longtail Technologies, Inc.
 LuminDigital	Lumin Digital
 lyraclinical	Lyra Clinical Associates
+lyrebirdhealth	Lyrebird Health
 lyterian	Lyterian
 mrss	M+R
 m33growth	M33 Growth
@@ -2190,6 +2237,7 @@ maxmind	MaxMind
 mediagenix	Mediagenix
 medrhythms	MedRhythms
 MBRDNA	Mercedes-Benz R&D North America
+missioncap	Mission Capital Advisors
 MOstudio	MO
 Modjo	Modjo
 moonsong-labs	Moonsong Labs
@@ -2199,8 +2247,11 @@ myvest	MyVest
 nava	Nava
 netvirta	Netvirta
 nevados	Nevados
+nextshiftlearning	Next Shift Learning
 next-decade	NextDecade
+nflexperience	NFL Experience
 nfx	NFX
+NICMAP	NIC MAP
 nimblerx	NimbleRx
 NoibuTechnologies	Noibu
 nomadmktg	Nomad Marketing
@@ -2208,17 +2259,26 @@ nominal	Nominal
 oci	Object Computing, Inc.
 observablehq	Observable
 oleria-security	Oleria Security
+oneup	OneUp Games
 obsglobal	Online Business Systems
 oomnitza	Oomnitza
+openresearch	OpenResearch
 orijin	Orijin, a public benefit corporation
 outpacebio	Outpace Bio
+parcelvision	ParcelHero
 perennial	Perennial
 pipedrive	Pipedrive
+pixcel	Pixcel
 ppaz	Planned Parenthood Arizona, Inc.
+ppcw	Planned Parenthood Columbia Willamette
 ppnorcal	Planned Parenthood Northern California
+ppcwny	Planned Parenthood of Central and Western New York, Inc.
+ppgwni	Planned Parenthood of Greater Washington and North Idaho
+ppmet	Planned Parenthood of Middle & East Tennessee, Inc.
 ppgnnj	Planned Parenthood of Northern, Central and Southern New Jersey, Inc.
 ppncny	Planned Parenthood of the North Country New York, Inc.
 pprm	Planned Parenthood of the Rocky Mountains, Inc.
+ppsouthtexas	Planned Parenthood South Texas
 ppsp	Planned Parenthood Southeastern Pennsylvania
 ppswo	Planned Parenthood Southwest Ohio Region
 playco	Playco
@@ -2243,6 +2303,7 @@ rackspace	Rackspace
 railroad19	Railroad19, Inc
 ramenvr	Ramen VR
 rangeenergy	Range Energy
+ravensburger-north-america	Ravensburger North America
 recast-software	Recast Software
 recess	RECESS
 redi.health	Redi.Health
@@ -2250,12 +2311,14 @@ refed	ReFED
 shopreli	Reli.
 reliable	Reliable Robotics
 rendernetworks	Render Networks
+retired	Retired.com
 rld-foundation	Richard L. Duchossois Foundation
 RoboticAssistanceDevices	Robotic Assistance Devices
 rocketcommunications	Rocket Communications
 roico	ROI Communication
 RouteThis	RouteThis
 saga-xyz	Saga
+sageviewadvisory	SageView Advisory Group
 satoricapital	Satori Capital
 ScaleBio	ScaleBio
 scanifly	Scanifly
@@ -2264,18 +2327,20 @@ sentibio	Senti Biosciences
 sesame	Sesame
 signal	Signal Messenger
 silasg	Sila
+strategysource	Sinecure Inc.
 solutionsjournalism	Solutions Journalism Network
 spiceai	Spice AI
 stackedsp	StackedSP Inc
+tom-steyer	Steyer for Governor 2026
 straighterline	StraighterLine
 SublimeSystems	Sublime Systems
 sugarcrm	SugarAI
 surglogs	Surglogs
 surpassgames	Surpass Games
-SwiftlySystems	Swiftly
 swordhealth	Sword Health
 symmetryinvestments	Symmetry Investments
 SymmetrySystems	Symmetry Systems
+tandems	Tandems
 tdthornton	TD Thornton
 tdaboulder	TDA_Boulder
 techtalentproject	Tech Talent Project
@@ -2287,10 +2352,12 @@ theblockcrypto	The Block
 bridge2rwanda	The BRIDGE Talent Services
 theex	The Canadian National Exhibition
 thedispatch	The Dispatch
+div	The DIV Fund
 the-sia-foundation	The Sia Foundation
 voleon	The Voleon Group
 third-plateau	Third Plateau
 Thrackle	Thrackle
+thrive-financial	Thrive Financial, LLC
 jointopo	Topography Health
 tracksuit-limited	Tracksuit
 tractian	Tractian
@@ -2305,6 +2372,7 @@ v2sa	V2 Strategic Advisors
 valence	Valence
 valorepartners	Valore Partners
 allstarservicesnow	Vault Roofing
+veic	VEIC
 veonhq	VEON-HQ
 aperturehealth	Verisys
 vidrovr	Vidrovr
@@ -2312,6 +2380,7 @@ visotrust	VISO TRUST
 vivacitylabs	VivaCity
 voterparticipation	Voter Participation Center
 vowforgirls	VOW for Girls
+vtg	VTG
 wahi	Wahi
 waitwhat	WaitWhat
 walkerandcompany	Walker & Company
@@ -2326,4 +2395,5 @@ wisr	Wisr
 epifi	Workloom
 woven-planet	Woven Planet Holdings, Inc.
 wovenlight	WovenLight
+yardzen	Yardzen
 zazzle	Zazzle
