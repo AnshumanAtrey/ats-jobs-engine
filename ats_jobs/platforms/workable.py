@@ -21,7 +21,7 @@ company through Workable's public jobs feed. No key. Measured from this laptop o
   had entries apart, their first and last a median 30 days apart, since a place added later is listed when it is
   added. So a job's entries become one job, with every place and the first entry's date; the career page's published
   date can still be earlier (jobs listed before the board began on 2021-07-28). It names no hybrid or on-site.
-  Cloudflare compresses it on the way (brotli about 131 MB, gzip about 128 MB) and ignores Range (200, the whole
+  Cloudflare compresses it on the way (gzip about 128 MB, brotli about 131 MB) and ignores Range (200, the whole
   body). Its first byte comes after 17 to 24 s and the answer ends about 63 s after the request whatever has
   arrived: of 9 downloads from here 8 were cut (the most that arrived was three quarters) and one brotli download
   ended cleanly at 130.8 MB in 51 s. This line gives 3.8 to 4.1 MB/s (Cloudflare's speed test, OVH) and the feed
@@ -52,7 +52,6 @@ second after 70 s (HTTP 429, Retry-After 0, gone within seconds), so its calls w
 import asyncio
 import dataclasses
 import html as htmllib
-import importlib.util
 import logging
 import re
 import tempfile
@@ -92,10 +91,9 @@ BOARD_ID = re.compile(r'^(?:[1-9A-HJ-NP-Za-km-z]{20,24}|[0-9a-f]{8}-[0-9a-f]{4}-
 CODE_IN_TEXT = re.compile(r'/j/([0-9a-f]{10})(?![0-9a-z])', re.I)
 PAGE = 500                    # matching feed jobs handed to the engine at a time
 FEED_TIMEOUT = httpx.Timeout(120.0, connect=15.0)    # its first byte came after 19 to 23 s
-# Cloudflare compresses the feed on the way: brotli (131 MB of 861 MB) finished in time, gzip did not. It is decoded
-# here with the brotli package, which the engine depends on; gzip only without it
-FEED_ENCODING = 'br' if importlib.util.find_spec('brotli') else 'gzip'
-BROTLI_ERRORS = (__import__('brotli').error,) if FEED_ENCODING == 'br' else ()
+# Cloudflare compresses the feed on the way. gzip (128 MB) came as fast as brotli (131 MB), about 15 MB/s of XML for
+# both on 2026-11-02, and needs no package
+FEED_ENCODING = 'gzip'
 FALLBACK_SECONDS = 120        # career pages read, biggest first, when the feed cannot be read
 WORKPLACE_SECONDS = 90        # a hybrid or on-site search checks feed jobs one by one for this long at most
 CAREER_PAGES = 300            # the biggest career pages a run for the newest jobs reads: 120 s at most
@@ -180,9 +178,6 @@ def words_of(html: str | None) -> str | None:
 
 def decoder(encoding: str):
     """The content encoding of a download -> a function from its bytes, in order, to plain bytes."""
-    if encoding == 'br':
-        import brotli
-        return brotli.Decompressor().process
     if encoding in ('gzip', 'x-gzip'):
         return zlib.decompressobj(16 + zlib.MAX_WBITS).decompress
     if encoding in ('', 'identity'):
@@ -563,7 +558,7 @@ class Workable(Platform):
                     feed(decode(chunk))
                     await asyncio.sleep(0)          # the engine's progress line runs between chunks
                 jobs = close()
-            except (ET.ParseError, zlib.error) + BROTLI_ERRORS as exc:
+            except (ET.ParseError, zlib.error) as exc:
                 raise BoardError('the download was cut before its end') from exc
         return [job for job in jobs if keep(job)]
 

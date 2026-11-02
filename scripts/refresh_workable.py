@@ -16,10 +16,10 @@ for the newest jobs reaches the jobs posted today soonest.
 
 On 2026-11-02: FILLED_BY_THE_RUN
 
-Run: python3 scripts/refresh_workable.py [account ...] [--accounts <file>] [--feed <saved copy of the feed: .xml,
-.xml.gz or .xml.br>]   (needs httpx and brotli; writes the file, prints a summary; about 1.5 hours). From a slow
-line the feed download is cut at about 60 s and the part that arrived is read; Workable refuses an address for an hour
-after a few downloads of its feed, so --feed reads a copy saved earlier.
+Run: python3 scripts/refresh_workable.py [account ...] [--accounts <file>] [--feed <saved copy of the feed, .xml or
+.xml.gz>]   (needs httpx; writes the file, prints a summary; about 1.5 hours). From a slow line the feed download is
+cut at about 60 s and the part that arrived is read; Workable refuses an address for an hour after a few downloads of
+its feed, so --feed reads a copy saved earlier.
 """
 import asyncio
 import gzip
@@ -129,9 +129,6 @@ def archive_accounts(platform: Workable) -> set[str]:
 # ---------- the feed ----------
 
 def decoder(encoding: str):
-    if encoding == 'br':
-        import brotli
-        return brotli.Decompressor().process
     if encoding == 'gzip':
         return zlib.decompressobj(16 + zlib.MAX_WBITS).decompress
     return lambda chunk: chunk
@@ -170,7 +167,7 @@ async def read_feed(http, path: str | None) -> Companies:
     companies = Companies()
     if path:
         opener = gzip.open if path.endswith('.gz') else open
-        decode = decoder('br' if path.endswith('.br') else 'identity')
+        decode = decoder('identity')
         with opener(path, 'rb') as f:
             while chunk := f.read(1 << 20):
                 try:
@@ -181,7 +178,7 @@ async def read_feed(http, path: str | None) -> Companies:
         return companies
     try:
         async with http.stream('GET', FEED_URL, timeout=httpx.Timeout(120, connect=15),
-                               headers={'Accept-Encoding': 'br'}) as response:
+                               headers={'Accept-Encoding': 'gzip'}) as response:
             print(f'feed: HTTP {response.status_code}', flush=True)
             if response.status_code == 200:
                 decode = decoder(response.headers.get('content-encoding', 'identity'))
