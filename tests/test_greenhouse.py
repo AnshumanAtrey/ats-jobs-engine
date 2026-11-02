@@ -482,6 +482,16 @@ class OtherAddress(unittest.TestCase):
             pages = asyncio.run(self.read(p))
         self.assertEqual((len(pages[0]), len(calls)), (1, 2))
 
+    def test_calls_wait_longer_than_the_engine_for_a_big_board(self):
+        seen = []
+
+        async def send(http, method, url, **kwargs):
+            seen.append(kwargs.get('timeout'))
+            return Response(200, {'jobs': []})
+        with patch('ats_jobs.platforms.greenhouse.send', send):
+            asyncio.run(self.read(platform()))
+        self.assertGreaterEqual(seen[0].read, 60)          # Anduril's list took up to 34.4 s to come
+
     def test_a_missing_board_is_the_api_answering_and_needs_no_other_address(self):
         p = platform()
         send, calls = sender([Response(404, {'status': 404, 'error': 'Job not found'})])

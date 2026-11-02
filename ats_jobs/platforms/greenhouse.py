@@ -60,6 +60,8 @@ import time
 from datetime import timezone
 from urllib.parse import parse_qs, urlparse
 
+import httpx
+
 from ..http import BoardError, BoardMissing, send
 from ..inputs import JOB_TYPE_ALIASES, WORK_TYPE_ALIASES
 from ..rows import Term, parse_time, terms
@@ -81,6 +83,10 @@ DOMAIN = re.compile(r'^(?:https?://)?(?:www\.)?([a-z0-9-]+(?:\.[a-z0-9-]+)+)/?$'
 SECOND_LEVEL = {'co', 'com', 'org', 'net', 'ac', 'gov', 'edu'}            # acme.co.uk
 COMPANY_SUFFIX = re.compile(r'[\s,]+(?:inc|llc|ltd|limited|corp|corporation|gmbh|plc)\.?$')
 BLOCK_WAIT_S = (30, 60, 90)          # blocks lifted 2 (CloudFront 403) and 3 minutes (406) after the last call
+# Greenhouse's origin sometimes takes about 30 s to start a big board's list, on both addresses (Anduril 27.6, 31.6 and
+# 34.4 s on 3 of 4 calls, SpaceX 24 s once, 2026-11-02 21:07 UTC): the engine's 30 s read timeout cut them and the
+# retries could lose the board, so Greenhouse's calls wait three times as long for a byte
+TIMEOUT = httpx.Timeout(90.0, connect=15.0)
 RATE = 80                            # calls a second at most for a run: 4,800 a minute, under the 5,800 a minute
                                      # that made CloudFront block boards-api, whatever the latency from Apify
 HEAVY_MB = 150                       # the most one list with descriptions held while read: Pulse 152 MB, Anduril
@@ -341,7 +347,7 @@ class Greenhouse(Platform):
             for host in list(self.hosts):
                 await self.pace()
                 try:
-                    response = await send(http, 'GET', f'https://{host}/v1/boards/{path}', params=params)
+                    response = await send(http, 'GET', f'https://{host}/v1/boards/{path}', params=params, timeout=TIMEOUT)
                 except BoardError as exc:                   # timeouts, DNS, TLS or 5xx after the retries
                     failed = str(exc) or type(exc).__name__
                 else:
