@@ -49,8 +49,8 @@ ANOTHER_COMPANY = {'id': '65d5680c-9aa3-45e6-9a95-5802867228e2', 'code': 'ILLEGA
 
 
 class Response:
-    def __init__(self, status_code, data=None, text=''):
-        self.status_code, self.data, self.text = status_code, data, text
+    def __init__(self, status_code, data=None, text='', headers=None):
+        self.status_code, self.data, self.text, self.headers = status_code, data, text, headers or {}
 
     def json(self):
         if self.data is None:
@@ -66,8 +66,10 @@ def listing(records, total=None, offset=0):
 def sender(answers: list):
     async def send(http, method, url, **kwargs):
         calls.append((url, kwargs.get('params') or {}))
+        sent.append(kwargs)
         return answers.pop(0)
-    calls = []
+    calls, sent = [], []
+    send.sent = sent
     return send, calls
 
 
@@ -525,6 +527,45 @@ class Lookup(unittest.TestCase):
         for bad in (Response(500), Response(404, text='<title>404 Not Found</title>')):
             with self.assertRaises(BoardError):
                 run(P.details(None, dict(SESSION), job), [bad])
+
+
+class ShortLinks(unittest.TestCase):
+    """smrtr.io/<code>: SmartRecruiters' share and job-alert links (301 to the job, 404 for an unknown code, 2026-11-03)."""
+    WHERE = 'https://jobs.smartrecruiters.com/BoschGroup/744000159116379-pmi-project-lead-em?trid=x&posting-id=744000159116379'
+
+    def test_a_short_link_is_a_job_link_read_offline(self):
+        self.assertEqual(P.read_link('https://smrtr.io/8pL2n'), ('smrtr.io', '8pL2n'))
+        self.assertEqual(P.read_link('smrtr.io/8PL2N?utm_source=alert'), ('smrtr.io', '8PL2N'))   # another job
+        for text in ('smrtr.io', 'https://smrtr.io/a/b', 'smrtr.io/x'):
+            self.assertEqual(P.read_link(text), (None, None), text)
+        cfg = parse_input({'jobUrls': ['https://smrtr.io/8pL2n', 'smrtr.io/8PL2N'], 'searchTerms': ['smrtr.io/AbC12']}, P, {})
+        self.assertEqual([u[:2] for u in cfg.job_urls], [('smrtr.io', '8pL2n'), ('smrtr.io', '8PL2N'), ('smrtr.io', 'AbC12')])
+
+    def lookup(self, answers, code='8pL2n'):
+        send, calls = sender(answers)
+        with patch('ats_jobs.platforms.smartrecruiters.send', send):
+            session = asyncio.run(P.open(None, Board('smrtr.io', 'smrtr.io')))
+            result = asyncio.run(P.lookup(None, session, code))
+        return result, calls, send.sent
+
+    def test_a_short_link_is_followed_to_its_job(self):
+        (status, job), calls, sent = self.lookup([Response(301, headers={'location': self.WHERE}), Response(200, DETAIL)])
+        self.assertEqual((status, job['id'], job['companySlug'], job['company']), ('open', '744000159116379', 'BoschGroup', 'Bosch Group'))
+        self.assertEqual((calls[0][0], sent[0]), ('https://smrtr.io/8pL2n', {'follow_redirects': False}))
+        self.assertIn('/companies/BoschGroup/postings/744000159116379', calls[1][0])
+
+    def test_a_closed_unknown_or_odd_short_link(self):
+        closed = self.lookup([Response(301, headers={'location': self.WHERE}), Response(200, {**DETAIL, 'active': False})])[0]
+        self.assertEqual(closed, ('closed', {'company': 'Bosch Group', 'companySlug': 'BoschGroup'}))
+        self.assertEqual(self.lookup([Response(404, text='<!DOCTYPE html>')])[0], ('not found', None))
+        elsewhere = Response(301, headers={'location': 'https://www.smartrecruiters.com/'})
+        self.assertEqual(self.lookup([elsewhere])[0], ('not found', None))
+        with self.assertRaises(BoardError):
+            self.lookup([Response(500)])
+
+    def test_a_short_link_typed_as_a_company_is_no_career_site(self):
+        with self.assertRaises(BoardMissing):
+            run(collect(P, {'short': True}), [])
 
 
 class Pacing(unittest.TestCase):

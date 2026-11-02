@@ -15,6 +15,9 @@ through SmartRecruiters' public Posting API. No key. Measured 2026-11-02:
   with JSON code RESOURCE_NOT_FOUND; another company's id 400 with code ILLEGAL_ARGUMENT naming the companyIdentifier;
   text that is no id a plain-text 400 "Bad Request" (2026-11-03). A path that does not exist (/postingz, /v2/...) is
   Cloudflare's HTML 404, and a refused parameter (limit=-1, releasedAfter=garbage) a 400 VALIDATION_ERROR.
+- GET https://smrtr.io/<code>: SmartRecruiters' short link of one job (share and job-alert links) answers 301 to the
+  job's link on jobs.smartrecruiters.com; an unknown code answers 404. Codes mind case: 8pL2n is an Anglo American job,
+  8PL2N a Visa one (2026-11-03), so every short link waits under one board, smrtr.io, until its lookup reads it.
 - GET https://jobs.smartrecruiters.com/sr-jobs/company-name-lookup?q=<company>: the identifier and name of a company,
   "" when there is none: how a typed company is told apart from one with no open job. It knows only the companies in
   SmartRecruiters' job search ("" for AbbVie, 1,989 open jobs), so a company's postings are asked first.
@@ -57,7 +60,7 @@ from .. import places
 from ..http import BoardError, BoardMissing, send
 from ..inputs import JOB_TYPE_ALIASES
 from ..rows import WORD, Term, country_code, index, is_country
-from .base import Platform
+from .base import Board, Platform
 from .cornerstone import text_of
 
 try:
@@ -69,7 +72,9 @@ API = 'https://api.smartrecruiters.com/v1/companies/{company}/postings'
 NAME_LOOKUP = 'https://jobs.smartrecruiters.com/sr-jobs/company-name-lookup'
 JOB_LINK = 'https://jobs.smartrecruiters.com/{company}/{job}'
 MAIN_SITE = {'www.smartrecruiters.com', 'smartrecruiters.com'}     # old company and job links, and the vendor's site
-HOSTS = {'careers.smartrecruiters.com', 'jobs.smartrecruiters.com', 'api.smartrecruiters.com', *MAIN_SITE}
+SHORT = 'smrtr.io'                                          # smrtr.io/<code>: one job, read where it leads
+HOSTS = {'careers.smartrecruiters.com', 'jobs.smartrecruiters.com', 'api.smartrecruiters.com', SHORT, *MAIN_SITE}
+SHORT_CODE = re.compile(r'^[A-Za-z0-9]{3,16}$')
 APP_PATHS = {'oneclick-ui', 'external-referrals'}           # .../company/<company>/(publication|job)/<id>
 COMPANY_FIRST = {'ni', 'my-applications'}                   # /ni/<company>/<uuid>-<slug>, /my-applications/<company>/...
 NO_COMPANY = {'sr-jobs', 'cdn-cgi', 'static', '_incapsula_resource', 'robots.txt', 'favicon.ico', 'sitemap.xml'}
@@ -261,6 +266,8 @@ class SmartRecruiters(Platform):
         parts = [p for p in parsed.path.split('/') if p]
         query = parse_qs(parsed.query)
         named = (query.get('dcr_ci') or query.get('company') or [None])[0]
+        if host == SHORT:                # the code keeps its case: the job is known only once the link is followed
+            return (SHORT, parts[0]) if len(parts) == 1 and SHORT_CODE.match(parts[0]) else (None, None)
         if host == 'api.smartrecruiters.com':
             if len(parts) >= 3 and parts[:2] == ['v1', 'companies']:
                 return parts[2], posting_id(parts[4]) if len(parts) > 4 and parts[3] == 'postings' else None
@@ -309,6 +316,8 @@ class SmartRecruiters(Platform):
                 await asyncio.sleep(begin - now)
 
     async def open(self, http, board):
+        if board.key == SHORT:
+            return {'short': True}
         if not COMPANY.match(board.key):
             return None
         session = {'company': board.key}
@@ -384,6 +393,8 @@ class SmartRecruiters(Platform):
             size = PAGE_SIZE
 
     async def pages(self, http, session, term, days):
+        if session.get('short'):         # a short link typed as a company names one job, not a career site
+            raise BoardMissing(SHORT)
         params = {}
         if days:
             after = datetime.now(timezone.utc) - timedelta(days=days)
@@ -426,9 +437,32 @@ class SmartRecruiters(Platform):
         return job if record is None else self.enrich(job, record)
 
     async def lookup(self, http, session, job_id):
+        if session.get('short'):
+            return await self.short_link(http, job_id)
         record = await self._detail(http, session, job_id)
         if record is None:
             return 'not found', None
         if record.get('active') is not True:
             return 'closed', None
         return 'open', self.enrich(self.job(session, record), record)
+
+    async def short_link(self, http, code: str) -> tuple[str, dict | None]:
+        """smrtr.io/<code>: where it leads (one call that does not follow it), then that job. The job carries its
+        company, so a row names it rather than smrtr.io where the engine reads companySlug from the job."""
+        await self.pace()
+        response = await send(http, 'GET', f'https://{SHORT}/{code}', follow_redirects=False)
+        if response.status_code == 404:
+            return 'not found', None
+        if response.status_code not in (301, 302, 303, 307, 308):
+            raise BoardError(f'HTTP {response.status_code} from {SHORT}')
+        link = self.read_link(response.headers.get('location') or '')
+        if not link or not link[0] or not link[1] or link[0] == SHORT:
+            return 'not found', None
+        session = await self.open(http, Board(link[0], link[0]))
+        record = await self._detail(http, session, link[1]) if session else None
+        if record is None:
+            return 'not found', None
+        company = {'company': clean(obj(record.get('company')).get('name')) or None, 'companySlug': session['company']}
+        if record.get('active') is not True:
+            return 'closed', company
+        return 'open', {**self.enrich(self.job(session, record), record), **company}
