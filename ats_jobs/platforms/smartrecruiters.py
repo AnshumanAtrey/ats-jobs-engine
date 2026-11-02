@@ -44,9 +44,10 @@ from datetime import datetime, timedelta, timezone
 from importlib import resources
 from urllib.parse import parse_qs, urlparse
 
+from .. import places
 from ..http import BoardError, BoardMissing, send
 from ..inputs import JOB_TYPE_ALIASES
-from ..rows import Term, country_code, index, words
+from ..rows import Term, country_code, index, is_country, words
 from .base import Platform
 from .cornerstone import text_of
 
@@ -131,11 +132,21 @@ def country_name(code: str | None, full: str | None) -> str | None:
     return (getattr(found, 'common_name', None) or found.name) if found else code
 
 
+def world_region(text: str | None) -> bool:
+    """'Europe', 'ASIA', 'Australia & New Zealand', 'GLOBAL': a part of the world, not a state ('South Australia')."""
+    toks = places.tokens(text or '')
+    return bool(toks) and (places.world_query(toks) or bool(places.regions_in(toks, is_country)))
+
+
 def place(location: dict) -> dict | None:
     """A posting's address -> one place: 'Singapore, , Singapore' reads 'Singapore', 'Shanghai, Shanghai, China'
-    reads 'Shanghai, China'."""
+    reads 'Shanghai, China'. A part of the world typed as the region of an office address is a label, not where the
+    job is: Turner & Townsend files Amsterdam under "Europe" (1,173 onsite and hybrid postings on the 2,943 career
+    sites carried one, 2026-11-02), and "Germany" found them. A remote posting keeps it."""
     city, region = clean(location.get('city')) or None, clean(location.get('region')) or None
     country = country_name(location.get('country'), location.get('fullLocation'))
+    if region and country and not location.get('remote') and world_region(region):
+        region = None
     parts = []
     for part in (city, region, country):
         if part and (not parts or parts[-1].casefold() != part.casefold()):

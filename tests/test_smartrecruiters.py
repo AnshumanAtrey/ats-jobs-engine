@@ -2,6 +2,7 @@
 import asyncio
 import re
 import unittest
+from datetime import datetime, timezone
 from unittest.mock import patch
 
 from ats_jobs.http import BoardError, BoardMissing
@@ -9,7 +10,7 @@ from ats_jobs.inputs import parse_input
 from ats_jobs.platforms.base import Board
 from ats_jobs.platforms.smartrecruiters import (DORMANT, SmartRecruiters, clean, country_name, dormant_sites, job_ad,
                                                 job_type, pay, place, posting_id, slug)
-from ats_jobs.rows import job_area
+from ats_jobs.rows import Filters, job_area
 
 P = SmartRecruiters()
 P._known = {'boschgroup', 'servicenow'}
@@ -149,6 +150,25 @@ class Parsing(unittest.TestCase):
         spot = place({'city': 'Corpus Christi', 'region': 'TX', 'country': 'us', 'fullLocation': 'Corpus Christi, TX, United States'})
         self.assertEqual(spot['name'], 'Corpus Christi, TX, United States')
         self.assertEqual(job_area({'places': [spot]}).countries, {'US'})
+
+    def test_a_part_of_the_world_typed_as_an_offices_region_is_left_out(self):
+        # Turner & Townsend files Amsterdam under the region "Europe" and StepStone Warsaw under "EUROPE" (1,173 onsite
+        # and hybrid postings on 2026-11-02); a remote posting keeps it, a state stays, and with no country it is all
+        spot = place({'city': 'Amsterdam', 'region': 'Europe', 'country': 'nl', 'remote': False, 'hybrid': False,
+                      'fullLocation': 'Amsterdam, Europe, Netherlands'})
+        self.assertEqual((spot['name'], spot['region'], spot['country']), ('Amsterdam, Netherlands', None, 'Netherlands'))
+        self.assertEqual(place({'city': 'Warsaw', 'region': 'EUROPE', 'country': 'pl', 'hybrid': True})['name'], 'Warsaw, Poland')
+        self.assertEqual(place({'city': 'Sydney', 'region': 'Australia & New Zealand', 'country': 'au'})['name'], 'Sydney, Australia')
+        self.assertEqual(place({'city': 'Berlin', 'region': 'EMEA', 'country': 'de', 'remote': True})['region'], 'EMEA')
+        self.assertEqual(place({'city': 'Adelaide', 'region': 'South Australia', 'country': 'au'})['region'], 'South Australia')
+        self.assertEqual(place({'city': None, 'region': 'Europe', 'country': None})['name'], 'Europe')
+
+    def test_a_country_finds_the_jobs_in_it_not_an_office_filed_under_its_continent(self):
+        germany, now = Filters(parse_input({'location': ['Germany']}, P)), datetime.now(timezone.utc)
+        office = {'remote': False, 'hybrid': False}
+        amsterdam = P.job(SESSION, {**RECORD, 'location': {**office, 'city': 'Amsterdam', 'region': 'Europe', 'country': 'nl'}})
+        berlin = P.job(SESSION, {**RECORD, 'location': {**office, 'city': 'Berlin', 'region': 'Berlin', 'country': 'de'}})
+        self.assertEqual((germany.passes(amsterdam, now), germany.passes(berlin, now)), (False, True))
 
     def test_a_place_with_almost_nothing(self):
         self.assertIsNone(place({}))
