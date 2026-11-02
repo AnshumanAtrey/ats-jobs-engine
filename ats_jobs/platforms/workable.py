@@ -93,7 +93,7 @@ BROTLI_ERRORS = (__import__('brotli').error,) if FEED_ENCODING == 'br' else ()
 FALLBACK_SECONDS = 120        # career pages read, biggest first, when the feed cannot be read
 WORKPLACE_SECONDS = 90        # a hybrid or on-site search checks feed jobs one by one for this long at most
 CAREER_PAGES = 300            # the biggest career pages a run for the newest jobs reads: 120 s at most
-MONTHS = {m: i for i, m in enumerate(('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'), 1)}
+MONTHS = {m: i for i, m in enumerate('Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec'.split(), 1)}
 FEED_DATE = re.compile(r'(\d{1,2}) ([A-Z][a-z]{2}) (\d{4}) (\d{2}):(\d{2}):(\d{2})')
 TAG = re.compile(r'<[^>]*>')
 NOBODY = {'company': None, 'companySlug': None, 'companyWebsite': None}   # a gone job whose company is unknown
@@ -126,7 +126,8 @@ def job_type(text: str | None, experience: str | None = None) -> str | None:
 
 def pay_text(low, high, currency: str | None, period: str | None) -> str | None:
     """28000, 32000, 'GBP', 'year' -> 'GBP 28,000 - 32,000 per year'. One amount when both are equal or one is missing."""
-    amounts = list(dict.fromkeys(f'{v:,.2f}'.removesuffix('.00') for v in (low, high) if isinstance(v, (int, float)) and v > 0))
+    shown = [v for v in (low, high) if isinstance(v, (int, float)) and v > 0]
+    amounts = list(dict.fromkeys(f'{v:,.2f}'.removesuffix('.00') for v in shown))
     if not amounts:
         return None
     return ' '.join(p for p in (currency, ' - '.join(amounts), f'per {period}' if period else None) if p)
@@ -212,7 +213,7 @@ class Workable(Platform):
     actor = 'workable-jobs-search'
     board_example = 'https://apply.workable.com/huggingface/'
     job_example = 'https://apply.workable.com/huggingface/j/DB4D7C0EC8/'
-    concurrency = 8               # calls waiting for answers at once (15% of career page answers take 5 s); PACE keeps the rate
+    concurrency = 8               # calls waiting at once (15% of career page answers take 5 s); PACE keeps the rate
     server_search = True          # pages() gets the word: the feed and a career page are matched here
     never = ('team', 'offersEquity', 'expiresAt')
 
@@ -530,7 +531,8 @@ class Workable(Platform):
                 spool.close()
                 STATS['retries'][type(exc).__name__] += 1
                 if started or attempt:
-                    raise BoardError(('the download was cut before its end' if started else f'{type(exc).__name__}: {exc}')[:200]) from exc
+                    why = 'the download was cut before its end' if started else f'{type(exc).__name__}: {exc}'
+                    raise BoardError(why[:200]) from exc
                 await asyncio.sleep(3)
             except BaseException:
                 spool.close()
@@ -607,8 +609,9 @@ class Workable(Platform):
                 found += 1
                 kept.append({**job, 'workType': kind})
         if checked < len(candidates):
+            asked = ' or '.join(sorted(wanted - {'remote'}))
             cfg.notes.append(f"Workable's feed marks only remote jobs, so the {checked:,} newest of {len(candidates):,} "
-                             f'matching jobs not marked remote were checked one by one for {" or ".join(sorted(wanted - {"remote"}))}.')
+                             f'matching jobs not marked remote were checked one by one for {asked}.')
         return kept
 
     def from_board(self, job_id: str, data: dict) -> dict:
@@ -632,7 +635,8 @@ class Workable(Platform):
             'otherLocations': [p['name'] for p in places[1:]],
             'workType': WORKPLACE.get(data.get('workplace')) or remote,
             'employmentType': job_type(data.get('employmentType')), 'department': clean(data.get('department')) or None,
-            **pay(data.get('salaryFrom'), data.get('salaryTo'), data.get('salaryCurrencyIsoCode'), data.get('salaryFrequency')),
+            **pay(data.get('salaryFrom'), data.get('salaryTo'), data.get('salaryCurrencyIsoCode'),
+                  data.get('salaryFrequency')),
             'postedAt': clean(data.get('created')) or None, 'dateOnly': False, 'jobUrl': url, 'applyUrl': url,
             'description': text_of(html), 'descriptionHtml': html,
         }
@@ -660,12 +664,14 @@ class Workable(Platform):
             'places': places,
             'location': places[0]['name'] if places else job.get('location'),
             'otherLocations': [p['name'] for p in places[1:]],
-            'workType': WORKPLACE.get(data.get('workplace')) or ('remote' if data.get('remote') is True else job.get('workType')),
+            'workType': WORKPLACE.get(data.get('workplace'))
+            or ('remote' if data.get('remote') is True else job.get('workType')),
             'employmentType': job.get('employmentType') if job.get('employmentType') == 'intern'
             else TYPE.get(data.get('type')) or job.get('employmentType'),
             'department': departments or job.get('department'),
             'reference': clean(data.get('code')) or job.get('reference'),
-            **pay(data.get('salary_from'), data.get('salary_to'), data.get('salary_currency_iso_code'), data.get('salary_frequency')),
+            **pay(data.get('salary_from'), data.get('salary_to'), data.get('salary_currency_iso_code'),
+                  data.get('salary_frequency')),
             'postedAt': job.get('postedAt') or clean(data.get('published'))[:10] or None,
             'description': text_of(html),
             'descriptionHtml': html,
