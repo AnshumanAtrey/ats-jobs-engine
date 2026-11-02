@@ -30,7 +30,8 @@ of the list. A pass is one call a board: over the first list's 8,378 boards, 19.
 112 s on this laptop. A description search downloads every description (about 600 MB gzipped), and a first look at each escaped
 text skips the work on those that cannot match: 44 s of CPU instead of 150 s for kubernetes. One board's list with
 descriptions holds up to about 150 MB while it is read (body and parsed JSON: Pulse 152 MB, Anduril 125, Prolific 115,
-2026-11-03), and boards go biggest first, so the lists read at once follow the run's memory.
+2026-11-03) and size falls fast down the list (board 100: 291 jobs), so the 100 biggest boards share slots sized to
+the run's memory and the rest read at the engine's pace: 182 s and a 1.53 GB peak at 2 GB, 210 s and 0.88 GB at 1 GB.
 
 Tokens are case-insensitive (stripe, Stripe and STRIPE are one board) and hold letters, digits, - and _. EU boards
 (job-boards.eu.greenhouse.io) use the same tokens and the same API. A board whose company shows its jobs on its own
