@@ -44,8 +44,9 @@ import httpx
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from ats_jobs.http import BoardError, send  # noqa: E402
-from ats_jobs.platforms.workable import ACCOUNT, NOT_ACCOUNTS, SHORT_LINK, WIDGET, Workable, clean  # noqa: E402
+from ats_jobs.http import BoardError  # noqa: E402
+from ats_jobs.platforms.workable import (ACCOUNT, NOT_ACCOUNTS, RETRY_S, SHORT_LINK, WIDGET, Workable,  # noqa: E402
+                                        clean, refusal)
 
 OUT = ROOT / 'ats_jobs' / 'data' / 'workable.tsv'
 FEED_URL = 'https://www.workable.com/boards/workable.xml'
@@ -211,17 +212,40 @@ async def read_feed(http, path: str | None) -> Companies:
 # ---------- apply.workable.com ----------
 
 class Turns:
-    """One call to apply.workable.com at a time, PACE apart."""
+    """One call to apply.workable.com at a time, PACE apart. The first refusal (429, 403 or a challenge page) stops
+    every later call, since calls that went on into Workable's refusals got an address banned for a day (2026-11-02);
+    a 5xx or a broken connection is tried again after RETRY_S, in its turn."""
     def __init__(self):
-        self.lock, self.last = asyncio.Lock(), 0.0
+        self.lock, self.last, self.calls, self.refused = asyncio.Lock(), 0.0, 0, None
 
     async def send(self, http, url: str, **kwargs):
-        async with self.lock:
-            wait = self.last + PACE - time.monotonic()
-            if wait > 0:
-                await asyncio.sleep(wait)
-            self.last = time.monotonic()
-        return await send(http, 'GET', url, **kwargs)
+        last = 'no answer'
+        for attempt in range(len(RETRY_S) + 1):
+            async with self.lock:
+                if self.refused:
+                    raise BoardError(f'refused ({self.refused})')
+                wait = self.last + PACE - time.monotonic()
+                if wait > 0:
+                    await asyncio.sleep(wait)
+                if self.refused:
+                    raise BoardError(f'refused ({self.refused})')
+                self.last = time.monotonic()
+                self.calls += 1
+            try:
+                response = await http.get(url, **kwargs)
+            except httpx.HTTPError as exc:
+                last = f'{type(exc).__name__}: {exc}'[:200]
+            else:
+                why = refusal(response, url)
+                if why:
+                    self.refused = self.refused or why
+                    raise BoardError(f'refused ({why})')
+                if response.status_code < 500:
+                    return response
+                last = f'HTTP {response.status_code}'
+            if attempt < len(RETRY_S):
+                await asyncio.sleep(RETRY_S[attempt])
+        raise BoardError(last)
 
 
 async def account_of(http, turns: Turns, codes: list[str]) -> str | None:
@@ -240,7 +264,8 @@ async def account_of(http, turns: Turns, codes: list[str]) -> str | None:
 
 
 async def career_page(http, turns: Turns, account: str) -> dict | None:
-    """{name, jobs} of a live account, None for 404, {'error'} when Workable did not answer."""
+    """{name, jobs, codes} of a live account (codes: its open jobs' shortcodes), None for 404, {'error'} when Workable
+    did not answer."""
     try:
         response = await turns.send(http, WIDGET.format(account=account))
     except BoardError as exc:
@@ -249,10 +274,17 @@ async def career_page(http, turns: Turns, account: str) -> dict | None:
         return None
     try:
         data = response.json()
-        return {'name': clean(data.get('name')) or account,
-                'jobs': len({j.get('shortcode') for j in data.get('jobs') or [] if j.get('shortcode')})}
+        codes = {clean(j.get('shortcode')).upper() for j in data.get('jobs') or [] if j.get('shortcode')}
+        return {'name': clean(data.get('name')) or account, 'jobs': len(codes), 'codes': codes}
     except (ValueError, AttributeError):
         return {'error': f'HTTP {response.status_code}'}
+
+
+def holds(page: dict | None, company: dict) -> bool:
+    """A career page that answered and lists one of a feed company's jobs: that company's own account. A name or
+    Common Crawl's votes alone are not enough: generic names (Elevate, Company) pointed to the wrong account, or to
+    one that no longer answers (2026-11-03)."""
+    return bool(page) and 'error' not in page and bool(page['codes'] & company['jobs'])
 
 
 async def paced(items, work, label: str) -> list:
@@ -290,45 +322,56 @@ async def main(extra: list[str], feed_file: str | None) -> None:
         print(f'{len(first):,} accounts from the file, the archives and the command line to check', flush=True)
         results = await paced(first, lambda a: career_page(http, turns, a), 'accounts checked')
         pages = dict(zip(first, results))
-        names = {p['name'].casefold() for p in results if p and 'error' not in p}
-        unnamed = sorted((c for c in companies.by_name.values() if c['name'].casefold() not in names),
+        # a feed company belongs to the account whose career page lists one of its jobs: an account of the same name,
+        # else the account Common Crawl saw its job codes under, else the one its own job links redirect to
+        by_name: dict[str, list[str]] = {}
+        for account, page in pages.items():
+            if page and 'error' not in page:
+                by_name.setdefault(page['name'].casefold(), []).append(account)
+        owner = {}                                   # feed company name -> its account
+        for company in companies.by_name.values():
+            mine = [a for a in by_name.get(company['name'].casefold(), []) if holds(pages[a], company)]
+            if mine:
+                owner[company['name']] = mine[0]
+        unowned = sorted((c for c in companies.by_name.values() if c['name'] not in owner),
                          key=lambda c: -len(c['jobs']))
-        by_codes = {c['name']: account_by_codes(codes, c) for c in unnamed}
-        named = {}                                   # account -> the feed's company, for its website
-        for company in unnamed:
-            if by_codes[company['name']]:
-                named.setdefault(by_codes[company['name']], company)
-        ranked = [c for c in unnamed if not by_codes[c['name']]]
-        print(f'{len(companies.by_name) - len(unnamed):,} feed companies are live accounts already, '
-              f'{len(unnamed) - len(ranked):,} known by their job codes; {len(ranked):,} to resolve', flush=True)
+        voted = {c['name']: account_by_codes(codes, c) for c in unowned}
+        new = sorted({a for a in voted.values() if a and a not in pages and ACCOUNT.match(a)})
+        more = await paced(new, lambda a: career_page(http, turns, a), 'accounts voted by job codes checked')
+        results += more
+        pages.update(zip(new, more))
+        owner.update((c['name'], voted[c['name']]) for c in unowned if holds(pages.get(voted[c['name']]), c))
+        ranked = [c for c in unowned if c['name'] not in owner]
+        print(f'{len(companies.by_name) - len(unowned):,} feed companies are live accounts already, '
+              f'{len(unowned) - len(ranked):,} known by their job codes; {len(ranked):,} to resolve', flush=True)
         found = await paced(ranked, lambda c: account_of(http, turns, c['codes']), 'feed companies resolved')
-        for company, account in zip(ranked, found):
-            if isinstance(account, str):
-                named.setdefault(account, company)
-        new = sorted(a for a in named if a not in pages and ACCOUNT.match(a))
+        new = sorted({a for a in found if isinstance(a, str) and a not in pages and ACCOUNT.match(a)})
         results += (more := await paced(new, lambda a: career_page(http, turns, a), 'feed accounts checked'))
         pages.update(zip(new, more))
+        owner.update((c['name'], a) for c, a in zip(ranked, found) if isinstance(a, str) and holds(pages.get(a), c))
     calls = len(results) + len(found)
     lost = unanswered(results) + unanswered(found)
+    if turns.refused:
+        sys.exit(f'Workable refused this address ({turns.refused}) after {turns.calls:,} calls. Nothing was written; '
+                 'run again in a day.')
     if lost > MOST_UNANSWERED * calls:
-        sys.exit(f'{lost:,} of {calls:,} calls got no answer: Workable refused this address. Nothing was written; '
-                 'run again later.')
-    websites = {c['name'].casefold(): c['website'] for c in companies.by_name.values()}
+        sys.exit(f'{lost:,} of {calls:,} calls got no answer. Nothing was written; run again later.')
+    named = {}                                       # account -> its feed company, for its website
+    for name, account in owner.items():
+        named.setdefault(account, companies.by_name[name.casefold()])
     accounts: dict[str, dict] = {}
     for account, page in pages.items():
         if page is not None and 'error' in page:
             if account in file_rows:          # Workable did not answer: keep what the file knew
                 name, website = file_rows[account]
                 accounts[account] = {'name': name, 'website': website, 'jobs': 0}
-        elif page is not None:
-            website = websites.get(page['name'].casefold()) or (named.get(account) or {}).get('website') \
-                or file_rows.get(account, (None, None))[1]
+        elif page is not None:                # only an account that answered is written
+            website = (named.get(account) or {}).get('website') or file_rows.get(account, (None, None))[1]
             accounts[account] = {'name': page['name'], 'website': website, 'jobs': page['jobs']}
     live = sorted(accounts.items(), key=lambda kv: (-kv[1]['jobs'], kv[1]['name'].lower(), kv[0]))
     hiring = {account for account, a in live if a['jobs']}
     jobs = sum(a['jobs'] for _, a in live)
-    feed_names = set(companies.by_name)
-    seen = {'the feed': {a for a in hiring if a in named or accounts[a]['name'].casefold() in feed_names},
+    seen = {'the feed': {a for a in hiring if a in named},
             'Common Crawl': hiring & archive, 'the list before': hiring & set(file_rows), 'given': hiring & given}
     by_source = ', '.join(f'{k} {len(v):,} ({len(v - set().union(*(w for j, w in seen.items() if j != k))):,} only '
                           'there)' for k, v in seen.items() if v)
