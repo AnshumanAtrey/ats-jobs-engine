@@ -306,11 +306,10 @@ def settings(raw=None):
 
 class Feed(unittest.TestCase):
     def read(self, data: bytes, size: int, p=None):
-        feed, close = (p or settings({'searchTerms': ['engineer'], 'includeDetails': True})).reader()
-        jobs = []
+        feed, close = (p or settings({'includeDetails': True})).reader()
         for i in range(0, len(data), size):
-            jobs += feed(data[i:i + size])
-        return jobs + close()
+            feed(data[i:i + size])
+        return close()
 
     def test_a_feed_job(self):
         jobs = self.read(FEED_XML, 4096)
@@ -319,23 +318,24 @@ class Feed(unittest.TestCase):
         self.assertEqual((job['title'], job['company'], job['companySlug'], job['companyWebsite']),
                          ('System Engineer', 'Biffa Waste Services', 'biffa', 'https://www.biffa.co.uk/'))
         self.assertEqual((job['location'], job['places'][0]['country'], job['workType'], job['employmentType']),
-                         ('Hyderabad, Telangana, India', 'IN', 'remote', 'contract'))
+                         ('Hyderabad, Telangana, India', 'India', 'remote', 'contract'))
         self.assertEqual((job['postedAt'], job['dateOnly'], job['jobUrl'], job['applyUrl']),
                          ('2026-11-02T10:24:17+00:00', False, 'https://apply.workable.com/j/F44ED9E40A',
                           'https://apply.workable.com/j/F44ED9E40A/apply'))
-        self.assertEqual(job['description'].split(), ['Build', '&', 'run', 'servers', 'Next'])
+        self.assertNotIn('description', job)        # details() reads the job's own answer, which has all of it
 
-    def test_texts_are_kept_only_when_asked(self):
-        job = self.read(FEED_XML, 4096, settings())[0]
-        self.assertEqual((job['description'], job['descriptionHtml']), (None, None))
+    def test_a_searched_description_is_matched_as_it_passes_and_not_held(self):
+        jobs = self.read(FEED_XML, 4096, settings({'searchTerms': ['servers'], 'searchDescriptions': True}))
+        self.assertEqual([(j['id'], 'description' in j) for j in jobs], [('F44ED9E40A', False)])
+        self.assertEqual(self.read(FEED_XML, 4096, settings({'searchTerms': ['servers']})), [])
 
     def test_any_chunk_size_reads_the_same(self):
         self.assertEqual(self.read(FEED_XML, 7), self.read(FEED_XML, 100000))
 
     def test_odd_records(self):
         job = self.read(FEED_XML, 512)[1]
-        self.assertEqual((job['company'], job['companySlug'], job['places'], job['workType'], job['employmentType'],
-                          job['description'], job['jobUrl']),
+        self.assertEqual((job['company'], job['companySlug'], job['places'], job['location'], job['workType'],
+                          job['employmentType'], job['jobUrl']),
                          ('Odorzx', None, [], None, None, None, 'https://apply.workable.com/j/0908074E5D'))
 
     def test_a_job_listed_once_per_place_is_one_job(self):
@@ -343,14 +343,17 @@ class Feed(unittest.TestCase):
             return (f'<job><title><![CDATA[Driver]]></title><date><![CDATA[{when}]]></date><referencenumber><![CDATA[{code}]]>'
                     f'</referencenumber><company><![CDATA[Zgraph]]></company><city><![CDATA[{city}]]></city>'
                     f'<state><![CDATA[Florida]]></state><country><![CDATA[US]]></country></job>')
-        when, later = 'Sun, 15 Mar 2026 20:17:38 UTC', 'Mon, 16 Mar 2026 08:00:00 UTC'
+        when, later, earlier = 'Sun, 15 Mar 2026 20:17:38 UTC', 'Mon, 16 Mar 2026 08:00:00 UTC', 'Sat, 14 Mar 2026 09:00:00 UTC'
+        # a job's entries need not be together: a place added later comes later, with the day it was added
         xml = ('<source>' + entry('D7C890D403', 'Miami', when) + entry('D7C890D403', 'Orlando', when)
-               + entry('ABCDEF1234', 'Tampa', when) + entry('D7C890D403', 'Tampa', later) + '</source>').encode()
+               + entry('ABCDEF1234', 'Tampa', when) + entry('D7C890D403', 'Tampa', later)
+               + entry('ABCDEF1234', 'Naples', earlier) + '</source>').encode()
         jobs = self.read(xml, 50)
-        self.assertEqual([(j['id'], j['location'], j['otherLocations']) for j in jobs],
-                         [('D7C890D403', 'Miami, Florida, United States', ['Orlando, Florida, United States']),
-                          ('ABCDEF1234', 'Tampa, Florida, United States', []),
-                          ('D7C890D403', 'Tampa, Florida, United States', [])])
+        self.assertEqual([(j['id'], j['location'], j['otherLocations'], j['postedAt']) for j in jobs],
+                         [('D7C890D403', 'Miami, Florida, United States',
+                           ['Orlando, Florida, United States', 'Tampa, Florida, United States'], '2026-03-15T20:17:38+00:00'),
+                          ('ABCDEF1234', 'Tampa, Florida, United States', ['Naples, Florida, United States'],
+                           '2026-03-14T09:00:00+00:00')])
 
     def test_a_shared_company_name_names_no_account(self):
         job = P.from_feed({'referencenumber': 'ABCDEF1234', 'title': 'Engineer', 'company': 'Bask Health'})
@@ -362,15 +365,22 @@ class Feed(unittest.TestCase):
         self.assertEqual((workable.country_name('GB'), workable.country_name('us'), workable.country_name('XK2')),
                          ('United Kingdom', 'United States', 'XK2'))
 
-    def test_the_word_and_the_period_choose_what_is_kept(self):
-        p = settings({'searchTerms': ['engineer']})
-        keep = p.wanted(None)
-        jobs = self.read(FEED_XML, 4096, p)
-        self.assertEqual([j['id'] for j in jobs if keep(j)], ['F44ED9E40A'])
-        self.assertFalse(p.wanted(2)({'title': 'Engineer', 'postedAt': '2020-01-01T00:00:00+00:00'}))
+    def test_the_search_chooses_what_is_kept(self):
+        def ids(raw):
+            return [j['id'] for j in self.read(FEED_XML, 4096, settings(raw))]
+        self.assertEqual(ids({'searchTerms': ['engineer']}), ['F44ED9E40A'])
+        self.assertEqual(ids({'searchTerms': ['engineer'], 'excludeTerms': ['system']}), [])
+        self.assertEqual(ids({'employmentType': ['contract']}), ['F44ED9E40A'])
+        old = {'title': 'Engineer', 'postedAt': '2020-01-01T00:00:00+00:00'}
+        self.assertFalse(settings({'searchTerms': ['engineer'], 'postedWithin': '7 days'}).wanted(matched=True)(old))
         driver = {'title': 'Driver', 'description': 'Drive our fleet', 'postedAt': '2026-11-02T00:00:00+00:00'}
-        self.assertFalse(settings({'searchTerms': ['fleet'], 'includeDetails': True}).wanted(None)(driver))
-        self.assertTrue(settings({'searchTerms': ['fleet'], 'searchDescriptions': True}).wanted(None)(driver))
+        self.assertFalse(settings({'searchTerms': ['fleet'], 'includeDetails': True}).wanted()(driver))
+        self.assertTrue(settings({'searchTerms': ['fleet'], 'searchDescriptions': True}).wanted()(driver))
+        self.assertTrue(settings({'searchTerms': ['fleet'], 'searchDescriptions': True}).wanted(matched=True)(
+            {**driver, 'description': None}))       # a feed job's description was matched as it passed
+        leeds = {**driver, 'title': 'Fleet driver', 'places': [{'name': 'Leeds, England, United Kingdom',
+                                                                'country': 'United Kingdom'}]}
+        self.assertFalse(settings({'searchTerms': ['fleet'], 'location': ['Germany']}).wanted(matched=True)(leeds))
 
 
 class Stream:
@@ -540,10 +550,10 @@ class Details(unittest.TestCase):
         job, _ = self.details([Response(404, text='Job not found')], self.JOB)
         self.assertEqual(job, self.JOB)
 
-    def test_a_feed_job_gets_its_whole_text(self):
-        job = {**self.JOB, 'descriptionHtml': '<p>Own the</p><p>ledger</p>', 'description': ' Own the  ledger '}
+    def test_a_job_whose_answer_is_gone_keeps_its_own_text(self):
+        job = {**self.JOB, 'descriptionHtml': '<p>Own the</p><p>ledger</p>', 'description': 'Own the\nledger'}
         result, _ = self.details([Response(404, text='Job not found')], job)
-        self.assertEqual(result['description'], 'Own the\nledger')
+        self.assertEqual(result, job)
 
 
 class WorkTypes(unittest.TestCase):
@@ -555,7 +565,7 @@ class WorkTypes(unittest.TestCase):
         send, calls = sender(answers)
         p = settings(raw)
         with patch.object(workable, 'send', send), patch.object(workable, 'PACE', 0):
-            return asyncio.run(p.workplaces(None, [dict(j) for j in self.JOBS])), calls, p
+            return asyncio.run(p.workplaces(None, [dict(j) for j in self.JOBS], p.wanted(matched=True))), calls, p
 
     def test_a_hybrid_search_asks_the_jobs_not_marked_remote(self):
         jobs, calls, p = self.run_check({'searchTerms': ['engineer'], 'workType': ['hybrid']},

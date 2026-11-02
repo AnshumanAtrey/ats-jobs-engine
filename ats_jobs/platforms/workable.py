@@ -53,7 +53,7 @@ import tempfile
 import time
 import xml.etree.ElementTree as ET
 import zlib
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 from functools import lru_cache
 from urllib.parse import unquote, urlparse
 
@@ -192,11 +192,8 @@ def answer(response) -> dict | list:
         raise BoardError('the answer was not JSON') from exc
 
 
-def matches(term, job: dict) -> bool:
-    """A word in a career page job's title, or in its description when the page gave one (as a search would)."""
-    if term.in_title(index(job.get('title'))):
-        return True
-    description = job.get('description')
+def in_description(term, description: str | None) -> bool:
+    """A word of the search in a description's text, as the engine matches it."""
     if not description:
         return False
     folded = description.casefold()
@@ -204,6 +201,11 @@ def matches(term, job: dict) -> bool:
         return False
     text, words = folded_text(description)
     return term.in_text(text, words)
+
+
+def matches(term, job: dict) -> bool:
+    """A word in a career page job's title, or in its description when the page gave one (as a search would)."""
+    return term.in_title(index(job.get('title'))) or in_description(term, job.get('description'))
 
 
 class Workable(Platform):
@@ -402,7 +404,7 @@ class Workable(Platform):
             if session.get('read'):         # every word was matched on the first call
                 return
             session['read'] = True
-            jobs = await self.every_company(http, days)
+            jobs = await self.every_company(http)
             for i in range(0, len(jobs), PAGE):
                 yield jobs[i:i + PAGE]
             return
@@ -415,94 +417,93 @@ class Workable(Platform):
 
     # ---------- every company: Workable's jobs feed ----------
 
-    def wanted(self, days: int | None):
-        """The settings -> a test a job of the feed must pass to be kept: a word of the search in its title (or its
-        description, when descriptions are searched) and a date inside the period. The engine checks the rest."""
-        cfg = self.cfg
-        words = terms(cfg.search_terms) if cfg else []
-        texts = bool(cfg and cfg.search_descriptions)
-        oldest = (datetime.now(timezone.utc) - timedelta(days=days)).isoformat() if days else None
-
-        def keep(job: dict) -> bool:
-            if oldest and (job.get('postedAt') or '') < oldest:
-                return False
-            if not words:
-                return True
-            looked = job if texts else {**job, 'description': None}
-            return any(matches(word, looked) for word in words)
-        return keep
+    def wanted(self, matched: bool = False):
+        """The settings -> a test of one job: every filter but the work type, which Workable's lists state only for
+        remote jobs (workplaces() asks the rest). matched: the words were already found here, in the title or in a
+        description the job no longer carries."""
+        others = Filters(dataclasses.replace(self.cfg, work_types=[]))
+        now = datetime.now(timezone.utc)
+        return lambda job: others.passes(job, now, server_match=matched)
 
     def from_feed(self, fields: dict) -> dict | None:
-        """One <job> of the feed, as {tag: text} -> a job; None without a shortcode or a title."""
+        """One <job> of the feed, as {tag: text} -> a job with that entry's one place; None without a shortcode or a
+        title. No description: details() reads the job's own answer, which has all of it."""
         code, title = fields.get('referencenumber', '').upper(), clean(fields.get('title'))
         if not CODE.match(code) or not title:
             return None
         city, region, country = (clean(fields.get(k)) or None for k in ('city', 'state', 'country'))
         spot = place({'city': city, 'region': region, 'country': country_name(country) if country else None})
         company = clean(fields.get('company')) or None
-        html = fields.get('description') or None
-        texts = bool(self.cfg and (self.cfg.search_descriptions or self.cfg.include_details))
         return {
             'id': code,
             'company': company,
             'companySlug': self.names().get(company.casefold()) if company else None,
             'companyWebsite': clean(fields.get('website')) or None,
             'title': title,
-            'location': spot['name'] if spot else None,
-            'otherLocations': [],
-            'places': [dict(spot, country=country)] if spot else [],
+            'places': [spot] if spot else [],
             'workType': 'remote' if fields.get('remote', '').strip().lower() == 'true' else None,
             'employmentType': job_type(fields.get('jobtype'), fields.get('experience')),
             'postedAt': feed_date(fields.get('date')),
             'dateOnly': False,
             'jobUrl': clean(fields.get('url')) or SHORT_LINK.format(code=code),
             'applyUrl': APPLY_LINK.format(code=code),
-            'descriptionHtml': html if texts else None,
-            'description': words_of(html) if texts else None,
         }
 
     def reader(self):
-        """A parser fed the feed's bytes as they arrive: feed(chunk) and close() give the jobs completed so far. The
-        feed lists a job once per place, one entry after the other: those entries become one job with every place.
-        close() raises ET.ParseError when the feed stopped before its end."""
+        """A parser fed the feed's bytes in order: feed(chunk) for each, then close() gives every wanted job once. The
+        feed lists a job once per place, and not always one entry after the other (3,436 of 82,471 jobs on 2026-11-02,
+        a median of 30 days between their first and last entry): all of a job's entries become one job with every
+        place and the first entry's date. An entry whose title, job type or (when searched) description cannot match is
+        dropped as it passes, so no description is held. close() raises ET.ParseError when the feed stopped early."""
         parser = ET.XMLPullParser(events=('start', 'end'))
         root: list = []
-        held: list[dict] = []           # the last job, until an entry of another job shows it has all its places
+        jobs: dict[str, dict] = {}
+        cfg = self.cfg
+        words, excludes = (terms(cfg.search_terms), terms(cfg.exclude_terms)) if cfg else ([], [])
+        kinds, texts = (set(cfg.job_types), cfg.search_descriptions) if cfg else (set(), False)
 
-        def merge(job: dict) -> list[dict]:
-            if held and held[0]['id'] == job['id']:
-                first = held[0]
-                if job['places'] and job['places'][0]['name'] not in {p['name'] for p in first['places']}:
-                    first['places'].append(job['places'][0])
-                    first['otherLocations'].append(job['places'][0]['name'])
-                return []
-            done = held[:]
-            held[:] = [job]
-            return done
+        def wanted(job: dict, html: str | None) -> bool:
+            title = index(job['title'])
+            if any(t.in_title(title) for t in excludes) or (kinds and job['employmentType'] not in kinds):
+                return False
+            if not words or any(t.in_title(title) for t in words):
+                return True
+            text = words_of(html) if texts else None
+            return bool(text) and any(in_description(t, text) for t in words)
 
-        def read() -> list[dict]:
-            jobs = []
+        def add(held: dict, job: dict) -> None:
+            names = {p['name'] for p in held['places']}
+            held['places'] += [p for p in job['places'] if p['name'] not in names]
+            if job['postedAt'] and (not held['postedAt'] or job['postedAt'] < held['postedAt']):
+                held['postedAt'] = job['postedAt']
+            held['workType'] = held['workType'] or job['workType']
+
+        def read() -> None:
             for event, elem in parser.read_events():
                 if event == 'start':
                     if not root:
                         root.append(elem)
                 elif elem.tag == 'job':
-                    job = self.from_feed({child.tag: (child.text or '').strip() for child in elem})
-                    if job:
-                        jobs += merge(job)
+                    fields = {child.tag: (child.text or '').strip() for child in elem}
+                    job = self.from_feed(fields)
+                    if job and job['id'] in jobs:
+                        add(jobs[job['id']], job)
+                    elif job and wanted(job, fields.get('description')):
+                        jobs[job['id']] = job
             if root:
                 root[0].clear()         # what was read is kept or dropped: memory stays flat
-            return jobs
 
-        def feed(chunk: bytes) -> list[dict]:
+        def feed(chunk: bytes) -> None:
             parser.feed(chunk)
-            return read()
+            read()
 
         def close() -> list[dict]:
             parser.close()
-            jobs = read() + held[:]
-            held.clear()
-            return jobs
+            read()
+            for job in jobs.values():
+                job['location'] = job['places'][0]['name'] if job['places'] else None
+                job['otherLocations'] = [p['name'] for p in job['places'][1:]]
+            return list(jobs.values())
         return feed, close
 
     async def download(self, http):
@@ -544,14 +545,15 @@ class Workable(Platform):
         oldest jobs first, so part of a feed would answer with old jobs only."""
         spool, encoding = await self.download(http)
         with spool:
-            decode, (feed, close), jobs = decoder(encoding), self.reader(), []
+            decode, (feed, close) = decoder(encoding), self.reader()
             try:
                 while chunk := spool.read(1 << 20):
-                    jobs += [job for job in feed(decode(chunk)) if keep(job)]
+                    feed(decode(chunk))
                     await asyncio.sleep(0)          # the engine's progress line runs between chunks
-                return jobs + [job for job in close() if keep(job)]
+                jobs = close()
             except (ET.ParseError, zlib.error) + BROTLI_ERRORS as exc:
                 raise BoardError('the download was cut before its end') from exc
+        return [job for job in jobs if keep(job)]
 
     async def biggest_career_pages(self, http, keep, reason: str) -> list[dict]:
         """When the feed cannot be read: the career pages of the biggest companies on our list, for FALLBACK_SECONDS."""
@@ -573,25 +575,24 @@ class Workable(Platform):
             self.cfg.notes.append(note)
         return jobs
 
-    async def every_company(self, http, days: int | None) -> list[dict]:
-        keep = self.wanted(days)
+    async def every_company(self, http) -> list[dict]:
         try:
-            jobs = await self.feed_jobs(http, keep)
+            jobs = await self.feed_jobs(http, self.wanted(matched=True))
         except BoardError as exc:
-            return await self.biggest_career_pages(http, keep, str(exc))
-        return await self.workplaces(http, jobs)
+            keep = self.wanted()
+            jobs = await self.biggest_career_pages(http, keep, str(exc))
+            return await self.workplaces(http, jobs, keep)
+        return await self.workplaces(http, jobs, self.wanted(matched=True))
 
-    async def workplaces(self, http, jobs: list[dict]) -> list[dict]:
-        """The feed marks remote jobs and nothing else. For a hybrid or on-site search, the jobs that pass every other
-        filter and are not marked remote get their work type from their own answer, newest first, until maxJobs of
-        them match or WORKPLACE_SECONDS have passed."""
+    async def workplaces(self, http, jobs: list[dict], keep) -> list[dict]:
+        """Workable's lists (the feed and the career pages) mark remote jobs and nothing else. For a hybrid or on-site
+        search, the jobs that keep() wants and are not marked remote get their work type from their own answer, newest
+        first, until maxJobs of them match or WORKPLACE_SECONDS have passed."""
         cfg = self.cfg
         wanted = set(cfg.work_types) if cfg else set()
         if not wanted - {'remote'}:
             return jobs
-        others = Filters(dataclasses.replace(cfg, work_types=[]))
-        now = datetime.now(timezone.utc)
-        candidates = sorted((j for j in jobs if j.get('workType') != 'remote' and others.passes(j, now)),
+        candidates = sorted((j for j in jobs if j.get('workType') != 'remote' and keep(j)),
                             key=lambda j: j.get('postedAt') or '', reverse=True)
         kept = [j for j in jobs if j.get('workType') == 'remote'] if 'remote' in wanted else []
         started, checked, found = time.monotonic(), 0, 0
@@ -696,8 +697,6 @@ class Workable(Platform):
         raise BoardError(f'HTTP {response.status_code}')
 
     async def details(self, http, session, job):
-        if job.get('descriptionHtml'):          # a feed job carries its text: delivered rows get it whole
-            job = {**job, 'description': text_of(job['descriptionHtml'])}
         account = job.get('companySlug') or (session or {}).get('account') or await self.account_of(http, job['id'])
         data = await self.job_answer(http, account, job['id']) if account else None
         return self.enrich(job, data) if data else job
