@@ -247,6 +247,10 @@ class Opening(unittest.TestCase):
         self.assertEqual((session, len(calls)), ({'company': 'acme'}, 2))
         self.assertIn('company-name-lookup', calls[1][0])
 
+    def test_a_company_that_locked_its_posting_api_is_a_missing_board(self):
+        session, calls = run(P.open(None, Board('CHECK24', 'CHECK24')), [Response(401, text='401 Authorization Required')])
+        self.assertEqual((session, len(calls)), (None, 1))
+
     def test_a_company_that_does_not_exist_is_a_missing_board(self):
         session, calls = run(P.open(None, Board('NoSuchCompany', 'x')), [listing([]), Response(200, '')])
         self.assertIsNone(session)
@@ -294,8 +298,8 @@ class Reading(unittest.TestCase):
         _, calls = run(collect(P, dict(SESSION), 'sales && "marketing" -remote'), [listing([])])
         self.assertEqual(calls[0][1]['q'], 'sales marketing remote')
 
-    def test_a_missing_company_and_a_failing_one(self):
-        for status in (400, 404):
+    def test_a_missing_company_a_locked_one_and_a_failing_one(self):
+        for status in (400, 401, 403, 404):
             with self.assertRaises(BoardMissing):
                 run(collect(P, dict(SESSION)), [Response(status)])
         for bad in (Response(500), Response(200), Response(200, ['not', 'an', 'object'])):
@@ -355,6 +359,8 @@ class Lookup(unittest.TestCase):
         self.assertEqual(self.check([Response(200, {**DETAIL, 'active': None})]), ('closed', None))
         self.assertEqual(self.check([Response(404, {'httpCode': 404, 'code': 'RESOURCE_NOT_FOUND'})]), ('not found', None))
         self.assertEqual(self.check([Response(400, text='Bad Request')], 'abc'), ('not found', None))
+        locked = Response(401, text='<html><head><title>401 Authorization Required</title></head></html>')
+        self.assertEqual(self.check([locked]), ('not found', None))
 
     def test_a_server_failure_stays_an_error(self):
         with self.assertRaises(BoardError):
