@@ -324,7 +324,7 @@ class Blocks(unittest.TestCase):
                 patch('ats_jobs.engine.seconds_left_in_run', lambda: None):
             with self.assertRaisesRegex(BoardError, 'HTTP 403 from both API addresses'):
                 asyncio.run(p.get(None, 'gitlab/jobs'))
-        self.assertEqual((waits, len(calls)), ([20, 40, 60], 8))
+        self.assertEqual((waits, len(calls)), ([30, 60, 90], 8))
 
     def test_the_406_page_of_an_address_block_is_a_block_too(self):
         p = platform()
