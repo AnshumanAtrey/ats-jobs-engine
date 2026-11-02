@@ -17,10 +17,11 @@ company through Workable's public jobs feed. No key. Measured from this laptop o
   job type, description and the apply.workable.com/j/<shortcode> link. Its date is when the job board listed the job in
   that place: the datePosted of that listing's jobs.workable.com page; the career page shows the published date, which
   is earlier for jobs listed before the board began (2021-07-28) and for places added to an old job. It names no
-  hybrid or on-site. Cloudflare compresses it on the way (brotli 131 MB, gzip 128 MB); its first byte came after 19 to
-  23 s and the answer ends at 60 to 66 s whatever has arrived: 1 of 8 downloads from here finished (brotli, 51 s), so a
-  feed is read only once it has all arrived, and a short one gives nothing. About 9 downloads from one address in 3
-  minutes made Cloudflare refuse it for an hour (429, Retry-After 3590).
+  hybrid or on-site. Cloudflare compresses it on the way (brotli about 131 MB, gzip about 128 MB); its first byte came
+  after 19 to 23 s and the answer ends 60 to 66 s after the request whatever has arrived: of 7 downloads from here 6
+  were cut (the most that arrived was three quarters of it) and one brotli download ended cleanly at 130.8 MB in
+  51 s. So a feed is read only once it has all arrived, and a short one gives nothing. About 9 downloads from one
+  address in 3 minutes made Cloudflare refuse it for an hour (429, Retry-After 3590).
 - GET https://jobs.workable.com/api/v1/jobs/<id>: one job of Workable's job board (the links people paste from
   jobs.workable.com): created, workplace, pay; 410 is a job gone, 404 one that never was. Its search
   (/api/v1/jobs?query=...) is not used: after 400 to 600 searches it refused each address of this laptop for a day
