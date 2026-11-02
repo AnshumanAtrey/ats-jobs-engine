@@ -1,6 +1,6 @@
 """
 Workable (apply.workable.com) jobs: each company's career page through its own JSON, and a keyword across every
-company through Workable's job board, the search behind jobs.workable.com. No key. Measured on 2026-11-02:
+company through Workable's public jobs feed. No key. Measured from this laptop on 2026-11-02:
 
 - GET https://apply.workable.com/api/v1/widget/accounts/<account>: one company's career page in one answer, the
   documented jobs widget (?details=true adds descriptions, 6.6 times the size). A job in several places comes once per
@@ -11,41 +11,53 @@ company through Workable's job board, the search behind jobs.workable.com. No ke
   description, requirements and benefits, pay (salary_from, salary_to, currency, frequency) when shown, workplace
   (on_site, hybrid, remote), type (full, part, contract, temporary, other), departments, published, state. 404 "Job
   not found" for a job that closed and for a code that never existed alike (12 old links): both read as closed.
-- GET https://jobs.workable.com/api/v1/jobs?query=<words>&day_range=<1|7|30>&pageToken=<token>: Workable's job board,
-  every published job of every company once per place (170,374 on 2026-11-02: 49,006 remote, 28,317 hybrid, 93,051
-  on site), 20 a page with the description, created (the time of the listing, the datePosted of its job board page),
-  workplace, employment type, department and the company's name and website. A word search comes back by relevance,
-  and even the list with no word strays from newest first by up to 34 hours, so each day window (since yesterday, the
-  last week, month, then all) is read whole and sorted here. Featured jobs show the time they were featured: their own
-  answer (GET .../jobs/<id>, which also has pay) gives the real one. 410 is a job gone, 404 one that never was. It
-  allowed about 600 searches from one address, then refused that address for a day ("contact us ... for our jobs XML
-  feed", Retry-After 86,400) while the address's other family kept working.
-- GET https://www.workable.com/boards/workable.xml: the public XML feed of the same job board (help.workable.com
-  article 4420464031767: hourly, no filters), 861 MB, oldest listing first. Not read at run time: its first byte came
-  after 19 to 23 s and 7 of 8 downloads were cut at 60 to 66 s (one brotli download finished at 51 s), and half a feed
-  holds only old jobs; Cloudflare refused an address for an hour after about 9 downloads. The refresh script reads it.
+- GET https://www.workable.com/boards/workable.xml: Workable's public feed of every job its customers list on its job
+  board (help.workable.com article 4420464031767: hourly, no filters), 861 MB, the oldest listing first (129,639 of
+  the first 129,721 steps), each job once per place, with title, company, website, city, state, country code, remote,
+  job type, description and the apply.workable.com/j/<shortcode> link. Its date is when the job board listed the job in
+  that place: the datePosted of that listing's jobs.workable.com page; the career page shows the published date, which
+  is earlier for jobs listed before the board began (2021-07-28) and for places added to an old job. It names no
+  hybrid or on-site. Cloudflare compresses it on the way (brotli 131 MB, gzip 128 MB); its first byte came after 19 to
+  23 s and the answer ends at 60 to 66 s whatever has arrived: 1 of 8 downloads from here finished (brotli, 51 s), so a
+  feed is read only once it has all arrived, and a short one gives nothing. About 9 downloads from one address in 3
+  minutes made Cloudflare refuse it for an hour (429, Retry-After 3590).
+- GET https://jobs.workable.com/api/v1/jobs/<id>: one job of Workable's job board (the links people paste from
+  jobs.workable.com): created, workplace, pay; 410 is a job gone, 404 one that never was. Its search
+  (/api/v1/jobs?query=...) is not used: after 400 to 600 searches it refused each address of this laptop for a day
+  ("contact us ... for our jobs XML feed", Retry-After 86,400), and a keyword with a place needed 356 searches.
 
 Each run takes the route that fits it: no keyword reads the career pages, biggest company first, and stops once
-maxJobs jobs posted today are held (dates are days); a keyword reads the job board (dates have a time). Named
+maxJobs jobs posted today are held (dates are days); a keyword reads the feed once (dates have a time) and, when the feed
+cannot be read, the career pages of the biggest companies for FALLBACK_SECONDS, saying so in the notes. Named
 companies always read their career pages.
 
 Accounts are lower case (apply.workable.com/BIFFA answers 404, its page redirects to /oops); shortcodes are ten hex
 digits in any case. Old links: <account>.workable.com/... and /<account>/jobs/<number> redirect to /<account>/j/<code>;
 apply.workable.com/j/<code> redirects to the account's job, or to /oops once the job is gone. robots.txt of
-apply.workable.com disallows nothing; jobs.workable.com disallows only its search pages.
+apply.workable.com disallows nothing.
 
 Limits from one address: apply.workable.com answered 3 calls a second for 2 minutes and refused about half of 4 a
-second after 70 s (HTTP 429, Retry-After 0, gone within seconds), so its calls wait their turn (PACE). The job board
-answered searches one after another (each page's token leads to the next) and job answers at 4 a second.
+second after 70 s (HTTP 429, Retry-After 0, gone within seconds), so its calls wait their turn (PACE); its own limiter
+also answers 429 with a Retry-After near 86,400 that is not the real wait.
 """
 import asyncio
+import html as htmllib
+import importlib.util
+import logging
 import re
+import tempfile
 import time
+import xml.etree.ElementTree as ET
+import zlib
+from datetime import datetime, timedelta, timezone
+from functools import lru_cache
 from urllib.parse import unquote, urlparse
 
-from ..http import BoardError, send
+import httpx
+
+from ..http import STATS, BoardError, send
 from ..inputs import JOB_TYPE_ALIASES
-from ..rows import folded_text, index, terms
+from ..rows import _COUNTRIES, folded_text, index, terms
 from .base import Board, Platform
 from .cornerstone import text_of
 
@@ -55,10 +67,10 @@ JOB = APPLY + '/api/v2/accounts/{account}/jobs/{code}'
 SHORT_LINK = APPLY + '/j/{code}'
 APPLY_LINK = APPLY + '/j/{code}/apply'
 OLD_JOB = APPLY + '/{account}/jobs/{number}'
+FEED_URL = 'https://www.workable.com/boards/workable.xml'
 BOARD_HOST = 'jobs.workable.com'
-SEARCH = f'https://{BOARD_HOST}/api/v1/jobs'
-BOARD_JOB = SEARCH + '/{id}'
-EVERYONE = Board('*', 'the Workable job board')   # every company at once; also the board of a link naming no account
+BOARD_JOB = f'https://{BOARD_HOST}/api/v1/jobs/{{id}}'
+EVERYONE = Board('*', 'Workable')     # every company at once (the feed); also the board of a link naming no account
 HOSTS = ('apply.workable.com', 'www.workable.com', 'workable.com')
 OWN_SITES = {'www', 'apply', 'jobs', 'resources', 'help', 'partners', 'partnerhelp', 'get', 'jobseekers', 'events',
              'blog', 'api', 'status', 'developers', 'app', 'mail', 'email'}      # Workable's own sites, not accounts
@@ -68,10 +80,18 @@ CODE = re.compile(r'^[0-9a-f]{10}$', re.I)
 NUMBER = re.compile(r'^\d{1,9}$')
 BOARD_ID = re.compile(r'^(?:[1-9A-HJ-NP-Za-km-z]{20,24}|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$')
 CODE_IN_TEXT = re.compile(r'/j/([0-9a-f]{10})(?![0-9a-z])', re.I)
-WINDOWS = ('1', '7', '30', None)       # the job board's day_range: since yesterday, last week, last month, any time
-WINDOW_DAYS = {'1': 1, '7': 7, '30': 30}
-PAGE = 100                             # job board jobs handed to the engine at a time
+PAGE = 500                    # matching feed jobs handed to the engine at a time
+FEED_TIMEOUT = httpx.Timeout(120.0, connect=15.0)    # its first byte came after 19 to 23 s
+# Cloudflare compresses the feed on the way; brotli is the smaller (131 MB against 861 MB), and httpx-free decoding
+# needs the brotli package, else gzip
+FEED_ENCODING = 'br' if importlib.util.find_spec('brotli') else 'gzip'
+BROTLI_ERRORS = (__import__('brotli').error,) if FEED_ENCODING == 'br' else ()
+FALLBACK_SECONDS = 120        # career pages read, biggest first, when the feed cannot be read
+MONTHS = {m: i for i, m in enumerate(('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'), 1)}
+FEED_DATE = re.compile(r'(\d{1,2}) ([A-Z][a-z]{2}) (\d{4}) (\d{2}):(\d{2}):(\d{2})')
+TAG = re.compile(r'<[^>]*>')
 PACE = 0.4                    # seconds between two calls to apply.workable.com: 2.5 a second, under the 3 measured
+LOG = logging.getLogger('apify')
 WORKPLACE = {'remote': 'remote', 'hybrid': 'hybrid', 'on_site': 'onsite'}
 TYPE = {'full': 'full-time', 'part': 'part-time', 'contract': 'contract', 'temporary': 'temporary'}
 PERIOD = {'year': 'year', 'month': 'month', 'week': 'week', 'day': 'day', 'hour': 'hour'}
@@ -112,11 +132,43 @@ def pay(low, high, currency, frequency) -> dict:
             'salaryCurrency': (currency or None) if shown else None, 'salaryPeriod': period if shown else None}
 
 
-def window(days: int | None) -> str | None:
-    """The engine's days (the period asked plus one) -> the smallest job board window that holds the period."""
-    if days is None:
+@lru_cache(maxsize=512)
+def country_name(code: str) -> str:
+    """'GB' -> 'United Kingdom', 'KR' -> 'South Korea'; a code pycountry does not know stays as it is."""
+    try:
+        found = _COUNTRIES.get(alpha_2=code.upper()) if _COUNTRIES and len(code) == 2 else None
+    except (KeyError, LookupError):
+        found = None
+    return (getattr(found, 'common_name', None) or found.name) if found else code
+
+
+def feed_date(text: str) -> str | None:
+    """'Wed, 28 Jul 2021 10:24:17 UTC' -> '2021-07-28T10:24:17+00:00'."""
+    found = FEED_DATE.search(text or '')
+    if not found or found.group(2) not in MONTHS:
         return None
-    return next((w for w, n in WINDOW_DAYS.items() if days - 1 <= n), None)
+    day, month, year, hh, mm, ss = found.groups()
+    return f'{year}-{MONTHS[month]:02d}-{int(day):02d}T{hh}:{mm}:{ss}+00:00'
+
+
+def words_of(html: str | None) -> str | None:
+    """HTML -> its words, for matching: half the work of text_of, which the rows that are delivered get."""
+    if not html:
+        return None
+    text = TAG.sub(' ', html)
+    return htmllib.unescape(text) if '&' in text else text
+
+
+def decoder(encoding: str):
+    """The content encoding of a download -> a function from its bytes, in order, to plain bytes."""
+    if encoding == 'br':
+        import brotli
+        return brotli.Decompressor().process
+    if encoding in ('gzip', 'x-gzip'):
+        return zlib.decompressobj(16 + zlib.MAX_WBITS).decompress
+    if encoding in ('', 'identity'):
+        return lambda chunk: chunk
+    raise httpx.DecodingError(f'unknown content encoding {encoding}')
 
 
 def answer(response) -> dict | list:
@@ -146,8 +198,7 @@ class Workable(Platform):
     board_example = 'https://apply.workable.com/huggingface/'
     job_example = 'https://apply.workable.com/huggingface/j/DB4D7C0EC8/'
     concurrency = 4               # career pages at once; PACE keeps their rate
-    server_search = True          # the job board searches words; a career page is filtered here
-    newest_first = True           # the job board's windows are sorted here; a career page is one page
+    server_search = True          # pages() gets the word: the feed and a career page are matched here
     never = ('team', 'offersEquity', 'expiresAt')
 
     def __init__(self):
@@ -310,8 +361,12 @@ class Workable(Platform):
 
     async def pages(self, http, session, term, days):
         if session.get('everyone'):
-            async for page in self.board_pages(http, term, days):
-                yield page
+            if session.get('read'):         # every word was matched on the first call
+                return
+            session['read'] = True
+            jobs = await self.every_company(http, days)
+            for i in range(0, len(jobs), PAGE):
+                yield jobs[i:i + PAGE]
             return
         jobs = self.from_widget(session, session['jobs'])
         if term:        # a career page has no search: the word is matched here, as the job board would have
@@ -320,7 +375,167 @@ class Workable(Platform):
         if jobs:
             yield jobs
 
-    # ---------- every company: Workable's job board ----------
+    # ---------- every company: Workable's jobs feed ----------
+
+    def wanted(self, days: int | None):
+        """The settings -> a test a job of the feed must pass to be kept: a word of the search in its title (or its
+        description, when descriptions are searched) and a date inside the period. The engine checks the rest."""
+        cfg = self.cfg
+        words = terms(cfg.search_terms) if cfg else []
+        oldest = (datetime.now(timezone.utc) - timedelta(days=days)).isoformat() if days else None
+
+        def keep(job: dict) -> bool:
+            if oldest and (job.get('postedAt') or '') < oldest:
+                return False
+            return not words or any(matches(word, job) for word in words)
+        return keep
+
+    def from_feed(self, fields: dict) -> dict | None:
+        """One <job> of the feed, as {tag: text} -> a job; None without a shortcode or a title."""
+        code, title = fields.get('referencenumber', '').upper(), clean(fields.get('title'))
+        if not CODE.match(code) or not title:
+            return None
+        city, region, country = (clean(fields.get(k)) or None for k in ('city', 'state', 'country'))
+        spot = place({'city': city, 'region': region, 'country': country_name(country) if country else None})
+        company = clean(fields.get('company')) or None
+        html = fields.get('description') or None
+        texts = bool(self.cfg and (self.cfg.search_descriptions or self.cfg.include_details))
+        return {
+            'id': code,
+            'company': company,
+            'companySlug': self.names().get(company.casefold()) if company else None,
+            'companyWebsite': clean(fields.get('website')) or None,
+            'title': title,
+            'location': spot['name'] if spot else None,
+            'otherLocations': [],
+            'places': [dict(spot, country=country)] if spot else [],
+            'workType': 'remote' if fields.get('remote', '').strip().lower() == 'true' else None,
+            'employmentType': job_type(fields.get('jobtype')),
+            'postedAt': feed_date(fields.get('date')),
+            'dateOnly': False,
+            'jobUrl': clean(fields.get('url')) or SHORT_LINK.format(code=code),
+            'applyUrl': APPLY_LINK.format(code=code),
+            'descriptionHtml': html if texts else None,
+            'description': words_of(html) if texts else None,
+        }
+
+    def reader(self):
+        """A parser fed the feed's bytes as they arrive: feed(chunk) and close() give the jobs completed so far. The
+        feed lists a job once per place, one entry after the other: those entries become one job with every place.
+        close() raises ET.ParseError when the feed stopped before its end."""
+        parser = ET.XMLPullParser(events=('start', 'end'))
+        root: list = []
+        held: list[dict] = []           # the last job, until an entry of another job shows it has all its places
+
+        def merge(job: dict) -> list[dict]:
+            if held and held[0]['id'] == job['id']:
+                first = held[0]
+                if job['places'] and job['places'][0]['name'] not in {p['name'] for p in first['places']}:
+                    first['places'].append(job['places'][0])
+                    first['otherLocations'].append(job['places'][0]['name'])
+                return []
+            done = held[:]
+            held[:] = [job]
+            return done
+
+        def read() -> list[dict]:
+            jobs = []
+            for event, elem in parser.read_events():
+                if event == 'start':
+                    if not root:
+                        root.append(elem)
+                elif elem.tag == 'job':
+                    job = self.from_feed({child.tag: (child.text or '').strip() for child in elem})
+                    if job:
+                        jobs += merge(job)
+            if root:
+                root[0].clear()         # what was read is kept or dropped: memory stays flat
+            return jobs
+
+        def feed(chunk: bytes) -> list[dict]:
+            parser.feed(chunk)
+            return read()
+
+        def close() -> list[dict]:
+            parser.close()
+            jobs = read() + held[:]
+            held.clear()
+            return jobs
+        return feed, close
+
+    async def download(self, http):
+        """The feed as it travels, in a temporary file, and its encoding. It is read after it has all arrived: Workable
+        ends the answer about 60 s after the request, so nothing may slow the download down. A failure before the
+        first byte is tried once more; a cut download is not (the same line cut it), nor a 429 (Workable refuses an
+        address for an hour)."""
+        for attempt in range(2):
+            spool, started = tempfile.TemporaryFile(), False
+            try:
+                async with http.stream('GET', FEED_URL, timeout=FEED_TIMEOUT,
+                                       headers={'Accept-Encoding': FEED_ENCODING}) as response:
+                    STATS['calls'] += 1
+                    if response.status_code == 429:
+                        raise BoardError('HTTP 429: Workable allows a few downloads of its feed an hour from one address')
+                    if response.status_code != 200:
+                        raise httpx.HTTPStatusError(f'HTTP {response.status_code}', request=response.request,
+                                                    response=response)
+                    encoding = response.headers.get('content-encoding', 'identity').strip().lower()
+                    async for chunk in response.aiter_raw(1 << 18):
+                        started = True
+                        spool.write(chunk)
+                spool.seek(0)
+                return spool, encoding
+            except (httpx.HTTPError, OSError) as exc:
+                spool.close()
+                STATS['retries'][type(exc).__name__] += 1
+                if started or attempt:
+                    raise BoardError(('the download was cut before its end' if started else f'{type(exc).__name__}: {exc}')[:200]) from exc
+                await asyncio.sleep(3)
+            except BaseException:
+                spool.close()
+                raise
+        raise BoardError('no answer')
+
+    async def feed_jobs(self, http, keep) -> list[dict]:
+        """Every job of the feed that keep() wants. A feed that stops before its end gives nothing: it lists the
+        oldest jobs first, so part of a feed would answer with old jobs only."""
+        spool, encoding = await self.download(http)
+        with spool:
+            decode, (feed, close), jobs = decoder(encoding), self.reader(), []
+            try:
+                while chunk := spool.read(1 << 20):
+                    jobs += [job for job in feed(decode(chunk)) if keep(job)]
+                    await asyncio.sleep(0)          # the engine's progress line runs between chunks
+                return jobs + [job for job in close() if keep(job)]
+            except (ET.ParseError, zlib.error) + BROTLI_ERRORS as exc:
+                raise BoardError('the download was cut before its end') from exc
+
+    async def biggest_career_pages(self, http, keep, reason: str) -> list[dict]:
+        """When the feed cannot be read: the career pages of the biggest companies on our list, for FALLBACK_SECONDS."""
+        started, read, jobs = time.monotonic(), 0, []
+        for board in self.known().values():         # the file lists the biggest company first
+            if time.monotonic() - started > FALLBACK_SECONDS:
+                break
+            try:
+                session = await self.open(http, board)
+            except BoardError:
+                continue
+            if session:
+                read += 1
+                jobs += [job for job in self.from_widget(session, session['jobs']) if keep(job)]
+        note = (f"Workable's jobs feed could not be read ({reason}), so these jobs come from the career pages of the "
+                f'{read:,} biggest companies on our list of {len(self.known()):,}. Run again later for every company.')
+        LOG.warning(note)
+        if self.cfg is not None:
+            self.cfg.notes.append(note)
+        return jobs
+
+    async def every_company(self, http, days: int | None) -> list[dict]:
+        keep = self.wanted(days)
+        try:
+            return await self.feed_jobs(http, keep)
+        except BoardError as exc:
+            return await self.biggest_career_pages(http, keep, str(exc))
 
     def from_board(self, job_id: str, data: dict) -> dict:
         """A job of Workable's job board: created is the datePosted of its page; it names no account or shortcode."""
@@ -347,45 +562,6 @@ class Workable(Platform):
             'postedAt': clean(data.get('created')) or None, 'dateOnly': False, 'jobUrl': url, 'applyUrl': url,
             'description': text_of(html), 'descriptionHtml': html,
         }
-
-    async def search(self, http, params: dict) -> list[dict]:
-        """Every job of one job board search, page after page (each page's token leads to the next)."""
-        items, token = [], None
-        while True:
-            response = await send(http, 'GET', SEARCH, params={**params, **({'pageToken': token} if token else {})})
-            if response.status_code == 429:
-                raise BoardError("HTTP 429: Workable's job board allows a few hundred searches a day from one address. "
-                                 'Try again later, or name companies to read their career pages')
-            data = answer(response)
-            page = data.get('jobs') if isinstance(data, dict) else None
-            if not isinstance(page, list):
-                raise BoardError('the job board answer had no job list')
-            items += page
-            token = data.get('nextPageToken')
-            if not token or not page:
-                return items
-
-    async def board_pages(self, http, term, days):
-        """A word across every company, newest first: each day window read whole and sorted, the jobs already given
-        left out. The engine stops at the window that can no longer make the cut."""
-        given: set[str] = set()
-        for span in (window(days),) if days is not None else WINDOWS:
-            params = {'query': term or ''} | ({'day_range': span} if span else {})
-            jobs = []
-            for item in await self.search(http, params):
-                job_id = clean(item.get('id'))
-                if not job_id or job_id in given:
-                    continue
-                given.add(job_id)
-                if item.get('isFeatured'):     # its created is when it was featured: its own answer has the real one
-                    found = await send(http, 'GET', BOARD_JOB.format(id=job_id))
-                    if found.status_code != 200:
-                        continue
-                    item = {**item, 'created': (answer(found) or {}).get('created')}
-                jobs.append(self.from_board(job_id, item))
-            jobs.sort(key=lambda j: j['postedAt'] or '', reverse=True)
-            for i in range(0, len(jobs), PAGE):
-                yield jobs[i:i + PAGE]
 
     # ---------- one job ----------
 
@@ -439,11 +615,8 @@ class Workable(Platform):
         raise BoardError(f'HTTP {response.status_code}')
 
     async def details(self, http, session, job):
-        if not CODE.match(job['id']):                   # a job board job: its own answer adds the pay
-            response = await send(http, 'GET', BOARD_JOB.format(id=job['id']))
-            if response.status_code != 200:
-                return job
-            return {**self.from_board(job['id'], answer(response)), 'companySlug': job.get('companySlug')}
+        if job.get('descriptionHtml'):          # a feed job carries its text: delivered rows get it whole
+            job = {**job, 'description': text_of(job['descriptionHtml'])}
         account = job.get('companySlug') or (session or {}).get('account') or await self.account_of(http, job['id'])
         data = await self.job_answer(http, account, job['id']) if account else None
         return self.enrich(job, data) if data else job

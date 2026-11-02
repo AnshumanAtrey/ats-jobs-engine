@@ -1,5 +1,6 @@
 """Workable: links, the feed, career pages, jobs and lookups, on answers shaped like Workable's own (2026-11-02)."""
 import asyncio
+import gzip
 import unittest
 from unittest.mock import patch
 
@@ -28,6 +29,77 @@ V2 = {'id': 6230970, 'shortcode': '584D288213', 'title': 'Accounts Payable', 're
       'approvalStatus': 'approved', 'workplace': 'on_site', 'salary_from': 28000, 'salary_to': 28000,
       'salary_currency_iso_code': 'GBP', 'salary_frequency': 'year', 'description': '<h3>Accounts Payable</h3><p>Own the ledger</p>',
       'requirements': '<p>AP experience</p>', 'benefits': ''}
+FEED_XML = b'''<?xml version="1.0" encoding="utf-8"?>
+<source>
+  <publisher>Workable</publisher>
+  <publisherurl>https://www.workable.com</publisherurl>
+  <job>
+    <title>
+      <![CDATA[System  Engineer]]>
+    </title>
+    <date>
+      <![CDATA[Mon, 02 Nov 2026 10:24:17 UTC]]>
+    </date>
+    <referencenumber>
+      <![CDATA[f44ed9e40a]]>
+    </referencenumber>
+    <url>
+      <![CDATA[https://apply.workable.com/j/F44ED9E40A]]>
+    </url>
+    <company>
+      <![CDATA[Biffa Waste Services]]>
+    </company>
+    <city>
+      <![CDATA[Hyderabad]]>
+    </city>
+    <state>
+      <![CDATA[Telangana]]>
+    </state>
+    <country>
+      <![CDATA[IN]]>
+    </country>
+    <remote>
+      <![CDATA[true]]>
+    </remote>
+    <postalcode>
+      <![CDATA[]]>
+    </postalcode>
+    <description>
+      <![CDATA[<p>Build &amp; run <b>servers</b></p><p>Next</p>]]>
+    </description>
+    <education>
+      <![CDATA[Bachelor's Degree]]>
+    </education>
+    <jobtype>
+      <![CDATA[Contract]]>
+    </jobtype>
+    <category>
+      <![CDATA[Information Technology]]>
+    </category>
+    <experience>
+      <![CDATA[Mid-Senior level]]>
+    </experience>
+    <website>
+      <![CDATA[https://www.biffa.co.uk/]]>
+    </website>
+  </job>
+  <job>
+    <title><![CDATA[No code]]></title>
+    <referencenumber><![CDATA[]]></referencenumber>
+  </job>
+  <job>
+    <title><![CDATA[Driver]]></title>
+    <date><![CDATA[Sun, 01 Nov 2026 08:00:00 UTC]]></date>
+    <referencenumber><![CDATA[0908074E5D]]></referencenumber>
+    <company><![CDATA[Odorzx]]></company>
+    <country><![CDATA[]]></country>
+    <remote><![CDATA[false]]></remote>
+    <jobtype><![CDATA[Other]]></jobtype>
+  </job>
+</source>
+'''
+
+
 class Response:
     def __init__(self, status_code, data=None, text='', headers=None):
         self.status_code, self.data, self.text, self.headers = status_code, data, text, headers or {}
@@ -205,9 +277,6 @@ class Board_(unittest.TestCase):
         job = P.from_board('y', {'locations': ['TELECOMMUTE'], 'workplace': None})
         self.assertEqual((job['workType'], job['places']), ('remote', []))
 
-    def test_the_window_that_holds_a_period(self):
-        self.assertEqual([workable.window(d) for d in (None, 2, 3, 8, 9, 31, 32)], [None, '1', '7', '7', '30', '30', None])
-
     def test_a_keyword_reads_the_job_board_and_no_keyword_the_career_pages(self):
         p = platform()
         boards = [BIFFA]
@@ -216,61 +285,162 @@ class Board_(unittest.TestCase):
         self.assertEqual(p.cfg.search_terms, [])
 
 
-class BoardSearch(unittest.TestCase):
-    def collect(self, answers, term='engineer', days=None):
-        send, calls = sender(answers)
+def settings(raw=None):
+    p = platform()
+    p.search_all([BIFFA], parse_input(raw or {'searchTerms': ['engineer']}, p, {}))
+    return p
+
+
+class Feed(unittest.TestCase):
+    def read(self, data: bytes, size: int, p=None):
+        feed, close = (p or settings({'searchTerms': ['engineer'], 'includeDetails': True})).reader()
+        jobs = []
+        for i in range(0, len(data), size):
+            jobs += feed(data[i:i + size])
+        return jobs + close()
+
+    def test_a_feed_job(self):
+        jobs = self.read(FEED_XML, 4096)
+        self.assertEqual([j['id'] for j in jobs], ['F44ED9E40A', '0908074E5D'])
+        job = jobs[0]
+        self.assertEqual((job['title'], job['company'], job['companySlug'], job['companyWebsite']),
+                         ('System Engineer', 'Biffa Waste Services', 'biffa', 'https://www.biffa.co.uk/'))
+        self.assertEqual((job['location'], job['places'][0]['country'], job['workType'], job['employmentType']),
+                         ('Hyderabad, Telangana, India', 'IN', 'remote', 'contract'))
+        self.assertEqual((job['postedAt'], job['dateOnly'], job['jobUrl'], job['applyUrl']),
+                         ('2026-11-02T10:24:17+00:00', False, 'https://apply.workable.com/j/F44ED9E40A',
+                          'https://apply.workable.com/j/F44ED9E40A/apply'))
+        self.assertEqual(job['description'].split(), ['Build', '&', 'run', 'servers', 'Next'])
+
+    def test_texts_are_kept_only_when_asked(self):
+        job = self.read(FEED_XML, 4096, settings())[0]
+        self.assertEqual((job['description'], job['descriptionHtml']), (None, None))
+
+    def test_any_chunk_size_reads_the_same(self):
+        self.assertEqual(self.read(FEED_XML, 7), self.read(FEED_XML, 100000))
+
+    def test_odd_records(self):
+        job = self.read(FEED_XML, 512)[1]
+        self.assertEqual((job['company'], job['companySlug'], job['places'], job['workType'], job['employmentType'],
+                          job['description'], job['jobUrl']),
+                         ('Odorzx', None, [], None, None, None, 'https://apply.workable.com/j/0908074E5D'))
+
+    def test_a_job_listed_once_per_place_is_one_job(self):
+        def entry(code, city, when):
+            return (f'<job><title><![CDATA[Driver]]></title><date><![CDATA[{when}]]></date><referencenumber><![CDATA[{code}]]>'
+                    f'</referencenumber><company><![CDATA[Zgraph]]></company><city><![CDATA[{city}]]></city>'
+                    f'<state><![CDATA[Florida]]></state><country><![CDATA[US]]></country></job>')
+        when, later = 'Sun, 15 Mar 2026 20:17:38 UTC', 'Mon, 16 Mar 2026 08:00:00 UTC'
+        xml = ('<source>' + entry('D7C890D403', 'Miami', when) + entry('D7C890D403', 'Orlando', when)
+               + entry('ABCDEF1234', 'Tampa', when) + entry('D7C890D403', 'Tampa', later) + '</source>').encode()
+        jobs = self.read(xml, 50)
+        self.assertEqual([(j['id'], j['location'], j['otherLocations']) for j in jobs],
+                         [('D7C890D403', 'Miami, Florida, United States', ['Orlando, Florida, United States']),
+                          ('ABCDEF1234', 'Tampa, Florida, United States', []),
+                          ('D7C890D403', 'Tampa, Florida, United States', [])])
+
+    def test_a_shared_company_name_names_no_account(self):
+        job = P.from_feed({'referencenumber': 'ABCDEF1234', 'title': 'Engineer', 'company': 'Bask Health'})
+        self.assertIsNone(job['companySlug'])
+
+    def test_dates_and_countries(self):
+        self.assertEqual(workable.feed_date('Wed, 28 Jul 2021 10:24:17 UTC'), '2021-07-28T10:24:17+00:00')
+        self.assertIsNone(workable.feed_date(''))
+        self.assertEqual((workable.country_name('GB'), workable.country_name('us'), workable.country_name('XK2')),
+                         ('United Kingdom', 'United States', 'XK2'))
+
+    def test_the_word_and_the_period_choose_what_is_kept(self):
+        p = settings({'searchTerms': ['engineer']})
+        keep = p.wanted(None)
+        jobs = self.read(FEED_XML, 4096, p)
+        self.assertEqual([j['id'] for j in jobs if keep(j)], ['F44ED9E40A'])
+        self.assertFalse(p.wanted(2)({'title': 'Engineer', 'postedAt': '2020-01-01T00:00:00+00:00'}))
+
+
+class Stream:
+    """http.stream() of a feed: (status, chunks, encoding), where a chunk can be an error that breaks the download."""
+    def __init__(self, plays: list):
+        self.plays, self.opened = plays, 0
+
+    def stream(self, method, url, **kwargs):
+        play = self.plays.pop(0)
+        self.opened += 1
+
+        class Context:
+            async def __aenter__(ctx):
+                if isinstance(play, Exception):
+                    raise play
+                return ctx
+
+            async def __aexit__(ctx, *args):
+                return False
+
+            status_code = play[0] if isinstance(play, tuple) else None
+            headers = {'content-encoding': play[2]} if isinstance(play, tuple) and len(play) > 2 else {}
+            request = httpx.Request('GET', url)
+
+            async def aiter_raw(ctx, size=None):
+                for chunk in play[1]:
+                    if isinstance(chunk, Exception):
+                        raise chunk
+                    yield chunk
+        return Context()
+
+
+async def _instant(seconds):
+    return None
+
+
+class EveryCompany(unittest.TestCase):
+    def collect(self, plays, raw=None, fallback=None):
+        http = Stream(plays)
+        p = settings(raw)
+
+        async def career(http_, board):
+            return fallback.get(board.key) if fallback else None
+        p.open = career
 
         async def run():
-            return [[j['id'] for j in page] async for page in platform().board_pages(None, term, days)]
-        with patch.object(workable, 'send', send):
-            return asyncio.run(run()), calls
+            return [[j['id'] for j in page] async for page in p.pages(http, {'everyone': True}, 'engineer', None)]
+        with patch.object(workable.asyncio, 'sleep', _instant):
+            return asyncio.run(run()), http.opened, p
 
-    def test_each_window_whole_newest_first_and_never_twice(self):
-        first = Response(200, {'jobs': [item('a', '2026-11-02T08:00:00Z'), item('b', '2026-11-02T10:00:00Z')],
-                               'nextPageToken': 'T1'})
-        second = Response(200, {'jobs': [item('c', '2026-11-01T23:00:00Z')], 'nextPageToken': None})
-        week = Response(200, {'jobs': [item('b', '2026-11-02T10:00:00Z'), item('d', '2026-10-30T10:00:00Z')]})
-        rest = [Response(200, {'jobs': []}), Response(200, {'jobs': [item('e', '2025-01-01T00:00:00Z')]})]
-        pages, calls = self.collect([first, second, week, *rest])
-        self.assertEqual(pages, [['b', 'a', 'c'], ['d'], ['e']])
-        self.assertEqual([c[1] for c in calls], [workable.SEARCH] * 5)
+    def test_the_whole_feed(self):
+        chunks = [FEED_XML[i:i + 200] for i in range(0, len(FEED_XML), 200)]
+        pages, opened, _ = self.collect([(200, chunks)], {'searchTerms': ['engineer', 'driver']})
+        self.assertEqual((pages, opened), ([['F44ED9E40A', '0908074E5D']], 1))
 
-    def test_a_period_reads_one_window(self):
-        send, calls = sender([Response(200, {'jobs': [item('a', '2026-11-02T08:00:00Z')]})])
-        captured = []
+    def test_a_compressed_feed(self):
+        packed = gzip.compress(FEED_XML)
+        self.assertEqual(self.collect([(200, [packed[:300], packed[300:]], 'gzip')])[:2], ([['F44ED9E40A']], 1))
 
-        async def spy(http, method, url, **kwargs):
-            captured.append(kwargs.get('params'))
-            return await send(http, method, url, **kwargs)
+    def test_one_download_serves_every_word(self):
+        http = Stream([(200, [FEED_XML])])
+        p = settings({'searchTerms': ['engineer', 'driver']})
+        session = {'everyone': True}
 
         async def run():
-            return [page async for page in platform().board_pages(None, 'nurse', 2)]
-        with patch.object(workable, 'send', spy):
-            pages = asyncio.run(run())
-        self.assertEqual((len(pages), captured), (1, [{'query': 'nurse', 'day_range': '1'}]))
+            first = [j['id'] for page in [x async for x in p.pages(http, session, 'engineer', None)] for j in page]
+            second = [x async for x in p.pages(http, session, 'driver', None)]
+            return first, second
+        self.assertEqual((asyncio.run(run()), http.opened), ((['F44ED9E40A', '0908074E5D'], []), 1))
 
-    def test_a_featured_job_gets_its_real_date(self):
-        listed = Response(200, {'jobs': [item('f', '2026-11-02T11:00:00Z', isFeatured=True), item('g', '2026-11-02T09:00:00Z')]})
-        real = Response(200, {**BOARD_ITEM, 'created': '2024-12-13T23:06:09.000Z'})
-        send, calls = sender([listed, real])
+    def test_a_server_error_is_tried_again(self):
+        self.assertEqual(self.collect([(503, []), (200, [FEED_XML])])[:2], ([['F44ED9E40A']], 2))
 
-        async def run():
-            gen = platform().board_pages(None, 'engineer', 2)
-            return [[(j['id'], j['postedAt']) for j in page] async for page in gen]
-        with patch.object(workable, 'send', send):
-            pages = asyncio.run(run())
-        self.assertEqual(pages, [[('g', '2026-11-02T09:00:00Z'), ('f', '2024-12-13T23:06:09.000Z')]])
-        self.assertIn('/api/v1/jobs/f', calls[1][1])
+    def test_a_cut_feed_falls_back_to_the_biggest_career_pages(self):
+        cut = (200, [FEED_XML[:FEED_XML.index(b'</job>') + 10]])
+        session = {'account': 'biffa', 'name': 'Biffa Waste Services', 'website': None,
+                   'jobs': [{**ENTRY, 'title': 'HGV Engineer'}]}
+        pages, opened, p = self.collect([cut], fallback={'biffa': session})
+        self.assertEqual((pages, opened), ([['8A29959BE6']], 1))       # a cut download is not tried again
+        self.assertIn('could not be read (the download was cut before its end)', p.cfg.notes[-1])
+        self.assertIn('1 biggest', p.cfg.notes[-1])
 
-    def test_a_refusal_says_what_happened(self):
-        with self.assertRaises(BoardError) as caught:
-            self.collect([Response(429, {'error': 'rate_limit'})])
-        self.assertIn('429', str(caught.exception))
-
-    def test_an_answer_with_no_list_is_an_error(self):
-        for bad in (Response(200, {'error': 'x'}), Response(200), Response(500)):
-            with self.assertRaises(BoardError):
-                self.collect([bad])
+    def test_a_refusal_falls_back_at_once(self):
+        pages, opened, p = self.collect([(429, [])], fallback={})
+        self.assertEqual((pages, opened), ([], 1))
+        self.assertIn('429', p.cfg.notes[-1])
 
 
 class CareerPages(unittest.TestCase):
@@ -354,13 +524,10 @@ class Details(unittest.TestCase):
         job, _ = self.details([Response(404, text='Job not found')], self.JOB)
         self.assertEqual(job, self.JOB)
 
-    def test_a_job_board_job_reads_its_own_answer(self):
-        listed = P.from_board(BOARD_ITEM['id'], BOARD_ITEM)
-        paid = {**BOARD_ITEM, 'salaryFrom': 150000, 'salaryTo': 180000, 'salaryCurrencyIsoCode': 'USD', 'salaryFrequency': 'year'}
-        job, calls = self.details([Response(200, paid)], listed)
-        self.assertEqual((job['salary'], job['salaryMin'], job['salaryPeriod'], job['companySlug']),
-                         ('USD 150,000 - 180,000 per year', 150000, 'year', 'biffa'))
-        self.assertIn('/api/v1/jobs/b50514a8', calls[0][1])
+    def test_a_feed_job_gets_its_whole_text(self):
+        job = {**self.JOB, 'descriptionHtml': '<p>Own the</p><p>ledger</p>', 'description': ' Own the  ledger '}
+        result, _ = self.details([Response(404, text='Job not found')], job)
+        self.assertEqual(result['description'], 'Own the\nledger')
 
 
 class Lookup(unittest.TestCase):
