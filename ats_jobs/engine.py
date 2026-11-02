@@ -126,7 +126,7 @@ class Run:
         self.board_errors: list[dict] = []
         self.links = {'open': 0, 'closed': 0, 'notFound': 0, 'couldNotCheck': 0}
         self.mode = 'check' if cfg.job_urls else 'search'
-        self.feed: Board | None = None     # the one feed of every company's jobs, when the platform has one
+        self.feed: Board | None = None     # the one place listing every company's jobs, when a search reads it
         by_key = {b.key.lower(): b for b in boards}
         self.by_key = by_key
         self.where = f'{platform.name} {platform.site_word}'
@@ -180,7 +180,8 @@ class Run:
         cfg, platform = self.cfg, self.platform
         filters = Filters(cfg)
         now = datetime.now(timezone.utc)
-        targets = [self.board(k) for k in cfg.companies] or platform.search_all(self.boards)
+        everyone = platform.search_all(self.boards, cfg)
+        targets = [self.board(k) for k in cfg.companies] or everyone
         if not cfg.companies and targets != self.boards:
             self.feed = targets[0]
         self.boards_total = len(targets)
@@ -229,7 +230,7 @@ class Run:
                     continue
                 hit = True
                 posted = parse_time(job.get('postedAt')) or OLDEST
-                name = job.get('company') or board.name      # a feed's jobs name their own company
+                name = job.get('company') or board.name      # jobs of a place for every company name their own
                 key = (name.casefold(), *dedupe_key(job))
                 if key in seen:
                     self.duplicates += 1

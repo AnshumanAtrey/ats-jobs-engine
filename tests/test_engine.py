@@ -212,7 +212,8 @@ class Feed(unittest.TestCase):
             return await super().push(rows, event)
 
     class WithFeed(Fake):
-        def search_all(self, boards):
+        def search_all(self, boards, cfg):
+            self.settings = cfg
             return [Board('*', 'the Fake feed')]
 
     def feed_search(self, raw):
@@ -247,6 +248,7 @@ class Feed(unittest.TestCase):
         self.assertEqual({r[0] for r in platform.read}, {'acme'})
         self.assertEqual([r['jobId'] for r in run.delivery.saved], ['a1'])
         self.assertIsNone(run.feed)
+        self.assertEqual(platform.settings.companies, ['acme'])      # the platform sees the settings on every search
 
 
 class Links(unittest.TestCase):
