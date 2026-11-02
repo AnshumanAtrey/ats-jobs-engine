@@ -33,7 +33,8 @@ company through Workable's public jobs feed. No key. Measured from this laptop o
   the cut (the routes below). About 9 downloads from one address in 3 minutes made Cloudflare refuse it for an hour
   (429, Retry-After 3590).
 - GET https://jobs.workable.com/api/v1/jobs/<id>: one job of Workable's job board (the links people paste from
-  jobs.workable.com): created, workplace, pay; 410 is a job gone, 404 one that never was. Its search
+  jobs.workable.com): created, workplace, and no pay (none in 5 answers read, and its app shows none); 410 is a job
+  gone (8 of 10 links from older crawls), 404 one that never was. Its search
   (/api/v1/jobs?query=...) is not used: it ranks by relevance with no date order (filters: day_range, workplace,
   employment_type, experience), 20 jobs a page, and a burst of 32 searches at once (47 a second) got this laptop's
   IPv6 address banned by Cloudflare for 24 hours on every workable.com host, career pages included (error code 1015,
@@ -693,8 +694,6 @@ class Workable(Platform):
             'otherLocations': [p['name'] for p in places[1:]],
             'workType': WORKPLACE.get(data.get('workplace')) or remote,
             'employmentType': job_type(data.get('employmentType')), 'department': clean(data.get('department')) or None,
-            **pay(data.get('salaryFrom'), data.get('salaryTo'), data.get('salaryCurrencyIsoCode'),
-                  data.get('salaryFrequency')),
             'postedAt': clean(data.get('created')) or None, 'dateOnly': False, 'jobUrl': url, 'applyUrl': url,
             'description': text_of(html), 'descriptionHtml': html,
         }

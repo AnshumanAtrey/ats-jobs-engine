@@ -285,7 +285,7 @@ class Board_(unittest.TestCase):
                          ('Senior Back-End Engineer', 'Biffa Waste Services', 'biffa', 'https://www.biffa.co.uk/'))
         self.assertEqual((job['location'], job['places'][0]['country'], job['workType'], job['employmentType'], job['department']),
                          ('New York, New York, United States', 'United States', 'hybrid', 'full-time', 'Engineering'))
-        self.assertEqual((job['postedAt'], job['dateOnly'], job['salary']), ('2026-11-02T09:00:00.000Z', False, None))
+        self.assertEqual((job['postedAt'], job['dateOnly'], job.get('salary')), ('2026-11-02T09:00:00.000Z', False, None))
         self.assertEqual(job['description'], 'Build & ship\nPython')
         self.assertEqual(job['jobUrl'], BOARD_ITEM['url'])
 
@@ -732,12 +732,12 @@ class Lookup(unittest.TestCase):
                 'locations': ['TELECOMMUTE', 'New York, New York, United States'], 'workplace': 'remote',
                 'location': {'city': 'New York', 'subregion': 'New York', 'countryName': 'United States'},
                 'employmentType': 'Full-time', 'description': '<p>Build</p>', 'requirementsSection': '', 'benefitsSection': None,
-                'salaryFrom': 150000, 'salaryTo': 180000, 'salaryCurrencyIsoCode': 'USD', 'salaryFrequency': 'year',
                 'url': 'https://jobs.workable.com/view/omtQvzG25ZmkM1dS9dWiDj/remote-senior'}
         (status, job), _ = self.check([Response(200, data)], 'omtQvzG25ZmkM1dS9dWiDj', {'everyone': True})
         self.assertEqual((status, job['company'], job['companySlug'], job['location'], job['workType'], job['postedAt']),
                          ('open', 'Bask Health', None, 'New York, New York, United States', 'remote', '2024-12-13T23:06:09.000Z'))
-        self.assertEqual((job['salary'], job['places'][0]['country']), ('USD 150,000 - 180,000 per year', 'United States'))
+        # the job board shows no pay
+        self.assertEqual((job.get('salary'), job['places'][0]['country']), (None, 'United States'))
         nobody = {'company': None, 'companySlug': None, 'companyWebsite': None}
         self.assertEqual(self.check([Response(410, text='Gone')], 'omtQvzG25ZmkM1dS9dWiDj', {'everyone': True})[0], ('closed', nobody))
         self.assertEqual(self.check([Response(404, text='Job not found')], 'omtQvzG25ZmkM1dS9dWiDj', {'everyone': True})[0],
