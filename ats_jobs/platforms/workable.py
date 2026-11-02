@@ -44,10 +44,17 @@ Each run takes the route that fits it. A word, a place, a work type or a job typ
 once (dates have a time). When it is cut, the part that came holds every open job listed before the cut, and for
 FALLBACK_SECONDS the career pages of the companies with the most matching jobs in that part add the jobs listed since
 (on 1,020 accounts, 8 of 10 searches found more of the true newest 100 this way than from the biggest companies' pages,
-647 against 585 in all). When no byte came, the biggest companies' pages; the message says which. A run for the newest
-jobs only (maybe within a period) reads the CAREER_PAGES biggest career pages and stops once maxJobs jobs posted today
-are held (dates are days). Named companies always read their career pages. A hybrid or on-site search asks each
-candidate job's own answer, since the lists mark only remote jobs.
+647 against 585 in all); a page replaces its company's feed jobs only when it holds one of them, since a generic name
+(Elevate, 309 of 918 teacher jobs in the feed's first three quarters) can point to another account. When no byte came,
+the biggest companies' pages; the message says which. A run for the newest jobs only (maybe within a period) reads the
+CAREER_PAGES biggest career pages (dates are days), and reads the feed instead when Workable refuses them before any
+answered: www.workable.com kept answering while apply.workable.com refused. Named companies always read their career
+pages. A hybrid or on-site search asks each candidate job's own answer, since the lists mark only remote jobs.
+
+The feed writes a state as a code for 99% of US, Canadian, Australian and Indian jobs (TX 3,368 and Texas 20 of 35,511
+US jobs; ON, NSW, KA; measured 2026-11-03 on its first three quarters), where career pages and job pages write the name,
+so "Texas" found no feed job: region_name() reads each code as its name (pycountry), without accents, which the
+matching does not fold.
 
 Accounts are lower case (apply.workable.com/BIFFA answers 404, its page redirects to /oops); shortcodes are ten hex
 digits in any case. Old links: <account>.workable.com/... and /<account>/jobs/<number> redirect to /<account>/j/<code>;
@@ -59,8 +66,11 @@ second after 70 s (HTTP 429, Retry-After 0, gone within seconds). Held longer it
 2.2 a second over 20 minutes brought refusals on every call (error code 1015, Retry-After 0) that cleared 90 s after
 the calls stopped, and 100 calls at 1.3 a second 8 minutes later got the address banned from apply.workable.com for
 24 hours (Retry-After 86,400, counting down; the feed and the job board kept answering it). So calls wait their turn
-(PACE, 2 a second) and a run makes a few hundred at most: CAREER_PAGES or FALLBACK_SECONDS of career pages, and one
-call or two per job with details.
+(PACE, 2 a second), and the first refusal (429, 403 or a challenge page) stops every later call of the run at once: the
+shared retries of http.send went on into a refusal for about 20 s at up to 6 calls a second (review mock, 2026-11-03).
+A 5xx or a broken connection is tried again in its turn (RETRY_S). A run makes BUDGET calls at most, about 8 minutes:
+CAREER_PAGES or FALLBACK_SECONDS of career pages, one call or two per job with details (2,000 jobs with details made
+3,050 calls before the budget), three per apply.workable.com/j/ link, and a company's career page once per run.
 """
 import asyncio
 import dataclasses
@@ -69,6 +79,7 @@ import logging
 import re
 import tempfile
 import time
+import unicodedata
 import xml.etree.ElementTree as ET
 import zlib
 from collections import Counter
@@ -78,11 +89,17 @@ from urllib.parse import unquote, urlparse
 
 import httpx
 
-from ..http import STATS, BoardError, send
+from .. import places
+from ..http import STATS, BoardError
 from ..inputs import JOB_TYPE_ALIASES
 from ..rows import _COUNTRIES, Filters, folded_text, index, terms
 from .base import Board, Platform
 from .cornerstone import text_of
+
+try:
+    from pycountry import subdivisions as _SUBDIVISIONS
+except ImportError:           # the actor installs pycountry with the engine; without it a state code stays a code
+    _SUBDIVISIONS = None
 
 APPLY = 'https://apply.workable.com'
 WIDGET = APPLY + '/api/v1/widget/accounts/{account}'
@@ -103,6 +120,7 @@ CODE = re.compile(r'^[0-9a-f]{10}$', re.I)
 NUMBER = re.compile(r'^\d{1,9}$')
 BOARD_ID = re.compile(r'^(?:[1-9A-HJ-NP-Za-km-z]{20,24}|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$')
 CODE_IN_TEXT = re.compile(r'/j/([0-9a-f]{10})(?![0-9a-z])', re.I)
+REGION_CODE = re.compile(r'^[A-Z0-9]{1,3}$')     # how the feed writes a state: TX, ON, NSW, KA
 PAGE = 500                    # matching feed jobs handed to the engine at a time
 FEED_TIMEOUT = httpx.Timeout(120.0, connect=15.0)    # its first byte came after 19 to 23 s
 # Cloudflare compresses the feed on the way. gzip (128 MB) came as fast as brotli (131 MB), about 15 MB/s of XML for
@@ -115,8 +133,11 @@ MONTHS = {m: i for i, m in enumerate('Jan Feb Mar Apr May Jun Jul Aug Sep Oct No
 FEED_DATE = re.compile(r'(\d{1,2}) ([A-Z][a-z]{2}) (\d{4}) (\d{2}):(\d{2}):(\d{2})')
 TAG = re.compile(r'<[^>]*>')
 NOBODY = {'company': None, 'companySlug': None, 'companyWebsite': None}   # a gone job whose company is unknown
-REFUSALS = 3                  # failed calls in a row after which apply.workable.com is not asked again this run
+REFUSALS = 3                  # calls in a row that got no answer after which apply.workable.com is not asked again;
+#                               one refusal (429, 403 or a challenge) counts as all three at once
 PACE = 0.5                    # seconds between two calls to apply.workable.com: 2 a second (see the docstring)
+RETRY_S = (1, 3, 7)           # waits before a 5xx or a broken connection is tried again, each try in its turn
+BUDGET = 1000                 # calls to apply.workable.com in one run, about 8 minutes at PACE (see the docstring)
 LOG = logging.getLogger('apify')
 WORKPLACE = {'remote': 'remote', 'hybrid': 'hybrid', 'on_site': 'onsite'}
 TYPE = {'full': 'full-time', 'part': 'part-time', 'contract': 'contract', 'temporary': 'temporary'}
@@ -127,11 +148,36 @@ def clean(text) -> str:
     return ' '.join(str(text or '').split())
 
 
+def plain(text: str) -> str:
+    """'Karnātaka' -> 'Karnataka', 'São Paulo' -> 'Sao Paulo': the matching does not fold accents, and people type
+    place names without them."""
+    return ''.join(ch for ch in unicodedata.normalize('NFKD', text) if not unicodedata.combining(ch))
+
+
 def place(entry: dict) -> dict | None:
-    """{'city': 'High Wycombe', 'region': 'England', 'country': 'United Kingdom'} -> one place."""
-    city, region, country = (clean(entry.get(k)) or None for k in ('city', 'region', 'country'))
-    name = ', '.join(dict.fromkeys(p for p in (city, region, country) if p))
+    """{'city': 'High Wycombe', 'region': 'England', 'country': 'United Kingdom'} -> one place. A part written twice
+    (Bogotá, Bogota) is named once, and stray commas at a part's end go."""
+    city, region, country = (clean(entry.get(k)).strip(' ,;') or None for k in ('city', 'region', 'country'))
+    parts: dict[str, str] = {}
+    for part in (city, region, country):
+        if part:
+            parts.setdefault(plain(part).casefold(), part)
+    name = ', '.join(parts.values())
     return {'name': name, 'city': city, 'region': region, 'country': country} if name else None
+
+
+@lru_cache(maxsize=4096)
+def region_name(country: str, region: str) -> str:
+    """A state the feed writes as a code -> its name, as career pages and job pages write it: ('US', 'TX') -> 'Texas',
+    ('IN', 'KA') -> 'Karnataka'. The feed writes codes for 99% of US, Canadian, Australian and Indian jobs (2026-11-03),
+    so without this "Texas" found none of them. A name, or a code pycountry does not know, stays as it is."""
+    if not (_SUBDIVISIONS and REGION_CODE.match(region) and len(country) == 2):
+        return region
+    try:
+        found = _SUBDIVISIONS.get(code=f'{country.upper()}-{region}')
+    except (KeyError, LookupError):
+        found = None
+    return plain(found.name) if found else region
 
 
 def job_type(text: str | None, experience: str | None = None) -> str | None:
@@ -200,6 +246,43 @@ def decoder(encoding: str):
     raise BoardError(f'the feed came in an encoding that was not asked for ({encoding[:40]})')
 
 
+class Stopped(BoardError):
+    """apply.workable.com is not asked again this run: it refused this address, or the run made BUDGET calls."""
+
+
+def refusal(response, url: str) -> str | None:
+    """Why an answer is Workable's Cloudflare refusing this address, or None. A refusal is 429 (its rate limit, error
+    code 1015), 403, or a challenge page (a cf-mitigated header, or HTML where the JSON API was asked)."""
+    status, headers = response.status_code, response.headers
+    if status in (429, 403):
+        return f'HTTP {status}'
+    if headers.get('cf-mitigated'):
+        return f'a Cloudflare challenge, HTTP {status}'
+    if status == 200 and '/api/' in url and 'text/html' in (headers.get('content-type') or ''):
+        return 'a Cloudflare challenge page'
+    return None
+
+
+def waiting(response) -> str:
+    """The wait a refusal asks for (Retry-After, in seconds), in words: ', for about 24 hours'; '' for none or short."""
+    try:
+        seconds = int(str(response.headers.get('retry-after') or '0').strip())
+    except ValueError:
+        return ''
+    if seconds >= 5400:
+        return f', for about {round(seconds / 3600)} hours'
+    return f', for about {round(seconds / 60)} minutes' if seconds >= 90 else ''
+
+
+async def fetch(http, method: str, url: str, **kwargs):
+    """One request, counted in the run's traffic; call() decides what is tried again."""
+    started = time.monotonic()
+    response = await http.request(method, url, **kwargs)
+    STATS['calls'] += 1
+    STATS['seconds'] += time.monotonic() - started
+    return response
+
+
 def answer(response) -> dict | list:
     if response.status_code != 200:
         raise BoardError(f'HTTP {response.status_code}')
@@ -239,15 +322,22 @@ class Workable(Platform):
     def __init__(self):
         self._turn = asyncio.Lock()
         self._last = 0.0
-        self._refused = 0
+        self._refused = 0             # calls in a row that got no answer; REFUSALS stops the run's calls
+        self._refusal: str | None = None    # why Workable refused this address; it stays for the run
+        self._calls = 0               # calls made to apply.workable.com this run, retries included
+        self._read = 0                # career pages that answered this run
         self._told = False
+        self._pages: dict[tuple, dict | None] = {}     # career page answers of this run, by (account, descriptions)
         self._known: dict[str, Board] | None = None
         self._names: dict[str, str] | None = None
+        self._newest = False          # the run reads the biggest career pages for the newest jobs (search_all)
+        self._fell_back = False       # those pages were refused, so the feed was read instead
         self.cfg = None
 
     # ---------- links and names ----------
 
     def read_link(self, text):
+        text = text.rstrip('.,;:!?')               # a link copied from a sentence: .../j/DB4D7C0EC8. is that job
         link = text if re.match(r'^[a-z][a-z0-9+.-]*://', text, re.I) else f'https://{text}'
         parsed = urlparse(link)
         host = (parsed.hostname or '').lower() if ' ' not in text.strip() else ''
@@ -323,51 +413,102 @@ class Workable(Platform):
 
     def search_all(self, boards, cfg):
         """A word, a place, a work type or a job type: the feed, every company at once. Only the newest jobs (maybe
-        within a period): the biggest career pages, whose dates are days, so the run stops once today fills the list
-        and never reads for longer than about CAREER_PAGES * PACE seconds."""
+        within a period): the CAREER_PAGES biggest career pages, about CAREER_PAGES * PACE seconds; if Workable refuses
+        them before any answered, open() reads the feed instead."""
         self.cfg = cfg
+        if any(places.world_query(places.tokens(p)) for p in cfg.locations):
+            cfg.notes.append('Workable gives every job a country, so no job is marked worldwide: type Remote in '
+                             'location to get remote jobs.')
         if cfg.search_terms or cfg.locations or cfg.work_types or cfg.job_types:
             return [EVERYONE]
+        self._newest = not cfg.companies
         return boards[:CAREER_PAGES]
 
     # ---------- calls to apply.workable.com, one at a time ----------
 
+    def quiet(self) -> bool:
+        """Workable refused this address, or REFUSALS calls in a row got no answer."""
+        return self._refusal is not None or self._refused >= REFUSALS
+
+    def tell(self, note: str) -> None:
+        """The one note of a run that stopped asking apply.workable.com."""
+        if not self._told and self.cfg is not None:
+            self._told = True
+            self.cfg.notes.append(note)
+
+    def ready(self) -> None:
+        """Stopped when apply.workable.com is not to be asked again this run."""
+        if self.quiet():
+            raise Stopped('Workable stopped answering this address')
+        if self._calls >= BUDGET:
+            self.tell(f'This run made {BUDGET:,} calls to apply.workable.com, the most one run makes so that Workable '
+                      'keeps answering, so the career pages, details and links after that were not read.')
+            raise Stopped(f'the run made its {BUDGET:,} calls to apply.workable.com')
+
     async def call(self, http, method: str, url: str, **kwargs):
-        """One call to apply.workable.com in its turn. After REFUSALS failed calls in a row (each already tried four
-        times over 11 s) the rest fail at once: Workable has stopped answering this address."""
+        """One call to apply.workable.com in its turn, PACE after the one before; a 5xx or a broken connection is
+        tried again after RETRY_S, each try in its turn. The first refusal stops every later call of the run at once:
+        Workable's Cloudflare bans an address for a day when calls go on after refusals (see the docstring). So do
+        REFUSALS calls in a row that got no answer, and BUDGET calls in all."""
+        last = 'no answer'
+        for attempt in range(len(RETRY_S) + 1):
+            async with self._turn:
+                self.ready()
+                wait = self._last + PACE - time.monotonic()
+                if wait > 0:
+                    await asyncio.sleep(wait)
+                self.ready()                # a refusal can have come in while this call waited
+                self._last = time.monotonic()
+                self._calls += 1
+            try:
+                response = await fetch(http, method, url, **kwargs)
+            except httpx.HTTPError as exc:
+                STATS['retries'][type(exc).__name__] += 1
+                last = f'{type(exc).__name__}: {exc}'[:200]
+            else:
+                why = refusal(response, url)
+                if why:                     # an answer to a call made before it does not lift it
+                    self._refusal = why
+                    self.tell(self.refused_note(why, waiting(response)))
+                    raise Stopped(f'Workable refused this address ({why})')
+                if response.status_code < 500:
+                    self._refused = 0
+                    return response
+                STATS['retries'][str(response.status_code)] += 1
+                last = f'HTTP {response.status_code}'
+            if attempt < len(RETRY_S):
+                await asyncio.sleep(RETRY_S[attempt])
+        self._refused += 1
         if self._refused >= REFUSALS:
-            raise BoardError('Workable stopped answering this address')
-        async with self._turn:
-            wait = self._last + PACE - time.monotonic()
-            if wait > 0:
-                await asyncio.sleep(wait)
-            self._last = time.monotonic()
-        try:
-            response = await send(http, method, url, **kwargs)
-        except BoardError as exc:
-            self._refused += 1
-            if 'HTTP 429' in str(exc):
-                exc = BoardError('Workable refused this address (HTTP 429), which can last up to a day')
-            if self._refused >= REFUSALS and not self._told and self.cfg is not None:
-                self._told = True
-                self.cfg.notes.append(f'Workable stopped answering this address after {REFUSALS} refused calls in a '
-                                      'row (it can refuse an address for up to a day), so the career pages, details '
-                                      'and links after that were not read. Run again later.')
-            raise exc
-        self._refused = 0
-        return response
+            self.tell(f'Workable did not answer {REFUSALS} calls in a row ({last}), so the run stopped asking '
+                      'apply.workable.com: the career pages, details and links after that were not read.')
+        raise BoardError(last)
+
+    def refused_note(self, why: str, wait: str) -> str:
+        calls = f'{self._calls:,} call' + ('' if self._calls == 1 else 's')
+        note = (f'Workable refused this address ({why}) after {calls} to apply.workable.com{wait}, so the run stopped '
+                'asking it: the career pages, details and links after that were not read.')
+        if self._newest and self._read:     # with none read, open() reads the feed instead and says so
+            return note + (' Type a job title, a place, remote or a job type to search Workable\'s jobs feed, which '
+                           'comes from www.workable.com, or run again later.')
+        return note + ' A refusal can last up to a day.'
 
     async def career_page(self, http, account: str, descriptions: bool = False) -> dict | None:
-        """The widget answer, or None when there is no such account."""
+        """The widget answer, or None when there is no such account. Asked once a run: links to several jobs of one
+        company read its page once."""
         if not ACCOUNT.match(account):
             return None
+        if (account, descriptions) in self._pages:
+            return self._pages[(account, descriptions)]
         url = WIDGET.format(account=account) + ('?details=true' if descriptions else '')
         response = await self.call(http, 'GET', url)
-        if response.status_code == 404:
-            return None
-        data = answer(response)
-        if not isinstance(data, dict) or not isinstance(data.get('jobs'), list):
-            raise BoardError('the career page answer had no job list')
+        data = None
+        if response.status_code != 404:
+            data = answer(response)
+            if not isinstance(data, dict) or not isinstance(data.get('jobs'), list):
+                raise BoardError('the career page answer had no job list')
+            self._read += 1
+        self._pages[(account, descriptions)] = data
         return data
 
     # ---------- one company's career page ----------
@@ -376,7 +517,18 @@ class Workable(Platform):
         if board.key == EVERYONE.key:
             return {'everyone': True}
         wanted = bool(self.cfg and self.cfg.search_descriptions and self.cfg.search_terms)
-        data = await self.career_page(http, board.key, descriptions=wanted)
+        try:
+            data = await self.career_page(http, board.key, descriptions=wanted)
+        except Stopped:
+            # a run for the newest jobs that Workable refused before any career page answered reads the feed once:
+            # the feed comes from www.workable.com, which kept answering while apply.workable.com refused
+            if not self._newest or self._read or self._fell_back or not self.quiet():
+                raise
+            self._fell_back = True
+            if self.cfg is not None:
+                self.cfg.notes.append("No career page had answered, so these are the newest jobs of Workable's jobs "
+                                      'feed, from every company.')
+            return {'everyone': True}
         if data is None:
             return None
         known = self.known().get(board.key)
@@ -456,6 +608,7 @@ class Workable(Platform):
         if not CODE.match(code) or not title:
             return None
         city, region, country = (clean(fields.get(k)) or None for k in ('city', 'state', 'country'))
+        region = region_name(country, region) if region and country else region
         spot = place({'city': city, 'region': region, 'country': country_name(country) if country else None})
         company = clean(fields.get('company')) or None
         return {
@@ -590,38 +743,48 @@ class Workable(Platform):
     async def career_pages(self, http, partial: list[dict], cut: str | None, reason: str) -> list[dict]:
         """When the feed did not all arrive: the jobs of the part that did (all open, listed before the cut), and for
         FALLBACK_SECONDS the career pages of the companies with the most matching jobs in that part, then of the
-        biggest. A career page's jobs replace that company's feed entries: the page has the published date and only
-        jobs still open. BoardError when nothing at all could be read."""
+        biggest. A career page's jobs replace that company's feed entries when the page holds at least one of them,
+        which proves it is the company's own account: the page has the published date and only jobs still open. A page
+        that holds none of them (a company whose name points to another account) leaves the feed's jobs in. BoardError
+        when nothing at all could be read."""
         keep, known = self.wanted(), self.known()
         counts = Counter(job['companySlug'] for job in partial if job.get('companySlug') in known)
         order = [key for key, _ in counts.most_common()] + [key for key in known if key not in counts]
-        started, read, found = time.monotonic(), set(), {}
+        listed_in_feed: dict[str, set[str]] = {}
+        for job in partial:
+            listed_in_feed.setdefault(job.get('companySlug'), set()).add(job['id'])
+        started, read, same, found = time.monotonic(), set(), set(), {}
         for key in order:
             if time.monotonic() - started > FALLBACK_SECONDS:
                 break
             try:
                 session = await self.open(http, known[key])
+            except Stopped:
+                break                       # refused or out of calls: the rest would fail at once
             except BoardError:
                 continue
             if session:
                 read.add(key)
-                found.update((job['id'], job) for job in self.from_widget(session, session['jobs']) if keep(job))
+                page = self.from_widget(session, session['jobs'])
+                if listed_in_feed.get(key, set()) & {job['id'] for job in page}:
+                    same.add(key)
+                found.update((job['id'], job) for job in page if keep(job))
         if not read and not partial:
             raise BoardError(f'its jobs feed could not be read ({reason}) and no career page answered')
         jobs = list(found.values()) + [job for job in partial if job['id'] not in found
-                                       and job.get('companySlug') not in read]
+                                       and job.get('companySlug') not in same]
         pages = f'{len(read):,} compan{"y" if len(read) == 1 else "ies"}'
         if not cut:
             note = (f"Workable's jobs feed could not be read ({reason}), so these jobs come from the career pages of "
-                    f'the {pages} biggest on our list of {len(known):,}.')
+                    f"the {pages} biggest on our list of {len(known):,}. Other companies' jobs are not in this run.")
         elif read:
             note = (f"Workable's jobs feed was cut after its listings of {cut}, so the jobs listed since then come "
                     f'only from the career pages of the {pages} '
-                    f'{"with the most matching jobs" if counts else "biggest"} (of {len(known):,} on our list).')
+                    f'{"with the most matching jobs" if counts else "biggest"} (of {len(known):,} on our list). The '
+                    'newest jobs of other companies are not in this run.')
         else:
             note = (f"Workable's jobs feed was cut after its listings of {cut} and no career page answered, so these "
-                    'are the jobs listed before then.')
-        note += ' Run again later for every company.'
+                    'are the jobs listed before then. Newer jobs are not in this run.')
         LOG.warning(note)
         if self.cfg is not None:
             self.cfg.notes.append(note)
@@ -755,13 +918,16 @@ class Workable(Platform):
         raise BoardError(f'HTTP {response.status_code}')
 
     async def details(self, http, session, job):
-        account = job.get('companySlug') or (session or {}).get('account') or await self.account_of(http, job['id'])
-        data = await self.job_answer(http, account, job['id']) if account else None
+        try:
+            account = job.get('companySlug') or (session or {}).get('account') or await self.account_of(http, job['id'])
+            data = await self.job_answer(http, account, job['id']) if account else None
+        except Stopped:
+            return job      # refused or out of calls: the job as listed, charged as a job; a note says why
         return self.enrich(job, data) if data else job
 
     async def lookup(self, http, session, job_id):
         if BOARD_ID.match(job_id) and not CODE.match(job_id):     # a jobs.workable.com link: 410 is gone, 404 never was
-            response = await send(http, 'GET', BOARD_JOB.format(id=job_id))
+            response = await self.call(http, 'GET', BOARD_JOB.format(id=job_id))   # Workable's one Cloudflare
             if response.status_code in (404, 410):
                 return ('closed' if response.status_code == 410 else 'not found'), dict(NOBODY)
             data = answer(response)

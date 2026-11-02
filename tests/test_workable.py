@@ -1,11 +1,14 @@
 """Workable: links, the feed, career pages, jobs and lookups, on answers shaped like Workable's own (2026-11-02)."""
 import asyncio
 import gzip
+import re
+import time
 import unittest
 from unittest.mock import patch
 
 import httpx
 
+from ats_jobs import rows
 from ats_jobs.http import BoardError, client
 from ats_jobs.inputs import parse_input
 from ats_jobs.platforms import workable
@@ -198,6 +201,21 @@ class Links(unittest.TestCase):
         cfg = parse_input({'searchTerms': ['site:apply.workable.com/biffa engineer']}, P, {})
         self.assertEqual((cfg.search_terms, cfg.companies), (['engineer'], ['biffa']))
 
+    def test_a_link_copied_with_a_full_stop_keeps_its_job(self):
+        self.assertEqual(P.read_link('https://apply.workable.com/huggingface/j/DB4D7C0EC8.'), ('huggingface', 'DB4D7C0EC8'))
+        self.assertEqual(P.read_link('apply.workable.com/biffa/,'), ('biffa', None))
+
+    def test_a_link_naming_no_company_in_the_search_box_is_not_searched_as_words(self):
+        for text in ('https://jobs.workable.com/company/9o3Lw7wNrjJ2wFJr6XCoWa/jobs-at-hugging-face',
+                     'https://apply.workable.com/', 'https://jobs.workable.com/'):
+            cfg = parse_input({'searchTerms': [text]}, P, {})
+            self.assertEqual(cfg.search_terms, [], text)
+            self.assertIn('is a Workable link with no company in it', cfg.skipped[0][1])
+
+    def test_a_job_board_search_link_searches_its_words_and_place(self):
+        cfg = parse_input({'searchTerms': ['https://jobs.workable.com/search?query=data+engineer&location=Germany']}, P, {})
+        self.assertEqual((cfg.search_terms, cfg.locations, cfg.skipped), (['data engineer'], ['Germany'], []))
+
     def test_a_job_link_in_the_search_box_is_checked(self):
         cfg = parse_input({'searchTerms': ['https://apply.workable.com/j/584D288213']}, P, {})
         self.assertEqual(cfg.job_urls, [('*', '584D288213', 'https://apply.workable.com/j/584D288213')])
@@ -215,6 +233,33 @@ class Parsing(unittest.TestCase):
             self.assertEqual(job_type(text), kind)
         self.assertEqual((job_type('Full-time', 'Internship'), job_type('', ' internship '), job_type('Contract', 'Entry level')),
                          ('intern', 'intern', 'contract'))
+
+    def test_a_state_written_as_a_code_reads_as_its_name(self):
+        """The feed writes the state as a code for 99% of US, Canadian, Australian and Indian jobs (2026-11-03),
+        career pages and job pages write its name: "Texas" has to find an Austin, TX feed entry."""
+        def where(city, state, country):
+            return P.from_feed({'referencenumber': 'ABCDEF1234', 'title': 'Nurse', 'company': 'X', 'city': city,
+                                'state': state, 'country': country})['places'][0]
+        austin = where('Austin', 'TX', 'US')
+        self.assertEqual((austin['name'], austin['region']), ('Austin, Texas, United States', 'Texas'))
+        self.assertTrue(rows.Place('Texas').matches(rows.job_area({'places': [austin]})))
+        self.assertEqual(where('Toronto', 'ON', 'CA')['name'], 'Toronto, Ontario, Canada')
+        self.assertEqual(where('Bengaluru', 'KA', 'IN')['region'], 'Karnataka')        # no accent: none is typed
+        self.assertEqual(where('Sydney', 'NSW', 'AU')['region'], 'New South Wales')
+        self.assertEqual(where('Leeds', 'England', 'GB')['region'], 'England')         # a name stays
+        self.assertEqual(where('Nowhere', 'ZZ', 'US')['region'], 'ZZ')                 # so does a code nobody knows
+
+    def test_a_place_part_written_twice_or_with_a_stray_comma(self):
+        self.assertEqual(place({'city': 'Bogotá', 'region': 'Bogota', 'country': 'Colombia'})['name'], 'Bogotá, Colombia')
+        self.assertEqual(place({'city': 'San Antonio,', 'region': 'Texas', 'country': 'United States'})['name'],
+                         'San Antonio, Texas, United States')
+
+    def test_pay_without_a_period_has_no_period(self):
+        self.assertEqual(workable.pay(28000, 32000, 'GBP', None),
+                         {'salary': 'GBP 28,000 - 32,000', 'salaryMin': 28000, 'salaryMax': 32000, 'salaryCurrency': 'GBP',
+                          'salaryPeriod': None})
+        job = P.enrich({'id': 'x', 'title': 'T'}, {**V2, 'salary_from': 30000, 'salary_to': 40000, 'salary_frequency': None})
+        self.assertEqual((job['salary'], job['salaryPeriod']), ('GBP 30,000 - 40,000', None))
 
     def test_pay(self):
         self.assertEqual(pay_text(28000, 28000, 'GBP', 'year'), 'GBP 28,000 per year')
@@ -307,6 +352,10 @@ class Board_(unittest.TestCase):
                          ('', [], None, None, None, 'https://jobs.workable.com/view/x'))
         job = P.from_board('y', {'locations': ['TELECOMMUTE'], 'workplace': None})
         self.assertEqual((job['workType'], job['places']), ('remote', []))
+
+    def test_worldwide_is_explained(self):
+        p = settings({'location': ['Worldwide']})
+        self.assertIn('Workable gives every job a country, so no job is marked worldwide', p.cfg.notes[-1])
 
     def test_a_filter_reads_the_feed_and_the_newest_jobs_the_biggest_career_pages(self):
         p = platform()
@@ -491,13 +540,28 @@ class EveryCompany(unittest.TestCase):
     BIFFA_PAGE = {'account': 'biffa', 'name': 'Biffa Waste Services', 'website': None,
                   'jobs': [{**ENTRY, 'title': 'HGV Engineer'}]}
 
-    def test_a_cut_feed_reads_the_career_pages_of_the_companies_it_names(self):
+    # two Biffa jobs, then the cut
+    SECOND = (b'<job><title><![CDATA[Site Engineer]]></title><date><![CDATA[Mon, 02 Nov 2026 11:00:00 UTC]]></date>'
+              b'<referencenumber><![CDATA[AAAAAAAAAA]]></referencenumber><company><![CDATA[Biffa Waste Services]]>'
+              b'</company><country><![CDATA[GB]]></country></job>')
+    TWO_CUT = FEED_XML[:FEED_XML.index(b'</job>') + 6] + SECOND + b'<jo'
+
+    def test_a_career_page_holding_a_job_of_the_cut_part_stands_for_its_company(self):
         broken = httpx.RemoteProtocolError('peer closed connection without sending complete message body')
-        pages, opened, p = self.collect([(200, [self.CUT, broken])], fallback={'biffa': self.BIFFA_PAGE})
-        self.assertEqual((pages, opened), ([['8A29959BE6']], 1))       # a cut download is not tried again
-        # Biffa's page was read, so its page stands for it: the feed's entry of a job it no longer lists goes
+        same = {**self.BIFFA_PAGE, 'jobs': [{**ENTRY, 'title': 'HGV Engineer'},
+                                            {**ENTRY, 'shortcode': 'F44ED9E40A', 'title': 'System Engineer'}]}
+        pages, opened, p = self.collect([(200, [self.TWO_CUT, broken])], fallback={'biffa': same})
+        # the page holds F44ED9E40A, so it is Biffa's own account: its entry replaces the feed's, and the feed's other
+        # Biffa job, which the page no longer lists, has closed
+        self.assertEqual((pages, opened), ([['8A29959BE6', 'F44ED9E40A']], 1))     # a cut download is not tried again
         self.assertIn('was cut after its listings of 2026-11-02, so the jobs listed since then come only from the '
                       'career pages of the 1 company with the most matching jobs (of 3 on our list)', p.cfg.notes[-1])
+
+    def test_a_career_page_holding_none_of_its_feed_jobs_leaves_them_in(self):
+        # the company's name pointed to another account (a generic name such as Elevate): its feed jobs stay
+        broken = httpx.RemoteProtocolError('cut')
+        pages, _, _ = self.collect([(200, [self.TWO_CUT, broken])], fallback={'biffa': self.BIFFA_PAGE})
+        self.assertEqual(pages, [['8A29959BE6', 'F44ED9E40A', 'AAAAAAAAAA']])
 
     def test_the_companies_with_the_most_matching_jobs_in_the_cut_part_come_first(self):
         known = {'zz': Board('zz', 'ZZ Co'), 'biffa': BIFFA}            # zz is the bigger company on our list
@@ -529,7 +593,8 @@ class EveryCompany(unittest.TestCase):
 class CareerPages(unittest.TestCase):
     def run_open(self, answers, board=BIFFA):
         send, calls = sender(answers)
-        with patch.object(workable, 'send', send), patch.object(workable, 'PACE', 0):
+        with patch.object(workable, 'fetch', send), patch.object(workable, 'PACE', 0), \
+                patch.object(workable.asyncio, 'sleep', _instant):
             return asyncio.run(platform().open(None, board)), calls
 
     def test_a_career_page(self):
@@ -546,9 +611,9 @@ class CareerPages(unittest.TestCase):
         self.assertEqual((session, calls), (None, []))
 
     def test_a_failure_stays_an_error(self):
-        for bad in (Response(500), Response(200), Response(200, {'name': 'x'})):
+        for bad in ([Response(500)] * (len(workable.RETRY_S) + 1), [Response(200)], [Response(200, {'name': 'x'})]):
             with self.assertRaises(BoardError):
-                self.run_open([bad])
+                self.run_open(bad)
 
     def test_the_job_board_needs_no_call(self):
         self.assertEqual(self.run_open([], EVERYONE), ({'everyone': True}, []))
@@ -567,7 +632,7 @@ class CareerPages(unittest.TestCase):
     def test_descriptions_are_asked_for_only_when_searched(self):
         send, calls = sender([Response(200, WIDGET), Response(200, WIDGET)])
         p = platform()
-        with patch.object(workable, 'send', send), patch.object(workable, 'PACE', 0):
+        with patch.object(workable, 'fetch', send), patch.object(workable, 'PACE', 0):
             p.search_all([BIFFA], parse_input({'searchTerms': ['driver'], 'searchDescriptions': True}, p, {}))
             asyncio.run(p.open(None, BIFFA))
             p.search_all([BIFFA], parse_input({'searchTerms': ['driver']}, p, {}))
@@ -588,7 +653,7 @@ class Details(unittest.TestCase):
 
     def details(self, answers, job, session=None):
         send, calls = sender(answers)
-        with patch.object(workable, 'send', send), patch.object(workable, 'PACE', 0):
+        with patch.object(workable, 'fetch', send), patch.object(workable, 'PACE', 0):
             return asyncio.run(platform().details(None, session or {'everyone': True}, dict(job))), calls
 
     def test_a_career_page_job_reads_its_own_answer(self):
@@ -621,7 +686,7 @@ class WorkTypes(unittest.TestCase):
     def run_check(self, raw, answers):
         send, calls = sender(answers)
         p = settings(raw)
-        with patch.object(workable, 'send', send), patch.object(workable, 'PACE', 0):
+        with patch.object(workable, 'fetch', send), patch.object(workable, 'PACE', 0):
             return asyncio.run(p.workplaces(None, [dict(j) for j in self.JOBS], p.wanted(matched=True))), calls, p
 
     def test_a_hybrid_search_asks_the_jobs_not_marked_remote(self):
@@ -650,52 +715,238 @@ class WorkTypes(unittest.TestCase):
 
         async def run():
             return [page async for page in p.pages(None, {'account': 'biffa', 'name': 'Biffa', 'jobs': [ENTRY]}, None, None)]
-        with patch.object(workable, 'send', send), patch.object(workable, 'PACE', 0):
+        with patch.object(workable, 'fetch', send), patch.object(workable, 'PACE', 0):
             pages = asyncio.run(run())
         self.assertEqual([[(j['id'], j['workType']) for j in page] for page in pages], [[('8A29959BE6', 'hybrid')]])
         self.assertEqual(calls, [('GET', 'https://apply.workable.com/api/v2/accounts/biffa/jobs/8A29959BE6')])
 
 
+def answering(replies: list):
+    """A fetch() giving each reply in turn (a Response, or an exception it raises), and the URLs it was asked."""
+    async def fetch(http, method, url, **kwargs):
+        calls.append(url)
+        reply = replies.pop(0)
+        if isinstance(reply, Exception):
+            raise reply
+        return reply
+    calls = []
+    return fetch, calls
+
+
+def asking(p, replies, times=1, sleeps=None, code='584D288213'):
+    """job_answer() asked `times` times in a row -> what each gave (a title, 'stopped: ...' or 'error: ...'), and the
+    calls that reached Workable. sleeps collects every wait, which takes no time here."""
+    fetch, calls = answering(list(replies))
+
+    async def nap(seconds):
+        if sleeps is not None:
+            sleeps.append(seconds)
+    got = []
+    with patch.object(workable, 'fetch', fetch), patch.object(workable, 'PACE', 0), \
+            patch.object(workable.asyncio, 'sleep', nap):
+        for _ in range(times):
+            try:
+                got.append(asyncio.run(p.job_answer(None, 'biffa', code))['title'])
+            except workable.Stopped as exc:
+                got.append(f'stopped: {exc}')
+            except BoardError as exc:
+                got.append(f'error: {exc}')
+    return got, calls
+
+
 class Refusals(unittest.TestCase):
-    def test_after_three_refusals_in_a_row_workable_is_not_asked_again(self):
+    """Workable's Cloudflare banned an address for a day after calls went on into its refusals (2026-11-02): the
+    first refusal stops the run's calls, and nothing is tried again into one."""
+
+    def test_one_refusal_stops_every_later_call(self):
+        p = settings({'searchTerms': ['engineer']})
+        got, calls = asking(p, [Response(429, text='error code: 1015', headers={'retry-after': '0'})], times=4)
+        self.assertEqual(len(calls), 1)
+        self.assertEqual(got, ['stopped: Workable refused this address (HTTP 429)']
+                         + ['stopped: Workable stopped answering this address'] * 3)
+        self.assertIn('Workable refused this address (HTTP 429) after 1 call to apply.workable.com, so the run '
+                      'stopped asking it', p.cfg.notes[-1])
+        self.assertEqual(len(p.cfg.notes), 1)
+
+    def test_an_answer_to_a_call_made_before_the_refusal_does_not_lift_it(self):
         calls = []
 
-        async def refused(http, method, url, **kwargs):
+        async def fetch(http, method, url, **kwargs):
             calls.append(url)
-            raise BoardError('HTTP 429')
+            if url.endswith('AAAAAAAAAA'):          # sent first, refused after B was sent
+                await asyncio.sleep(0.01)
+                return Response(429)
+            await asyncio.sleep(0.03)              # sent next, answers after the refusal came
+            return Response(200, V2)
         p = settings({})
-        with patch.object(workable, 'send', refused), patch.object(workable, 'PACE', 0):
-            for _ in range(5):
-                with self.assertRaises(BoardError):
-                    asyncio.run(p.job_answer(None, 'biffa', '584D288213'))
-        self.assertEqual(len(calls), workable.REFUSALS)
-        self.assertIn('stopped answering this address', p.cfg.notes[-1])
 
-    def test_a_refusal_is_named_in_plain_words(self):
-        async def refused(http, method, url, **kwargs):
-            raise BoardError('HTTP 429')
-        with patch.object(workable, 'send', refused), patch.object(workable, 'PACE', 0):
-            with self.assertRaises(BoardError) as caught:
-                asyncio.run(settings({}).job_answer(None, 'biffa', '584D288213'))
-        self.assertEqual(str(caught.exception), 'Workable refused this address (HTTP 429), which can last up to a day')
+        async def run():
+            return await asyncio.gather(p.job_answer(None, 'biffa', 'AAAAAAAAAA'),
+                                        p.job_answer(None, 'biffa', 'BBBBBBBBBB'), return_exceptions=True)
+        with patch.object(workable, 'fetch', fetch), patch.object(workable, 'PACE', 0):
+            first, second = asyncio.run(run())
+            self.assertIsInstance(first, workable.Stopped)
+            self.assertEqual(second['title'], 'Accounts Payable')
+            with self.assertRaises(workable.Stopped):
+                asyncio.run(p.job_answer(None, 'biffa', 'CCCCCCCCCC'))
+        self.assertEqual(len(calls), 2)
+
+    def test_a_403_or_a_challenge_is_a_refusal_too(self):
+        for reply in (Response(403, text='Forbidden'), Response(503, headers={'cf-mitigated': 'challenge'}),
+                      Response(200, text='<html>Just a moment...</html>', headers={'content-type': 'text/html'})):
+            got, calls = asking(settings({}), [reply], times=2)
+            self.assertEqual(len(calls), 1, reply.status_code)
+            self.assertTrue(got[0].startswith('stopped: Workable refused this address ('), got)
+
+    def test_a_refusal_is_not_tried_again(self):
+        sleeps = []
+        asking(settings({}), [Response(429)], sleeps=sleeps)
+        self.assertEqual(sleeps, [])
+
+    def test_server_errors_and_broken_connections_are_tried_again_in_turn(self):
+        sleeps = []
+        got, calls = asking(settings({}), [Response(502), httpx.ConnectError('down'), Response(200, V2)], sleeps=sleeps)
+        self.assertEqual((got, len(calls), sleeps), (['Accounts Payable'], 3, list(workable.RETRY_S[:2])))
+
+    def test_three_calls_without_an_answer_stop_the_run(self):
+        tries = len(workable.RETRY_S) + 1
+        p = settings({})
+        got, calls = asking(p, [Response(500)] * tries * workable.REFUSALS, times=workable.REFUSALS + 1)
+        self.assertEqual(got, ['error: HTTP 500'] * workable.REFUSALS + ['stopped: Workable stopped answering this address'])
+        self.assertEqual(len(calls), tries * workable.REFUSALS)
+        self.assertIn(f'Workable did not answer {workable.REFUSALS} calls in a row (HTTP 500)', p.cfg.notes[-1])
 
     def test_an_answer_in_between_starts_the_count_again(self):
-        answers = [BoardError('HTTP 429'), BoardError('HTTP 429'), Response(200, V2), BoardError('HTTP 429'), BoardError('HTTP 429'), Response(200, V2)]
+        failed = [Response(500)] * (len(workable.RETRY_S) + 1)
+        got, _ = asking(settings({}), (failed * 2 + [Response(200, V2)]) * 2, times=6)
+        self.assertEqual(got, ['error: HTTP 500', 'error: HTTP 500', 'Accounts Payable'] * 2)
 
-        async def mixed(http, method, url, **kwargs):
-            reply = answers.pop(0)
-            if isinstance(reply, Exception):
-                raise reply
-            return reply
+    def test_the_wait_a_refusal_asks_for_is_said(self):
+        p = settings({'searchTerms': ['engineer']})
+        asking(p, [Response(429, headers={'retry-after': '86112'})])
+        self.assertIn('(HTTP 429) after 1 call to apply.workable.com, for about 24 hours, so the run', p.cfg.notes[-1])
+
+    def test_a_run_for_the_newest_jobs_says_how_to_reach_the_feed(self):
+        p = settings({'maxJobs': 100})  # the empty form
+        p._read = 1                     # a career page had answered, so the run stays on career pages
+        asking(p, [Response(429)])
+        self.assertIn("Type a job title, a place, remote or a job type to search Workable's jobs feed", p.cfg.notes[-1])
+
+
+class Budget(unittest.TestCase):
+    """About 1,800 calls in 20 minutes got refusals on every call, then a day's ban (2026-11-02): BUDGET calls a run."""
+
+    def test_a_run_makes_at_most_its_budget_of_calls(self):
         p = settings({})
-        with patch.object(workable, 'send', mixed), patch.object(workable, 'PACE', 0):
-            got = []
-            for _ in range(6):
+        with patch.object(workable, 'BUDGET', 3):
+            got, calls = asking(p, [Response(200, V2)] * 3, times=5)
+        self.assertEqual(got, ['Accounts Payable'] * 3 + ['stopped: the run made its 3 calls to apply.workable.com'] * 2)
+        self.assertEqual(len(calls), 3)
+        self.assertIn('This run made 3 calls to apply.workable.com, the most one run makes', p.cfg.notes[-1])
+
+    def test_details_past_the_budget_come_as_listed(self):
+        job = {'id': '584D288213', 'title': 'Accounts Payable', 'companySlug': 'biffa'}
+        fetch, calls = answering([])
+        p = settings({'includeDetails': True})
+        with patch.object(workable, 'fetch', fetch), patch.object(workable, 'BUDGET', 0):
+            self.assertEqual(asyncio.run(p.details(None, None, dict(job))), job)
+        self.assertEqual(calls, [])
+
+    def test_links_to_one_company_read_its_page_once(self):
+        def moved(code):
+            return Response(301, headers={'location': f'/biffa/j/{code}'})
+        fetch, calls = answering([moved('8A29959BE6'), Response(200, WIDGET), Response(200, {**V2, 'shortcode': '8A29959BE6'}),
+                                  moved('584D288213'), Response(200, V2)])
+        p = platform()
+        with patch.object(workable, 'fetch', fetch), patch.object(workable, 'PACE', 0):
+            first = asyncio.run(p.lookup(None, {'everyone': True}, '8A29959BE6'))
+            second = asyncio.run(p.lookup(None, {'everyone': True}, '584D288213'))
+        self.assertEqual((first[0], second[0]), ('open', 'open'))
+        self.assertEqual(sum('/widget/' in c for c in calls), 1)
+
+
+class Pace(unittest.TestCase):
+    def test_the_measured_limits_stay(self):
+        """apply.workable.com answered 3 calls a second for 2 minutes and refused half of 4 a second after 70 s; about
+        1,800 calls at 1.5 to 2.2 a second over 20 minutes got refusals, then a day's ban (2026-11-02). A change to
+        these is a change to how likely a run is to get Apify's shared address banned: measure first."""
+        self.assertEqual((workable.PACE, Workable.concurrency, workable.BUDGET, workable.REFUSALS), (0.5, 8, 1000, 3))
+        self.assertEqual((workable.FALLBACK_SECONDS, workable.WORKPLACE_SECONDS, workable.CAREER_PAGES), (120, 90, 300))
+        self.assertEqual(workable.RETRY_S, (1, 3, 7))
+
+    def test_calls_start_a_pace_apart_however_many_wait(self):
+        started = []
+
+        async def fetch(http, method, url, **kwargs):
+            started.append(time.monotonic())
+            return Response(200, V2)
+        p = settings({})
+
+        async def run():
+            await asyncio.gather(*(p.job_answer(None, 'biffa', f'{i:010d}') for i in range(4)))
+        with patch.object(workable, 'fetch', fetch), patch.object(workable, 'PACE', 0.05):
+            asyncio.run(run())
+        gaps = [b - a for a, b in zip(started, started[1:])]
+        self.assertEqual(len(gaps), 3)
+        self.assertGreaterEqual(min(gaps), 0.045)
+
+    def test_the_cut_feed_fallback_stops_after_its_seconds(self):
+        p = settings()
+        p._known = {f'c{i}': Board(f'c{i}', f'C{i}') for i in range(10)}
+        opened = []
+
+        async def page(http, board):
+            opened.append(board.key)
+            time.sleep(0.03)
+            return {'account': board.key, 'name': board.name, 'jobs': []}
+        p.open = page
+        with patch.object(workable, 'FALLBACK_SECONDS', 0.05):
+            asyncio.run(p.career_pages(None, [], '2026-10-01', 'cut'))
+        self.assertLess(len(opened), 5)
+
+    def test_work_type_checks_stop_after_their_seconds(self):
+        jobs = [{'id': f'{i:010d}', 'title': 'Engineer', 'workType': None, 'companySlug': 'biffa',
+                 'postedAt': '2026-11-02T09:00:00+00:00'} for i in range(10)]
+
+        async def fetch(http, method, url, **kwargs):
+            time.sleep(0.03)
+            return Response(200, {**V2, 'workplace': 'on_site'})
+        p = settings({'searchTerms': ['engineer'], 'workType': ['hybrid']})
+        with patch.object(workable, 'fetch', fetch), patch.object(workable, 'PACE', 0), \
+                patch.object(workable, 'WORKPLACE_SECONDS', 0.05):
+            asyncio.run(p.workplaces(None, jobs, p.wanted(matched=True)))
+        checked = int(re.search(r'the (\d+) newest of 10 matching jobs not marked remote were checked', p.cfg.notes[-1])[1])
+        self.assertLess(checked, 5)
+
+
+class NewestJobs(unittest.TestCase):
+    """The empty form reads the biggest career pages; Apify's daily test runs it. When Workable refuses them before
+    any answered, the run reads the feed, which www.workable.com served while apply.workable.com refused."""
+
+    def opened(self, raw, replies, boards):
+        fetch, calls = answering(list(replies))
+        p = settings(raw)
+        got = []
+        with patch.object(workable, 'fetch', fetch), patch.object(workable, 'PACE', 0):
+            for board in boards:
                 try:
-                    got.append(asyncio.run(p.job_answer(None, 'biffa', '584D288213'))['title'])
-                except BoardError:
-                    got.append('refused')
-        self.assertEqual(got, ['refused', 'refused', 'Accounts Payable', 'refused', 'refused', 'Accounts Payable'])
+                    got.append(asyncio.run(p.open(None, board)))
+                except workable.Stopped:
+                    got.append('stopped')
+        return got, calls, p
+
+    def test_refused_before_any_career_page_answered_the_run_reads_the_feed(self):
+        got, calls, p = self.opened({'maxJobs': 100}, [Response(429)], [BIFFA, Board('zz', 'ZZ')])
+        self.assertEqual((got, len(calls)), ([{'everyone': True}, 'stopped'], 1))
+        self.assertIn("No career page had answered, so these are the newest jobs of Workable's jobs feed", p.cfg.notes[-1])
+
+    def test_a_career_page_that_answered_keeps_the_run_on_career_pages(self):
+        got, _, _ = self.opened({'maxJobs': 100}, [Response(200, WIDGET), Response(429)], [BIFFA, Board('zz', 'ZZ')])
+        self.assertEqual((got[0]['account'], got[1]), ('biffa', 'stopped'))
+
+    def test_named_companies_never_read_the_feed(self):
+        got, _, _ = self.opened({'companies': ['biffa']}, [Response(429)], [BIFFA])
+        self.assertEqual(got, ['stopped'])
 
 
 class Lookup(unittest.TestCase):
@@ -703,7 +954,7 @@ class Lookup(unittest.TestCase):
 
     def check(self, answers, job_id, session=None):
         send, calls = sender(answers)
-        with patch.object(workable, 'send', send), patch.object(workable, 'PACE', 0):
+        with patch.object(workable, 'fetch', send), patch.object(workable, 'PACE', 0):
             return asyncio.run(platform().lookup(None, dict(session or self.SESSION), job_id)), calls
 
     def test_a_listed_job_is_open_with_its_details(self):
