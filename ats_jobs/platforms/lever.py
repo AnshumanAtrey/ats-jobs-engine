@@ -58,7 +58,11 @@ POSTINGS = {   # the job site's own host first (Cloudflare, gzip), then Lever's 
 }
 JOB_SITE = {'global': 'https://jobs.lever.co/', 'eu': 'https://jobs.eu.lever.co/'}
 EU = '/eu'                      # the end of an EU site's board key: engelvoelkers/eu
-SLUG = re.compile(r'^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$')
+# paths of the job site host that are no site (each answers 404 as one); jobs.lever.co/embed/<posting> was the old
+# embed link and names no site
+NOT_SITES = {'v0', 'embed', 'api', 'cdn-cgi', 'static', 'robots.txt', 'favicon.ico', 'sitemap.xml', 'assets', 'search',
+             'apply', 'jobs', 'login', 'images', 'css', 'js', '_Incapsula_Resource'}
+SLUG = re.compile(r'^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}\Z')       # \Z: $ would let a name end in a new line
 UUID = re.compile(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}', re.I)
 TAG = re.compile(r'<[^>]+>')
 LIST_BREAK = re.compile(r'</li>|<br\s*/?>', re.I)
@@ -285,7 +289,7 @@ class Lever(Platform):
         if host.startswith('api.') and not api:
             return None, None
         parts = parts[2:] if api else parts
-        if not parts or not SLUG.match(parts[0]):
+        if not parts or not SLUG.match(parts[0]) or parts[0] in NOT_SITES:
             return None, None
         job = UUID.match(parts[1]) if len(parts) > 1 else None
         return board_key(parts[0], region), job.group(0).lower() if job else None

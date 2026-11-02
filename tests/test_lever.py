@@ -100,7 +100,9 @@ class Links(unittest.TestCase):
 
     def test_the_host_alone_names_no_site(self):
         for text in ('jobs.lever.co', 'https://jobs.lever.co/', 'https://jobs.lever.co/?swcfpc=1', 'https://api.lever.co/',
-                     'https://api.lever.co/v1/postings', 'https://jobs.eu.lever.co'):
+                     'https://api.lever.co/v1/postings', 'https://jobs.eu.lever.co',
+                     'https://jobs.lever.co/embed/08a52d7b-2b64-46ab-8932-3026bd5a58d7',   # the old embed link: no site
+                     'https://jobs.lever.co/cdn-cgi/l/email-protection', 'https://jobs.lever.co/robots.txt'):
             self.assertEqual(self.P.read_link(text), (None, None), text)
 
     def test_other_text_is_no_link(self):
@@ -306,8 +308,9 @@ class Opening(unittest.TestCase):
             self.open(fresh(), 'acme', [Response(200, text='<html>', headers=JSON), Response(200, text='<html>', headers=JSON)])
 
     def test_text_that_cannot_be_a_site_is_never_sent(self):
-        session, calls = self.open(fresh(), '../../secret', [])
-        self.assertEqual((session, calls), (None, []))
+        for key in ('../../secret', 'palantir\n', 'bitpanda\n/eu'):     # a new line would make httpx refuse the link
+            session, calls = self.open(fresh(), key, [])
+            self.assertEqual((session, calls), (None, []), repr(key))
 
 
 class Fallback(unittest.TestCase):
