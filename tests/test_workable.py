@@ -197,8 +197,10 @@ class Parsing(unittest.TestCase):
                          {'name': 'France', 'city': None, 'region': None, 'country': 'France'})
         self.assertIsNone(place({'city': None, 'region': '', 'country': None}))
         for text, kind in (('Full-time', 'full-time'), ('Part-time', 'part-time'), ('Contract', 'contract'),
-                           ('Temporary', 'temporary'), ('Internship', 'intern'), ('Other', None), (None, None)):
+                           ('Temporary', 'temporary'), ('Other', None), (None, None)):
             self.assertEqual(job_type(text), kind)
+        self.assertEqual((job_type('Full-time', 'Internship'), job_type('', ' internship '), job_type('Contract', 'Entry level')),
+                         ('intern', 'intern', 'contract'))
 
     def test_pay(self):
         self.assertEqual(pay_text(28000, 28000, 'GBP', 'year'), 'GBP 28,000 per year')
@@ -240,6 +242,10 @@ class Parsing(unittest.TestCase):
                          ('onsite', 'full-time', 'Group Central Functions', '8271'))
         self.assertEqual(job['description'], 'Accounts Payable\nOwn the ledger\nAP experience')
         self.assertEqual(job['location'], 'High Wycombe, England, United Kingdom')
+
+    def test_an_internship_stays_an_internship_with_details(self):
+        job = P.enrich({'id': 'x', 'title': 'Intern', 'employmentType': 'intern'}, V2)
+        self.assertEqual(job['employmentType'], 'intern')
 
     def test_details_without_pay(self):
         job = P.enrich({'id': 'x', 'title': 'T'}, {**V2, 'salary_from': None, 'salary_to': 0, 'workplace': None, 'remote': True})

@@ -113,8 +113,11 @@ def place(entry: dict) -> dict | None:
     return {'name': name, 'city': city, 'region': region, 'country': country} if name else None
 
 
-def job_type(text: str | None) -> str | None:
-    """'Full-time', 'Part-time', 'Contract', 'Temporary', 'Internship' -> the engine's job types; 'Other' -> None."""
+def job_type(text: str | None, experience: str | None = None) -> str | None:
+    """'Full-time', 'Part-time', 'Contract', 'Temporary' -> the engine's job types; 'Other' -> None. Workable has no
+    internship type: an internship is the experience level 'Internship' (957 feed entries), whatever the type says."""
+    if clean(experience).lower() == 'internship':
+        return 'intern'
     return JOB_TYPE_ALIASES.get(clean(text).lower())
 
 
@@ -375,7 +378,7 @@ class Workable(Platform):
                 'title': clean(entry.get('title')),
                 'places': places,
                 'workType': 'remote' if entry.get('telecommuting') is True else None,
-                'employmentType': job_type(entry.get('employment_type')),
+                'employmentType': job_type(entry.get('employment_type'), entry.get('experience')),
                 'department': clean(entry.get('department')) or None,
                 'reference': clean(entry.get('code')) or None,
                 'postedAt': clean(entry.get('published_on')) or None,
@@ -445,7 +448,7 @@ class Workable(Platform):
             'otherLocations': [],
             'places': [dict(spot, country=country)] if spot else [],
             'workType': 'remote' if fields.get('remote', '').strip().lower() == 'true' else None,
-            'employmentType': job_type(fields.get('jobtype')),
+            'employmentType': job_type(fields.get('jobtype'), fields.get('experience')),
             'postedAt': feed_date(fields.get('date')),
             'dateOnly': False,
             'jobUrl': clean(fields.get('url')) or SHORT_LINK.format(code=code),
@@ -655,7 +658,8 @@ class Workable(Platform):
             'location': places[0]['name'] if places else job.get('location'),
             'otherLocations': [p['name'] for p in places[1:]],
             'workType': WORKPLACE.get(data.get('workplace')) or ('remote' if data.get('remote') is True else job.get('workType')),
-            'employmentType': TYPE.get(data.get('type')) or job.get('employmentType'),
+            'employmentType': job.get('employmentType') if job.get('employmentType') == 'intern'
+            else TYPE.get(data.get('type')) or job.get('employmentType'),
             'department': departments or job.get('department'),
             'reference': clean(data.get('code')) or job.get('reference'),
             **pay(data.get('salary_from'), data.get('salary_to'), data.get('salary_currency_iso_code'), data.get('salary_frequency')),
