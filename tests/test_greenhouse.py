@@ -543,8 +543,25 @@ class Pacing(unittest.TestCase):
 
 
 class Memory(unittest.TestCase):
+    def test_only_the_biggest_boards_and_unknown_ones_wait_for_a_slot(self):
+        p = platform()
+        p.description_terms, p._ranks = ('kubernetes',), {'svetness': 0, 'tiny': 5000}
+        send, _ = sender([Response(200, {'jobs': [dict(RECORD)]}) for _ in range(3)])
+
+        async def read(token):
+            try:
+                return len(await asyncio.wait_for(p.pages(None, {'token': token}, None, None).__anext__(), 0.3))
+            except (asyncio.TimeoutError, TimeoutError):
+                return 'waited for a slot'
+
+        async def three():
+            p.heavy = asyncio.Semaphore(0)                                       # every slot is taken
+            return [await read(token) for token in ('tiny', 'svetness', 'notonthelist')]
+        with patch('ats_jobs.platforms.greenhouse.send', send):
+            self.assertEqual(asyncio.run(three()), [1, 'waited for a slot', 'waited for a slot'])
+
     def test_lists_with_descriptions_read_at_once_follow_the_memory(self):
-        for memory, expected in ((None, 32), ('512', 1), ('1024', 4), ('2048', 10), ('4096', 24), ('8192', 32)):
+        for memory, expected in ((None, 32), ('512', 1), ('1024', 3), ('2048', 10), ('4096', 23), ('8192', 32)):
             env = {k: v for k, v in os.environ.items() if k != 'ACTOR_MEMORY_MBYTES'}
             env.update({'ACTOR_MEMORY_MBYTES': memory} if memory else {})
             with patch.dict('os.environ', env, clear=True):

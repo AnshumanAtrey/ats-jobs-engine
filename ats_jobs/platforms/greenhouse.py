@@ -90,7 +90,9 @@ TIMEOUT = httpx.Timeout(90.0, connect=15.0)
 RATE = 80                            # calls a second at most for a run: 4,800 a minute, under the 5,800 a minute
                                      # that made CloudFront block boards-api, whatever the latency from Apify
 HEAVY_MB = 150                       # the most one list with descriptions held while read: Pulse 152 MB, Anduril
-RUN_MB = 400                         # 125, Prolific 115 (2026-11-03); and what the rest of a run keeps
+RUN_MB = 512                         # 125, Prolific 115 (2026-11-03); and what the rest of a run keeps (about 460 MB)
+GIANTS = 100                         # the boards that take those slots: the top of the list, biggest first (board 100
+                                     # had 291 jobs, board 200 171, at about 40 KB a job while read, 2026-11-02)
 SENTENCE = re.compile(r'[a-z]\.\s+[A-Z]')
 ODD_ENTITY = re.compile(r'&amp;(?!(?:nbsp|amp|quot|lt|gt|apos|[lr][sd]quo|[mn]dash|hellip|bull|middot);)#?\w+;', re.I)
 # Employers name their custom fields freely ('Work Location Type', 'employment_type', 'Remote?', 'Job Location Type
@@ -207,9 +209,10 @@ def may_hold(content: str, wanted: list[Term]) -> bool:
 
 
 def heavy_at_once() -> int:
-    """Lists with descriptions read at once. Boards are read biggest first, and each of the biggest holds up to about
-    150 MB while it is read, so the number follows the run's memory: 4 at 1 GB, 10 at 2 GB, 24 at 4 GB
-    (ACTOR_MEMORY_MBYTES is set on Apify; 32 when it is not)."""
+    """Lists with descriptions of the biggest boards read at once. Each holds up to about 150 MB while it is read, so
+    the number follows the run's memory: 3 at 1 GB, 10 at 2 GB, 23 at 4 GB (ACTOR_MEMORY_MBYTES is set on Apify; 32
+    when it is not). The other boards read at the engine's pace: a few MB each. A kubernetes description search
+    peaked at 0.88 GB at the 1 GB setting and 1.53 GB at 2 GB (macOS peak footprint, 2026-11-03)."""
     memory = int(os.environ.get('ACTOR_MEMORY_MBYTES') or 0)
     return max(1, min(32, (memory - RUN_MB) // HEAVY_MB)) if memory else 32
 
@@ -254,6 +257,7 @@ class Greenhouse(Platform):
         self.rate, self.next_call = RATE, 0.0
         self._sites: dict[str, str] | None = None
         self._tokens: set[str] | None = None
+        self._ranks: dict[str, int] | None = None
 
     # ---------- links and names ----------
 
@@ -411,9 +415,19 @@ class Greenhouse(Platform):
         if not wanted:
             yield await self._list(http, session, {'pay_transparency': 'true'}, wanted)
             return
+        params = {'pay_transparency': 'true', 'content': 'true'}
+        if not self.giant(session['token']):
+            yield await self._list(http, session, params, wanted)
+            return
         async with self.heavy:             # released before the page is handed over: an engine that stops early
-            jobs = await self._list(http, session, {'pay_transparency': 'true', 'content': 'true'}, wanted)
+            jobs = await self._list(http, session, params, wanted)
         yield jobs                          # never resumes the generator, which would keep the slot
+
+    def giant(self, token: str) -> bool:
+        """One of the GIANTS biggest boards, or a board not on the list, whose size is not known."""
+        if self._ranks is None:
+            self._ranks = {board.key.lower(): i for i, board in enumerate(self.listed())}
+        return self._ranks.get(token.lower(), 0) < GIANTS
 
     async def _list(self, http, session: dict, params: dict, wanted: list[Term]) -> list[dict]:
         response = await self.get(http, f'{session["token"]}/jobs', params)
