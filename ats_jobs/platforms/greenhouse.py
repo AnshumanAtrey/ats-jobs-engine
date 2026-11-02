@@ -42,6 +42,7 @@ import asyncio
 import html as htmllib
 import os
 import re
+import time
 from datetime import timezone
 from urllib.parse import parse_qs, urlparse
 
@@ -61,6 +62,8 @@ HOSTED_JOB = 'https://job-boards.greenhouse.io/{token}/jobs/{job}'
 TOKEN = re.compile(r'^[a-z0-9][a-z0-9_-]{0,99}$', re.I)
 JOB_ID = re.compile(r'^\d{1,20}$')
 BLOCK_WAIT_S = (30, 60, 90)          # blocks lifted 2 (CloudFront 403) and 3 minutes (406) after the last call
+RATE = 80                            # calls a second at most for a run: 4,800 a minute, under the 5,800 a minute
+                                     # that made CloudFront block boards-api, whatever the latency from Apify
 SENTENCE = re.compile(r'[a-z]\.\s+[A-Z]')
 ODD_ENTITY = re.compile(r'&amp;(?!(?:nbsp|amp|quot|lt|gt|apos|[lr][sd]quo|[mn]dash|hellip|bull|middot);)#?\w+;', re.I)
 JOB_TYPE_FIELDS = {'employment type', 'time type', 'job type', 'employment status', 'position type',
@@ -196,6 +199,7 @@ class Greenhouse(Platform):
     def __init__(self):
         self.hosts = list(HOSTS)          # this run's order: an address that blocks goes to the back
         self.heavy = asyncio.Semaphore(heavy_at_once())
+        self.rate, self.next_call = RATE, 0.0
         self._sites: dict[str, str] | None = None
 
     # ---------- links and names ----------
@@ -254,11 +258,21 @@ class Greenhouse(Platform):
 
     # ---------- reading ----------
 
+    async def pace(self) -> None:
+        """At most self.rate calls a second for the whole run: each call takes the next free moment."""
+        if self.rate:
+            now = time.monotonic()
+            begin = max(now, self.next_call)
+            self.next_call = begin + 1 / self.rate
+            if begin > now:
+                await asyncio.sleep(begin - now)
+
     async def get(self, http, path: str, params: dict | None = None):
         """One answer of the API from an address that is not blocking this run. BoardError when both keep refusing."""
         from ..engine import RUN_SAFETY_MARGIN_S, seconds_left_in_run     # the engine imports the platforms
         for wait in (*BLOCK_WAIT_S, None):
             for host in list(self.hosts):
+                await self.pace()
                 response = await send(http, 'GET', f'https://{host}/v1/boards/{path}', params=params)
                 if not blocked(response):
                     return response

@@ -52,6 +52,7 @@ def sender(answers: list):
 def platform(sites=None) -> Greenhouse:
     p = Greenhouse()
     p._sites = sites if sites is not None else {'stripe.com': 'stripe', 'careers.airbnb.com': 'airbnb'}
+    p.rate = 0                       # no pacing in tests but the one about it
     return p
 
 
@@ -361,6 +362,24 @@ class Blocks(unittest.TestCase):
         with patch('ats_jobs.platforms.greenhouse.send', send), patch('ats_jobs.platforms.greenhouse.asyncio.sleep', sleep), \
                 patch('ats_jobs.engine.seconds_left_in_run', lambda: None):
             self.assertEqual(asyncio.run(p.get(None, 'gitlab')).json(), {'name': 'GitLab'})
+
+
+class Pacing(unittest.TestCase):
+    def test_calls_are_spread_to_the_rate(self):
+        p = Greenhouse()
+        p.rate, slept = 10, []
+
+        async def sleep(seconds):
+            slept.append(round(seconds, 2))
+
+        async def five():
+            for _ in range(5):
+                await p.pace()
+        with patch('ats_jobs.platforms.greenhouse.asyncio.sleep', sleep):
+            asyncio.run(five())
+        self.assertEqual(len(slept), 4)                       # the first call goes at once
+        self.assertTrue(all(0.05 < a < b for a, b in zip(slept, slept[1:])), slept)
+        self.assertAlmostEqual(slept[-1], 0.4, delta=0.05)
 
 
 class Details(unittest.TestCase):
