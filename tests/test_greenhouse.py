@@ -38,6 +38,7 @@ class Response:
 
 
 CLOUDFRONT_BLOCK = Response(403, None, {'content-type': 'text/html', 'server': 'CloudFront', 'x-cache': 'Error from cloudfront'})
+ORIGIN_BLOCK = Response(406, None, {'content-type': 'text/html', 'x-cache': 'Error from cloudfront'})
 
 
 def sender(answers: list):
@@ -321,9 +322,27 @@ class Blocks(unittest.TestCase):
         send, calls = sender([CLOUDFRONT_BLOCK] * 8)
         with patch('ats_jobs.platforms.greenhouse.send', send), patch('ats_jobs.platforms.greenhouse.asyncio.sleep', sleep), \
                 patch('ats_jobs.engine.seconds_left_in_run', lambda: None):
-            with self.assertRaisesRegex(BoardError, 'HTTP 403 from both'):
+            with self.assertRaisesRegex(BoardError, 'HTTP 403 from both API addresses'):
                 asyncio.run(p.get(None, 'gitlab/jobs'))
         self.assertEqual((waits, len(calls)), ([20, 40, 60], 8))
+
+    def test_the_406_page_of_an_address_block_is_a_block_too(self):
+        p = platform()
+
+        async def sleep(seconds):
+            return None
+        send, calls = sender([ORIGIN_BLOCK, ORIGIN_BLOCK, Response(200, {'jobs': []})])
+        with patch('ats_jobs.platforms.greenhouse.send', send), patch('ats_jobs.platforms.greenhouse.asyncio.sleep', sleep), \
+                patch('ats_jobs.engine.seconds_left_in_run', lambda: None):
+            self.assertEqual(asyncio.run(p.get(None, 'gitlab/jobs')).json(), {'jobs': []})
+        self.assertEqual(len(calls), 3)
+
+    def test_an_api_answer_in_json_is_never_a_block(self):
+        p = platform()
+        send, calls = sender([Response(403, {'status': 403, 'error': 'Forbidden'})])
+        with patch('ats_jobs.platforms.greenhouse.send', send):
+            self.assertEqual(asyncio.run(p.get(None, 'gitlab/jobs')).status_code, 403)
+        self.assertEqual(len(calls), 1)
 
     def test_no_wait_runs_past_the_time_limit(self):
         p = platform()

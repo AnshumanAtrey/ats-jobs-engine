@@ -17,7 +17,9 @@ The same API answers, with the same data, at boards-api.greenhouse.io (the addre
 at api.greenhouse.io (its older address). CloudFront in front of boards-api blocked this laptop with HTTP 403 for one
 to two minutes once about 5,800 calls came in one minute (a steady 90 calls a second passed for 70 s, 110 did not);
 api.greenhouse.io took 130 a second for 70 s with no block. So api.greenhouse.io is read first, and an address that
-answers with CloudFront's 403 goes to the back. No answer carried a 429 or a Retry-After.
+answers with CloudFront's 403 goes to the back. A scan of 16,000 board names that mostly do not exist (404) then got
+406 from every Greenhouse address for this IP, while 113,000 calls in 30 minutes to live boards had not: reading the
+boards of the list makes few 404s. A refusal is waited out within the run's time. No answer carried a Retry-After.
 
 Tokens are case-insensitive (stripe, Stripe and STRIPE are one board) and hold letters, digits, - and _. EU boards
 (job-boards.eu.greenhouse.io) use the same tokens and the same API. A board whose company shows its jobs on its own
@@ -164,9 +166,9 @@ def heavy_at_once() -> int:
 
 
 def blocked(response) -> bool:
-    """CloudFront's own refusal (an HTML page from server CloudFront), not an answer of the API."""
-    return response.status_code == 403 and ('cloudfront' in response.headers.get('server', '').lower()
-                                            or 'text/html' in response.headers.get('content-type', ''))
+    """A refusal of this IP address, not an answer of the API, which answers in JSON: CloudFront's 403 page on one
+    address, or the 406 page every Greenhouse address gave after a scan of 16,000 board names that mostly do not exist."""
+    return response.status_code in (403, 406) and 'json' not in response.headers.get('content-type', '')
 
 
 def answer(response) -> dict:
@@ -266,8 +268,8 @@ class Greenhouse(Platform):
             if wait is None or (left is not None and left < wait + RUN_SAFETY_MARGIN_S + 10):
                 break
             await asyncio.sleep(wait)
-        raise BoardError('Greenhouse refused the calls (HTTP 403 from both API addresses), as it does for a minute or '
-                         'two after too many calls from one IP address')
+        raise BoardError(f'Greenhouse refused the calls from this IP address (HTTP {response.status_code} from both API '
+                         'addresses): it blocks an address that made too many calls for a while, so try again later')
 
     async def open(self, http, board):
         token = board.key.strip().lower()
