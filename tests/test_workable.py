@@ -277,11 +277,14 @@ class Board_(unittest.TestCase):
         job = P.from_board('y', {'locations': ['TELECOMMUTE'], 'workplace': None})
         self.assertEqual((job['workType'], job['places']), ('remote', []))
 
-    def test_a_keyword_reads_the_job_board_and_no_keyword_the_career_pages(self):
+    def test_a_filter_reads_the_feed_and_the_newest_jobs_the_biggest_career_pages(self):
         p = platform()
-        boards = [BIFFA]
-        self.assertEqual(p.search_all(boards, parse_input({'searchTerms': ['engineer']}, p, {})), [workable.EVERYONE])
-        self.assertEqual(p.search_all(boards, parse_input({}, p, {})), boards)
+        boards = [Board(f'c{i}', f'C{i}') for i in range(workable.CAREER_PAGES + 5)]
+        for raw in ({'searchTerms': ['engineer']}, {'location': ['Germany']}, {'workType': ['hybrid']},
+                    {'employmentType': ['part-time']}, {'location': ['remote']}):
+            self.assertEqual(p.search_all(boards, parse_input(raw, p, {})), [workable.EVERYONE], raw)
+        self.assertEqual(p.search_all(boards, parse_input({'postedWithin': '24 hours'}, p, {})), boards[:workable.CAREER_PAGES])
+        self.assertEqual(p.search_all(boards, parse_input({}, p, {})), boards[:workable.CAREER_PAGES])
         self.assertEqual(p.cfg.search_terms, [])
 
 

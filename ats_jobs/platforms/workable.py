@@ -87,6 +87,7 @@ FEED_TIMEOUT = httpx.Timeout(120.0, connect=15.0)    # its first byte came after
 FEED_ENCODING = 'br' if importlib.util.find_spec('brotli') else 'gzip'
 BROTLI_ERRORS = (__import__('brotli').error,) if FEED_ENCODING == 'br' else ()
 FALLBACK_SECONDS = 120        # career pages read, biggest first, when the feed cannot be read
+CAREER_PAGES = 300            # the biggest career pages a run for the newest jobs reads: 120 s at most
 MONTHS = {m: i for i, m in enumerate(('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'), 1)}
 FEED_DATE = re.compile(r'(\d{1,2}) ([A-Z][a-z]{2}) (\d{4}) (\d{2}):(\d{2}):(\d{2})')
 TAG = re.compile(r'<[^>]*>')
@@ -289,8 +290,13 @@ class Workable(Platform):
         return self._names
 
     def search_all(self, boards, cfg):
+        """A word, a place, a work type or a job type: the feed, every company at once. Only the newest jobs (maybe
+        within a period): the biggest career pages, whose dates are days, so the run stops once today fills the list
+        and never reads for longer than about CAREER_PAGES * PACE seconds."""
         self.cfg = cfg
-        return [EVERYONE] if cfg.search_terms else boards
+        if cfg.search_terms or cfg.locations or cfg.work_types or cfg.job_types:
+            return [EVERYONE]
+        return boards[:CAREER_PAGES]
 
     # ---------- calls to apply.workable.com, one at a time ----------
 
