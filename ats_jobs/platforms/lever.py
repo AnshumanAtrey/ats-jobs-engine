@@ -71,6 +71,9 @@ PAGE_SIZE = 2000                # jobs per call: every site but the 4 biggest is
                                 # about 25 MB (the whole 4,562-job list of jobgether is 56 MB, 340 MB once parsed)
 SWITCH_AFTER = 5                # Cloudflare refusals before a run reads only the documented host
 DIRECT_AT_ONCE = 12             # calls to the documented host at once: it slowed past that (502 and timeouts at 32)
+ANSWER_S = 180                  # a call not fully answered by then is given up: a slow answer never trips the 30 s read
+                                # timeout, and one list once took six minutes; a 2,000-job page of the documented host,
+                                # uncompressed, takes about 100 s
 WORK_TYPE = {'remote': 'remote', 'hybrid': 'hybrid', 'onsite': 'onsite', 'on-site': 'onsite'}
 PERIOD = {   # Lever's interval -> (salaryPeriod, the words in the salary text)
     'per-year-salary': ('year', 'per year'), 'per-month-salary': ('month', 'per month'),
@@ -304,9 +307,10 @@ class Lever(Platform):
         primary, direct = POSTINGS[region]
         if not self.direct:
             try:
-                response = await send(http, 'GET', primary + path, params=params)
+                async with asyncio.timeout(ANSWER_S):
+                    response = await send(http, 'GET', primary + path, params=params)
                 refused = not from_lever(response)
-            except BoardError as exc:    # no answer through Cloudflare after the retries
+            except (BoardError, TimeoutError) as exc:    # no full answer through Cloudflare after the retries
                 response, refused = None, str(exc) == 'HTTP 429'
             if response is not None and not refused:
                 return response
@@ -316,7 +320,11 @@ class Lever(Platform):
         if self._direct_slots is None:
             self._direct_slots = asyncio.Semaphore(DIRECT_AT_ONCE)
         async with self._direct_slots:
-            return await send(http, 'GET', direct + path, params=params)
+            try:
+                async with asyncio.timeout(ANSWER_S):
+                    return await send(http, 'GET', direct + path, params=params)
+            except TimeoutError:
+                raise BoardError(f'Lever did not finish its answer in {ANSWER_S} s') from None
 
     def session(self, site: str, region: str, name: str | None = None, live: bool | None = None) -> dict:
         found = {'site': site, 'region': region, 'name': name, 'link': JOB_SITE[region] + site}

@@ -342,6 +342,24 @@ class Fallback(unittest.TestCase):
         response, calls = self.get(platform, [BoardError('HTTP 429'), Response(200, [])])
         self.assertEqual(platform.refusals, 1)
 
+    def test_an_answer_that_never_ends_is_given_up(self):
+        async def endless(http, method, url, **kwargs):
+            calls.append(url)
+            if url.startswith('https://jobs.lever.co/'):
+                await asyncio.sleep(60)               # trickles in forever: no 30 s read timeout ever fires
+            return Response(200, [])
+        calls = []
+        with patch('ats_jobs.platforms.lever.send', endless), patch('ats_jobs.platforms.lever.ANSWER_S', 0.05):
+            response = asyncio.run(fresh().get(None, 'global', 'spotify', {'mode': 'json'}))
+        self.assertEqual((response.status_code, calls), (200, ['https://jobs.lever.co/v0/postings/spotify',
+                                                               'https://api.lever.co/v0/postings/spotify']))
+
+        async def nowhere(http, method, url, **kwargs):
+            await asyncio.sleep(60)
+        with patch('ats_jobs.platforms.lever.send', nowhere), patch('ats_jobs.platforms.lever.ANSWER_S', 0.05):
+            with self.assertRaises(BoardError):
+                asyncio.run(fresh().get(None, 'global', 'spotify', {'mode': 'json'}))
+
     def test_a_run_refused_again_and_again_reads_only_the_documented_host(self):
         platform = fresh()
         for _ in range(SWITCH_AFTER):
