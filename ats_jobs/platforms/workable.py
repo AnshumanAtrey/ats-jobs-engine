@@ -19,8 +19,11 @@ company through Workable's public jobs feed. No key. Measured from this laptop o
   code, remote, job type, experience, description and the apply.workable.com/j/<shortcode> link, and no pay. A job
   comes once per place, and its entries are not always together: in the first three quarters, 3,436 of 82,471 jobs
   had entries apart, their first and last a median 30 days apart, since a place added later is listed when it is
-  added. So a job's entries become one job, with every place and the first entry's date; the career page's published
-  date can still be earlier (jobs listed before the board began on 2021-07-28). It names no hybrid or on-site.
+  added. So a job's entries become one job, with every place and the first entry's date. On 6,000 jobs also read on
+  their career page, that date fell on the job page's own day (published_on, its datePosted) for 95% (98.5% of those
+  published since September); 3.5% were listed over a week after they were published (a median 339 days), and of
+  the jobs inside a 7- or 30-day window 0.6% were published before it. With details a row takes the job page's day
+  from the job's own answer. It names no hybrid or on-site.
   Cloudflare compresses it on the way (gzip about 128 MB, brotli about 131 MB) and ignores Range (200, the whole
   body). Its first byte comes after 17 to 24 s and the answer ends about 63 s after the request whatever has
   arrived: of 9 downloads from here 8 were cut (the most that arrived was three quarters) and one brotli download
@@ -724,7 +727,9 @@ class Workable(Platform):
             'reference': clean(data.get('code')) or job.get('reference'),
             **pay(data.get('salary_from'), data.get('salary_to'), data.get('salary_currency_iso_code'),
                   data.get('salary_frequency')),
-            'postedAt': job.get('postedAt') or clean(data.get('published'))[:10] or None,
+            # the job page's own day (its datePosted): a feed job's listing time is a later day on 5% of jobs
+            'postedAt': clean(data.get('published'))[:10] or job.get('postedAt'),
+            'dateOnly': True if clean(data.get('published'))[:10] else job.get('dateOnly'),
             'description': text_of(html),
             'descriptionHtml': html,
         }

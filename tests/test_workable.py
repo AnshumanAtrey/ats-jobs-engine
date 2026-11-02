@@ -246,6 +246,13 @@ class Parsing(unittest.TestCase):
         self.assertEqual(job['description'], 'Accounts Payable\nOwn the ledger\nAP experience')
         self.assertEqual(job['location'], 'High Wycombe, England, United Kingdom')
 
+    def test_details_give_a_feed_job_the_day_its_page_gives(self):
+        feed_job = {'id': '584D288213', 'title': 'Accounts Payable', 'postedAt': '2026-11-02T10:24:17+00:00', 'dateOnly': False}
+        job = P.enrich(feed_job, V2)
+        self.assertEqual((job['postedAt'], job['dateOnly']), ('2026-10-28', True))
+        job = P.enrich(feed_job, {**V2, 'published': None})
+        self.assertEqual((job['postedAt'], job['dateOnly']), ('2026-11-02T10:24:17+00:00', False))
+
     def test_an_internship_stays_an_internship_with_details(self):
         job = P.enrich({'id': 'x', 'title': 'Intern', 'employmentType': 'intern'}, V2)
         self.assertEqual(job['employmentType'], 'intern')
