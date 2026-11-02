@@ -18,8 +18,8 @@ at api.greenhouse.io (its older address). CloudFront in front of boards-api bloc
 to two minutes once about 5,800 calls came in one minute (a steady 90 calls a second passed for 70 s, 110 did not);
 api.greenhouse.io took 130 a second for 70 s with no block. So api.greenhouse.io is read first, and an address that
 answers with CloudFront's 403 goes to the back. A scan of 16,000 board names that mostly do not exist (404) then got
-406 from every Greenhouse address for this IP, while 113,000 calls in 30 minutes to live boards had not: reading the
-boards of the list makes few 404s. A refusal is waited out within the run's time. No answer carried a Retry-After.
+406 from every Greenhouse address for this IP for 3 minutes, while 129,032 calls to live boards in the 41 minutes
+before had not: reading the boards of the list makes few 404s. A refusal is waited out within the run's time. No answer carried a Retry-After.
 A run is paced to 80 calls a second, below both, whatever the latency.
 
 Dates carry a time, so no board order lets a run stop early: the 100 newest jobs came from boards at places 4 to 5,711
