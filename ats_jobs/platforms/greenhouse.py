@@ -20,6 +20,12 @@ api.greenhouse.io took 130 a second for 70 s with no block. So api.greenhouse.io
 answers with CloudFront's 403 goes to the back. A scan of 16,000 board names that mostly do not exist (404) then got
 406 from every Greenhouse address for this IP, while 113,000 calls in 30 minutes to live boards had not: reading the
 boards of the list makes few 404s. A refusal is waited out within the run's time. No answer carried a Retry-After.
+A run is paced to 80 calls a second, below both, whatever the latency.
+
+Dates carry a time, so no board order lets a run stop early: the 100 newest jobs came from boards at places 4 to 5,711
+of the list. A pass over all 8,378 boards is 8,378 calls and 19.8 MB gzipped (pay ranges add 6.6%), 112 s on this
+laptop. A description search downloads every description (about 600 MB gzipped), and a first look at each escaped
+text skips the work on those that cannot match: 44 s of CPU instead of 150 s for kubernetes.
 
 Tokens are case-insensitive (stripe, Stripe and STRIPE are one board) and hold letters, digits, - and _. EU boards
 (job-boards.eu.greenhouse.io) use the same tokens and the same API. A board whose company shows its jobs on its own
@@ -27,8 +33,9 @@ site gives that site in absolute_url (stripe.com/jobs/search?gh_jid=...), so suc
 company's site, kept in the board list.
 
 postedAt is first_published: the board pages' own data (published_at) equals it on 1,482 of 1,482 jobs (GitLab,
-Anthropic, Fever), and the page uses it for its "New" tag. updated_at moves with every edit (it differed on 1,283 of
-them). Greenhouse's job pages carry no JobPosting markup; employers' own career pages use either date.
+Anthropic, Fever), and the page uses it for its "New" tag. updated_at moves with every edit: 70% of 224,331 open jobs
+were edited more than a week after they were first published, and 6,692 had an edit in the last 24 hours against 952
+first published then. Greenhouse's job pages carry no JobPosting markup; employers' own career pages use either date.
 
 Pay ranges have an amount and a currency but no period, and employers label them in their own words ("Hourly Pay
 Range", "Zone 1 Pay Range"), so no period is stated. Work type and job type exist only as employers' custom fields
