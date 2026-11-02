@@ -4,34 +4,37 @@ Lever job sites (jobs.lever.co/<site>, jobs.eu.lever.co/<site>), read through Le
 
 - GET https://jobs.lever.co/v0/postings/<site>?mode=json&skip=<n>&limit=<n>: the site's published postings with the
   full description, lists, pay range, places, team, department, commitment and workplace type. The job site's own
-  host serves the documented API through Cloudflare, gzip compressed: every site read in one pass was 1,045 MB of JSON
-  and 84 MB on the wire. The documented host, api.lever.co, answers the same bytes uncompressed, so it is the fallback
-  when Cloudflare refuses. EU sites live only on jobs.eu.lever.co and api.eu.lever.co, global ones only on jobs.lever.co
-  and api.lever.co: neither redirects to the other.
-- No word search, no date filter and no sort: a list is alphabetical by title, and the only filters are a company's own
-  location, commitment, team and department values. skip and limit page it, and pages are stable (4,612 of 4,612 jobs
-  on boxlunch in pages of 500).
+  host serves the documented API through Cloudflare, gzip compressed: one pass over every site is 1,045 MB of JSON and
+  84 MB on the wire, the biggest site 56 MB (jobgether, 4,562 jobs, 5 MB on the wire). The documented host,
+  api.lever.co, answers the same bytes uncompressed, so it is the fallback when Cloudflare refuses. EU sites live only
+  on jobs.eu.lever.co and api.eu.lever.co, global ones only on jobs.lever.co and api.lever.co: neither redirects.
+- No word search, no date filter and no sort: a list comes in title order, never by date, and the only filters are a
+  company's own location, commitment, team and department values. skip and limit page it, and pages are stable (4,612
+  of 4,612 jobs on boxlunch in pages of 500, twice). A whole list costs one round trip like one page of it, so a site
+  is read in pages of 2,000: one call for all but the 4 biggest. The light ?mode=html list has no dates and was no
+  faster (108 s for every site against 72 s).
 - GET .../v0/postings/<site>/<id>: one posting. A site that does not exist, a posting that closed and a posting that
-  never existed all answer 404 {"ok":false,"error":"Document not found"}, so a link on a live site that no longer
-  answers is closed.
-- A site name keeps its case (AIFund answers, aifund does not, and contactout and ContactOut are two sites). Posting
-  ids are lower case.
+  never existed all answer 404 {"ok":false,"error":"Document not found"}, and the job page 404s alike, so a link on a
+  live site that no longer answers is closed.
+- A site name keeps its case (AIFund answers, aifund does not; 174 of 2,335 sites have capitals). Posting ids are lower
+  case. jobs.lever.co/embed/<id>, the old embed link, answers 404 and names no site.
 
-postedAt is createdAt: the job page's JobPosting markup gives that day (UTC) as datePosted on 14 of 14 pages, postings
-created in 2009 and still open included, while the XML feed's post_date is a later publication time. Pay comes with its
-interval (per-year-salary, per-hour-wage, ...), so the period is stated, never guessed. workplaceType is onsite, remote,
-hybrid or unspecified (the documentation says on-site). commitment is each company's own words (Full-time, CDI,
-Contract: Part-Time, Full Time/Part Time), read as a job type only where the words say one. country is the primary
-location's ISO code. No expiry date, requisition number, equity flag or company website: the job site's logo link
-points back to Lever on 76 of 100 sites and to the company on 10.
+postedAt is createdAt: the job page's JobPosting markup gives its UTC day as datePosted on 27 of 27 pages of 13 sites
+(2 in the EU; one posting created at 00:12 UTC, others in 2009 and still open), while the XML feed's post_date is a
+later publication time. Pay comes with its interval (per-year-salary, per-hour-wage, ...), so the period is stated,
+never guessed. workplaceType is onsite, remote, hybrid or unspecified (the documentation says on-site). commitment is
+each company's own words (Full-time, CDI, Contract: Part-Time, Full Time/Part Time), read as a job type only where the
+words say one. country is the primary location's ISO code. No expiry date, requisition number, equity flag or company
+website: the job site's logo link points back to Lever on 76 of 100 sites and to the company on 10.
 
-No 429 and no Retry-After: 1,280 calls at 128 at once on api.lever.co, and full passes through Cloudflare at 12, 32 and
-64 at once with no refusal. Cloudflare does filter clients: it answers Python's urllib agent with 403 while the
-documented host answers it, and that is the refusal the fallback is for. A pass is bound by one round trip per site, not
-by bytes: 32 at once read every site in 72 s from a laptop and 64 was no faster, the light ?mode=html list (titles only)
-took 108 s, and the engine read all 2,326 sites in 134 to 228 s as Lever's own speed changed (an average call of 1.2 s
-at 13:40 UTC, 2.8 s at 14:00). About 1 call in 200 waits past 30 s on a slow list and passes on its retry.
-robots.txt: api.lever.co allows everything with Crawl-delay 1; jobs.lever.co allows everything (search=yes, ai-train=no).
+No 429 and no Retry-After: 1,280 calls at 128 at once on api.lever.co, and full passes through Cloudflare at 32, 64, 96
+and 128 at once with no refusal; a pass meets a few 500, 502 and 504 and up to 14 calls that wait past 30 s, and each
+passes on its retry. A pass is bound by Lever's answer time, which swings from minute to minute: the empty form read
+every site in 72 to 190 s at 32 at once (six passes), 48 to 148 s at 64 (three), 75 s at 96, and 456 s at 128, where one
+list took six minutes to arrive (17:38 to 18:08 UTC). Cloudflare does filter clients: it answers Python's urllib agent
+with 403 while the documented host answers it, and that is the refusal the fallback is for. robots.txt: jobs.lever.co
+allows every agent (content signal search=yes, ai-train=no) and shuts out named AI training crawlers; api.lever.co,
+api.eu.lever.co and jobs.eu.lever.co allow everything with Crawl-delay 1.
 
 Sites have no index: the Wayback Machine, Common Crawl, freehire and public lists on GitHub find them.
 """
@@ -60,7 +63,8 @@ UUID = re.compile(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12
 TAG = re.compile(r'<[^>]+>')
 LIST_BREAK = re.compile(r'</li>|<br\s*/?>', re.I)
 EMPLOYER = re.compile(r'<employer>\s*(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?\s*</employer>', re.S)
-PAGE_SIZE = 500                 # jobs per call: a 4,600-job site is 10 calls, and no answer holds more than about 12 MB
+PAGE_SIZE = 2000                # jobs per call: every site but the 4 biggest is one call, and no answer holds more than
+                                # about 25 MB (the whole 4,562-job list of jobgether is 56 MB, 340 MB once parsed)
 SWITCH_AFTER = 5                # Cloudflare refusals before a run reads only the documented host
 DIRECT_AT_ONCE = 12             # calls to the documented host at once: it slowed past that (502 and timeouts at 32)
 WORK_TYPE = {'remote': 'remote', 'hybrid': 'hybrid', 'onsite': 'onsite', 'on-site': 'onsite'}
@@ -251,7 +255,7 @@ class Lever(Platform):
     actor = 'lever-jobs-search'
     board_example = 'https://jobs.lever.co/palantir'
     job_example = 'https://jobs.lever.co/palantir/5168e8fd-fec1-4fea-b7a1-81bdaea65850'
-    concurrency = 32             # the fastest on a laptop: 64 at once was no faster and no refusal came at 64 or 128
+    concurrency = 32             # Lever's answer time decides a pass: 64, 96 and 128 at once were no faster on repeat
     never = ('expiresAt', 'reference', 'offersEquity', 'city', 'region', 'companyWebsite')
 
     def __init__(self):
@@ -374,10 +378,14 @@ class Lever(Platform):
             if response.status_code == 404:
                 raise BoardMissing(session['link'])
             records = answer(response)
+            del response                      # the raw answer and the parsed one go before the engine reads the page
             if not isinstance(records, list):
                 raise BoardError('the job list was not a list')
-            yield [self.job(session, r) for r in records if isinstance(r, dict) and r.get('id')]
-            if len(records) < PAGE_SIZE:
+            full = len(records) >= PAGE_SIZE
+            jobs = [self.job(session, r) for r in records if isinstance(r, dict) and r.get('id')]
+            del records
+            yield jobs
+            if not full:
                 return
             skip += PAGE_SIZE
 
