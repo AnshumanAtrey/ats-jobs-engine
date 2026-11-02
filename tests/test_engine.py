@@ -243,6 +243,25 @@ class Feed(unittest.TestCase):
         self.assertEqual(len(run.companies_matched), 2)
         self.assertIn('on the Fake feed', run.message())
 
+    def test_a_note_the_platform_adds_while_reading_is_in_the_message(self):
+        class Noting(self.WithFeed):
+            async def pages(self, http, session, term, days):
+                self.settings.notes.append('The feed was late, so the biggest boards were read.')
+                async for page in super().pages(http, session, term, days):
+                    yield page
+        platform = Noting({'*': [[job('1')]]})
+
+        @asynccontextmanager
+        async def no_client(actor, connections=64):
+            yield None
+        run = engine.Run(platform, parse_input({'location': ['remote']}, platform), [Board('acme', 'Acme')], None, self.Rows())
+        with patch.object(engine, 'client', no_client), patch.object(engine, 'safe_status', _quiet), \
+                patch.object(engine, 'seconds_left_in_run', lambda: None):
+            asyncio.run(run.search())
+        message = run.message()
+        self.assertIn('The feed was late, so the biggest boards were read.', message)
+        self.assertNotIn('Read "remote" in location', message)      # notes about the input stay in OUTPUT only
+
     def test_a_named_company_reads_its_own_board(self):
         platform, run = self.feed_search({'companies': ['acme']})
         self.assertEqual({r[0] for r in platform.read}, {'acme'})

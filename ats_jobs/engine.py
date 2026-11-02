@@ -130,6 +130,7 @@ class Run:
         by_key = {b.key.lower(): b for b in boards}
         self.by_key = by_key
         self.where = f'{platform.name} {platform.site_word}'
+        self.input_notes = len(cfg.notes)  # notes past these come from the platform while it reads: the message says them
 
     # ---------- shared helpers ----------
 
@@ -443,6 +444,8 @@ class Run:
             text += f' Stopped early: {STOP_REASONS[self.stop]}'
         if cfg.companies and self.boards_missing:
             text += f' No {self.where} for: {", ".join(self.boards_missing[:5])}.'
+        for note in cfg.notes[self.input_notes:]:
+            text += f' {note}'
         if cfg.skipped:
             text += f' Skipped {plural(len(cfg.skipped), "entry")}: {cfg.skipped[0][1]}'
         return text.replace('entrys', 'entries').replace('companys', 'companies')
