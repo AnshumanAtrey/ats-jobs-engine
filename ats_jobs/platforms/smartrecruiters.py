@@ -57,9 +57,10 @@ POSTING = re.compile(r'^(\d{6,})(?:-|$)')
 UUID = re.compile(r'^([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})(?:-|$)', re.I)
 ENTITY = re.compile(r'&(?:#\d+|#x[0-9a-f]+|[a-z]+);', re.I)
 PAGE_SIZE = 100
-# 400 is text that is no company or posting, 404 a posting that never existed, 401 and 403 a company that locked its
-# Posting API (CHECK24, 1 of about 16,000 companies on 2026-11-02): none of them is SmartRecruiters failing to answer
-NOT_READABLE = (400, 401, 403, 404, 410)
+# 400 is text that is no company or posting, 404 a posting that never existed, 401 a company that locked its Posting
+# API (CHECK24, 1 of about 16,000 companies on 2026-11-02): none of them is SmartRecruiters failing to answer. No company
+# answered 403; it is what a blocked address gets, so it stays an error and cannot pass for a company that is not there
+NOT_READABLE = (400, 401, 404)
 # A board's first page is short, because most boards only confirm that they hold nothing newer than the jobs already
 # kept. With no word every board has jobs and its newest one decides (an empty form read 12,102 boards in 112 s with
 # 1, 129 s with 10); a word search is slower per call and many boards hold a few matches (202 s with 10, 262 s with 1).

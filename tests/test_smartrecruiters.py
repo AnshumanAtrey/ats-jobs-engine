@@ -251,6 +251,11 @@ class Opening(unittest.TestCase):
         session, calls = run(P.open(None, Board('CHECK24', 'CHECK24')), [Response(401, text='401 Authorization Required')])
         self.assertEqual((session, len(calls)), (None, 1))
 
+    def test_a_blocked_address_is_an_error_not_a_missing_company(self):
+        blocked = Response(403, text='<title>Attention Required! | Cloudflare</title>')
+        with self.assertRaises(BoardError):
+            run(P.open(None, Board('Acme', 'Acme')), [blocked])
+
     def test_a_company_that_does_not_exist_is_a_missing_board(self):
         session, calls = run(P.open(None, Board('NoSuchCompany', 'x')), [listing([]), Response(200, '')])
         self.assertIsNone(session)
@@ -299,10 +304,10 @@ class Reading(unittest.TestCase):
         self.assertEqual(calls[0][1]['q'], 'sales marketing remote')
 
     def test_a_missing_company_a_locked_one_and_a_failing_one(self):
-        for status in (400, 401, 403, 404):
+        for status in (400, 401, 404):
             with self.assertRaises(BoardMissing):
                 run(collect(P, dict(SESSION)), [Response(status)])
-        for bad in (Response(500), Response(200), Response(200, ['not', 'an', 'object'])):
+        for bad in (Response(403), Response(500), Response(200), Response(200, ['not', 'an', 'object'])):
             with self.assertRaises(BoardError):
                 run(collect(P, dict(SESSION)), [bad])
 
@@ -367,6 +372,12 @@ class Lookup(unittest.TestCase):
             self.check([Response(502)])
         with self.assertRaises(BoardError):
             self.check([Response(200)])
+
+    def test_a_blocked_address_could_not_check(self):
+        with self.assertRaises(BoardError):
+            self.check([Response(403, text='Sorry, you have been blocked')])
+        with self.assertRaises(BoardError):
+            run(P.details(None, dict(SESSION), P.job(SESSION, RECORD)), [Response(403)])
 
     def test_details_that_are_gone_leave_the_job_as_it_was(self):
         job = P.job(SESSION, RECORD)
