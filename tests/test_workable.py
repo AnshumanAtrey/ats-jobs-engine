@@ -464,9 +464,17 @@ class EveryCompany(unittest.TestCase):
         self.assertIn('1 biggest', p.cfg.notes[-1])
 
     def test_a_refusal_falls_back_at_once(self):
-        pages, opened, p = self.collect([(429, [])], fallback={})
-        self.assertEqual((pages, opened), ([], 1))
+        session = {'account': 'biffa', 'name': 'Biffa Waste Services', 'website': None,
+                   'jobs': [{**ENTRY, 'title': 'HGV Engineer'}]}
+        pages, opened, p = self.collect([(429, [])], fallback={'biffa': session})
+        self.assertEqual((pages, opened), ([['8A29959BE6']], 1))
         self.assertIn('429', p.cfg.notes[-1])
+
+    def test_no_feed_and_no_career_page_is_an_error(self):
+        with self.assertRaises(BoardError) as caught:
+            self.collect([(429, [])], fallback={})
+        self.assertIn('429', str(caught.exception))
+        self.assertIn('no career page answered', str(caught.exception))
 
 
 class CareerPages(unittest.TestCase):

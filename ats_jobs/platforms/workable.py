@@ -559,7 +559,8 @@ class Workable(Platform):
         return [job for job in jobs if keep(job)]
 
     async def biggest_career_pages(self, http, keep, reason: str) -> list[dict]:
-        """When the feed cannot be read: the career pages of the biggest companies on our list, for FALLBACK_SECONDS."""
+        """When the feed cannot be read: the career pages of the biggest companies on our list, for FALLBACK_SECONDS.
+        BoardError when none of them answered either: Workable could not be read at all."""
         started, read, jobs = time.monotonic(), 0, []
         for board in self.known().values():         # the file lists the biggest company first
             if time.monotonic() - started > FALLBACK_SECONDS:
@@ -571,6 +572,8 @@ class Workable(Platform):
             if session:
                 read += 1
                 jobs += [job for job in self.from_widget(session, session['jobs']) if keep(job)]
+        if not read:
+            raise BoardError(f'its jobs feed could not be read ({reason}) and no career page answered')
         note = (f"Workable's jobs feed could not be read ({reason}), so these jobs come from the career pages of the "
                 f'{read:,} biggest companies on our list of {len(self.known()):,}. Run again later for every company.')
         LOG.warning(note)
