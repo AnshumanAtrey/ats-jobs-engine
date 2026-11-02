@@ -188,7 +188,10 @@ class Parsing(unittest.TestCase):
 
     def test_no_pay(self):
         for record in ({}, {'salaryRange': None}, {'salaryRange': 'USD 5'}, {'salaryRange': {'currency': 'USD'}},
-                       {'salaryRange': {'min': True, 'max': 'abc'}}):
+                       {'salaryRange': {'min': True, 'max': 'abc'}},
+                       {'salaryRange': {'min': 0, 'max': 0, 'currency': 'GBP', 'interval': 'per-year-salary'}},
+                       {'salaryRange': {'min': 1, 'max': 1, 'currency': 'USD', 'interval': 'per-month-salary'}},
+                       {'salaryRange': {'min': None, 'max': 0.03, 'currency': 'USD', 'interval': 'one-time'}}):
             self.assertEqual(pay(record), {}, record)
 
     def test_the_description_is_what_the_page_shows(self):

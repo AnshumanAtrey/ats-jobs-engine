@@ -179,12 +179,13 @@ def number(value) -> float | int | None:
 
 
 def pay(record: dict) -> dict:
-    """salaryRange -> salary text and numbers. No range, or no amount in it, is no pay."""
+    """salaryRange -> salary text and numbers. No range, no amount in it, or a range of 0 or 1 is no pay: 549 of 26,940
+    ranges are such placeholders (0 to 0 GBP a year, 1 to 1 USD a month), set where a company keeps its pay hidden."""
     found = record.get('salaryRange')
     if not isinstance(found, dict):
         return {}
     low, high = number(found.get('min')), number(found.get('max'))
-    if low is None and high is None:
+    if low is None and high is None or max(v for v in (low, high) if v is not None) <= 1:
         return {}
     currency = (found.get('currency') or '').strip().upper() or None
     period, said = PERIOD.get(found.get('interval') or '', (None, ''))
