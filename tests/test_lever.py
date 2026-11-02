@@ -470,6 +470,21 @@ class Refresh(unittest.TestCase):
         found, calls = self.check([Response(200, text=self.LIST, headers=HTML), Response(200)])
         self.assertEqual((found['alive'], len(calls)), (True, 2))
 
+    def test_demo_and_test_sites_are_told_from_employers(self):
+        from scripts.refresh_lever import sandbox
+        for site, name in (('leverdemo-8', 'Lever Demo 8'), ('salesdemo', 'Sales Demo'), ('sigma-squared', 'Acme'),
+                           ('linkedin-sandbox', 'LinkedIn Partner Sandbox'),
+                           ('jobtwine', 'JobTwine Inc')):      # all 124 postings are its tests: "Test Lever Job"
+            self.assertTrue(sandbox(site, name), site)
+        # employers kept: a word in the name is not a test site, and MEGA's real jobs stay beside its 6 test postings
+        for site, name in (('sandboxvr', 'Sandbox VR'), ('sqaservices', 'SQA Services'), ('protrials', 'ProTrials Research, Inc.'),
+                           ('mega', 'Mega HR, Inc.'), ('palantir', 'Palantir Technologies')):
+            self.assertFalse(sandbox(site, name), site)
+
+    def test_the_list_holds_no_demo_or_test_site(self):
+        from scripts.refresh_lever import sandbox
+        self.assertEqual([b.key for b in Lever().boards()[0] if sandbox(b.key, b.name)], [])
+
 
 if __name__ == '__main__':
     unittest.main()

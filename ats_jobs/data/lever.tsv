@@ -1,6 +1,6 @@
 # Lever job sites, updated 2026-11-03: every jobs.lever.co and jobs.eu.lever.co site we could find whose API and job site answer today, biggest first.
 # Columns: board key (the site name, its case matters; an EU site ends in /eu), company name. Rebuilt by scripts/refresh_lever.py;
-# 2,397 sites of 2,393 companies, 2,062 hiring, 76,589 open jobs before duplicates. Left out: 467 sites the API answers for whose job site and job pages answer 404 (1,412 postings with dead links) and 11 demo and test sites with template postings.
+# 2,396 sites of 2,392 companies, 2,061 hiring, 76,465 open jobs before duplicates. Left out: 467 sites the API answers for whose job site and job pages answer 404 (1,412 postings with dead links) and 12 demo and test sites with template or test postings.
 boxlunch	BoxLunch & Hot Topic
 tsmg	TSMG
 aogarciaagency	AO Garcia Agency
@@ -75,7 +75,6 @@ quantinuum/eu	Quantinuum
 ghj	GHJ
 wadetrim	Wade Trim
 despegar	Despegar
-jobtwine	JobTwine Inc
 cirrus/eu	Cirrus Logic
 filevine	Filevine
 insiderone	Insider One

@@ -16,7 +16,7 @@ Lever job sites (jobs.lever.co/<site>, jobs.eu.lever.co/<site>), read through Le
 - GET .../v0/postings/<site>/<id>: one posting. A site that does not exist, a posting that closed and a posting that
   never existed all answer 404 {"ok":false,"error":"Document not found"}, and the job page 404s alike, so a link on a
   live site that no longer answers is closed.
-- A site name keeps its case (AIFund answers, aifund does not; 177 of the 2,397 listed sites have capitals). Posting ids
+- A site name keeps its case (AIFund answers, aifund does not; 177 of the 2,396 listed sites have capitals). Posting ids
   are lower case. jobs.lever.co/embed/<id>, the old embed link, answers 404 and names no site.
 
 postedAt is createdAt: the job page's JobPosting markup gives its UTC day as datePosted on 33 of 33 pages of 19 sites

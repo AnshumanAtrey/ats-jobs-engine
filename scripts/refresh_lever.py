@@ -12,8 +12,10 @@ A site is kept when Lever's postings API answers for it (tried on the region a s
 links open: its job site page answers HEAD with 200, or, where a company hides that page, its first posting's page does
 (veeva: the page 404, its 889 job pages 200). Sites whose job pages answer 404 as well are left out, because their links
 would be dead: 467 sites with 1,412 postings in the API on 2026-11-03. Demo, training and test sites (leverdemo...,
-salesdemo..., levertest, "LinkedIn Partner Sandbox", "Partner Experience XML Feed", a site whose company is "Acme") are
-left out: their postings are templates. Names are Lever's own: the job feed's employer for a site with postings, the
+salesdemo..., levertest, "LinkedIn Partner Sandbox", "Partner Experience XML Feed", a site whose company is "Acme", and
+sites checked by hand whose every posting is a test, such as jobtwine) are left out: their postings are templates or
+tests, not jobs. A company's real site with a few test postings among its jobs stays (MEGA: 6 of 12 on 2026-11-03).
+Names are Lever's own: the job feed's employer for a site with postings, the
 job site page's title for one without, and the site name where a company named itself only "career" or "jobs". A site
 name keeps its case, because Lever's does, so archived links are read as written (the Wayback index key is lower case).
 Biggest first, so a run stopped by its time limit has read the most jobs.
@@ -21,10 +23,11 @@ Biggest first, so a run stopped by its time limit has read the most jobs.
 On 2026-11-02: 7,290 candidates from GitHub, freehire, Common Crawl and the first Wayback pages, then 1,630 more from
 the rest of the Wayback index (419 pages for jobs.lever.co, 9 for jobs.eu.lever.co). On 2026-11-03 all of those names,
 the file and GitHub (9,431 candidates, run with --quick --candidates) gave 2,397 live sites of 2,393 companies, 2,062
-hiring, 76,589 open jobs before duplicates. Of the live sites the Wayback Machine names 93% (82 no other source has),
-Common Crawl 83% (6), GitHub lists 75% (11) and freehire 69% (126; it knows hiring sites only, and gave 23,584 of its
-36,105 Lever jobs, because one query pages 10,000 rows and its US slice is bigger). Chao2 across the four gives at least
-2,469 sites, a lower bound because the sources see the same web. Lever's vendor listings say over 5,000 companies
+hiring, 76,589 open jobs before duplicates; leaving out JobTwine's test site the same day made it 2,396 sites of 2,392
+companies, 2,061 hiring, 76,465 jobs. Of the live sites the Wayback Machine names 93% (82 no other source has), Common
+Crawl 83% (6), GitHub lists 75% (11) and freehire 69% (125; it knows hiring sites only, and gave 23,584 of its 36,105
+Lever jobs, because one query pages 10,000 rows and its US slice is bigger). Chao2 across the four gives at least 2,468
+sites, a lower bound because the sources see the same web. Lever's vendor listings say over 5,000 companies
 (GetApp, Y Combinator) and its home page says thousands of customers (2026-11-03); an account need not have a public
 job site.
 
@@ -58,6 +61,9 @@ TITLE = re.compile(r'<title>(.*?)</title>', re.S)
 SANDBOX_KEY = re.compile(r'^(?:leverdemo|salesdemo|levertest)', re.I)
 SANDBOX_NAME = re.compile(r'^(?:Lever (?:Demo|Education|Implementation|Test)|Sales Demo\b|Acme$)|\bPartner (?:Sandbox|Experience)\b',
                           re.I)    # "Acme": sigma-squared's 49 template postings (Army, Bartender, one About Us text)
+TEST_SITES = {   # checked by hand: every posting is a test, under a real company's name
+    'jobtwine',  # JobTwine's Lever integration tests: 124 postings ("Test Lever Job", "kombo job 2", "Meesho mock test"),
+}                # many titled with its staff's first names (2026-11-03)
 GENERIC = {'career', 'careers', 'job', 'jobs', 'hiring', 'recruiting', 'recruitment', 'job board', 'jobs board', 'join us',
            'work with us', 'opportunities', 'openings'}
 RAW = 'https://raw.githubusercontent.com/'
@@ -242,6 +248,11 @@ def common_crawl(http: httpx.Client) -> dict:
     return found
 
 
+def sandbox(site: str, name: str | None) -> bool:
+    """A demo, training or test site: its postings are templates or tests, not jobs."""
+    return bool(SANDBOX_KEY.match(site) or SANDBOX_NAME.search(name or '') or site.lower() in TEST_SITES)
+
+
 def rows() -> dict[str, str]:
     lines = OUT.read_text(encoding='utf-8').splitlines() if OUT.exists() else []
     return {line.split('\t')[0]: (line.split('\t') + [''])[1] for line in lines if line and not line.startswith('#')}
@@ -319,7 +330,7 @@ async def main(args: list[str]) -> None:
     for key, name in names.items():
         if name.strip().casefold() in GENERIC:
             names[key] = site_of(key)[0]
-    sandboxes = [c for c in live if SANDBOX_KEY.match(c['site']) or SANDBOX_NAME.search(names[board_key(c['site'], c['region'])])]
+    sandboxes = [c for c in live if sandbox(c['site'], names[board_key(c['site'], c['region'])])]
     live = [c for c in live if c not in sandboxes]
     live.sort(key=lambda c: (-c['jobs'], names[board_key(c['site'], c['region'])].lower(), c['site']))
     hiring = [c for c in live if c['jobs']]
