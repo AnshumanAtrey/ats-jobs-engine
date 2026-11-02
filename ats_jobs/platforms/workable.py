@@ -212,6 +212,7 @@ class Workable(Platform):
         self._turn = asyncio.Lock()
         self._last = 0.0
         self._refused = 0
+        self._told = False
         self._known: dict[str, Board] | None = None
         self._names: dict[str, str] | None = None
         self.cfg = None
@@ -316,7 +317,8 @@ class Workable(Platform):
             response = await send(http, method, url, **kwargs)
         except BoardError:
             self._refused += 1
-            if self._refused == REFUSALS and self.cfg is not None:
+            if self._refused >= REFUSALS and not self._told and self.cfg is not None:
+                self._told = True
                 self.cfg.notes.append(f'Workable stopped answering this address after {REFUSALS} refused calls in a '
                                       'row, so the career pages, details and links after that were not read.')
             raise
@@ -408,12 +410,16 @@ class Workable(Platform):
         description, when descriptions are searched) and a date inside the period. The engine checks the rest."""
         cfg = self.cfg
         words = terms(cfg.search_terms) if cfg else []
+        texts = bool(cfg and cfg.search_descriptions)
         oldest = (datetime.now(timezone.utc) - timedelta(days=days)).isoformat() if days else None
 
         def keep(job: dict) -> bool:
             if oldest and (job.get('postedAt') or '') < oldest:
                 return False
-            return not words or any(matches(word, job) for word in words)
+            if not words:
+                return True
+            looked = job if texts else {**job, 'description': None}
+            return any(matches(word, looked) for word in words)
         return keep
 
     def from_feed(self, fields: dict) -> dict | None:

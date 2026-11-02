@@ -358,6 +358,9 @@ class Feed(unittest.TestCase):
         jobs = self.read(FEED_XML, 4096, p)
         self.assertEqual([j['id'] for j in jobs if keep(j)], ['F44ED9E40A'])
         self.assertFalse(p.wanted(2)({'title': 'Engineer', 'postedAt': '2020-01-01T00:00:00+00:00'}))
+        driver = {'title': 'Driver', 'description': 'Drive our fleet', 'postedAt': '2026-11-02T00:00:00+00:00'}
+        self.assertFalse(settings({'searchTerms': ['fleet'], 'includeDetails': True}).wanted(None)(driver))
+        self.assertTrue(settings({'searchTerms': ['fleet'], 'searchDescriptions': True}).wanted(None)(driver))
 
 
 class Stream:
