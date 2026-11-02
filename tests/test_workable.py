@@ -142,7 +142,9 @@ class Links(unittest.TestCase):
                      'https://apply.workable.com/biffa/j/584D288213/apply?utm_source=x', 'HTTPS://APPLY.WORKABLE.COM/BIFFA/J/584D288213/',
                      'https://biffa.workable.com/j/584D288213', 'https://apply.workable.com/biffa/jobs/view/584D288213.md',
                      'https://apply.workable.com/api/v2/accounts/biffa/jobs/584D288213',
-                     'https://apply.workable.com/biffa?lng=en%2Fj%2F584D288213&utm_source=board'):
+                     'https://apply.workable.com/biffa?lng=en%2Fj%2F584D288213&utm_source=board',
+                     'https://apply.workable.com/biffa/jobs/j/584D288213?utm_source=board&utm_medium=getro.com',
+                     'https://apply.workable.com/biffa/j/584D288213/j/584D288213'):
             self.assertEqual(P.read_link(text), ('biffa', '584D288213'), text)
 
     def test_old_job_numbers(self):
@@ -159,6 +161,7 @@ class Links(unittest.TestCase):
 
     def test_workable_links_with_no_company(self):
         for text in ('https://apply.workable.com/', 'apply.workable.com', 'https://apply.workable.com/oops',
+                     'https://apply.workable.com/null/biffa/llms.txt',
                      'https://apply.workable.com/j/', 'https://www.workable.com/boards/workable.xml', 'https://jobs.workable.com/'):
             self.assertEqual(P.read_link(text), (None, None), text)
 

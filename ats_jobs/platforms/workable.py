@@ -84,7 +84,7 @@ EVERYONE = Board('*', 'Workable')     # every company at once (the feed); also t
 HOSTS = ('apply.workable.com', 'www.workable.com', 'workable.com')
 OWN_SITES = {'www', 'apply', 'jobs', 'resources', 'help', 'partners', 'partnerhelp', 'get', 'jobseekers', 'events',
              'blog', 'api', 'status', 'developers', 'app', 'mail', 'email'}      # Workable's own sites, not accounts
-NOT_ACCOUNTS = {'j', 'api', 'oops', 'cdn-cgi', 'static', 'assets', 'embed', 'boards'}
+NOT_ACCOUNTS = {'j', 'api', 'oops', 'cdn-cgi', 'static', 'assets', 'embed', 'boards', 'null'}   # null: a crawl artifact
 ACCOUNT = re.compile(r'^[a-z0-9][a-z0-9-]{0,99}$')
 CODE = re.compile(r'^[0-9a-f]{10}$', re.I)
 NUMBER = re.compile(r'^\d{1,9}$')
@@ -275,8 +275,9 @@ class Workable(Platform):
         if account in NOT_ACCOUNTS or not ACCOUNT.match(account):
             return None, None
         job = None
-        if len(parts) > 2 and parts[1] == 'j' and CODE.match(parts[2]):
-            job = parts[2].upper()
+        coded = [i for i in range(1, len(parts) - 1) if parts[i] == 'j' and CODE.match(parts[i + 1])]
+        if coded:                                  # /<account>/j/<code>, and /<account>/jobs/j/<code> from job boards
+            job = parts[coded[0] + 1].upper()
         elif len(parts) > 3 and parts[1:3] == ['jobs', 'view'] and CODE.match(parts[3].removesuffix('.md')):
             job = parts[3].removesuffix('.md').upper()
         elif len(parts) > 2 and parts[1] in ('jobs', 'j') and NUMBER.match(parts[2]):
