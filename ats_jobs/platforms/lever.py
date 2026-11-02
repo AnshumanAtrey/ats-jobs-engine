@@ -82,14 +82,15 @@ PERIOD = {   # Lever's interval -> (salaryPeriod, the words in the salary text)
 INTERN = ('intern', 'interns', 'internship', 'internships', 'co op', 'coop', 'apprentice', 'apprenticeship', 'trainee',
           'traineeship', 'stage', 'stagiaire', 'praktikum', 'estagio', 'estágio', 'werkstudent', 'working student',
           'pasantia', 'pasantía', 'becario')
-CONTRACT = ('contract', 'contractor', 'contractors', 'contracted', 'freelance', 'freelancer', 'consultant', 'b2b', '1099',
-            'c2c', 'corp to corp')
+CONTRACT = ('contract', 'contractor', 'contractors', 'contracted', 'contractual', 'freelance', 'freelancer', 'consultant',
+            'b2b', '1099', 'c2c', 'corp to corp', '契約社員')
 TEMPORARY = ('temporary', 'temp', 'seasonal', 'fixed term', 'short term', 'cdd', 'befristet', 'temporal', 'temporario',
              'temporário', 'interim')
 PART_TIME = ('part time', 'parttime', 'teilzeit', 'tiempo parcial', 'mi temps', 'meio periodo', 'meio período')
-FULL_TIME = ('full time', 'fulltime', 'full times', 'vollzeit', 'tiempo completo', 'tempo integral', 'temps plein')
+FULL_TIME = ('full time', 'fulltime', 'full times', 'fte', 'vollzeit', 'tiempo completo', 'tempo integral',
+             'temps plein')
 PERMANENT = ('permanent', 'regular', 'cdi', 'efetivo', 'clt', 'indefinido', 'festanstellung', 'unbefristet', 'exempt',
-             'salaried')
+             'salaried', 'direct hire', 'on roll', 'onroll', '正社員')     # on-roll: on the payroll (India); 正社員: Japan
 
 
 def board_key(site: str, region: str) -> str:

@@ -144,9 +144,12 @@ class Parsing(unittest.TestCase):
                             ('Part Time', 'part-time'), ('Regular Part-Time', 'part-time'), ('Contract: Full-Time', 'contract'),
                             ('Contract: Part-Time', 'contract'), ('Contractor', 'contract'), ('Internship', 'intern'),
                             ('Intern | Summer', 'intern'), ('Apprentice', 'intern'), ('Seasonal', 'temporary'),
-                            ('Temporary', 'temporary'), ('Fixed Term', 'temporary'), ('CDD', 'temporary')):
+                            ('Temporary', 'temporary'), ('Fixed Term', 'temporary'), ('CDD', 'temporary'),
+                            ('Contractual', 'contract'), ('On- roll', 'full-time'), ('Direct Hire', 'full-time'),
+                            ('FTE', 'full-time'), ('正社員', 'full-time'), ('契約社員', 'contract')):
             self.assertEqual(job_type(words), kind, words)
-        for words in ('Full Time/Part Time', 'Remote - Latam', 'Hourly W2', '', None, 7):
+        for words in ('Full Time/Part Time', 'Full-time or Part-time', 'Remote - Latam', 'Hourly W2', 'Employee', 'PRN', '',
+                      None, 7):
             self.assertIsNone(job_type(words), words)
 
     def test_a_country_code_reads_as_its_name(self):
