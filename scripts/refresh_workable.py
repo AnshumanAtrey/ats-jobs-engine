@@ -16,7 +16,11 @@ for 24 hours after 100 more (2026-11-02), so calls start PACE apart (1,500 in ha
 once) and a run that loses its answers stops without writing. Biggest first, so a run for the newest jobs reaches the
 jobs posted today soonest.
 
-On 2026-11-02: FILLED_BY_THE_RUN
+On 2026-11-02: 8,083 accounts in nine crawls of Common Crawl, 4,792 companies in the three quarters of the feed that
+arrived, 6,007 more accounts from the Wayback sample and freehire's rows (--accounts). Of the first 1,620 candidates in
+order, 1,020 answered: 67% of Common Crawl's answered and 31% were hiring, 60% and 6% of the others. Workable then
+banned the address (see PACE), so the file holds the 1,107 accounts that answered and 991 accounts mapped by their job
+codes, not yet checked; the next run checks every one.
 
 Run: python3 scripts/refresh_workable.py [account ...] [--accounts <file>] [--feed <saved copy of the feed, .xml or
 .xml.gz>]   (needs httpx; writes the file, prints a summary; about 3 hours). From a slow line the feed download is

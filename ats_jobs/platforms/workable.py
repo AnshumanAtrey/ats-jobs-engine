@@ -26,8 +26,8 @@ company through Workable's public jobs feed. No key. Measured from this laptop o
   from the job's own answer. It names no hybrid or on-site.
   Cloudflare compresses it on the way (gzip about 128 MB, brotli about 131 MB) and ignores Range (200, the whole
   body). Its first byte comes after 17 to 24 s and the answer ends about 63 s after the request whatever has
-  arrived: of 9 downloads from here 8 were cut (the most that arrived was three quarters) and one brotli download
-  ended cleanly at 130.8 MB in 51 s. This line gives 3.8 to 4.1 MB/s (Cloudflare's speed test, OVH) and the feed
+  arrived: of 11 downloads from here 10 were cut (the most that arrived reached the listings of 2026-10-14, about
+  three quarters) and one brotli download ended cleanly at 130.8 MB in 51 s. This line gives 3.8 to 4.1 MB/s (Cloudflare's speed test, OVH) and the feed
   came at 2.3 to 4.4 MB/s, so here the line decides; a datacenter line has to be measured. A feed is read only once
   it has all arrived, and a short one gives nothing. About 9 downloads from one address in 3 minutes made Cloudflare
   refuse it for an hour (429, Retry-After 3590).
