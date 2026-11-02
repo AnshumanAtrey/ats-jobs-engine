@@ -8,16 +8,18 @@ the command line or in a file of one account a line (--accounts). And Workable's
 (www.workable.com/boards/workable.xml), which names each listed job's company and links the job as
 apply.workable.com/j/<shortcode>, a link that redirects to /<account>/j/<shortcode>. Each candidate account is checked
 with its career page's JSON (the widget): its name and its open jobs (one per shortcode); 404 drops it. A feed company
-whose name is the name of no live account is then resolved with one redirect and checked the same way, so the feed costs
-calls only for what the archives missed. The website is the one the feed gives the company. Workable allows about 3
-calls a second to apply.workable.com from one address and a burst can ban an address for a day, so calls start PACE
-apart (8 waiting for answers at once), and a run that loses its answers stops without writing. Biggest first, so a run
-for the newest jobs reaches the jobs posted today soonest.
+whose name is the name of no live account is then mapped to its account by its own job codes, which Common Crawl saw
+under that account (a shortcode belongs to one account), or else resolved with one redirect, and checked the same way:
+the feed costs calls only for what the archives missed. The website is the one the feed gives the company. Workable's
+Cloudflare refused every call after about 1,800 in 20 minutes from one address and banned it from apply.workable.com
+for 24 hours after 100 more (2026-11-02), so calls start PACE apart (1,500 in half an hour, 8 waiting for answers at
+once) and a run that loses its answers stops without writing. Biggest first, so a run for the newest jobs reaches the
+jobs posted today soonest.
 
 On 2026-11-02: FILLED_BY_THE_RUN
 
 Run: python3 scripts/refresh_workable.py [account ...] [--accounts <file>] [--feed <saved copy of the feed, .xml or
-.xml.gz>]   (needs httpx; writes the file, prints a summary; about 1.5 hours). From a slow line the feed download is
+.xml.gz>]   (needs httpx; writes the file, prints a summary; about 3 hours). From a slow line the feed download is
 cut at about 60 s and the part that arrived is read; Workable refuses an address for an hour after a few downloads of
 its feed, so --feed reads a copy saved earlier.
 """
@@ -30,6 +32,7 @@ import time
 import urllib.request
 import xml.etree.ElementTree as ET
 import zlib
+from collections import Counter
 from datetime import date
 from pathlib import Path
 
@@ -43,7 +46,7 @@ from ats_jobs.platforms.workable import ACCOUNT, NOT_ACCOUNTS, SHORT_LINK, WIDGE
 OUT = ROOT / 'ats_jobs' / 'data' / 'workable.tsv'
 FEED_URL = 'https://www.workable.com/boards/workable.xml'
 AGENT = 'Mozilla/5.0 (compatible; ats-jobs-engine/1.0; +https://github.com/AnshumanAtrey/ats-jobs-engine)'
-PACE = 0.45                     # seconds between calls to apply.workable.com
+PACE = 1.2                      # seconds between calls to apply.workable.com: under the refusals measured
 CRAWLS = ('CC-MAIN-2026-43', 'CC-MAIN-2026-39', 'CC-MAIN-2026-30', 'CC-MAIN-2026-21', 'CC-MAIN-2026-17',
           'CC-MAIN-2026-12', 'CC-MAIN-2026-08', 'CC-MAIN-2025-51', 'CC-MAIN-2025-47')
 PREFIX = 'com,workable,'        # every workable.com host: apply.workable.com and <account>.workable.com
@@ -110,8 +113,9 @@ def common_crawl(crawl: str, prefix: str) -> set[str]:
     return urls
 
 
-def archive_accounts(platform: Workable) -> set[str]:
-    found = set()
+def archive_accounts(platform: Workable) -> tuple[set[str], dict[str, Counter]]:
+    """The accounts Common Crawl holds, and the accounts each job shortcode was seen under."""
+    found, codes = set(), {}
     for crawl in CRAWLS:
         try:
             urls = common_crawl(crawl, PREFIX)
@@ -122,8 +126,19 @@ def archive_accounts(platform: Workable) -> set[str]:
             link = platform.read_link(url)
             if link and link[0] and link[0] != '*':
                 found.add(link[0])
+                if link[1] and re.match(r'^[0-9A-F]{10}$', link[1]):
+                    codes.setdefault(link[1], Counter())[link[0]] += 1
         print(f'{crawl} {PREFIX}: {len(urls):,} urls, {len(found):,} accounts so far', flush=True)
-    return found
+    return found, codes
+
+
+def account_by_codes(codes: dict[str, Counter], company: dict) -> str | None:
+    """The account most of a feed company's job codes were seen under, when one account leads."""
+    votes = Counter()
+    for code in company['jobs']:
+        votes.update(codes.get(code, {}).keys())
+    top = votes.most_common(2)
+    return top[0][0] if top and (len(top) == 1 or top[0][1] > top[1][1]) else None
 
 
 # ---------- the feed ----------
@@ -259,7 +274,7 @@ async def main(extra: list[str], feed_file: str | None) -> None:
     platform = Workable()
     platform._known = {}
     file_rows = known()
-    archive = archive_accounts(platform)
+    archive, codes = archive_accounts(platform)
     given = {a.strip().lower() for a in extra if a.strip()}
     turns = Turns()
     limits = httpx.Limits(max_connections=IN_FLIGHT * 2, max_keepalive_connections=IN_FLIGHT * 2)
@@ -272,12 +287,17 @@ async def main(extra: list[str], feed_file: str | None) -> None:
         results = await paced(first, lambda a: career_page(http, turns, a), 'accounts checked')
         pages = dict(zip(first, results))
         names = {p['name'].casefold() for p in results if p and 'error' not in p}
-        ranked = sorted((c for c in companies.by_name.values() if c['name'].casefold() not in names),
-                        key=lambda c: -len(c['jobs']))
-        print(f'{len(companies.by_name) - len(ranked):,} feed companies are live accounts already; '
-              f'{len(ranked):,} to resolve', flush=True)
-        found = await paced(ranked, lambda c: account_of(http, turns, c['codes']), 'feed companies resolved')
+        unnamed = sorted((c for c in companies.by_name.values() if c['name'].casefold() not in names),
+                         key=lambda c: -len(c['jobs']))
+        by_codes = {c['name']: account_by_codes(codes, c) for c in unnamed}
         named = {}                                   # account -> the feed's company, for its website
+        for company in unnamed:
+            if by_codes[company['name']]:
+                named.setdefault(by_codes[company['name']], company)
+        ranked = [c for c in unnamed if not by_codes[c['name']]]
+        print(f'{len(companies.by_name) - len(unnamed):,} feed companies are live accounts already, '
+              f'{len(unnamed) - len(ranked):,} known by their job codes; {len(ranked):,} to resolve', flush=True)
+        found = await paced(ranked, lambda c: account_of(http, turns, c['codes']), 'feed companies resolved')
         for company, account in zip(ranked, found):
             if isinstance(account, str):
                 named.setdefault(account, company)
