@@ -45,6 +45,7 @@ from urllib.parse import quote, unquote, urlparse
 from ..http import BoardError, BoardMissing, send
 from ..rows import words
 from .base import Board, Platform
+from .cornerstone import text_of
 from .deel import pay_text
 
 HOSTS = {'jobs.lever.co': 'global', 'api.lever.co': 'global', 'jobs.eu.lever.co': 'eu', 'api.eu.lever.co': 'eu'}
@@ -191,15 +192,25 @@ def description_html(record: dict) -> str | None:
     return ''.join(p for p in parts if isinstance(p, str)) or None
 
 
+def plain(record: dict, key: str) -> str | None:
+    """Lever's plain text of a field, or its HTML read as text where Lever left the plain one empty (5% of
+    descriptions and 4% of closing texts in a sample of 1,372 jobs)."""
+    text = record.get(f'{key}Plain')
+    if isinstance(text, str) and text.strip():
+        return text
+    html = record.get(key)
+    return text_of(html) if isinstance(html, str) and html.strip() else None
+
+
 def description_text(record: dict) -> str | None:
-    """The same as plain text, from Lever's own plain text: no HTML parser for 80,000 jobs. Word matching needs no tidy
-    lines, so tidy() runs only on the jobs delivered with their description."""
-    parts = [record.get('descriptionPlain')]
+    """The same as plain text, from Lever's own plain text where it has one: no HTML parser for 80,000 jobs. Word
+    matching needs no tidy lines, so tidy() runs only on the jobs delivered with their description."""
+    parts = [plain(record, 'description')]
     for item in record.get('lists') or []:
         if isinstance(item, dict):
             content = item.get('content') or ''
             parts += [item.get('text'), TAG.sub(' ', LIST_BREAK.sub('\n', content)) if '<' in content else content]
-    parts += [record.get('salaryDescriptionPlain'), record.get('additionalPlain')]
+    parts += [plain(record, 'salaryDescription'), plain(record, 'additional')]
     text = '\n'.join(p for p in parts if isinstance(p, str) and p)
     return (htmllib.unescape(text) if '&' in text else text) or None
 

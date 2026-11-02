@@ -192,6 +192,13 @@ class Parsing(unittest.TestCase):
         self.assertEqual(tidy(description_text(RECORD)), tidied)
         self.assertIn('SaaS & account work', description_text(RECORD))      # words match before the lines are tidied
 
+    def test_a_plain_text_lever_left_empty_is_read_from_its_html(self):
+        record = {**RECORD, 'descriptionPlain': '', 'description': '<div><p>We are seeking an <strong>Atomic Source '
+                  'Physicist</strong>.</p><p>&nbsp;</p></div>', 'additionalPlain': None}
+        text = tidy(description_text(record))
+        self.assertEqual(text.splitlines()[:2], ['We are seeking an Atomic Source Physicist .', 'Skill Set:'])   # text_of's spacing
+        self.assertTrue(text.endswith('Base pay only.\nWe value everyone.'), text)
+
     def test_no_description(self):
         self.assertIsNone(description_html({}))
         self.assertIsNone(description_text({'lists': None, 'descriptionPlain': None}))
