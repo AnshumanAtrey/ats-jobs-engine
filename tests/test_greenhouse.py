@@ -1,13 +1,14 @@
 """Greenhouse: links, places, pay, custom fields, dates, blocks and lookups, on answers shaped like the Job Board API's
 own (boards-api.greenhouse.io and api.greenhouse.io, 2026-11-02)."""
 import asyncio
+import os
 import unittest
 from unittest.mock import patch
 
 from ats_jobs.http import BoardError, BoardMissing
 from ats_jobs.inputs import parse_input
 from ats_jobs.platforms.base import Board
-from ats_jobs.platforms.greenhouse import Greenhouse, custom_fields, names, pay_of, places_of, utc
+from ats_jobs.platforms.greenhouse import Greenhouse, custom_fields, heavy_at_once, names, pay_of, places_of, utc
 
 SESSION = {'token': 'gitlab'}
 CONTENT = '&lt;p&gt;Build the &lt;strong&gt;platform&lt;/strong&gt; &amp;amp; ship.&lt;/p&gt;&lt;p&gt;Next&lt;/p&gt;'
@@ -52,11 +53,23 @@ def sender(answers: list):
 def platform(sites=None) -> Greenhouse:
     p = Greenhouse()
     p._sites = sites if sites is not None else {'stripe.com': 'stripe', 'careers.airbnb.com': 'airbnb'}
+    p._tokens = {'stripe', 'airbnb', 'gitlab', 'databricks'}
     p.rate = 0                       # no pacing in tests but the one about it
     return p
 
 
 P = platform()
+
+
+def collect(answers, p=None):
+    """Every page pages() gives for one board, and the calls it made."""
+    p = p or platform()
+
+    async def run():
+        return [page async for page in p.pages(None, dict(SESSION), None, None)]
+    send, calls = sender(answers)
+    with patch('ats_jobs.platforms.greenhouse.send', send):
+        return asyncio.run(run()), calls
 
 
 class Links(unittest.TestCase):
@@ -143,6 +156,28 @@ class Links(unittest.TestCase):
         self.assertEqual(P.guess_board("O'Reilly Media"), 'oreillymedia')
         self.assertIsNone(P.guess_board('...'))
 
+    def test_a_company_typed_as_its_domain_is_its_name(self):
+        for typed, token in (('anthropic.com', 'anthropic'), ('www.gitlab.com', 'gitlab'), ('careers.airbnb.com', 'airbnb'),
+                             ('acme.co.uk', 'acme'), ('Figma.com/', 'figma')):
+            self.assertEqual(P.guess_board(typed), token, typed)
+
+    def test_a_company_suffix_goes_only_for_a_board_on_the_list(self):
+        self.assertEqual(P.guess_board('Databricks Inc'), 'databricks')
+        self.assertEqual(P.guess_board('Databricks, Inc.'), 'databricks')
+        self.assertEqual(P.guess_board('Prolific Academic Ltd'), 'prolificacademicltd')
+        self.assertEqual(P.guess_board('TEGNA Inc.'), 'tegnainc')
+
+    def test_links_pasted_with_punctuation_capitals_or_glued_tracking(self):
+        for text in ('https://boards.greenhouse.io/gitlab/jobs/8638232002.',
+                     'https://boards.greenhouse.io/gitlab/jobs/8638232002​',
+                     '﻿https://job-boards.greenhouse.io/gitlab/jobs/8638232002,',
+                     'https://boards.greenhouse.io/gitlab/jobs/8638232002&gh_src=x',
+                     'https://boards.greenhouse.io/EMBED/job_app?for=gitlab&token=8638232002',
+                     'https://API.GREENHOUSE.IO/V1/BOARDS/GITLAB/JOBS/8638232002',
+                     'https://stripe.com/jobs/search?gh_jid=8638232002.'):
+            self.assertEqual(P.read_link(text)[1], '8638232002', text)
+        self.assertEqual(P.read_link('https://boards.greenhouse.io/EMBED/job_board?for=GitLab'), ('gitlab', None))
+
 
 class Parsing(unittest.TestCase):
     def test_dates_become_utc(self):
@@ -183,6 +218,27 @@ class Parsing(unittest.TestCase):
         self.assertEqual(custom_fields([{'name': 'Remote Worker', 'value': True}])[0], 'remote')
         self.assertIsNone(custom_fields([{'name': 'Remote Worker', 'value': False}])[0])
 
+    def test_fields_are_known_by_their_words(self):
+        for name, value, expected in (
+                ('Work Location Type', 'On-site', ('onsite', None)), ('employment_type', 'Full-time', (None, 'full-time')),
+                ('Job Location Type (Hybrid, Onsite, Remote)', 'Hybrid', ('hybrid', None)), ('Remote?', True, ('remote', None)),
+                ('Work Environment', ['In-Person'], ('onsite', None)), ('Employee Time Type', 'Full_time', (None, 'full-time')),
+                ('What is the employment type for this position?', 'Internship', (None, 'intern')),
+                ('Work Type', 'Full-time', (None, 'full-time')),               # a work-type field stating the job type
+                ('Target Remote Countries / States Locations [for Job Wrapping]', 'Remote', (None, None)),
+                ('Employment Length', 'Permanent', (None, None)), ('Job Family', 'Remote Sales', (None, None))):
+            self.assertEqual(custom_fields([{'name': name, 'value': value}]), expected, name)
+
+    def test_the_location_says_the_work_type_when_no_field_does(self):
+        for location, work in (('Ulm, Germany - Hybrid', 'hybrid'), ('Los Angeles, CA (On-site)', 'onsite'),
+                               ('Hamburg (hybrid)', 'hybrid'), ('In-Office', 'onsite'), ('Distributed', 'remote'),
+                               ('Remote/Hybrid', None), ('New York Office', None), ('Flexible - Any SpaceX Site', None),
+                               ('Dallas, TX - Hybrid (3x in office/week)', 'hybrid'), ('Austin, TX', None)):
+            record = {**RECORD, 'metadata': [], 'location': {'name': location}}
+            self.assertEqual(P.job(SESSION, record)['workType'], work, location)
+        fielded = {**RECORD, 'location': {'name': 'Ulm, Germany - Hybrid'}}         # Workplace Type: Remote
+        self.assertEqual(P.job(SESSION, fielded)['workType'], 'remote')
+
     def test_unknown_fields_and_odd_metadata_say_nothing(self):
         self.assertEqual(custom_fields([{'name': 'Job Family', 'value': 'Remote Sales'}, 'junk', None]), (None, None))
         self.assertEqual(custom_fields(None), (None, None))
@@ -204,6 +260,11 @@ class Parsing(unittest.TestCase):
                        [{'min_cents': 0, 'max_cents': 0, 'currency_type': 'USD'}], [{'min_cents': 100, 'max_cents': 200}], ['x']):
             self.assertEqual(pay_of(ranges), (None, None, None, None), ranges)
         self.assertEqual(pay_of([{'min_cents': None, 'max_cents': 9000000, 'currency_type': 'EUR'}]), ('EUR 90,000', 90000, 90000, 'EUR'))
+
+    def test_a_one_cent_placeholder_is_no_pay(self):
+        placeholder = {'min_cents': 1, 'max_cents': 1, 'currency_type': 'USD', 'title': "MongoDB's base salary range"}
+        self.assertEqual(pay_of([placeholder]), (None, None, None, None))
+        self.assertEqual(pay_of([placeholder, {'min_cents': 9900, 'max_cents': 12000, 'currency_type': 'USD'}])[0], 'USD 99 - 120')
 
     def test_departments(self):
         self.assertEqual(names(RECORD['departments']), 'Data Engineering')
@@ -236,6 +297,27 @@ class Parsing(unittest.TestCase):
                           job['reference'], job['description']), ('', [], None, None, None, None, None, None))
         self.assertEqual(job['jobUrl'], 'https://job-boards.greenhouse.io/gitlab/jobs/7')
 
+    def test_fields_of_an_unexpected_type_read_as_unknown(self):
+        odd = {'id': 9, 'title': 12, 'location': 'Remote, US', 'metadata': 'Full-time', 'pay_input_ranges': {'min_cents': 1},
+               'first_published': 1761744000, 'application_deadline': ['soon'], 'absolute_url': {'href': 'x'},
+               'requisition_id': 5, 'content': 7, 'departments': 'Sales', 'company_name': ['GitLab']}
+        job = P.job(SESSION, odd)
+        self.assertEqual((job['title'], job['places'], job['postedAt'], job['expiresAt'], job['salary'], job['department']),
+                         ('12', [], None, None, None, None))
+        self.assertEqual(job['jobUrl'], 'https://job-boards.greenhouse.io/gitlab/jobs/9')
+
+    def test_one_record_that_cannot_be_read_leaves_out_only_itself(self):
+        p = platform()
+        real = p.job
+
+        def job(session, record):
+            if record['id'] == 2:
+                raise AttributeError('a shape never seen')
+            return real(session, record)
+        p.job = job
+        pages, _ = collect([Response(200, {'jobs': [RECORD, {**RECORD, 'id': 2}, {**RECORD, 'id': 3}]})], p)
+        self.assertEqual([j['id'] for j in pages[0]], ['8638232002', '3'])
+
 
 class Opening(unittest.TestCase):
     def test_a_board_is_opened_without_a_call(self):
@@ -248,13 +330,7 @@ class Opening(unittest.TestCase):
 
 class Reading(unittest.TestCase):
     def collect(self, answers, p=None):
-        p = p or platform()
-
-        async def run():
-            return [page async for page in p.pages(None, dict(SESSION), None, None)]
-        send, calls = sender(answers)
-        with patch('ats_jobs.platforms.greenhouse.send', send):
-            return asyncio.run(run()), calls
+        return collect(answers, p)
 
     def test_a_board_is_one_page_from_the_light_list_with_pay(self):
         pages, calls = self.collect([Response(200, {'jobs': [RECORD, {**RECORD, 'id': 2}, {'title': 'no id'}], 'meta': {'total': 3}})])
@@ -284,8 +360,8 @@ class Reading(unittest.TestCase):
         send, _ = sender([Response(200, {'jobs': []}), Response(200, {'jobs': [RECORD]})])
 
         async def two():
-            async for _ in p.pages(None, {'token': 'a'}, None, None):
-                break                               # the engine stops at an empty page
+            first = p.pages(None, {'token': 'a'}, None, None)
+            await first.__anext__()                 # the engine took the page and stops; the generator is still held
             return await asyncio.wait_for(p.pages(None, {'token': 'b'}, None, None).__anext__(), 2)
         with patch('ats_jobs.platforms.greenhouse.send', send):
             self.assertEqual(len(asyncio.run(two())), 1)
@@ -364,6 +440,56 @@ class Blocks(unittest.TestCase):
             self.assertEqual(asyncio.run(p.get(None, 'gitlab')).json(), {'name': 'GitLab'})
 
 
+class OtherAddress(unittest.TestCase):
+    """api.greenhouse.io is not in Greenhouse's documentation: when it stops being the API, boards-api answers."""
+
+    def answers(self, first, second=None):
+        p = platform()
+        send, calls = sender([first, second or Response(200, {'jobs': [RECORD]})])
+        with patch('ats_jobs.platforms.greenhouse.send', send):
+            pages = asyncio.run(self.read(p))
+        return pages, [url.split('/v1')[0] for url, _ in calls], p.hosts
+
+    async def read(self, p):
+        return [page async for page in p.pages(None, dict(SESSION), None, None)]
+
+    def test_a_sign_in_page_or_an_html_404_moves_to_the_other_address(self):
+        for page in (Response(200, None, {'content-type': 'text/html; charset=utf-8'}),
+                     Response(404, None, {'content-type': 'text/html; charset=utf-8'})):
+            pages, hosts, order = self.answers(page)
+            self.assertEqual((len(pages[0]), hosts), (1, ['https://api.greenhouse.io', 'https://boards-api.greenhouse.io']))
+            self.assertEqual(order[0], 'boards-api.greenhouse.io')           # the run keeps to the one that works
+
+    def test_an_address_that_does_not_answer_moves_to_the_other(self):
+        p = platform()
+        calls = []
+
+        async def send(http, method, url, **kwargs):
+            calls.append(url)
+            if 'boards-api' not in url:
+                raise BoardError('ReadTimeout: ')
+            return Response(200, {'jobs': [RECORD]})
+        with patch('ats_jobs.platforms.greenhouse.send', send):
+            pages = asyncio.run(self.read(p))
+        self.assertEqual((len(pages[0]), len(calls)), (1, 2))
+
+    def test_a_missing_board_is_the_api_answering_and_needs_no_other_address(self):
+        p = platform()
+        send, calls = sender([Response(404, {'status': 404, 'error': 'Job not found'})])
+        with patch('ats_jobs.platforms.greenhouse.send', send), self.assertRaises(BoardMissing):
+            asyncio.run(self.read(p))
+        self.assertEqual(len(calls), 1)
+
+    def test_no_address_answering_is_an_error_that_says_so_not_a_missing_board(self):
+        p = platform()
+        html404 = Response(404, None, {'content-type': 'text/html'})
+        send, calls = sender([html404, html404])
+        with patch('ats_jobs.platforms.greenhouse.send', send):
+            with self.assertRaisesRegex(BoardError, 'neither Greenhouse API address answered .HTTP 404'):
+                asyncio.run(self.read(p))
+        self.assertEqual(len(calls), 2)                                     # no block waits for an address that failed
+
+
 class Pacing(unittest.TestCase):
     def test_calls_are_spread_to_the_rate(self):
         p = Greenhouse()
@@ -380,6 +506,30 @@ class Pacing(unittest.TestCase):
         self.assertEqual(len(slept), 4)                       # the first call goes at once
         self.assertTrue(all(0.05 < a < b for a, b in zip(slept, slept[1:])), slept)
         self.assertAlmostEqual(slept[-1], 0.4, delta=0.05)
+
+    def test_a_run_is_paced_under_the_rate_that_got_a_block(self):
+        p = Greenhouse()
+        self.assertLessEqual(p.rate, 80)                      # 4,800 a minute; CloudFront blocked at about 5,800
+        slept = []
+
+        async def sleep(seconds):
+            slept.append(seconds)
+
+        async def three():
+            for _ in range(3):
+                await p.pace()
+        with patch('ats_jobs.platforms.greenhouse.asyncio.sleep', sleep):
+            asyncio.run(three())
+        self.assertAlmostEqual(slept[-1], 2 / p.rate, delta=0.01)
+
+
+class Memory(unittest.TestCase):
+    def test_lists_with_descriptions_read_at_once_follow_the_memory(self):
+        for memory, expected in ((None, 32), ('512', 1), ('1024', 4), ('2048', 10), ('4096', 24), ('8192', 32)):
+            env = {k: v for k, v in os.environ.items() if k != 'ACTOR_MEMORY_MBYTES'}
+            env.update({'ACTOR_MEMORY_MBYTES': memory} if memory else {})
+            with patch.dict('os.environ', env, clear=True):
+                self.assertEqual(heavy_at_once(), expected, memory)
 
 
 class Details(unittest.TestCase):
