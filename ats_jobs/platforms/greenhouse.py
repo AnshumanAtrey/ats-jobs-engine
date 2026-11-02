@@ -222,7 +222,7 @@ class Greenhouse(Platform):
         link = text if re.match(r'^[a-z][a-z0-9+.-]*://', text, re.I) else f'https://{text}'
         try:
             parsed = urlparse(link)
-            host = (parsed.hostname or '').lower() if ' ' not in text.strip() else ''
+            host = (parsed.hostname or '').lower() if ' ' not in text else ''
         except ValueError:
             return None
         query = {k.lower(): v[0].strip() for k, v in parse_qs(parsed.query).items() if v}
@@ -309,8 +309,9 @@ class Greenhouse(Platform):
         if not wanted:
             yield await self._list(http, session, {'pay_transparency': 'true'}, wanted)
             return
-        async with self.heavy:
-            yield await self._list(http, session, {'pay_transparency': 'true', 'content': 'true'}, wanted)
+        async with self.heavy:             # released before the page is handed over: an engine that stops early
+            jobs = await self._list(http, session, {'pay_transparency': 'true', 'content': 'true'}, wanted)
+        yield jobs                          # never resumes the generator, which would keep the slot
 
     async def _list(self, http, session: dict, params: dict, wanted: list[Term]) -> list[dict]:
         response = await self.get(http, f'{session["token"]}/jobs', params)

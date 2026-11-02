@@ -276,6 +276,18 @@ class Reading(unittest.TestCase):
         self.assertEqual([j['description'] for j in pages[0]],
                          ['Run Kubernetes clusters', None, 'Build our frontend', 'Caf\u00e9 kubernetes'])
 
+    def test_a_board_the_engine_stops_reading_early_hands_its_slot_on(self):
+        p = platform()
+        p.description_terms, p.heavy = ('kubernetes',), asyncio.Semaphore(1)
+        send, _ = sender([Response(200, {'jobs': []}), Response(200, {'jobs': [RECORD]})])
+
+        async def two():
+            async for _ in p.pages(None, {'token': 'a'}, None, None):
+                break                               # the engine stops at an empty page
+            return await asyncio.wait_for(p.pages(None, {'token': 'b'}, None, None).__anext__(), 2)
+        with patch('ats_jobs.platforms.greenhouse.send', send):
+            self.assertEqual(len(asyncio.run(two())), 1)
+
     def test_a_missing_board(self):
         with self.assertRaises(BoardMissing):
             self.collect([Response(404, {'status': 404, 'error': 'Job not found'})])
