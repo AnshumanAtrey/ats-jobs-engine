@@ -54,7 +54,10 @@ POSTING = re.compile(r'^(\d{6,})(?:-|$)')
 UUID = re.compile(r'^([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})(?:-|$)', re.I)
 ENTITY = re.compile(r'&(?:#\d+|#x[0-9a-f]+|[a-z]+);', re.I)
 PAGE_SIZE = 100
-FIRST_PAGE = 10                        # most boards can only confirm that nothing newer is there
+# A board's first page is short, because most boards only confirm that they hold nothing newer than the jobs already
+# kept. With no word every board has jobs and its newest one decides (an empty form read 12,102 boards in 112 s with
+# 1, 129 s with 10); a word search is slower per call and many boards hold a few matches (202 s with 10, 262 s with 1).
+FIRST_PAGE, FIRST_PAGE_SEARCHED = 1, 10
 SECTIONS = ('companyDescription', 'jobDescription', 'qualifications', 'additionalInformation')
 JOB_TYPE = {'permanent': 'full-time', 'full-time': 'full-time', 'part-time': 'part-time', 'contract': 'contract',
             'intern': 'intern', 'temporary': 'temporary'}
@@ -258,7 +261,7 @@ class SmartRecruiters(Platform):
         return answer(response)
 
     async def _pages(self, http, session: dict, params: dict):
-        offset, size = 0, FIRST_PAGE
+        offset, size = 0, FIRST_PAGE_SEARCHED if 'q' in params else FIRST_PAGE
         while True:
             data = await self._list(http, session, {**params, 'limit': size, 'offset': offset})
             records = [r for r in data.get('content') or [] if isinstance(r, dict) and r.get('id')]

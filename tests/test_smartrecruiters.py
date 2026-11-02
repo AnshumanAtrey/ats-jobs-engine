@@ -264,20 +264,24 @@ class Opening(unittest.TestCase):
 
 
 class Reading(unittest.TestCase):
-    def test_a_short_first_page_then_full_pages_until_the_total(self):
-        first = [{**RECORD, 'id': f'1{i}'} for i in range(10)]
+    def test_one_job_first_then_full_pages_until_the_total(self):
         rest = [{**RECORD, 'id': f'2{i}'} for i in range(3)]
-        pages, calls = run(collect(P, dict(SESSION)), [listing(first, total=13), listing(rest, total=13, offset=10)])
-        self.assertEqual([len(p) for p in pages], [10, 3])
-        self.assertEqual([c[1] for c in calls], [{'limit': 10, 'offset': 0}, {'limit': 100, 'offset': 10}])
+        pages, calls = run(collect(P, dict(SESSION)), [listing([RECORD], total=4), listing(rest, total=4, offset=1)])
+        self.assertEqual([len(p) for p in pages], [1, 3])
+        self.assertEqual([c[1] for c in calls], [{'limit': 1, 'offset': 0}, {'limit': 100, 'offset': 1}])
         self.assertIn('/v1/companies/BoschGroup/postings', calls[0][0])
+
+    def test_a_word_search_starts_with_ten(self):
+        first = [{**RECORD, 'id': f'1{i}'} for i in range(10)]
+        _, calls = run(collect(P, dict(SESSION), 'engineer'), [listing(first, total=13), listing(first[:3], total=13, offset=10)])
+        self.assertEqual([(c[1]['limit'], c[1]['offset']) for c in calls], [(10, 0), (100, 10)])
 
     def test_an_empty_board_yields_nothing(self):
         pages, calls = run(collect(P, dict(SESSION)), [listing([])])
         self.assertEqual((pages, len(calls)), ([], 1))
 
     def test_a_board_that_shrinks_while_read_stops(self):
-        pages, calls = run(collect(P, dict(SESSION)), [listing([RECORD] * 10, total=500), listing([], total=10, offset=10)])
+        pages, calls = run(collect(P, dict(SESSION)), [listing([RECORD], total=500), listing([], total=1, offset=1)])
         self.assertEqual((len(pages), len(calls)), (1, 2))
 
     def test_words_and_dates_are_asked_of_smartrecruiters(self):
