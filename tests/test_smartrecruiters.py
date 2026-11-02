@@ -134,6 +134,21 @@ class Links(unittest.TestCase):
                      'https://careers.smartrecruiters.com/?search=&page=0&department=12097751', 'https://www.smartrecruiters.com/'):
             self.assertEqual(P.read_link(text), (None, None), text)
 
+    def test_pages_of_smartrecruiters_itself_name_no_company(self):
+        # live review 2026-11-03: each of these read as a company and ended as 'No SmartRecruiters career site for: ...'
+        for text in ('https://www.smartrecruiters.com/pricing/', 'https://www.smartrecruiters.com/resources',
+                     'https://www.smartrecruiters.com/blog/'):
+            self.assertIsNone(P.read_link(text), text)
+        for text in ('https://www.smartrecruiters.com/job-search/?keyword=nurse', 'https://jobs.smartrecruiters.com/widget/BoschGroup'):
+            self.assertEqual(P.read_link(text), (None, None), text)
+        self.assertEqual(P.read_link('https://www.smartrecruiters.com/CityFibre'), ('CityFibre', None))
+
+    def test_a_percent_encoded_path_is_read(self):
+        self.assertEqual(P.read_link('https://careers.smartrecruiters.com/BoschGroup%20'), ('BoschGroup', None))
+        self.assertEqual(P.read_link('jobs.smartrecruiters.com/Bosch%20Group'), ('Bosch Group', None))
+        cfg = parse_input({'companies': ['https://jobs.smartrecruiters.com/Bosch%20Group']}, P, {'bosch group': ['BoschGroup']})
+        self.assertEqual(cfg.companies, ['BoschGroup'])
+
     def test_other_text_is_no_link(self):
         for text in ('https://example.com/careers', 'software engineer', 'BoschGroup', 'jobs.lever.co/ramp',
                      'https://www.smartrecruiters.com/resources/blog/hiring', 'https://c.smartrecruiters.com/logo.png',
@@ -202,13 +217,17 @@ class Parsing(unittest.TestCase):
         self.assertEqual(country_name('us', 'Sumter, , United States'), 'United States')
         self.assertEqual(country_name('kr', 'Seoul, , Korea, Republic of'), 'South Korea')
         self.assertEqual(country_name('ae', None), 'United Arab Emirates')
-        self.assertEqual(country_name('xx', None), 'XX')
+        self.assertIsNone(country_name('xx', None))                 # SmartRecruiters' unknown country
+        self.assertIsNone(country_name('UN', 'Somewhere, , UN'))
+        self.assertEqual(country_name('xk', 'Pristina, , XK'), 'Kosovo')
+        self.assertEqual(place({'city': 'Pristina', 'country': 'xk'})['name'], 'Pristina, Kosovo')
         self.assertIsNone(country_name(None, 'Somewhere'))
 
     def test_every_employment_type(self):
         for kind, label, want in (('permanent', 'Full-time', 'full-time'), ('part-time', 'Part-time', 'part-time'),
                                   ('contract', 'Contract', 'contract'), ('intern', 'Intern', 'intern'),
                                   ('temporary', 'Temporary', 'temporary'), (None, 'Full time', 'full-time'),
+                                  ('casual', 'Casual', 'part-time'), (None, 'Casual', 'part-time'),
                                   ('other', 'Volunteer', None), (None, None, None)):
             self.assertEqual(job_type({'id': kind, 'label': label}), want, (kind, label))
         self.assertIsNone(job_type(None))

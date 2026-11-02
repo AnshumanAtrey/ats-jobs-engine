@@ -54,7 +54,7 @@ import time
 import unicodedata
 from datetime import datetime, timedelta, timezone
 from importlib import resources
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import parse_qs, unquote, urlparse
 
 from .. import places
 from ..http import BoardError, BoardMissing, send
@@ -77,7 +77,14 @@ HOSTS = {'careers.smartrecruiters.com', 'jobs.smartrecruiters.com', 'api.smartre
 SHORT_CODE = re.compile(r'^[A-Za-z0-9]{3,16}$')
 APP_PATHS = {'oneclick-ui', 'external-referrals'}           # .../company/<company>/(publication|job)/<id>
 COMPANY_FIRST = {'ni', 'my-applications'}                   # /ni/<company>/<uuid>-<slug>, /my-applications/<company>/...
-NO_COMPANY = {'sr-jobs', 'cdn-cgi', 'static', '_incapsula_resource', 'robots.txt', 'favicon.ico', 'sitemap.xml'}
+NO_COMPANY = {'sr-jobs', 'cdn-cgi', 'static', '_incapsula_resource', 'robots.txt', 'favicon.ico', 'sitemap.xml',
+              'widget', 'job-search'}
+# www.smartrecruiters.com/<company> answers 301 to the company's page (any word does), so only its own sections, from
+# its sitemap of 2026-11-03, are no company; none is a company key on file (cityfibre and smartrecruiters are, so the
+# sitemap is not used whole)
+VENDOR = {'pricing', 'resources', 'blog', 'customers', 'about-us', 'contact-us', 'get-a-demo', 'events', 'webinars',
+          'partners', 'marketplace', 'integrations', 'industries', 'legal', 'privacy', 'terms-of-use', 'sign-in',
+          'signin', 'news', 'case-studies', 'ebooks', 'glossary', 'docs', 'why-smartrecruiters', 'hiring-software'}
 COMPANY = re.compile(r'^[A-Za-z0-9-]{1,100}$')
 POSTING = re.compile(r'^(\d{6,})(?:-|$)')
 UUID = re.compile(r'^([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})(?:-|$)', re.I)
@@ -94,8 +101,13 @@ LOCKED = 401
 # 1, 129 s with 10); a word search is slower per call and many boards hold a few matches (202 s with 10, 262 s with 1).
 FIRST_PAGE, FIRST_PAGE_SEARCHED = 1, 10
 SECTIONS = ('companyDescription', 'jobDescription', 'qualifications', 'additionalInformation')
+# casual (2,239 postings, 2,114 in Australia and 124 in New Zealand, 2026-11-03) is hourly work with no set hours: cooks,
+# crew and shop staff at Guzman y Gomez, Endeavour Group and JB Hi-Fi, 68 of them for Christmas. Part-time is the
+# nearest of the five job types; typed in the job type field, casual reads the same way
 JOB_TYPE = {'permanent': 'full-time', 'full-time': 'full-time', 'part-time': 'part-time', 'contract': 'contract',
-            'intern': 'intern', 'temporary': 'temporary'}
+            'intern': 'intern', 'temporary': 'temporary', 'casual': 'part-time'}
+# codes SmartRecruiters stores that are no ISO country: Kosovo (44 postings), unknown (XX 36) and UN (3), 2026-11-03
+ODD_COUNTRIES = {'XK': 'Kosovo', 'XX': None, 'UN': None}
 PERIOD = {'YEARLY': 'year', 'MONTHLY': 'month', 'WEEKLY': 'week', 'DAILY': 'day', 'HOURLY': 'hour'}
 PER = {'year': 'a year', 'month': 'a month', 'week': 'a week', 'day': 'a day', 'hour': 'an hour'}
 # data/smartrecruiters.tsv writes a career site with nothing posted in two years as a comment line with this start:
@@ -150,8 +162,8 @@ def clean(text) -> str:
 def country_name(code: str | None, full: str | None) -> str | None:
     """'cn', 'Shanghai, Shanghai, China' -> 'China': SmartRecruiters' word when it names that country, else ISO's."""
     code = code.strip().upper() if isinstance(code, str) else ''
-    if not code:
-        return None
+    if not code or code in ODD_COUNTRIES:
+        return ODD_COUNTRIES.get(code)
     last = full.rsplit(',', 1)[-1].strip() if isinstance(full, str) else ''
     if last and country_code(last, allow_codes=False) == code:
         return last
@@ -263,7 +275,7 @@ class SmartRecruiters(Platform):
         host = (parsed.hostname or '').lower() if ' ' not in text.strip() else ''
         if host not in HOSTS:
             return None
-        parts = [p for p in parsed.path.split('/') if p]
+        parts = [p for p in (unquote(p).strip() for p in parsed.path.split('/')) if p]   # BoschGroup%20 is BoschGroup
         query = parse_qs(parsed.query)
         named = (query.get('dcr_ci') or query.get('company') or [None])[0]
         if host == SHORT:                # the code keeps its case: the job is known only once the link is followed
@@ -284,7 +296,7 @@ class SmartRecruiters(Platform):
                 return named, None
             return parts[1], posting_id(parts[2]) if first == 'ni' and len(parts) > 2 else None
         job = posting_id(parts[1]) if len(parts) > 1 else None
-        if host in MAIN_SITE and len(parts) > 1 and not job:
+        if host in MAIN_SITE and ((len(parts) > 1 and not job) or first in VENDOR):
             return None                  # www.smartrecruiters.com/resources/...: SmartRecruiters' own pages
         return parts[0], job
 
