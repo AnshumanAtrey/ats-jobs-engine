@@ -50,7 +50,12 @@ apply.workable.com/j/<code> redirects to the account's job, or to /oops once the
 apply.workable.com disallows nothing.
 
 Limits from one address: apply.workable.com answered 3 calls a second for 2 minutes and refused about half of 4 a
-second after 70 s (HTTP 429, Retry-After 0, gone within seconds), so its calls wait their turn (PACE).
+second after 70 s (HTTP 429, Retry-After 0, gone within seconds). Held longer it counts: about 1,800 calls at 1.5 to
+2.2 a second over 20 minutes brought refusals on every call (error code 1015, Retry-After 0) that cleared 90 s after
+the calls stopped, and 100 calls at 1.3 a second 8 minutes later got the address banned from apply.workable.com for
+24 hours (Retry-After 86,400, counting down; the feed and the job board kept answering it). So calls wait their turn
+(PACE, 2 a second) and a run makes a few hundred at most: CAREER_PAGES or FALLBACK_SECONDS of career pages, and one
+call or two per job with details.
 """
 import asyncio
 import dataclasses
@@ -100,13 +105,13 @@ FEED_TIMEOUT = httpx.Timeout(120.0, connect=15.0)    # its first byte came after
 FEED_ENCODING = 'gzip'
 FALLBACK_SECONDS = 120        # career pages read, biggest first, when the feed cannot be read
 WORKPLACE_SECONDS = 90        # a hybrid or on-site search checks feed jobs one by one for this long at most
-CAREER_PAGES = 300            # the biggest career pages a run for the newest jobs reads: 120 s at most
+CAREER_PAGES = 300            # the biggest career pages a run for the newest jobs reads: 150 s at most
 MONTHS = {m: i for i, m in enumerate('Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec'.split(), 1)}
 FEED_DATE = re.compile(r'(\d{1,2}) ([A-Z][a-z]{2}) (\d{4}) (\d{2}):(\d{2}):(\d{2})')
 TAG = re.compile(r'<[^>]*>')
 NOBODY = {'company': None, 'companySlug': None, 'companyWebsite': None}   # a gone job whose company is unknown
 REFUSALS = 3                  # failed calls in a row after which apply.workable.com is not asked again this run
-PACE = 0.4                    # seconds between two calls to apply.workable.com: 2.5 a second, under the 3 measured
+PACE = 0.5                    # seconds between two calls to apply.workable.com: 2 a second (see the docstring)
 LOG = logging.getLogger('apify')
 WORKPLACE = {'remote': 'remote', 'hybrid': 'hybrid', 'on_site': 'onsite'}
 TYPE = {'full': 'full-time', 'part': 'part-time', 'contract': 'contract', 'temporary': 'temporary'}
@@ -339,7 +344,8 @@ class Workable(Platform):
             if self._refused >= REFUSALS and not self._told and self.cfg is not None:
                 self._told = True
                 self.cfg.notes.append(f'Workable stopped answering this address after {REFUSALS} refused calls in a '
-                                      'row, so the career pages, details and links after that were not read.')
+                                      'row (it can refuse an address for up to a day), so the career pages, details '
+                                      'and links after that were not read. Run again later.')
             raise
         self._refused = 0
         return response
