@@ -358,7 +358,8 @@ class Workable(Platform):
             code = clean(entry.get('shortcode')).upper()
             if not CODE.match(code):
                 continue
-            places = [p for p in (place(loc) for loc in entry.get('locations') or [entry]) if p]
+            own = {'city': entry.get('city'), 'region': entry.get('state'), 'country': entry.get('country')}
+            places = [p for p in (place(loc) for loc in entry.get('locations') or [own]) if p]
             if code in jobs:
                 held = jobs[code]
                 held['places'] += [p for p in places if p['name'] not in {q['name'] for q in held['places']}]

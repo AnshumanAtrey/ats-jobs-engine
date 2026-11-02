@@ -220,6 +220,10 @@ class Parsing(unittest.TestCase):
         self.assertEqual((job['jobUrl'], job['applyUrl']),
                          ('https://apply.workable.com/j/8A29959BE6', 'https://apply.workable.com/j/8A29959BE6/apply'))
 
+    def test_an_entry_without_a_location_list_uses_its_own_place(self):
+        jobs = P.from_widget({'account': 'x', 'name': 'X'}, [{**ENTRY, 'locations': []}])
+        self.assertEqual(jobs[0]['location'], 'Greenland, England, United Kingdom')
+
     def test_odd_widget_entries(self):
         session = {'account': 'x', 'name': 'X'}
         odd = [{'shortcode': None, 'title': 'No code'}, {'shortcode': 'ABCDEF1234', 'title': None, 'locations': None,
