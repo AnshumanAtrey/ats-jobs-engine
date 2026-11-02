@@ -91,14 +91,14 @@ def squeeze(text: str) -> str:
 
 
 def dormant_sites(text: str) -> dict[str, str]:
-    """The #~ lines of the company file -> {company name, its squeezed form or key, folded: key}."""
-    found: dict[str, str] = {}
-    for line in text.splitlines():
-        if line.startswith(DORMANT):
-            key, name = (line[len(DORMANT):].split('\t') + [''])[:2]
-            for word in (key, name, squeeze(name)):
-                if word.strip() and key.strip():
-                    found.setdefault(word.strip().casefold(), key.strip())
+    """The #~ lines of the company file -> {company name, its squeezed form or key, folded: key}. Every site's own key
+    comes first: AccionLabs2, named AccionLabs, sits above the site AccionLabs in the file (18 such pairs, 2026-11-02)."""
+    sites = [(line[len(DORMANT):].split('\t') + [''])[:2] for line in text.splitlines() if line.startswith(DORMANT)]
+    found = {key.strip().casefold(): key.strip() for key, _ in sites if key.strip()}
+    for key, name in sites:
+        for word in (name, squeeze(name)):
+            if word.strip() and key.strip():
+                found.setdefault(word.strip().casefold(), key.strip())
     return found
 
 

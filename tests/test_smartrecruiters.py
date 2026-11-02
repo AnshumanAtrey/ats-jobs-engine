@@ -263,6 +263,21 @@ class Dormant(unittest.TestCase):
             self.assertIn(self.platform.guess_board(typed), ('McKesson1', 'AdeebaEServicesPvtLtd'), typed)
         self.assertEqual(self.platform.guess_board('Some New Company'), 'SomeNewCompany')
 
+    def test_a_sites_own_key_wins_over_another_sites_name(self):
+        # the file's order: AccionLabs2, named AccionLabs, comes before the site AccionLabs, so typing AccionLabs read
+        # AccionLabs2 (18 such pairs on 2026-11-02, SegulaTechnologies among them)
+        self.platform._dormant = dormant_sites(f'{DORMANT}AccionLabs2\tAccionLabs\t2017-08-31\t5\n'
+                                               f'{DORMANT}AccionLabs\tAccion Labs\t2016-09-30\t3\n')
+        self.assertEqual(self.platform.guess_board('AccionLabs'), 'AccionLabs')
+        self.assertEqual(self.platform.guess_board('accionlabs2'), 'AccionLabs2')
+
+    def test_every_dormant_site_on_file_is_found_by_its_own_key(self):
+        from importlib import resources
+        text = resources.files('ats_jobs').joinpath('data/smartrecruiters.tsv').read_text(encoding='utf-8')
+        found = dormant_sites(text)
+        keys = [line[len(DORMANT):].split('\t')[0] for line in text.splitlines() if line.startswith(DORMANT)]
+        self.assertEqual([key for key in keys if found.get(key.casefold()) != key], [])
+
     def test_a_dormant_site_opens_without_a_call(self):
         self.platform._known = None
         self.assertIn('mckesson1', self.platform.known())
