@@ -521,6 +521,40 @@ class Lookup(unittest.TestCase):
                 run(P.details(None, dict(SESSION), job), [bad])
 
 
+class Pacing(unittest.TestCase):
+    def test_calls_are_spread_to_the_rate(self):
+        p = SmartRecruiters()
+        p.rate, slept = 10, []
+
+        async def sleep(seconds):
+            slept.append(round(seconds, 2))
+
+        async def five():
+            for _ in range(5):
+                await p.pace()
+        with patch('ats_jobs.platforms.smartrecruiters.asyncio.sleep', sleep):
+            asyncio.run(five())
+        self.assertEqual(len(slept), 4)                       # the first call goes at once
+        self.assertTrue(all(0.05 < a < b for a, b in zip(slept, slept[1:])), slept)
+        self.assertAlmostEqual(slept[-1], 0.4, delta=0.05)
+
+    def test_a_run_is_paced_under_the_rate_cloudflare_refused(self):
+        # 2026-11-03: 96 in flight met 429s at 121.9 calls a second, 80 in flight none at 115.9
+        self.assertLessEqual(SmartRecruiters().rate, 80)
+
+    def test_every_call_waits_its_turn(self):
+        p, waited = SmartRecruiters(), []
+        p._known = {'boschgroup'}
+
+        async def pace():
+            waited.append(1)
+        p.pace = pace
+        run(collect(p, dict(SESSION)), [listing([RECORD], total=2), listing([{**RECORD, 'id': '2'}], total=2, offset=1)])
+        run(p.lookup(None, dict(SESSION), '1'), [Response(200, DETAIL)])
+        run(p.open(None, Board('Acme', 'Acme')), [listing([]), Response(200, '')])
+        self.assertEqual(len(waited), 5)
+
+
 class Refresh(unittest.TestCase):
     """scripts/refresh_smartrecruiters.py: a site that does not answer is not a site with no jobs."""
 

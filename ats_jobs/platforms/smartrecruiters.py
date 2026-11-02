@@ -23,8 +23,13 @@ postedAt is releasedDate: the job page's JobPosting microdata gives the same ins
 (2024-12 to 2026-11) and on 3 from 2017 and 2023. The page's validThrough (3 of the 11) is not in the API, so rows carry
 no expiry. A job page answers with any slug or none; links built here use SmartRecruiters' slug rule (399 of 400
 postingUrls). jobs.smartrecruiters.com serves every company: www.smartrecruiters.com/<company>/<id> answers 301 to it,
-careers.smartrecruiters.com/<company>/<id> 302 to the company's page, and no regional host (eu, us) resolves. 128
-parallel calls from one laptop met no limit (192 a second, no 429, no rate-limit header); Cloudflare fronts the API.
+careers.smartrecruiters.com/<company>/<id> 302 to the company's page, and no regional host (eu, us) resolves.
+Cloudflare fronts the API and limits the calls of one address. From one laptop on 2026-11-03, 3,000 list calls 128 in
+flight got 37 answers 429 (Cloudflare error 1015, retry-after 0) from 7.8 s in; 96 in flight got 99, at 121.9 calls a
+second; 80 in flight none, at 115.9 a second (on 2026-11-02, 128 in flight had met none, so the limit moves). Calls in
+flight cap the rate only while answers are slow (0.6 s here), and nearer SmartRecruiters' servers, as on Apify, 64 in
+flight could pass it: a run keeps 64 in flight and is paced to RATE calls a second whatever the latency. A pass over
+every page at 64 took 147.6 s with no retry; at 128, 333.2 s with 67 retries.
 api.smartrecruiters.com's robots.txt allows /v1/companies/ to LinkedInBot and disallows every path to anyone else; the
 Posting API is the one SmartRecruiters documents for career sites, and it needs no key.
 
@@ -39,8 +44,10 @@ the 4,909 newest postings of 80 companies it does hold (some almost all), with f
 board holds anything newer, so every listed board is read, and it only helps to find companies
 (scripts/refresh_smartrecruiters.py).
 """
+import asyncio
 import html as htmllib
 import re
+import time
 import unicodedata
 from datetime import datetime, timedelta, timezone
 from importlib import resources
@@ -71,6 +78,7 @@ POSTING = re.compile(r'^(\d{6,})(?:-|$)')
 UUID = re.compile(r'^([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})(?:-|$)', re.I)
 ENTITY = re.compile(r'&(?:#\d+|#x[0-9a-f]+|[a-z]+);', re.I)
 PAGE_SIZE = 100
+RATE = 80                    # calls a second at most for a run: Cloudflare refused one address at about 116 to 122
 # 401 is a company that locked its Posting API (CHECK24, 1 of about 16,000 companies on 2026-11-02). A company that does
 # not exist answers 200 with no posting, so on the list endpoint a 400 is a parameter it refused and a 404 a path that
 # moved (Cloudflare's HTML page): both stay errors, so an API change fails the run instead of finding nothing. No company
@@ -236,12 +244,13 @@ class SmartRecruiters(Platform):
     actor = 'smartrecruiters-jobs-search'
     board_example = 'https://careers.smartrecruiters.com/BoschGroup'
     job_example = 'https://jobs.smartrecruiters.com/BoschGroup/744000159116379-pmi-project-lead-em'
-    concurrency = 64             # 128 from one laptop met no limit; half of it for Apify's shared addresses
+    concurrency = 64             # calls in flight; RATE paces them (96 and 128 in flight met Cloudflare's limit)
     server_search = True
     newest_first = True
     never = ('otherLocations', 'team', 'expiresAt', 'offersEquity', 'companyWebsite')
     _known: set[str] | None = None
     _dormant: dict[str, str] | None = None
+    rate, next_call = RATE, 0.0
 
     def read_link(self, text):
         link = text if re.match(r'^[a-z][a-z0-9+.-]*://', text, re.I) else f'https://{text}'
@@ -290,6 +299,15 @@ class SmartRecruiters(Platform):
             self._known = {board.key.lower() for board in self.boards()[0]} | {k.lower() for k in self.dormant().values()}
         return self._known
 
+    async def pace(self) -> None:
+        """At most self.rate calls a second for the whole run: each call takes the next free moment."""
+        if self.rate:
+            now = time.monotonic()
+            begin = max(now, self.next_call)
+            self.next_call = begin + 1 / self.rate
+            if begin > now:
+                await asyncio.sleep(begin - now)
+
     async def open(self, http, board):
         if not COMPANY.match(board.key):
             return None
@@ -304,6 +322,7 @@ class SmartRecruiters(Platform):
             return None
         if newest:
             return {'company': clean(obj(obj(newest[0]).get('company')).get('identifier')) or board.key}
+        await self.pace()
         response = await send(http, 'GET', NAME_LOOKUP, params={'q': board.key})
         if response.status_code != 200:
             raise BoardError(f'HTTP {response.status_code}')
@@ -346,6 +365,7 @@ class SmartRecruiters(Platform):
                 'description': text_of(html), 'descriptionHtml': html}
 
     async def _list(self, http, session: dict, params: dict) -> dict:
+        await self.pace()
         response = await send(http, 'GET', API.format(company=session['company']), params=params)
         if response.status_code == LOCKED:
             raise BoardMissing(session['company'])
@@ -397,6 +417,7 @@ class SmartRecruiters(Platform):
 
     async def _detail(self, http, session: dict, job_id: str) -> dict | None:
         """One posting, or None when SmartRecruiters says it cannot be read (missing()). BoardError for any other answer."""
+        await self.pace()
         response = await send(http, 'GET', f'{API.format(company=session["company"])}/{job_id}')
         return None if missing(response) else answer(response)
 
