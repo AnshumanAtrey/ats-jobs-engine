@@ -395,5 +395,58 @@ class Lookup(unittest.TestCase):
             run(P.details(None, dict(SESSION), job), [Response(500)])
 
 
+class Refresh(unittest.TestCase):
+    """scripts/refresh_smartrecruiters.py: a site that does not answer is not a site with no jobs."""
+
+    def refresh(self, listed: dict, answers: dict):
+        import tempfile
+        from pathlib import Path
+
+        from scripts import refresh_smartrecruiters as refresh
+        out = Path(tempfile.mkdtemp()) / 'smartrecruiters.tsv'
+        out.write_text('# updated 2026-11-01\n' + ''.join(f'{k}\t{v}\n' for k, v in listed.items()), encoding='utf-8')
+
+        async def box(http):
+            return {}
+
+        async def get_json(http, url, params):
+            answer = answers[url.split('/companies/')[1].split('/')[0]]
+            if answer == 'no answer':
+                raise RuntimeError(f'no answer from {url}')
+            return answer
+        with patch.object(refresh, 'OUT', out), patch.object(refresh, 'company_box', box), \
+                patch.object(refresh, 'get_json', get_json), patch('builtins.print'):
+            asyncio.run(refresh.main(['--no-wayback']))
+        return out.read_text(encoding='utf-8')
+
+    @staticmethod
+    def hiring(ident, name, jobs):
+        return {'totalFound': jobs, 'content': [{'company': {'identifier': ident, 'name': name}}]}
+
+    def test_a_listed_site_that_does_not_answer_stays(self):
+        text = self.refresh({'BoschGroup': 'Bosch Group', 'Gone': 'Gone Inc', 'Flaky': 'Flaky Ltd'},
+                            {'BoschGroup': self.hiring('BoschGroup', 'Bosch Group', 5), 'Gone': {'totalFound': 0, 'content': []},
+                             'Flaky': 'no answer'})
+        rows = [line.split('\t') for line in text.splitlines() if not line.startswith('#')]
+        self.assertEqual(rows, [['BoschGroup', 'Bosch Group'], ['Flaky', 'Flaky Ltd']])
+
+    def test_many_sites_that_do_not_answer_leave_the_file_as_it_was(self):
+        listed = {f'Site{i}': f'Site {i}' for i in range(12)}
+        with self.assertRaises(SystemExit):
+            self.refresh(listed, {k: 'no answer' for k in listed})
+
+    def test_a_blocked_address_is_retried_then_fails(self):
+        from scripts import refresh_smartrecruiters as refresh
+
+        class Blocked:
+            async def get(self, url, params=None):
+                return Response(403, text='Sorry, you have been blocked')
+
+        async def no_wait(seconds):
+            return None
+        with patch.object(refresh.asyncio, 'sleep', no_wait), self.assertRaises(RuntimeError):
+            asyncio.run(refresh.get_json(Blocked(), 'https://api.smartrecruiters.com/v1/companies/Acme/postings', {}))
+
+
 if __name__ == '__main__':
     unittest.main()

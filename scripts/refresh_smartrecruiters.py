@@ -6,10 +6,11 @@ SmartRecruiters publishes no customer list, but its own job search holds one: th
 jobs.smartrecruiters.com (sr-jobs/company-lookup?q=) matches the starts of the words of company names and answers at
 most 100 companies a query. Every one-letter start, every two-letter start under a full one, then the first four
 letters of every word of every name found reach the companies in that search: three- and five-letter queries match
-fuzzily and added nothing. On 2026-11-02 the box gave 11,361 companies in 18,087 queries (the version here needs about
-9,000), and of the 3,812 companies in the job search that other sources saw it missed 3.
+fuzzily and added nothing. On 2026-11-02 a crawl of 18,087 queries gave 11,361 companies (11,203 hiring); the version
+here asks 8,075 and finds 11,312 (11,154 hiring), and a site found once stays listed. Of the 5,187 companies in the
+job search that other sources saw, the box missed 6.
 
-Companies that keep out of SmartRecruiters' job search (AbbVie, City of New York, Wabtec: 999 hiring sites, 33,617
+Companies that keep out of SmartRecruiters' job search (AbbVie, City of New York, Wabtec: 1,387 hiring sites, 36,440
 jobs on 2026-11-02) are not in the box. The Wayback Machine's index of careers.smartrecruiters.com and
 jobs.smartrecruiters.com finds some (one row per company with collapse=urlkey:38, one first character at a time), and
 the sites already in the file stay candidates, so a site found once by other means (freehire, Common Crawl, jobseek)
@@ -17,12 +18,14 @@ stays until SmartRecruiters stops serving it. Slugs, links, or files of them giv
 
 A site is kept when the Posting API lists an open job on it, with SmartRecruiters' own identifier and company name
 (identifiers are read in any case, so case variants count once). Biggest first, so a run reads the busiest boards first.
+A listed site that does not answer stays, at the end; when more than 1% do not answer, the file is left as it was.
 
 On 2026-11-02: 12,594 career sites of 12,480 companies, 423,083 open jobs before duplicates. Hiring sites by source
 (alone in brackets): the company box 11,203 (6,022), the Wayback Machine 4,566 (530), freehire's public API 3,848 from
 69,143 of its 172,042 rows (514), Common Crawl 1,518 (10), jobseek 142 (0). Of the sites outside the job search,
-capture-recapture between freehire and the Wayback Machine puts their number near 2,846 (Chao1 3,939) against the
-1,387 found, most of the rest small: about 85 to 90% of hiring sites and 94 to 96% of open jobs.
+capture-recapture between freehire (744) and the Wayback Machine (857, 224 in both) puts their number near 2,846
+(Chao1 over four sources 3,939) against the 1,387 found, and those seen by one source hold a median of 2 jobs: about
+83 to 90% of hiring sites and 93 to 96% of open jobs. The sources are not independent, so the real share can be lower.
 
 Run: python3 scripts/refresh_smartrecruiters.py [slug | link | @file ...]   (needs httpx; writes the file, prints a summary)
      --no-wayback skips the Wayback Machine (about an hour, one request at a time)
@@ -72,8 +75,8 @@ async def get_json(http: httpx.AsyncClient, url: str, params: dict):
             response = await http.get(url, params=params)
             if response.status_code == 200:
                 return response.json()
-            if response.status_code in (400, 401, 403, 404):    # 401: a company that locked its Posting API (CHECK24)
-                return None
+            if response.status_code in (400, 401, 404):    # 401: a company that locked its Posting API (CHECK24);
+                return None                                  # 403 is a blocked address: retried, then a failure
         except (httpx.HTTPError, ValueError):
             pass
         await asyncio.sleep(1 + attempt * 3)
@@ -165,9 +168,11 @@ def wayback() -> set[str]:
     return slugs
 
 
-def known() -> set[str]:
+def known() -> dict[str, str]:
+    """The sites in the file now: identifier -> company name."""
     lines = OUT.read_text(encoding='utf-8').splitlines() if OUT.exists() else []
-    return {line.split('\t')[0] for line in lines if line and not line.startswith('#')}
+    rows = [line.split('\t') for line in lines if line and not line.startswith('#')]
+    return {row[0]: (row[1] if len(row) > 1 else row[0]) for row in rows}
 
 
 def given(args: list[str]) -> set[str]:
@@ -188,7 +193,7 @@ async def check(http: httpx.AsyncClient, sem: asyncio.Semaphore, slug: str) -> d
             data = await get_json(http, API.format(company=slug), {'limit': 1})
         except RuntimeError as exc:
             print(exc, flush=True)
-            return None
+            return {'error': str(exc)}
     newest = ((data or {}).get('content') or [None])[0]
     if not data or not data.get('totalFound') or not newest:
         return None
@@ -201,7 +206,9 @@ async def main(args: list[str]) -> None:
     started = time.monotonic()
     limits = httpx.Limits(max_connections=CHECK_PARALLEL * 2, max_keepalive_connections=CHECK_PARALLEL)
     async with httpx.AsyncClient(timeout=httpx.Timeout(45, connect=15), limits=limits, headers={'User-Agent': AGENT}) as http:
-        sources = {'company box': set(await company_box(http)), 'already listed': known(), 'given': given([a for a in args if a != '--no-wayback'])}
+        listed = known()
+        sources = {'company box': set(await company_box(http)), 'already listed': set(listed),
+                   'given': given([a for a in args if a != '--no-wayback'])}
         if '--no-wayback' not in args:
             sources['wayback'] = wayback()
         candidates = {}
@@ -212,14 +219,22 @@ async def main(args: list[str]) -> None:
         print(f'{len(candidates):,} candidates', flush=True)
         sem = asyncio.Semaphore(CHECK_PARALLEL)
         checked = await asyncio.gather(*[check(http, sem, slug) for slug in candidates.values()])
+    failed = [slug for slug, site in zip(candidates.values(), checked) if site and 'error' in site]
+    if len(failed) > max(10, len(candidates) // 100):
+        sys.exit(f'{len(failed):,} of {len(candidates):,} sites did not answer, so {OUT.name} was left as it was '
+                 f'(first: {", ".join(failed[:5])}). Try again later.')
     sites: dict[str, dict] = {}
     found_by = {}
     for slug, site in zip(candidates.values(), checked):
-        if site:
+        if site and 'error' not in site:
             key = site['slug'].lower()
             if key not in sites or site['jobs'] > sites[key]['jobs']:
                 sites[key] = site
             found_by[slug.lower()] = key
+    folded = {slug.lower(): (slug, name) for slug, name in listed.items()}
+    kept = [folded[s.lower()] for s in failed if s.lower() in folded and s.lower() not in sites]   # no answer: not "no jobs"
+    for slug, name in kept:
+        sites[slug.lower()] = {'slug': slug, 'name': name, 'jobs': 0}
     live = sorted(sites.values(), key=lambda s: (-s['jobs'], s['name'].lower(), s['slug']))
     companies = {s['name'].lower() for s in live}
     jobs = sum(s['jobs'] for s in live)
@@ -234,7 +249,7 @@ async def main(args: list[str]) -> None:
     for name, slugs in sources.items():
         per_source[name] = len({found_by[s.lower()] for s in slugs if s.lower() in found_by})
     print(f'{len(live):,} career sites of {len(companies):,} companies, {jobs:,} jobs, {round(time.monotonic() - started)} s; '
-          f'hiring sites by source: {dict(per_source)}')
+          f'hiring sites by source: {dict(per_source)}; kept without an answer: {len(kept)}')
 
 
 if __name__ == '__main__':
