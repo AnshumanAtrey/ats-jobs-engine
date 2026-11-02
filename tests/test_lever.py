@@ -447,5 +447,29 @@ class Lookup(unittest.TestCase):
             self.check([Response(200, {'ok': True})])
 
 
+class Refresh(unittest.TestCase):
+    """scripts/refresh_lever.py keeps a site whose links open."""
+    LIST = f'<a class="posting-title" href="https://jobs.lever.co/veeva/{JOB_ID}"><h5>Data Engineer</h5></a>'
+
+    def check(self, answers):
+        from scripts import refresh_lever
+        send, calls = sender(answers)
+        with patch.object(refresh_lever, 'send', send):
+            return asyncio.run(refresh_lever.check(None, asyncio.Semaphore(1), 'veeva', 'global')), calls
+
+    def test_a_site_that_hides_its_list_page_but_not_its_job_pages_is_kept(self):
+        found, calls = self.check([Response(200, text=self.LIST, headers=HTML), Response(404), Response(200)])
+        self.assertEqual((found['jobs'], found['alive']), (1, True))
+        self.assertEqual(calls[2][:2], ('HEAD', f'https://jobs.lever.co/veeva/{JOB_ID}'))
+
+    def test_a_site_whose_job_pages_answer_404_too_is_left_out(self):
+        found, _ = self.check([Response(200, text=self.LIST, headers=HTML), Response(404), Response(404)])
+        self.assertEqual((found['jobs'], found['alive']), (1, False))
+
+    def test_a_site_with_its_list_page_needs_no_job_page(self):
+        found, calls = self.check([Response(200, text=self.LIST, headers=HTML), Response(200)])
+        self.assertEqual((found['alive'], len(calls)), (True, 2))
+
+
 if __name__ == '__main__':
     unittest.main()

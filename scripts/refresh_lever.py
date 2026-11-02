@@ -9,8 +9,9 @@ line or in a file (one per line, an EU site as name/eu). --quick reads only the 
 the file keep everything found once by any of these.
 
 A site is kept when Lever's postings API answers for it (tried on the region a source names, then the other one) and its
-job site page answers HEAD with 200: 336 sites with 2,149 postings in the API have a job site and job pages that answer
-404, so their links would be dead. Demo, training and test sites (leverdemo..., salesdemo..., levertest, "LinkedIn
+links open: its job site page answers HEAD with 200, or, where a company hides that page, its first posting's page does
+(veeva: the page 404, its 889 job pages 200). Sites whose job pages answer 404 as well are left out, because their links
+would be dead: 147 hiring sites with 1,359 postings in the API on 2026-11-03. Demo, training and test sites (leverdemo..., salesdemo..., levertest, "LinkedIn
 Partner Sandbox", "Partner Experience XML Feed", a site whose company is "Acme") are left out: their postings are
 templates. Names are Lever's own: the job feed's employer for a site with postings, the job site page's title for one
 without, and the site name where a company named itself only "career" or "jobs". A site name keeps its case, because
@@ -245,7 +246,8 @@ def rows() -> dict[str, str]:
 
 
 async def check(http: httpx.AsyncClient, sem: asyncio.Semaphore, site: str, hint: str) -> dict | None:
-    """The API's answer (on the region named, then the other) and the job site page's."""
+    """The API's answer (on the region named, then the other) and whether the site's links open: its job site page,
+    or, where a company hides that page, its first posting's page (veeva: page 404, 889 job pages 200)."""
     async with sem:
         try:
             for region in (hint, 'eu' if hint == 'global' else 'global'):
@@ -255,9 +257,12 @@ async def check(http: httpx.AsyncClient, sem: asyncio.Semaphore, site: str, hint
                 if listed.status_code != 200:
                     print(f'{site}: HTTP {listed.status_code}')
                     return None
-                page = await send(http, 'HEAD', JOB_SITE[region] + urllib.parse.quote(site), follow_redirects=True)
-                return {'site': site, 'region': region, 'jobs': len(set(JOB.findall(listed.text))),
-                        'alive': page.status_code == 200}
+                jobs = list(dict.fromkeys(JOB.findall(listed.text)))
+                home = JOB_SITE[region] + urllib.parse.quote(site)
+                alive = (await send(http, 'HEAD', home, follow_redirects=True)).status_code == 200
+                if not alive and jobs:
+                    alive = (await send(http, 'HEAD', f'{home}/{jobs[0]}', follow_redirects=True)).status_code == 200
+                return {'site': site, 'region': region, 'jobs': len(jobs), 'alive': alive}
         except BoardError as exc:
             print(f'{site}: {exc}')
         return None
