@@ -8,15 +8,15 @@ account. The feed is 861 MB with the oldest listings first, and from a slow line
 the part that arrives is read. The site:apply.workable.com dork as an index query: Common Crawl's raw index of
 apply.workable.com and <account>.workable.com in the latest crawls. And the accounts already in the file, so an account
 found once stays until Workable stops answering for it; accounts given on the command line are added. Each account is
-checked with its career page's JSON (the widget): its name and its open jobs; 404 drops it. An account the feed names
-takes the feed's company name, website and open jobs. Workable allows about 3 calls a second to apply.workable.com
-from one address, so calls start PACE apart (8 waiting for answers at once). Biggest first, so a run for the newest
-jobs reaches the jobs posted today soonest.
+checked with its career page's JSON (the widget): its name and its open jobs; 404 drops it; the website is the one
+the feed gives the company. Workable allows about 3 calls a second to apply.workable.com from one address, so calls
+start PACE apart (8 waiting for answers at once). Biggest first, so a run for the newest jobs reaches the jobs posted
+today soonest.
 
 On 2026-11-02: FILLED_BY_THE_RUN
 
 Run: python3 scripts/refresh_workable.py [account ...] [--feed <saved copy of the feed, .xml, .xml.gz or .xml.br>]
-(needs httpx and brotli; writes the file, prints a summary; one to two hours). Workable refuses an address for an hour
+(needs httpx and brotli; writes the file, prints a summary; about 1.5 hours). Workable refuses an address for an hour
 after a few downloads of its feed, so --feed reads a copy saved earlier.
 """
 import asyncio
@@ -262,15 +262,16 @@ async def main(extra: list[str], feed_file: str | None) -> None:
         print(f'feed: {companies.entries:,} entries of {len(companies.by_name):,} companies read', flush=True)
         ranked = sorted(companies.by_name.values(), key=lambda c: -len(c['jobs']))
         found = await paced(ranked, lambda c: account_of(http, turns, c['codes']), 'feed companies resolved')
-        accounts: dict[str, dict] = {}
+        named = {}                                   # account -> the feed's company, for its website
         for company, account in zip(ranked, found):
-            if account and account not in accounts:   # the feed's own name, open jobs and website for its accounts
-                accounts[account] = {'name': company['name'], 'website': company['website'], 'jobs': len(company['jobs'])}
-        from_feed = set(accounts)
+            if account:
+                named.setdefault(account, company)
+        from_feed = set(named)
         websites = {c['name'].casefold(): c['website'] for c in companies.by_name.values()}
-        candidates = sorted(a for a in (archive | set(file_rows) | set(extra)) - from_feed if ACCOUNT.match(a))
-        print(f'{len(from_feed):,} accounts from the feed; {len(candidates):,} more to check', flush=True)
+        candidates = sorted(a for a in (archive | set(file_rows) | set(extra) | from_feed) if ACCOUNT.match(a))
+        print(f'{len(from_feed):,} accounts from the feed; {len(candidates):,} accounts to check', flush=True)
         pages = await paced(candidates, lambda a: career_page(http, turns, a), 'accounts checked')
+        accounts: dict[str, dict] = {}
         errors = 0
         for account, page in zip(candidates, pages):
             if page is not None and 'error' in page:
@@ -279,7 +280,8 @@ async def main(extra: list[str], feed_file: str | None) -> None:
                     name, website = file_rows[account]
                     accounts[account] = {'name': name, 'website': website, 'jobs': 0}
             elif page is not None:
-                website = websites.get(page['name'].casefold()) or file_rows.get(account, (None, None))[1]
+                website = websites.get(page['name'].casefold()) or (named.get(account) or {}).get('website') \
+                    or file_rows.get(account, (None, None))[1]
                 accounts[account] = {'name': page['name'], 'website': website, 'jobs': page['jobs']}
     live = sorted(accounts.items(), key=lambda kv: (-kv[1]['jobs'], kv[1]['name'].lower(), kv[0]))
     hiring = sum(1 for _, a in live if a['jobs'])
@@ -291,8 +293,7 @@ async def main(extra: list[str], feed_file: str | None) -> None:
     lines = [f'# Workable accounts, updated {date.today().isoformat()}: every account found through Workable\'s feed or '
              'the archives that answers today, biggest first.',
              '# Columns: board key (the account, lower case), company name, website. Rebuilt by scripts/refresh_workable.py;',
-             f'# {len(live):,} accounts, {hiring:,} hiring, {jobs:,} open jobs before duplicates (counted in the part of the feed '
-             f'read for the {len(from_feed):,} accounts it names, on the career page for the others).']
+             f'# {len(live):,} accounts, {hiring:,} hiring, {jobs:,} open jobs on their career pages before duplicates.']
     lines += [f'{account}\t{a["name"]}\t{a["website"] or ""}' for account, a in live]
     OUT.write_text('\n'.join(lines) + '\n', encoding='utf-8')
     print(f'{len(live):,} live accounts, {hiring:,} hiring, {jobs:,} jobs; hiring accounts by source {dict(sources)}; '
