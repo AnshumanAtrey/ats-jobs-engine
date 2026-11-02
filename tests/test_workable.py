@@ -540,6 +540,38 @@ class Details(unittest.TestCase):
         self.assertEqual(result['description'], 'Own the\nledger')
 
 
+class WorkTypes(unittest.TestCase):
+    JOBS = [{'id': 'AAAAAAAAAA', 'title': 'Engineer', 'workType': 'remote', 'companySlug': 'biffa', 'postedAt': '2026-11-02T09:00:00+00:00'},
+            {'id': 'BBBBBBBBBB', 'title': 'Engineer', 'workType': None, 'companySlug': 'biffa', 'postedAt': '2026-11-02T08:00:00+00:00'},
+            {'id': 'CCCCCCCCCC', 'title': 'Engineer', 'workType': None, 'companySlug': 'biffa', 'postedAt': '2026-11-02T07:00:00+00:00'}]
+
+    def run_check(self, raw, answers):
+        send, calls = sender(answers)
+        p = settings(raw)
+        with patch.object(workable, 'send', send), patch.object(workable, 'PACE', 0):
+            return asyncio.run(p.workplaces(None, [dict(j) for j in self.JOBS])), calls, p
+
+    def test_a_hybrid_search_asks_the_jobs_not_marked_remote(self):
+        jobs, calls, p = self.run_check({'searchTerms': ['engineer'], 'workType': ['hybrid']},
+                                        [Response(200, {**V2, 'workplace': 'hybrid'}), Response(200, {**V2, 'workplace': 'on_site'})])
+        self.assertEqual([(j['id'], j['workType']) for j in jobs], [('BBBBBBBBBB', 'hybrid')])
+        self.assertEqual(len(calls), 2)
+        self.assertEqual(p.cfg.notes, [])
+
+    def test_remote_jobs_need_no_question(self):
+        jobs, calls, _ = self.run_check({'searchTerms': ['engineer'], 'workType': ['remote', 'onsite']},
+                                        [Response(200, {**V2, 'workplace': 'hybrid'}), Response(200, {**V2, 'workplace': 'on_site'})])
+        self.assertEqual([(j['id'], j['workType']) for j in jobs], [('AAAAAAAAAA', 'remote'), ('CCCCCCCCCC', 'onsite')])
+        jobs, calls, _ = self.run_check({'searchTerms': ['engineer'], 'workType': ['remote']}, [])
+        self.assertEqual((len(jobs), calls), (3, []))
+
+    def test_the_newest_max_jobs_are_enough(self):
+        jobs, calls, p = self.run_check({'searchTerms': ['engineer'], 'workType': ['hybrid'], 'maxJobs': 1},
+                                        [Response(200, {**V2, 'workplace': 'hybrid'})])
+        self.assertEqual(([j['id'] for j in jobs], len(calls)), (['BBBBBBBBBB'], 1))
+        self.assertIn('the 1 newest of 2 matching jobs not marked remote were checked one by one for hybrid', p.cfg.notes[-1])
+
+
 class Refusals(unittest.TestCase):
     def test_after_three_refusals_in_a_row_workable_is_not_asked_again(self):
         calls = []

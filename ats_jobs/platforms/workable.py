@@ -41,6 +41,7 @@ second after 70 s (HTTP 429, Retry-After 0, gone within seconds), so its calls w
 also answers 429 with a Retry-After near 86,400 that is not the real wait.
 """
 import asyncio
+import dataclasses
 import html as htmllib
 import importlib.util
 import logging
@@ -57,7 +58,7 @@ import httpx
 
 from ..http import STATS, BoardError, send
 from ..inputs import JOB_TYPE_ALIASES
-from ..rows import _COUNTRIES, folded_text, index, terms
+from ..rows import _COUNTRIES, Filters, folded_text, index, terms
 from .base import Board, Platform
 from .cornerstone import text_of
 
@@ -87,6 +88,7 @@ FEED_TIMEOUT = httpx.Timeout(120.0, connect=15.0)    # its first byte came after
 FEED_ENCODING = 'br' if importlib.util.find_spec('brotli') else 'gzip'
 BROTLI_ERRORS = (__import__('brotli').error,) if FEED_ENCODING == 'br' else ()
 FALLBACK_SECONDS = 120        # career pages read, biggest first, when the feed cannot be read
+WORKPLACE_SECONDS = 90        # a hybrid or on-site search checks feed jobs one by one for this long at most
 CAREER_PAGES = 300            # the biggest career pages a run for the newest jobs reads: 120 s at most
 MONTHS = {m: i for i, m in enumerate(('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'), 1)}
 FEED_DATE = re.compile(r'(\d{1,2}) ([A-Z][a-z]{2}) (\d{4}) (\d{2}):(\d{2}):(\d{2})')
@@ -566,9 +568,42 @@ class Workable(Platform):
     async def every_company(self, http, days: int | None) -> list[dict]:
         keep = self.wanted(days)
         try:
-            return await self.feed_jobs(http, keep)
+            jobs = await self.feed_jobs(http, keep)
         except BoardError as exc:
             return await self.biggest_career_pages(http, keep, str(exc))
+        return await self.workplaces(http, jobs)
+
+    async def workplaces(self, http, jobs: list[dict]) -> list[dict]:
+        """The feed marks remote jobs and nothing else. For a hybrid or on-site search, the jobs that pass every other
+        filter and are not marked remote get their work type from their own answer, newest first, until maxJobs of
+        them match or WORKPLACE_SECONDS have passed."""
+        cfg = self.cfg
+        wanted = set(cfg.work_types) if cfg else set()
+        if not wanted - {'remote'}:
+            return jobs
+        others = Filters(dataclasses.replace(cfg, work_types=[]))
+        now = datetime.now(timezone.utc)
+        candidates = sorted((j for j in jobs if j.get('workType') != 'remote' and others.passes(j, now)),
+                            key=lambda j: j.get('postedAt') or '', reverse=True)
+        kept = [j for j in jobs if j.get('workType') == 'remote'] if 'remote' in wanted else []
+        started, checked, found = time.monotonic(), 0, 0
+        for job in candidates:
+            if time.monotonic() - started > WORKPLACE_SECONDS or (cfg.max_jobs and found >= cfg.max_jobs):
+                break
+            checked += 1
+            try:
+                account = job.get('companySlug') or await self.account_of(http, job['id'])
+                data = await self.job_answer(http, account, job['id']) if account else None
+            except BoardError:
+                break                   # Workable stopped answering: what was checked stands
+            kind = WORKPLACE.get((data or {}).get('workplace'))
+            if kind in wanted:
+                found += 1
+                kept.append({**job, 'workType': kind})
+        if checked < len(candidates):
+            cfg.notes.append(f"Workable's feed marks only remote jobs, so the {checked:,} newest of {len(candidates):,} "
+                             f'matching jobs not marked remote were checked one by one for {" or ".join(sorted(wanted - {"remote"}))}.')
+        return kept
 
     def from_board(self, job_id: str, data: dict) -> dict:
         """A job of Workable's job board: created is the datePosted of its page; it names no account or shortcode."""
