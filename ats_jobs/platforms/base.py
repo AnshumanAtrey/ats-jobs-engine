@@ -26,9 +26,9 @@ class Platform:
     never: tuple = ()        # row fields this platform never publishes: left out of its rows
 
     def search_all(self, boards: list[Board], cfg) -> list[Board]:
-        """What a search reads when no company is named: every board, unless the platform has one place that lists
-        every company's jobs and the settings (inputs.Config, given on every search) suit it. The jobs of such a
-        place carry their own company, companySlug and companyWebsite."""
+        """What a search reads when no company is named: every board (or some of them), or one board that is not on
+        the list and lists every company's jobs, when the platform has one and the settings (inputs.Config, given on
+        every search) suit it. The jobs of such a place carry their own company, companySlug and companyWebsite."""
         return boards
 
     def boards(self) -> tuple[list[Board], str | None]:

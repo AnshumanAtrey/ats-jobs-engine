@@ -262,6 +262,22 @@ class Feed(unittest.TestCase):
         self.assertIn('The feed was late, so the biggest boards were read.', message)
         self.assertNotIn('Read "remote" in location', message)      # notes about the input stay in OUTPUT only
 
+    def test_some_of_the_boards_are_boards_not_a_feed(self):
+        class Biggest(Fake):
+            def search_all(self, boards, cfg):
+                return boards[:1]
+        platform = Biggest({'acme': [[job('a1', 'Analyst')]], 'beta': [[job('b1', 'Cook')]]})
+
+        @asynccontextmanager
+        async def no_client(actor, connections=64):
+            yield None
+        run = engine.Run(platform, parse_input({}, platform), [Board('acme', 'Acme'), Board('beta', 'Beta')], None, self.Rows())
+        with patch.object(engine, 'client', no_client), patch.object(engine, 'safe_status', _quiet), \
+                patch.object(engine, 'seconds_left_in_run', lambda: None):
+            asyncio.run(run.search())
+        self.assertEqual(({r[0] for r in platform.read}, run.feed), ({'acme'}, None))
+        self.assertIn('on 1 Fake board', run.message())
+
     def test_a_named_company_reads_its_own_board(self):
         platform, run = self.feed_search({'companies': ['acme']})
         self.assertEqual({r[0] for r in platform.read}, {'acme'})

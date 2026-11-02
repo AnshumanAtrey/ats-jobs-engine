@@ -183,8 +183,8 @@ class Run:
         now = datetime.now(timezone.utc)
         everyone = platform.search_all(self.boards, cfg)
         targets = [self.board(k) for k in cfg.companies] or everyone
-        if not cfg.companies and targets != self.boards:
-            self.feed = targets[0]
+        if not cfg.companies and len(everyone) == 1 and everyone[0] not in self.boards:
+            self.feed = everyone[0]         # one place listing every company, not one of the boards
         self.boards_total = len(targets)
         terms = (cfg.search_terms if platform.server_search and cfg.search_terms else [None])
         # a job dated yesterday can be under a day old, so the platform is asked for a day more
