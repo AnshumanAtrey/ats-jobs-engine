@@ -11,20 +11,22 @@ the file keep everything found once by any of these.
 A site is kept when Lever's postings API answers for it (tried on the region a source names, then the other one) and its
 links open: its job site page answers HEAD with 200, or, where a company hides that page, its first posting's page does
 (veeva: the page 404, its 889 job pages 200). Sites whose job pages answer 404 as well are left out, because their links
-would be dead: 147 hiring sites with 1,359 postings in the API on 2026-11-03. Demo, training and test sites (leverdemo..., salesdemo..., levertest, "LinkedIn
-Partner Sandbox", "Partner Experience XML Feed", a site whose company is "Acme") are left out: their postings are
-templates. Names are Lever's own: the job feed's employer for a site with postings, the job site page's title for one
-without, and the site name where a company named itself only "career" or "jobs". A site name keeps its case, because
-Lever's does, so archived links are read as written (the Wayback index key is lower case). Biggest first, so a run
-stopped by its time limit has read the most jobs.
+would be dead: 467 sites with 1,412 postings in the API on 2026-11-03. Demo, training and test sites (leverdemo...,
+salesdemo..., levertest, "LinkedIn Partner Sandbox", "Partner Experience XML Feed", a site whose company is "Acme") are
+left out: their postings are templates. Names are Lever's own: the job feed's employer for a site with postings, the
+job site page's title for one without, and the site name where a company named itself only "career" or "jobs". A site
+name keeps its case, because Lever's does, so archived links are read as written (the Wayback index key is lower case).
+Biggest first, so a run stopped by its time limit has read the most jobs.
 
 On 2026-11-02: 7,290 candidates from GitHub, freehire, Common Crawl and the first Wayback pages, then 1,630 more from
-the rest of the Wayback index (419 pages for jobs.lever.co, 9 for jobs.eu.lever.co), gave 2,396 live sites of 2,392
-companies, 2,061 hiring, 76,549 open jobs before duplicates. Of the live sites the Wayback Machine names 93% (82 no
-other source has), Common Crawl 83% (6), GitHub lists 75% (11) and freehire 69% (126; it knows hiring sites only, and
-gave 23,584 of its 36,105 Lever jobs, because one query pages 10,000 rows and its US slice is bigger). Chao2 across the
-four gives at least 2,468 sites, a lower bound because the sources see the same web; Lever says it has 5,000+
-customers.
+the rest of the Wayback index (419 pages for jobs.lever.co, 9 for jobs.eu.lever.co). On 2026-11-03 all of those names,
+the file and GitHub (9,431 candidates, run with --quick --candidates) gave 2,397 live sites of 2,393 companies, 2,062
+hiring, 76,589 open jobs before duplicates. Of the live sites the Wayback Machine names 93% (82 no other source has),
+Common Crawl 83% (6), GitHub lists 75% (11) and freehire 69% (126; it knows hiring sites only, and gave 23,584 of its
+36,105 Lever jobs, because one query pages 10,000 rows and its US slice is bigger). Chao2 across the four gives at least
+2,469 sites, a lower bound because the sources see the same web. Lever's vendor listings say over 5,000 companies
+(GetApp, Y Combinator) and its home page says thousands of customers (2026-11-03); an account need not have a public
+job site.
 
 Run: python3 scripts/refresh_lever.py [--quick | --deep] [--candidates <file>] [site ...]   (needs httpx)
 """
@@ -329,7 +331,7 @@ async def main(args: list[str]) -> None:
              '# Columns: board key (the site name, its case matters; an EU site ends in /eu), company name. Rebuilt by '
              'scripts/refresh_lever.py;',
              f'# {len(live):,} sites of {len(companies):,} companies, {len(hiring):,} hiring, {jobs:,} open jobs before '
-             f'duplicates. Left out: {len(dead):,} sites the API answers for whose job site answers 404 '
+             f'duplicates. Left out: {len(dead):,} sites the API answers for whose job site and job pages answer 404 '
              f'({sum(c["jobs"] for c in dead):,} postings with dead links) and {len(sandboxes):,} demo and test sites with template postings.']
     lines += [f'{board_key(c["site"], c["region"])}\t{names[board_key(c["site"], c["region"])]}' for c in live]
     OUT.write_text('\n'.join(lines) + '\n', encoding='utf-8')
