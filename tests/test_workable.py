@@ -309,7 +309,7 @@ def settings(raw=None):
 
 class Feed(unittest.TestCase):
     def read(self, data: bytes, size: int, p=None):
-        feed, close = (p or settings({'includeDetails': True})).reader()
+        feed, close, _ = (p or settings({'includeDetails': True})).reader()
         for i in range(0, len(data), size):
             feed(data[i:i + size])
         return close()
@@ -421,13 +421,18 @@ async def _instant(seconds):
 
 
 class EveryCompany(unittest.TestCase):
-    def collect(self, plays, raw=None, fallback=None):
+    def collect(self, plays, raw=None, fallback=None, known=None):
         http = Stream(plays)
         p = settings(raw)
+        if known is not None:
+            p._known = known
+        opened = []
 
         async def career(http_, board):
+            opened.append(board.key)
             return fallback.get(board.key) if fallback else None
         p.open = career
+        p.pages_opened = opened
 
         async def run():
             return [[j['id'] for j in page] async for page in p.pages(http, {'everyone': True}, 'engineer', None)]
@@ -464,14 +469,30 @@ class EveryCompany(unittest.TestCase):
     def test_a_server_error_is_tried_again(self):
         self.assertEqual(self.collect([(503, []), (200, [FEED_XML])])[:2], ([['F44ED9E40A']], 2))
 
-    def test_a_cut_feed_falls_back_to_the_biggest_career_pages(self):
-        cut = (200, [FEED_XML[:FEED_XML.index(b'</job>') + 10]])
-        session = {'account': 'biffa', 'name': 'Biffa Waste Services', 'website': None,
-                   'jobs': [{**ENTRY, 'title': 'HGV Engineer'}]}
-        pages, opened, p = self.collect([cut], fallback={'biffa': session})
+    CUT = FEED_XML[:FEED_XML.index(b'</job>') + 10]                 # the first job, then the cut
+    BIFFA_PAGE = {'account': 'biffa', 'name': 'Biffa Waste Services', 'website': None,
+                  'jobs': [{**ENTRY, 'title': 'HGV Engineer'}]}
+
+    def test_a_cut_feed_reads_the_career_pages_of_the_companies_it_names(self):
+        broken = httpx.RemoteProtocolError('peer closed connection without sending complete message body')
+        pages, opened, p = self.collect([(200, [self.CUT, broken])], fallback={'biffa': self.BIFFA_PAGE})
         self.assertEqual((pages, opened), ([['8A29959BE6']], 1))       # a cut download is not tried again
-        self.assertIn('could not be read (the download was cut before its end)', p.cfg.notes[-1])
-        self.assertIn('1 biggest', p.cfg.notes[-1])
+        # Biffa's page was read, so its page stands for it: the feed's entry of a job it no longer lists goes
+        self.assertIn('was cut after its listings of 2026-11-02, so the jobs listed since then come only from the '
+                      'career pages of the 1 company with the most matching jobs (of 3 on our list)', p.cfg.notes[-1])
+
+    def test_the_companies_with_the_most_matching_jobs_in_the_cut_part_come_first(self):
+        known = {'zz': Board('zz', 'ZZ Co'), 'biffa': BIFFA}            # zz is the bigger company on our list
+        broken = httpx.RemoteProtocolError('cut')
+        _, _, p = self.collect([(200, [self.CUT, broken])], fallback={'biffa': self.BIFFA_PAGE}, known=known)
+        self.assertEqual(p.pages_opened, ['biffa', 'zz'])
+
+    def test_a_cut_feed_with_no_career_page_keeps_the_jobs_that_came(self):
+        broken = httpx.RemoteProtocolError('cut')
+        for plays in ([(200, [self.CUT, broken])], [(200, [self.CUT])]):     # cut by an error, or ended short
+            pages, _, p = self.collect(plays, fallback={})
+            self.assertEqual(pages, [['F44ED9E40A']])
+            self.assertIn('was cut after its listings of 2026-11-02 and no career page answered', p.cfg.notes[-1])
 
     def test_a_refusal_falls_back_at_once(self):
         session = {'account': 'biffa', 'name': 'Biffa Waste Services', 'website': None,

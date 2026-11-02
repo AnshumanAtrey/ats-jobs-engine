@@ -36,10 +36,13 @@ company through Workable's public jobs feed. No key. Measured from this laptop o
   Retry-After 86,400, still counting down 5 hours later), while its IPv4 address kept answering.
 
 Each run takes the route that fits it. A word, a place, a work type or a job type needs every company: the feed, read
-once (dates have a time); when it cannot be read, the career pages of the biggest companies for FALLBACK_SECONDS, and
-the message says so. A run for the newest jobs only (maybe within a period) reads the CAREER_PAGES biggest career pages
-and stops once maxJobs jobs posted today are held (dates are days). Named companies always read their career pages. A
-hybrid or on-site search asks each candidate job's own answer, since the lists mark only remote jobs.
+once (dates have a time). When it is cut, the part that came holds every open job listed before the cut, and for
+FALLBACK_SECONDS the career pages of the companies with the most matching jobs in that part add the jobs listed since
+(on 1,020 accounts, 8 of 10 searches found more of the true newest 100 this way than from the biggest companies' pages,
+647 against 585 in all). When no byte came, the biggest companies' pages; the message says which. A run for the newest
+jobs only (maybe within a period) reads the CAREER_PAGES biggest career pages and stops once maxJobs jobs posted today
+are held (dates are days). Named companies always read their career pages. A hybrid or on-site search asks each
+candidate job's own answer, since the lists mark only remote jobs.
 
 Accounts are lower case (apply.workable.com/BIFFA answers 404, its page redirects to /oops); shortcodes are ten hex
 digits in any case. Old links: <account>.workable.com/... and /<account>/jobs/<number> redirect to /<account>/j/<code>;
@@ -58,6 +61,7 @@ import tempfile
 import time
 import xml.etree.ElementTree as ET
 import zlib
+from collections import Counter
 from datetime import datetime, timezone
 from functools import lru_cache
 from urllib.parse import unquote, urlparse
@@ -457,7 +461,8 @@ class Workable(Platform):
         }
 
     def reader(self):
-        """A parser fed the feed's bytes in order: feed(chunk) for each, then close() gives every wanted job once. The
+        """A parser fed the feed's bytes in order: feed(chunk) for each, then close() gives every wanted job once, and
+        last() the date of the last entry read. close(whole=False) takes a feed that was cut as far as it came. The
         feed lists a job once per place, and not always one entry after the other (3,436 of 82,471 jobs on 2026-11-02,
         a median of 30 days between their first and last entry): all of a job's entries become one job with every
         place and the first entry's date. An entry whose title, job type or (when searched) description cannot match is
@@ -465,6 +470,7 @@ class Workable(Platform):
         parser = ET.XMLPullParser(events=('start', 'end'))
         root: list = []
         jobs: dict[str, dict] = {}
+        last: list[str | None] = [None]
         cfg = self.cfg
         words, excludes = (terms(cfg.search_terms), terms(cfg.exclude_terms)) if cfg else ([], [])
         kinds, texts = (set(cfg.job_types), cfg.search_descriptions) if cfg else (set(), False)
@@ -493,6 +499,7 @@ class Workable(Platform):
                 elif elem.tag == 'job':
                     fields = {child.tag: (child.text or '').strip() for child in elem}
                     job = self.from_feed(fields)
+                    last[0] = job['postedAt'] if job and job['postedAt'] else last[0]
                     if job and job['id'] in jobs:
                         add(jobs[job['id']], job)
                     elif job and wanted(job, fields.get('description')):
@@ -504,20 +511,21 @@ class Workable(Platform):
             parser.feed(chunk)
             read()
 
-        def close() -> list[dict]:
-            parser.close()
-            read()
+        def close(whole: bool = True) -> list[dict]:
+            if whole:
+                parser.close()
+                read()
             for job in jobs.values():
                 job['location'] = job['places'][0]['name'] if job['places'] else None
                 job['otherLocations'] = [p['name'] for p in job['places'][1:]]
             return list(jobs.values())
-        return feed, close
+        return feed, close, lambda: last[0]
 
     async def download(self, http):
-        """The feed as it travels, in a temporary file, and its encoding. It is read after it has all arrived: Workable
-        ends the answer about 60 s after the request, so nothing may slow the download down. A failure before the
-        first byte is tried once more; a cut download is not (the same line cut it), nor a 429 (Workable refuses an
-        address for an hour)."""
+        """The feed as it travels, in a temporary file, its encoding, and whether it all arrived. It is read once the
+        answer has ended: Workable ends it about 63 s after the request, so nothing may slow the download down. A
+        failure before the first byte is tried once more; a cut download is not (the same line cut it), nor a 429
+        (Workable refuses an address for an hour)."""
         for attempt in range(2):
             spool, started = tempfile.TemporaryFile(), False
             try:
@@ -535,65 +543,89 @@ class Workable(Platform):
                         started = True
                         spool.write(chunk)
                 spool.seek(0)
-                return spool, encoding
+                return spool, encoding, True
             except (httpx.HTTPError, OSError) as exc:
-                spool.close()
                 STATS['retries'][type(exc).__name__] += 1
-                if started or attempt:
-                    why = 'the download was cut before its end' if started else f'{type(exc).__name__}: {exc}'
-                    raise BoardError(why[:200]) from exc
+                if started:                     # cut: the part that arrived holds every job listed before the cut
+                    spool.seek(0)
+                    return spool, encoding, False
+                spool.close()
+                if attempt:
+                    raise BoardError(f'{type(exc).__name__}: {exc}'[:200]) from exc
                 await asyncio.sleep(3)
             except BaseException:
                 spool.close()
                 raise
         raise BoardError('no answer')
 
-    async def feed_jobs(self, http, keep) -> list[dict]:
-        """Every job of the feed that keep() wants. A feed that stops before its end gives nothing: it lists the
-        oldest jobs first, so part of a feed would answer with old jobs only."""
-        spool, encoding = await self.download(http)
+    async def feed_jobs(self, http, keep) -> tuple[list[dict], str | None]:
+        """Every job of the feed that keep() wants, and, when the download was cut, the date of the last listing that
+        arrived (None when all of it did). The feed lists the oldest first, so a cut feed holds every open job listed
+        before that date and none listed after it."""
+        spool, encoding, whole = await self.download(http)
         with spool:
-            decode, (feed, close) = decoder(encoding), self.reader()
+            decode, (feed, close, last) = decoder(encoding), self.reader()
             try:
                 while chunk := spool.read(1 << 20):
                     feed(decode(chunk))
                     await asyncio.sleep(0)          # the engine's progress line runs between chunks
-                jobs = close()
-            except (ET.ParseError, zlib.error) as exc:
-                raise BoardError('the download was cut before its end') from exc
-        return [job for job in jobs if keep(job)]
+                jobs = close(whole)
+            except (ET.ParseError, zlib.error):
+                jobs, whole = close(False), False
+        return [job for job in jobs if keep(job)], None if whole else (last() or '')[:10] or 'its first day'
 
-    async def biggest_career_pages(self, http, keep, reason: str) -> list[dict]:
-        """When the feed cannot be read: the career pages of the biggest companies on our list, for FALLBACK_SECONDS.
-        BoardError when none of them answered either: Workable could not be read at all."""
-        started, read, jobs = time.monotonic(), 0, []
-        for board in self.known().values():         # the file lists the biggest company first
+    async def career_pages(self, http, partial: list[dict], cut: str | None, reason: str) -> list[dict]:
+        """When the feed did not all arrive: the jobs of the part that did (all open, listed before the cut), and for
+        FALLBACK_SECONDS the career pages of the companies with the most matching jobs in that part, then of the
+        biggest. A career page's jobs replace that company's feed entries: the page has the published date and only
+        jobs still open. BoardError when nothing at all could be read."""
+        keep, known = self.wanted(), self.known()
+        counts = Counter(job['companySlug'] for job in partial if job.get('companySlug') in known)
+        order = [key for key, _ in counts.most_common()] + [key for key in known if key not in counts]
+        started, read, found = time.monotonic(), set(), {}
+        for key in order:
             if time.monotonic() - started > FALLBACK_SECONDS:
                 break
             try:
-                session = await self.open(http, board)
+                session = await self.open(http, known[key])
             except BoardError:
                 continue
             if session:
-                read += 1
-                jobs += [job for job in self.from_widget(session, session['jobs']) if keep(job)]
-        if not read:
+                read.add(key)
+                found.update((job['id'], job) for job in self.from_widget(session, session['jobs']) if keep(job))
+        if not read and not partial:
             raise BoardError(f'its jobs feed could not be read ({reason}) and no career page answered')
-        note = (f"Workable's jobs feed could not be read ({reason}), so these jobs come from the career pages of the "
-                f'{read:,} biggest companies on our list of {len(self.known()):,}. Run again later for every company.')
+        jobs = list(found.values()) + [job for job in partial if job['id'] not in found
+                                       and job.get('companySlug') not in read]
+        pages = f'{len(read):,} compan{"y" if len(read) == 1 else "ies"}'
+        if not cut:
+            note = (f"Workable's jobs feed could not be read ({reason}), so these jobs come from the career pages of "
+                    f'the {pages} biggest on our list of {len(known):,}.')
+        elif read:
+            note = (f"Workable's jobs feed was cut after its listings of {cut}, so the jobs listed since then come "
+                    f'only from the career pages of the {pages} '
+                    f'{"with the most matching jobs" if counts else "biggest"} (of {len(known):,} on our list).')
+        else:
+            note = (f"Workable's jobs feed was cut after its listings of {cut} and no career page answered, so these "
+                    'are the jobs listed before then.')
+        note += ' Run again later for every company.'
         LOG.warning(note)
         if self.cfg is not None:
             self.cfg.notes.append(note)
         return jobs
 
     async def every_company(self, http) -> list[dict]:
+        keep = self.wanted(matched=True)
         try:
-            jobs = await self.feed_jobs(http, self.wanted(matched=True))
+            jobs, cut = await self.feed_jobs(http, keep)
         except BoardError as exc:
-            keep = self.wanted()
-            jobs = await self.biggest_career_pages(http, keep, str(exc))
-            return await self.workplaces(http, jobs, keep)
-        return await self.workplaces(http, jobs, self.wanted(matched=True))
+            jobs, cut, reason = [], None, str(exc)
+        else:
+            if cut is None:
+                return await self.workplaces(http, jobs, keep)
+            reason = 'the download was cut before its end'
+        jobs = await self.career_pages(http, jobs, cut, reason)
+        return await self.workplaces(http, jobs, lambda job: True)     # each was kept by its own test already
 
     async def workplaces(self, http, jobs: list[dict], keep) -> list[dict]:
         """Workable's lists (the feed and the career pages) mark remote jobs and nothing else. For a hybrid or on-site
