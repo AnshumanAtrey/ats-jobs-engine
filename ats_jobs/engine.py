@@ -119,6 +119,7 @@ class Run:
         self.enough = False
         self.phase = ''
         self.boards_total = self.boards_read = self.boards_matched = self.details_read = self.details_wanted = 0
+        self.boards_failed = self.details_failed = 0     # boards whose list, and jobs whose details, could not be read
         self.jobs_listed = self.matching = self.duplicates = 0
         self.older_copies = 0              # jobs held twice: a newer copy came after the older was kept
         self.companies_matched: set[str] = set()
@@ -287,6 +288,7 @@ class Run:
                         self.boards_missing.append(board.key)
                     except BoardError as exc:
                         self.board_error(board.key, exc)
+                        self.boards_failed += 1
                     finally:
                         self.boards_read += 1
                         self.boards_matched += 1 if hit else 0
@@ -333,6 +335,7 @@ class Run:
                     job.update(await platform.details(http, sessions.get(board.key), job))
                 except BoardError as exc:
                     self.board_error(board.key, exc)
+                    self.details_failed += 1
                 finally:
                     self.details_read += 1
 
@@ -401,7 +404,22 @@ class Run:
     def ran(self) -> bool:
         if self.mode == 'check':
             return sum(self.links.values()) > self.links['couldNotCheck']
-        return self.boards_read > len(self.board_errors)
+        return self.boards_read > self.boards_failed
+
+    def answered(self) -> int:
+        """Boards whose jobs were read: not missing, not failing."""
+        return self.boards_read - len(self.boards_missing) - self.boards_failed
+
+    def status(self) -> str:
+        if not self.ran():
+            return 'failed'
+        return 'partial' if self.stop or self.board_errors else 'done'
+
+    def reading(self) -> str:
+        """The message while the run works."""
+        if self.mode == 'check':
+            return f'Checking {plural(len(self.cfg.job_urls), "job link")} on {self.platform.name}.'
+        return f'Reading {plural(len(self.cfg.companies) or len(self.boards), self.where)}.'
 
     def message(self) -> str:
         cfg, seconds, name = self.cfg, round(time.monotonic() - self.started), self.platform.name
@@ -415,19 +433,25 @@ class Run:
             first = self.board_errors[0]['error'] if self.board_errors else f'no {self.where} could be read'
             text = f'No {self.where} could be read: {first}.'
         else:
-            where = plural(self.boards_read, self.where)
+            where = plural(self.answered(), self.where)
             people = plural(len(self.companies_matched), 'company')
-            if self.delivery.rows:
-                newest = ('' if cfg.max_jobs is None or self.matching <= self.delivery.rows
-                          else f', saved the {self.delivery.rows:,} newest')
-                text = f'Found {plural(self.matching, "matching job")} at {people} on {where}{newest} in {seconds} s.'
-                if cfg.max_jobs is None or self.matching <= self.delivery.rows:
-                    text = (f'Found and saved {plural(self.delivery.rows, "matching job")} at {people} '
-                            f'on {where} in {seconds} s.')
+            rows = self.delivery.rows
+            if rows and rows >= self.matching:
+                text = f'Found and saved {plural(rows, "matching job")} at {people} on {where} in {seconds} s.'
+            elif rows:
+                text = (f'Found {plural(self.matching, "matching job")} at {people} on {where}, '
+                        f'saved the {rows:,} newest in {seconds} s.')
             elif self.matching and cfg.max_jobs == 0:
                 text = f'Found {plural(self.matching, "matching job")} on {where} in {seconds} s (maxJobs is 0).'
+            elif not self.answered():
+                text = f'Nothing was read in {seconds} s.'
             else:
                 text = f'No open job matched on {where} in {seconds} s. Try fewer words, another place or a longer period.'
+            if self.boards_failed:
+                text += f' {plural(self.boards_failed, self.where)} could not be read: boardsWithErrors in OUTPUT says why.'
+            if self.details_failed:
+                text += (f' The details of {plural(self.details_failed, "job")} could not be read, so they were saved '
+                         f'without them.')
         if self.enough:
             text += f' It stopped reading there: {cfg.max_jobs:,} jobs from today were found, and nothing can be newer.'
         if self.stop:
@@ -443,7 +467,7 @@ class Run:
         search = self.mode == 'search'
         return {
             'status': status,
-            'message': self.message(),
+            'message': self.reading() if status == 'running' else self.message(),
             'mode': self.mode,
             'platform': self.platform.key,
             'jobsSaved': self.delivery.rows,
@@ -473,9 +497,8 @@ class Run:
         }
 
     async def write_output(self, final: bool) -> None:
-        status = ('partial' if self.stop else 'done') if self.ran() else 'failed'
         try:
-            await Actor.set_value('OUTPUT', self.output(status if final else 'running'))
+            await Actor.set_value('OUTPUT', self.output(self.status() if final else 'running'))
         except Exception as exc:  # noqa: BLE001
             Actor.log.warning(f'Could not write the OUTPUT record: {exc}')
 
