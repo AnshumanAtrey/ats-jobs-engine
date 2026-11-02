@@ -27,10 +27,11 @@ company through Workable's public jobs feed. No key. Measured from this laptop o
   Cloudflare compresses it on the way (gzip about 128 MB, brotli about 131 MB) and ignores Range (200, the whole
   body). Its first byte comes after 17 to 24 s and the answer ends about 63 s after the request whatever has
   arrived: of 11 downloads from here 10 were cut (the most that arrived reached the listings of 2026-10-14, about
-  three quarters) and one brotli download ended cleanly at 130.8 MB in 51 s. This line gives 3.8 to 4.1 MB/s (Cloudflare's speed test, OVH) and the feed
-  came at 2.3 to 4.4 MB/s, so here the line decides; a datacenter line has to be measured. A feed is read only once
-  it has all arrived, and a short one gives nothing. About 9 downloads from one address in 3 minutes made Cloudflare
-  refuse it for an hour (429, Retry-After 3590).
+  three quarters) and one brotli download ended cleanly at 130.8 MB in 51 s. This line gives 3.8 to 4.1 MB/s
+  (Cloudflare's speed test, OVH): the plain feed came at that speed, gzip and brotli at about 15 MB/s of XML, below
+  it, so a datacenter line may be cut too and has to be measured. A cut feed still holds every open job listed before
+  the cut (the routes below). About 9 downloads from one address in 3 minutes made Cloudflare refuse it for an hour
+  (429, Retry-After 3590).
 - GET https://jobs.workable.com/api/v1/jobs/<id>: one job of Workable's job board (the links people paste from
   jobs.workable.com): created, workplace, pay; 410 is a job gone, 404 one that never was. Its search
   (/api/v1/jobs?query=...) is not used: it ranks by relevance with no date order (filters: day_range, workplace,
