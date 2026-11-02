@@ -218,6 +218,18 @@ class Paging(unittest.TestCase):
         search(platform, {'maxJobs': 2})
         self.assertEqual([r for r in platform.read if r[0] == 'b'], [('b', None, 1), ('b', None, 2)])
 
+    def test_a_count_cut_short_says_at_least(self):
+        # live review 2026-11-03: the same empty search said 4,593 matching jobs with maxJobs 5, about 13,000 with 100
+        # and 226,371 with every page read: boards that stop early never count what they held below the cut
+        def sites():
+            return {'a': [[job('x', 'Engineer X', 5), job('y', 'Engineer Y', 5)]], 'b': self.pages()}
+        cut = search(Fake(sites(), newest_first=True, concurrency=1), {'maxJobs': 2})
+        self.assertIn('Found at least 6 matching jobs at 2 companies on 2 Fake boards, saved the 2 newest', cut.message())
+        every = search(Fake(sites(), newest_first=True, concurrency=1), {'maxJobs': 0})
+        self.assertIn('Found and saved 8 matching jobs', every.message())
+        window = search(Fake({'a': self.pages()}, newest_first=True), {'postedWithin': '3 days', 'maxJobs': 0})
+        self.assertNotIn('at least', window.message())
+
     def test_a_date_window_stops_a_board_with_no_date_search(self):
         platform = Fake({'a': self.pages()}, newest_first=True)
         search(platform, {'postedWithin': '3 days', 'maxJobs': 0})

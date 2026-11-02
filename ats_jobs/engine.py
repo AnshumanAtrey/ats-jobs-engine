@@ -117,6 +117,7 @@ class Run:
         self.checked_at = now_iso()
         self.stop: str | None = None
         self.enough = False
+        self.cut_short = False             # a newest-first board stopped where its jobs could no longer make the cut
         self.phase = ''
         self.boards_total = self.boards_read = self.boards_matched = self.details_read = self.details_wanted = 0
         self.jobs_listed = self.matching = self.duplicates = 0
@@ -285,6 +286,7 @@ class Run:
                                 last, cut = parse_time(jobs[-1].get('postedAt')) or OLDEST, floor()
                                 by_date = platform.newest_first and not (term and platform.ranked_search)
                                 if by_date and ((cut and last < cut) or (window and last < window)):
+                                    self.cut_short = self.cut_short or bool(cut and last < cut)
                                     break
                     except BoardMissing:
                         self.boards_missing.append(board.key)
@@ -424,10 +426,12 @@ class Run:
             where = plural(self.boards_read, self.where)
             people = plural(len(self.companies_matched), 'company')
             if self.delivery.rows:
-                newest = ('' if cfg.max_jobs is None or self.matching <= self.delivery.rows
-                          else f', saved the {self.delivery.rows:,} newest')
-                text = f'Found {plural(self.matching, "matching job")} at {people} on {where}{newest} in {seconds} s.'
-                if cfg.max_jobs is None or self.matching <= self.delivery.rows:
+                # boards cut short were not read to their end, so what they held below the cut was never counted
+                every = not self.cut_short and (cfg.max_jobs is None or self.matching <= self.delivery.rows)
+                newest = '' if every else f', saved the {self.delivery.rows:,} newest'
+                counted = ('at least ' if self.cut_short else '') + plural(self.matching, 'matching job')
+                text = f'Found {counted} at {people} on {where}{newest} in {seconds} s.'
+                if every:
                     text = (f'Found and saved {plural(self.delivery.rows, "matching job")} at {people} '
                             f'on {where} in {seconds} s.')
             elif self.matching and cfg.max_jobs == 0:
