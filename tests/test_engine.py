@@ -118,6 +118,18 @@ class Delivery(unittest.TestCase):
         run = search(Fake({'a': 'missing', 'b': 'down', 'c': [[job('1')]]}), {})
         self.assertEqual((run.boards_missing, run.delivery.rows, len(run.board_errors)), (['a'], 1, 1))
 
+    def test_the_platform_hears_whether_descriptions_are_searched(self):
+        heard = []
+
+        class Listening(Fake):
+            async def pages(self, http, session, term, days):
+                heard.append(self.search_descriptions)
+                async for page in super().pages(http, session, term, days):
+                    yield page
+        search(Listening({'a': [[job('1')]]}), {'searchTerms': ['engineer'], 'searchDescriptions': True})
+        search(Listening({'a': [[job('1')]]}), {'searchTerms': ['engineer']})
+        self.assertEqual(heard, [True, False])
+
     def test_details_are_charged_only_when_they_came(self):
         run = search(Fake({'a': [[job('ok'), job('nodetails', title='Analyst')]]}), {'includeDetails': True})
         self.assertEqual(dict(run.delivery.pushed), {'ok': 'job-details', 'nodetails': 'job'})
