@@ -229,7 +229,7 @@ class Workable(Platform):
     key = 'workable'
     name = 'Workable'
     site_word = 'career page'
-    actor = 'workable-jobs-search'
+    actor = 'workable-job-search'   # the Store slug: workable-jobs-search is api-co's actor (2026-11-02)
     board_example = 'https://apply.workable.com/huggingface/'
     job_example = 'https://apply.workable.com/huggingface/j/DB4D7C0EC8/'
     concurrency = 8               # calls waiting at once (15% of career page answers take 5 s); PACE keeps the rate

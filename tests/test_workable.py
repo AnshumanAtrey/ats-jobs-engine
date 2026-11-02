@@ -6,7 +6,7 @@ from unittest.mock import patch
 
 import httpx
 
-from ats_jobs.http import BoardError
+from ats_jobs.http import BoardError, client
 from ats_jobs.inputs import parse_input
 from ats_jobs.platforms import workable
 from ats_jobs.platforms.base import Board
@@ -126,6 +126,17 @@ def platform() -> Workable:
 
 
 P = platform()
+
+
+class Identity(unittest.TestCase):
+    def test_every_call_names_our_own_store_page(self):
+        """The actor's Store slug is workable-job-search: workable-jobs-search is another developer's actor (api-co,
+        seen on the Store on 2026-11-02), and the user agent of every call links to the actor's page."""
+        http = client(Workable.actor)
+        try:
+            self.assertIn('https://apify.com/anshumanatrey/workable-job-search)', http.headers['User-Agent'])
+        finally:
+            asyncio.run(http.aclose())
 
 
 class Links(unittest.TestCase):
