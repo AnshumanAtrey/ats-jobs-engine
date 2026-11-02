@@ -25,6 +25,11 @@ class Platform:
     page_cap: int | None = None    # pages read per board and word, unless every match was asked for
     never: tuple = ()        # row fields this platform never publishes: left out of its rows
 
+    def search_all(self, boards: list[Board]) -> list[Board]:
+        """What a search reads when no company is named: every board, unless the platform publishes one feed of every
+        company's jobs. A feed's jobs carry their own company, companySlug and companyWebsite."""
+        return boards
+
     def boards(self) -> tuple[list[Board], str | None]:
         """data/<key>.tsv -> (boards, the date of the list). Lines: key, name, website; # lines are comments."""
         boards, updated = [], None

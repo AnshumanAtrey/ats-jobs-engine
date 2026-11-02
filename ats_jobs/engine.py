@@ -126,6 +126,7 @@ class Run:
         self.board_errors: list[dict] = []
         self.links = {'open': 0, 'closed': 0, 'notFound': 0, 'couldNotCheck': 0}
         self.mode = 'check' if cfg.job_urls else 'search'
+        self.feed: Board | None = None     # the one feed of every company's jobs, when the platform has one
         by_key = {b.key.lower(): b for b in boards}
         self.by_key = by_key
         self.where = f'{platform.name} {platform.site_word}'
@@ -143,6 +144,8 @@ class Run:
         return False
 
     def progress_line(self) -> str:
+        if self.phase == 'boards' and self.feed:
+            return f'Read {self.jobs_listed:,} jobs of {self.feed.name}, {plural(self.matching, "matching job")} so far.'
         if self.phase == 'boards':
             return (f'Read {self.boards_read:,} of {self.boards_total:,} {self.where}s, '
                     f'{plural(self.matching, "matching job")} so far.')
@@ -177,7 +180,9 @@ class Run:
         cfg, platform = self.cfg, self.platform
         filters = Filters(cfg)
         now = datetime.now(timezone.utc)
-        targets = [self.board(k) for k in cfg.companies] or self.boards
+        targets = [self.board(k) for k in cfg.companies] or platform.search_all(self.boards)
+        if not cfg.companies and targets != self.boards:
+            self.feed = targets[0]
         self.boards_total = len(targets)
         terms = (cfg.search_terms if platform.server_search and cfg.search_terms else [None])
         # a job dated yesterday can be under a day old, so the platform is asked for a day more
@@ -224,7 +229,8 @@ class Run:
                     continue
                 hit = True
                 posted = parse_time(job.get('postedAt')) or OLDEST
-                key = (board.name.casefold(), *dedupe_key(job))
+                name = job.get('company') or board.name      # a feed's jobs name their own company
+                key = (name.casefold(), *dedupe_key(job))
                 if key in seen:
                     self.duplicates += 1
                     if posted <= seen[key]:
@@ -233,7 +239,7 @@ class Run:
                 else:
                     self.matching += 1
                 seen[key] = posted
-                self.companies_matched.add(board.name)
+                self.companies_matched.add(name)
                 keep(posted, board, job)
             return hit
 
@@ -309,7 +315,7 @@ class Run:
         """Newest first -> each job once, up to maxJobs: an older copy is still held when a newer one came after it."""
         copies, chosen = set(), []
         for item in items:
-            key = (item[2].name.casefold(), *dedupe_key(item[3]))
+            key = ((item[3].get('company') or item[2].name).casefold(), *dedupe_key(item[3]))
             if key not in copies:
                 copies.add(key)
                 chosen.append(item)
@@ -391,7 +397,9 @@ class Run:
                 rows.append((self.row(board, job, cfg.include_details),
                              DETAILS_EVENT if cfg.include_details else LINK_EVENT))
             else:
-                row = link_row(platform.key, company(board), job_id, url, status, self.checked_at)
+                who = company(board) if job is None else {      # a lookup can name the company of a job that is gone
+                    'name': job.get('company'), 'slug': job.get('companySlug'), 'website': job.get('companyWebsite')}
+                row = link_row(platform.key, who, job_id, url, status, self.checked_at)
                 rows.append(({k: v for k, v in row.items() if k not in platform.never}, LINK_EVENT))
         await self.deliver_all(rows)
 
@@ -412,9 +420,10 @@ class Run:
                 text += f' {plural(links["couldNotCheck"], "link")} could not be checked ({name} did not answer).'
         elif not self.ran():
             first = self.board_errors[0]['error'] if self.board_errors else f'no {self.where} could be read'
-            text = f'No {self.where} could be read: {first}.'
+            text = f'{self.feed.name[0].upper()}{self.feed.name[1:]} could not be read: {first}.' if self.feed else \
+                f'No {self.where} could be read: {first}.'
         else:
-            where = plural(self.boards_read, self.where)
+            where = self.feed.name if self.feed else plural(self.boards_read, self.where)
             people = plural(len(self.companies_matched), 'company')
             if self.delivery.rows:
                 newest = ('' if cfg.max_jobs is None or self.matching <= self.delivery.rows

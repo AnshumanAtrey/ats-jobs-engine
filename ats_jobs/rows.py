@@ -7,7 +7,8 @@ A platform turns its own records into one job shape (a plain dict):
   description, descriptionHtml.
 places is every place the job names: {'name': text, 'city': ..., 'region': ..., 'country': name or code}.
 dateOnly says postedAt holds a day and no time. Missing keys read as unknown. company is for a platform that names the
-company itself, so a board that is not on our list still shows it.
+company itself, so a board that is not on our list still shows it. companySlug and companyWebsite are for a feed of
+every company's jobs (Platform.search_all): a job that has them replaces the board's.
 
 Matching is by words, not by a list of job titles: a search term matches a title when every word of
 the term is in it. Words are cut at anything that is not a letter or digit (C++ and C# keep their
@@ -351,8 +352,8 @@ def job_row(platform: str, company: dict, job: dict, checked_at: str, details: b
         'applyUrl': job.get('applyUrl'),
         'status': 'open',
         'platform': platform,
-        'companySlug': company.get('slug'),
-        'companyWebsite': company.get('website'),
+        'companySlug': job['companySlug'] if 'companySlug' in job else company.get('slug'),
+        'companyWebsite': job['companyWebsite'] if 'companyWebsite' in job else company.get('website'),
         'jobId': job.get('id'),
         'checkedAt': checked_at,
     }

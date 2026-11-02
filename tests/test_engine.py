@@ -199,5 +199,89 @@ class Places(unittest.TestCase):
         self.assertEqual(([i for i, _ in run.delivery.pushed], Vague.opened), (['1'], 1))
 
 
+
+class Feed(unittest.TestCase):
+    """A platform with one feed of every company's jobs reads the feed when no company is named."""
+    class Rows(Delivered):
+        def __init__(self):
+            super().__init__()
+            self.saved = []
+
+        async def push(self, rows, event):
+            self.saved += rows
+            return await super().push(rows, event)
+
+    class WithFeed(Fake):
+        def search_all(self, boards):
+            return [Board('*', 'the Fake feed')]
+
+    def feed_search(self, raw):
+        jobs = [dict(job('1'), company='Acme', companySlug='acme', companyWebsite='https://acme.example'),
+                dict(job('2'), company='Beta', companySlug=None, companyWebsite=None)]
+        platform = self.WithFeed({'*': [jobs], 'acme': [[job('a1', 'Analyst')]], 'beta': [[job('b1', 'Cook')]]})
+
+        @asynccontextmanager
+        async def no_client(actor, connections=64):
+            yield None
+        boards = [Board('acme', 'Acme'), Board('beta', 'Beta')]
+        cfg = parse_input(raw, platform, engine.name_index(platform, boards))
+        run = engine.Run(platform, cfg, boards, None, self.Rows())
+        with patch.object(engine, 'client', no_client), patch.object(engine, 'safe_status', _quiet), \
+                patch.object(engine, 'seconds_left_in_run', lambda: None):
+            asyncio.run(run.search())
+        return platform, run
+
+    def test_only_the_feed_is_read_and_each_job_keeps_its_company(self):
+        platform, run = self.feed_search({})
+        self.assertEqual({r[0] for r in platform.read}, {'*'})
+        rows = {r['jobId']: r for r in run.delivery.saved}
+        self.assertEqual(sorted(rows), ['1', '2'])              # one title at one place, two companies: two jobs
+        self.assertEqual((rows['1']['company'], rows['1']['companySlug'], rows['1']['companyWebsite']),
+                         ('Acme', 'acme', 'https://acme.example'))
+        self.assertEqual((rows['2']['company'], rows['2']['companySlug']), ('Beta', None))
+        self.assertEqual(len(run.companies_matched), 2)
+        self.assertIn('on the Fake feed', run.message())
+
+    def test_a_named_company_reads_its_own_board(self):
+        platform, run = self.feed_search({'companies': ['acme']})
+        self.assertEqual({r[0] for r in platform.read}, {'acme'})
+        self.assertEqual([r['jobId'] for r in run.delivery.saved], ['a1'])
+        self.assertIsNone(run.feed)
+
+
+class Links(unittest.TestCase):
+    def test_a_closed_job_can_name_its_company(self):
+        class Linker(Fake):
+            def read_link(self, text):
+                return ('*', text.rsplit('/', 1)[1]) if text.startswith('https://x/') else None
+
+            async def open(self, http, board):
+                return {}
+
+            async def lookup(self, http, session, job_id):
+                if job_id == 'gone':
+                    return 'closed', {'company': 'Acme', 'companySlug': 'acme', 'companyWebsite': 'https://acme.example'}
+                return 'closed', None
+
+        platform = Linker({})
+        saved = []
+
+        class Rows(Delivered):
+            async def push(self, rows, event):
+                saved.extend(rows)
+                return await super().push(rows, event)
+
+        @asynccontextmanager
+        async def no_client(actor, connections=64):
+            yield None
+        cfg = parse_input({'jobUrls': ['https://x/gone', 'https://x/other']}, platform)
+        run = engine.Run(platform, cfg, [], None, Rows())
+        with patch.object(engine, 'client', no_client), patch.object(engine, 'safe_status', _quiet):
+            asyncio.run(run.check_links())
+        rows = {r['jobId']: r for r in saved}
+        self.assertEqual((rows['gone']['company'], rows['gone']['companySlug'], rows['gone']['status']), ('Acme', 'acme', 'closed'))
+        self.assertEqual((rows['other']['company'], rows['other']['companySlug']), ('*', '*'))
+
+
 if __name__ == '__main__':
     unittest.main()
