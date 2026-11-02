@@ -272,6 +272,8 @@ class Parsing(unittest.TestCase):
         placeholder = {'min_cents': 1, 'max_cents': 1, 'currency_type': 'USD', 'title': "MongoDB's base salary range"}
         self.assertEqual(pay_of([placeholder]), (None, None, None, None))
         self.assertEqual(pay_of([placeholder, {'min_cents': 9900, 'max_cents': 12000, 'currency_type': 'USD'}])[0], 'USD 99 - 120')
+        up_to = {'min_cents': 1, 'max_cents': 2500000, 'currency_type': 'USD'}          # 'USD 0.01 - 25,000' on one row
+        self.assertEqual(pay_of([up_to]), ('USD 25,000', 25000, 25000, 'USD'))
 
     def test_departments(self):
         self.assertEqual(names(RECORD['departments']), 'Data Engineering')

@@ -168,14 +168,14 @@ def custom_fields(metadata: list | None) -> tuple[str | None, str | None]:
 
 def pay_of(ranges: list | None) -> tuple[str | None, float | None, float | None, str | None]:
     """Greenhouse pay ranges -> (text of every range, lowest, highest, currency). The numbers are those of the first
-    range's currency; amounts come in cents. A range under one unit is a placeholder (MongoDB's 1 cent), not pay."""
+    range's currency; amounts come in cents. An amount under one unit is a placeholder (MongoDB's 1 cent), not pay."""
     good = []
     for r in ranges if isinstance(ranges, list) else []:
         if not isinstance(r, dict) or not r.get('currency_type'):
             continue
-        low, high = (r.get(k) / 100 if isinstance(r.get(k), (int, float)) and r.get(k) > 0 else None
+        low, high = (r.get(k) / 100 if isinstance(r.get(k), (int, float)) and r.get(k) >= 100 else None
                      for k in ('min_cents', 'max_cents'))
-        if max((v for v in (low, high) if v is not None), default=0) >= 1:
+        if low is not None or high is not None:
             good.append((low, high, r['currency_type']))
     if not good:
         return None, None, None, None
