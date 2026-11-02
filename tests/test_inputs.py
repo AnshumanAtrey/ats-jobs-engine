@@ -93,6 +93,13 @@ class Places(unittest.TestCase):
         cfg = parse({'location': 'Remote 100%'})
         self.assertEqual((cfg.locations, cfg.work_types), ([], ['remote']))
 
+    def test_a_place_with_no_letters_is_skipped_with_a_reason(self):
+        cfg = parse({'location': ['!!!', 'Berlin', '-']})
+        self.assertEqual(cfg.locations, ['Berlin'])
+        self.assertEqual([why for _, why in cfg.skipped], ['"!!!" in location has no letters or digits to match.',
+                                                           '"-" in location has no letters or digits to match.'])
+        self.assertEqual(parse({'location': '???'}).locations, [])     # alone, it is every place, not none
+
     def test_offline_means_onsite(self):
         cfg = parse({'workType': ['offline']})
         self.assertEqual(cfg.work_types, ['onsite'])
