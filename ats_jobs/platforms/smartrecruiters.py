@@ -7,12 +7,14 @@ through SmartRecruiters' public Posting API. No key. Measured 2026-11-02:
   code: de finds 746 Bosch jobs, DE none), region, city, language, locationType. q reads titles and descriptions for
   any of its words, stemmed ("software engineer" is software or engineer, engineers is engineer); a quoted phrase finds
   the phrase; "&&" between three words finds nothing, so it is never sent. A company is read in any case, and one that
-  does not exist answers 200 with no posting, like one that is not hiring. The list has no pay and no description.
+  does not exist answers 200 with no posting, like one that is not hiring; one that locked the API answers 401
+  (CHECK24). The list has no pay and no description.
 - GET .../postings/<id> (id, uuid or jobAdId): the job ad's four HTML sections, active, postingUrl, applyUrl, and
   compensation {min, max, currency, period} on 34 of 400 sampled jobs. A closed posting answers 200 with active false
   (ServiceNow's 2021 ids); one that never existed 404; text that is no id 400; another company's id 400.
 - GET https://jobs.smartrecruiters.com/sr-jobs/company-name-lookup?q=<company>: the identifier and name of a company,
-  "" when there is none: how a typed company is told apart from one with no open job.
+  "" when there is none: how a typed company is told apart from one with no open job. It knows only the companies in
+  SmartRecruiters' job search ("" for AbbVie, 1,989 open jobs), so a company's postings are asked first.
 
 postedAt is releasedDate: the job page's JobPosting markup gives the same instant as datePosted on 11 of 11 pages
 (2024-12 to 2026-11). The page's validThrough is not in the API, so rows carry no expiry. A job page answers with any
@@ -20,9 +22,10 @@ slug or none; links built here use SmartRecruiters' slug rule (399 of 400 postin
 laptop met no limit (192 a second, no 429). api.smartrecruiters.com's robots.txt allows /v1/companies/ to LinkedInBot
 only; the Posting API is the one SmartRecruiters documents for career sites.
 
-The job search on jobs.smartrecruiters.com spans every company but answers only the newest 100 of a query, leaves out
-companies that opted out (AbbVie, City of New York) and 1 to 6 of each other company's newest 100: it only helps to find
-companies (scripts/refresh_smartrecruiters.py).
+The job search on jobs.smartrecruiters.com (sr-jobs/search) spans companies but answers only the newest 100 of a query
+(offset and limit are ignored), leaves out the 1,387 hiring sites that opted out (AbbVie, City of New York) and 446 of
+the 4,909 newest postings of 80 companies it does hold (some almost all), with fewer fields: it cannot vouch that no
+board holds anything newer, so every board is read, and it only helps to find companies (scripts/refresh_smartrecruiters.py).
 """
 import html as htmllib
 import re
