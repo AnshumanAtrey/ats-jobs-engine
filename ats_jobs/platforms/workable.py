@@ -211,7 +211,7 @@ class Workable(Platform):
     actor = 'workable-jobs-search'
     board_example = 'https://apply.workable.com/huggingface/'
     job_example = 'https://apply.workable.com/huggingface/j/DB4D7C0EC8/'
-    concurrency = 4               # career pages at once; PACE keeps their rate
+    concurrency = 8               # calls waiting for answers at once (15% of career page answers take 5 s); PACE keeps the rate
     server_search = True          # pages() gets the word: the feed and a career page are matched here
     never = ('team', 'offersEquity', 'expiresAt')
 
