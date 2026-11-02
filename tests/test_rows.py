@@ -6,7 +6,7 @@ import unittest
 from datetime import datetime, timedelta, timezone
 
 from ats_jobs.inputs import parse_input
-from ats_jobs.rows import Filters, Term, country_code, dedupe_key, index, job_places, job_row, work_type
+from ats_jobs.rows import Filters, Term, country_code, dedupe_key, index, job_places, job_row, plain, words, work_type
 
 from .stub import Stub
 
@@ -55,6 +55,30 @@ class TitleWords(unittest.TestCase):
     def test_every_word_of_the_term_is_needed(self):
         self.assertTrue(Term('security engineer').in_title(index(' Security Engineer, Cloud')))
         self.assertFalse(Term('data engineer').in_title(index(' Security Engineer, Cloud')))
+
+
+class Accents(unittest.TestCase):
+    """A word typed without its accents finds it with them, and the other way round (SmartRecruiters review,
+    2026-11-03: 'ingenieur' kept 251 of 2,880 matches SmartRecruiters found, 'ingénieur' 2,274)."""
+
+    def test_a_word_without_accents_finds_it_with_them(self):
+        for term, title in (('ingenieur', 'Ingénieur Logiciel H/F'), ('développeur', 'Developpeur Java'),
+                            ('cafe', 'Café Manager'), ('ky su', 'Kỹ sư phần mềm'), ('senor', 'SEÑOR Analista')):
+            self.assertTrue(Term(term).in_title(index(title)), (term, title))
+        self.assertFalse(Term('ingenieur').in_title(index('Ingénierie')))
+
+    def test_places_and_duplicates_compare_without_accents(self):
+        cfg = parse_input({'location': ['Zürich']}, Stub())
+        self.assertTrue(Filters(cfg).passes(job(location='Zurich', places=[{'name': 'Zurich, Switzerland'}]), NOW))
+        self.assertEqual(dedupe_key({'title': 'Ingénieur', 'location': 'Orléans'}),
+                         dedupe_key({'title': 'Ingenieur', 'location': 'Orleans'}))
+
+    def test_other_scripts_keep_their_marks(self):
+        # only the accents of Latin, Greek and Cyrillic letters go: Hangul stays composed, Devanagari keeps its virama
+        self.assertEqual(words('소프트웨어 엔지니어'), ['소프트웨어', '엔지니어'])
+        for text in ('इंजीनियर क्षेत्र', 'مهندس برمجيات', 'วิศวกร'):
+            self.assertEqual(plain(text), text)
+        self.assertEqual(words('Straße İstanbul ÉTÉ'), ['strasse', 'istanbul', 'ete'])
 
 
 class Countries(unittest.TestCase):
