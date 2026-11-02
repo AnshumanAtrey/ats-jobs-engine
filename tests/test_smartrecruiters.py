@@ -1,13 +1,14 @@
 """SmartRecruiters: links, places, pay, paging and lookups, on answers shaped like the Posting API (2026-11-02)."""
 import asyncio
+import re
 import unittest
 from unittest.mock import patch
 
 from ats_jobs.http import BoardError, BoardMissing
 from ats_jobs.inputs import parse_input
 from ats_jobs.platforms.base import Board
-from ats_jobs.platforms.smartrecruiters import (SmartRecruiters, clean, country_name, job_ad, job_type, pay, place,
-                                                posting_id, slug)
+from ats_jobs.platforms.smartrecruiters import (DORMANT, SmartRecruiters, clean, country_name, dormant_sites, job_ad,
+                                                job_type, pay, place, posting_id, slug)
 from ats_jobs.rows import job_area
 
 P = SmartRecruiters()
@@ -239,6 +240,50 @@ class Parsing(unittest.TestCase):
         self.assertEqual(job['description'], 'Company Description\nWelcome to Bosch.\nJob Description\nLead PMI projects & audits')
 
 
+class Dormant(unittest.TestCase):
+    """Career sites with nothing posted in two years: comment lines of the company file, read only when named."""
+    TEXT = ('# SmartRecruiters career sites, updated 2026-11-02: every career site found with a job posted since 2024-11-02.\n'
+            'BoschGroup\tBosch Group\n'
+            '# Left out of runs, read when named: 2 career sites with nothing posted since 2024-11-02.\n'
+            f'{DORMANT}McKesson1\tMcKesson\t2023-09-14\t38\n'
+            f'{DORMANT}AdeebaEServicesPvtLtd\tAdeeba e Services Pvt. Ltd.\t2017-08-30\t23736\n')
+
+    def setUp(self):
+        self.platform = SmartRecruiters()
+        self.platform._dormant = dormant_sites(self.TEXT)
+
+    def test_the_lines_are_read_by_name_squeezed_name_and_key(self):
+        self.assertEqual(dormant_sites(self.TEXT), {
+            'mckesson1': 'McKesson1', 'mckesson': 'McKesson1', 'adeebaeservicespvtltd': 'AdeebaEServicesPvtLtd',
+            'adeeba e services pvt. ltd.': 'AdeebaEServicesPvtLtd'})
+        self.assertEqual(dormant_sites('BoschGroup\tBosch Group\n# a comment\n'), {})
+
+    def test_a_typed_company_finds_its_dormant_site(self):
+        for typed in ('McKesson', 'mckesson', 'Mc Kesson', 'mckesson1', 'Adeeba e Services Pvt. Ltd.'):
+            self.assertIn(self.platform.guess_board(typed), ('McKesson1', 'AdeebaEServicesPvtLtd'), typed)
+        self.assertEqual(self.platform.guess_board('Some New Company'), 'SomeNewCompany')
+
+    def test_a_dormant_site_opens_without_a_call(self):
+        self.platform._known = None
+        self.assertIn('mckesson1', self.platform.known())
+        session, calls = run(self.platform.open(None, Board('McKesson1', 'McKesson1')), [])
+        self.assertEqual((session, calls), ({'company': 'McKesson1'}, []))
+
+    def test_the_company_file_agrees_with_its_own_counts(self):
+        from importlib import resources
+        text = resources.files('ats_jobs').joinpath('data/smartrecruiters.tsv').read_text(encoding='utf-8')
+        boards, updated = SmartRecruiters().boards()
+        counts = re.search(r'^# ([\d,]+) career sites', text, re.M)
+        self.assertEqual(len(boards), int(counts.group(1).replace(',', '')))
+        self.assertRegex(updated or '', r'^\d{4}-\d\d-\d\d$')
+        left_out = re.search(r'^# Left out of runs, read when named: ([\d,]+) career sites', text, re.M)
+        dormant = [line for line in text.splitlines() if line.startswith(DORMANT)]
+        self.assertEqual(len(dormant), int(left_out.group(1).replace(',', '')) if left_out else 0)
+        keys = {b.key.lower() for b in boards}
+        self.assertFalse(keys & {line[len(DORMANT):].split('\t')[0].lower() for line in dormant})
+        self.assertEqual(len(keys), len(boards))
+
+
 class Opening(unittest.TestCase):
     def test_a_company_on_our_list_needs_no_call(self):
         session, calls = run(P.open(None, Board('BoschGroup', 'Bosch Group')), [])
@@ -398,13 +443,15 @@ class Lookup(unittest.TestCase):
 class Refresh(unittest.TestCase):
     """scripts/refresh_smartrecruiters.py: a site that does not answer is not a site with no jobs."""
 
-    def refresh(self, listed: dict, answers: dict):
+    def refresh(self, listed, answers: dict):
+        """listed: {key: name} rows, or the whole text of the file."""
         import tempfile
         from pathlib import Path
 
         from scripts import refresh_smartrecruiters as refresh
         out = Path(tempfile.mkdtemp()) / 'smartrecruiters.tsv'
-        out.write_text('# updated 2026-11-01\n' + ''.join(f'{k}\t{v}\n' for k, v in listed.items()), encoding='utf-8')
+        text = listed if isinstance(listed, str) else '# updated 2026-11-01\n' + ''.join(f'{k}\t{v}\n' for k, v in listed.items())
+        out.write_text(text, encoding='utf-8')
 
         async def box(http):
             return {}
@@ -429,6 +476,22 @@ class Refresh(unittest.TestCase):
                              'Flaky': 'no answer'})
         rows = [line.split('\t') for line in text.splitlines() if not line.startswith('#')]
         self.assertEqual(rows, [['BoschGroup', 'Bosch Group'], ['Flaky', 'Flaky Ltd']])
+
+    def test_a_site_with_nothing_posted_in_two_years_is_left_out_of_runs_and_checked_again(self):
+        def posted(answer, when):
+            answer['content'][0]['releasedDate'] = when
+            return answer
+        bosch = posted(self.hiring('BoschGroup', 'Bosch Group', 5), '2026-11-02T11:51:05.135Z')
+        gone = posted(self.hiring('McKesson', 'McKesson updated', 38), '2023-09-14T10:00:00.000Z')
+        text = self.refresh({'BoschGroup': 'Bosch Group', 'McKesson': 'McKesson'}, {'BoschGroup': bosch, 'McKesson': gone})
+        rows = [line.split('\t') for line in text.splitlines() if not line.startswith('#')]
+        self.assertEqual(rows, [['BoschGroup', 'Bosch Group']])
+        self.assertIn(f'{DORMANT}McKesson\tMcKesson Updated\t2023-09-14\t38', text.splitlines())
+        self.assertEqual(sum('updated' in line for line in text.splitlines() if line.startswith('#')), 1)
+        back = posted(self.hiring('McKesson', 'McKesson', 2), '2026-11-01T09:00:00.000Z')     # it posts again
+        rows = [line.split('\t') for line in self.refresh(text, {'BoschGroup': bosch, 'McKesson': back}).splitlines()
+                if not line.startswith('#')]
+        self.assertEqual(rows, [['BoschGroup', 'Bosch Group'], ['McKesson', 'McKesson']])
 
     def test_many_sites_that_do_not_answer_leave_the_file_as_it_was(self):
         listed = {f'Site{i}': f'Site {i}' for i in range(12)}

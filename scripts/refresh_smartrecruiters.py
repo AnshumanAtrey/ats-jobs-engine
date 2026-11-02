@@ -20,8 +20,14 @@ A site is kept when the Posting API lists an open job on it, with SmartRecruiter
 (identifiers are read in any case, so case variants count once). Biggest first, so a run reads the busiest boards first.
 A listed site that does not answer stays, at the end; when more than 1% do not answer, the file is left as it was.
 
-On 2026-11-02: 12,594 career sites of 12,480 companies, 423,083 open jobs before duplicates. Hiring sites by source
-(alone in brackets): the company box 11,203 (6,022), the Wayback Machine 4,566 (530), freehire's public API 3,848 from
+A posting stays open until its company closes it, and many never do. A site with nothing posted in two years is written
+as a #~ comment line after the others (key, name, newest posting, postings): runs leave it out, a run that names it
+reads it, and the next refresh checks it again. On 2026-11-02, 9,650 of the 12,593 hiring sites had posted nothing
+since 2024-11-02 and held 180,513 postings (129,639 on sites whose newest is from 2017), while 606 sites posted within
+a day.
+
+On 2026-11-02: 2,943 career sites of 2,931 companies with a job posted within two years, 242,790 open jobs before
+duplicates. All hiring sites by source (alone in brackets): the company box 11,203 (6,022), the Wayback Machine 4,566 (530), freehire's public API 3,848 from
 69,143 of its 172,042 rows (514), Common Crawl 1,518 (10), jobseek 142 (0). Of the sites outside the job search,
 capture-recapture between freehire (744) and the Wayback Machine (857, 224 in both) puts their number near 2,846
 (Chao1 over four sources 3,939) against the 1,387 found, and those seen by one source hold a median of 2 jobs: about
@@ -37,14 +43,14 @@ import sys
 import time
 import urllib.parse
 from collections import Counter
-from datetime import date
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 import httpx
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from ats_jobs.platforms.smartrecruiters import API, COMPANY, SmartRecruiters  # noqa: E402
+from ats_jobs.platforms.smartrecruiters import API, COMPANY, DORMANT, SmartRecruiters  # noqa: E402
 
 OUT = ROOT / 'ats_jobs' / 'data' / 'smartrecruiters.tsv'
 LOOKUP = 'https://jobs.smartrecruiters.com/sr-jobs/company-lookup'
@@ -54,6 +60,7 @@ ALPHA = string.ascii_lowercase + string.digits
 CAP = 100                    # the company box answers at most this many companies
 BOX_PARALLEL = 8             # the job search's own service: gentle
 CHECK_PARALLEL = 48
+ACTIVE_DAYS = 730            # a site with nothing posted in two years is written as a #~ comment line: runs leave it out
 CAMEL = re.compile(r'[A-Z]+(?=[A-Z][a-z])|[A-Z]?[a-z]+|[A-Z]+|\d+')
 PLATFORM = SmartRecruiters()
 
@@ -169,9 +176,10 @@ def wayback() -> set[str]:
 
 
 def known() -> dict[str, str]:
-    """The sites in the file now: identifier -> company name."""
+    """The sites in the file now, read in runs or left out as dormant: identifier -> company name."""
     lines = OUT.read_text(encoding='utf-8').splitlines() if OUT.exists() else []
-    rows = [line.split('\t') for line in lines if line and not line.startswith('#')]
+    rows = [line.removeprefix(DORMANT).split('\t') for line in lines
+            if line and (not line.startswith('#') or line.startswith(DORMANT))]
     return {row[0]: (row[1] if len(row) > 1 else row[0]) for row in rows}
 
 
@@ -199,7 +207,8 @@ async def check(http: httpx.AsyncClient, sem: asyncio.Semaphore, slug: str) -> d
         return None
     company = newest.get('company') or {}
     ident = company.get('identifier') or slug
-    return {'slug': ident, 'name': ' '.join((company.get('name') or ident).split()), 'jobs': data['totalFound']}
+    return {'slug': ident, 'name': ' '.join((company.get('name') or ident).split()), 'jobs': data['totalFound'],
+            'newest': str(newest.get('releasedDate') or '')}
 
 
 async def main(args: list[str]) -> None:
@@ -236,19 +245,28 @@ async def main(args: list[str]) -> None:
     for slug, name in kept:
         sites[slug.lower()] = {'slug': slug, 'name': name, 'jobs': 0}
     live = sorted(sites.values(), key=lambda s: (-s['jobs'], s['name'].lower(), s['slug']))
-    companies = {s['name'].lower() for s in live}
-    jobs = sum(s['jobs'] for s in live)
-    lines = [f'# SmartRecruiters career sites, updated {date.today().isoformat()}: every career site found with open jobs, '
-             'biggest first.',
+    since = (datetime.now(timezone.utc) - timedelta(days=ACTIVE_DAYS)).strftime('%Y-%m-%dT%H:%M:%S')
+    active = [s for s in live if not s.get('newest') or s['newest'] >= since]      # no answer: stays where runs read it
+    dormant = [s for s in live if s.get('newest') and s['newest'] < since]
+    companies = {s['name'].lower() for s in active}
+    jobs, old_jobs = sum(s['jobs'] for s in active), sum(s['jobs'] for s in dormant)
+    lines = [f'# SmartRecruiters career sites, updated {date.today().isoformat()}: every career site found with a job posted '
+             f'since {since[:10]}, biggest first.',
              '# Columns: board key (the company identifier, read in any case), company name. Rebuilt by '
              'scripts/refresh_smartrecruiters.py;',
-             f'# {len(live):,} career sites of {len(companies):,} companies, {jobs:,} open jobs before duplicates.']
-    lines += [f'{s["slug"]}\t{s["name"]}' for s in live]
+             f'# {len(active):,} career sites of {len(companies):,} companies, {jobs:,} open jobs before duplicates.']
+    lines += [f'{s["slug"]}\t{s["name"]}' for s in active]
+    lines += [f'# Left out of runs, read when named: {len(dormant):,} career sites with nothing posted since {since[:10]} '
+              f'and {old_jobs:,} postings SmartRecruiters still lists as open. #~ key, name, newest posting, postings:']
+    # the list's date is read from a comment line holding "updated", so no other comment line may hold the word
+    lines += [f'{DORMANT}{s["slug"]}\t{s["name"]}\t{s["newest"][:10]}\t{s["jobs"]}'.replace('updated', 'Updated')
+              for s in dormant]
     OUT.write_text('\n'.join(lines) + '\n', encoding='utf-8')
     per_source = Counter()
     for name, slugs in sources.items():
         per_source[name] = len({found_by[s.lower()] for s in slugs if s.lower() in found_by})
-    print(f'{len(live):,} career sites of {len(companies):,} companies, {jobs:,} jobs, {round(time.monotonic() - started)} s; '
+    print(f'{len(active):,} career sites of {len(companies):,} companies, {jobs:,} jobs; left out with nothing since '
+          f'{since[:10]}: {len(dormant):,} sites, {old_jobs:,} postings; {round(time.monotonic() - started)} s; '
           f'hiring sites by source: {dict(per_source)}; kept without an answer: {len(kept)}')
 
 

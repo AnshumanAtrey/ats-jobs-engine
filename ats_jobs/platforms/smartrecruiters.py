@@ -10,27 +10,38 @@ through SmartRecruiters' public Posting API. No key. Measured 2026-11-02:
   does not exist answers 200 with no posting, like one that is not hiring; one that locked the API answers 401
   (CHECK24). The list has no pay and no description.
 - GET .../postings/<id> (id, uuid or jobAdId): the job ad's four HTML sections, active, postingUrl, applyUrl, and
-  compensation {min, max, currency, period} on 34 of 400 sampled jobs. A closed posting answers 200 with active false
-  (ServiceNow's 2021 ids); one that never existed 404; text that is no id 400; another company's id 400.
+  compensation {min, max, currency, period} on 34 of 400 sampled jobs, 9 of them a maximum alone, which the job page
+  calls "up to". A closed posting answers 200 with active false (ServiceNow's 2021 ids); one that never existed 404;
+  text that is no id 400; another company's id 400.
 - GET https://jobs.smartrecruiters.com/sr-jobs/company-name-lookup?q=<company>: the identifier and name of a company,
   "" when there is none: how a typed company is told apart from one with no open job. It knows only the companies in
   SmartRecruiters' job search ("" for AbbVie, 1,989 open jobs), so a company's postings are asked first.
 
-postedAt is releasedDate: the job page's JobPosting markup gives the same instant as datePosted on 11 of 11 pages
-(2024-12 to 2026-11). The page's validThrough is not in the API, so rows carry no expiry. A job page answers with any
-slug or none; links built here use SmartRecruiters' slug rule (399 of 400 postingUrls). 128 parallel calls from one
-laptop met no limit (192 a second, no 429). api.smartrecruiters.com's robots.txt allows /v1/companies/ to LinkedInBot
-only; the Posting API is the one SmartRecruiters documents for career sites.
+postedAt is releasedDate: the job page's JobPosting microdata gives the same instant as datePosted on 11 of 11 pages
+(2024-12 to 2026-11) and on 3 from 2017 and 2023. The page's validThrough (3 of the 11) is not in the API, so rows carry
+no expiry. A job page answers with any slug or none; links built here use SmartRecruiters' slug rule (399 of 400
+postingUrls). jobs.smartrecruiters.com serves every company: www.smartrecruiters.com/<company>/<id> answers 301 to it,
+careers.smartrecruiters.com/<company>/<id> 302 to the company's page, and no regional host (eu, us) resolves. 128
+parallel calls from one laptop met no limit (192 a second, no 429, no rate-limit header); Cloudflare fronts the API.
+api.smartrecruiters.com's robots.txt allows /v1/companies/ to LinkedInBot and disallows every path to anyone else; the
+Posting API is the one SmartRecruiters documents for career sites, and it needs no key.
+
+A posting stays open until its company closes it, and many never do: of the 12,593 career sites with open postings,
+9,650 had posted nothing for two years, with 180,513 of the 423,303 postings (Adeeba e Services 23,736 from 2017,
+McKesson 38 from 2023), while 606 had posted within a day. Their job pages still mark them up as JobPostings.
+data/smartrecruiters.tsv keeps those sites as #~ comment lines, which runs leave out and read only when named.
 
 The job search on jobs.smartrecruiters.com (sr-jobs/search) spans companies but answers only the newest 100 of a query
 (offset and limit are ignored), leaves out the 1,387 hiring sites that opted out (AbbVie, City of New York) and 446 of
 the 4,909 newest postings of 80 companies it does hold (some almost all), with fewer fields: it cannot vouch that no
-board holds anything newer, so every board is read, and it only helps to find companies (scripts/refresh_smartrecruiters.py).
+board holds anything newer, so every listed board is read, and it only helps to find companies
+(scripts/refresh_smartrecruiters.py).
 """
 import html as htmllib
 import re
 import unicodedata
 from datetime import datetime, timedelta, timezone
+from importlib import resources
 from urllib.parse import parse_qs, urlparse
 
 from ..http import BoardError, BoardMissing, send
@@ -70,6 +81,25 @@ JOB_TYPE = {'permanent': 'full-time', 'full-time': 'full-time', 'part-time': 'pa
             'intern': 'intern', 'temporary': 'temporary'}
 PERIOD = {'YEARLY': 'year', 'MONTHLY': 'month', 'WEEKLY': 'week', 'DAILY': 'day', 'HOURLY': 'hour'}
 PER = {'year': 'a year', 'month': 'a month', 'week': 'a week', 'day': 'a day', 'hour': 'an hour'}
+# data/smartrecruiters.tsv writes a career site with nothing posted in two years as a comment line with this start:
+# runs leave it out, and a company typed in the companies field still finds it
+DORMANT = '#~\t'
+
+
+def squeeze(text: str) -> str:
+    return re.sub(r'[^0-9a-z]+', '', text.casefold())
+
+
+def dormant_sites(text: str) -> dict[str, str]:
+    """The #~ lines of the company file -> {company name, its squeezed form or key, folded: key}."""
+    found: dict[str, str] = {}
+    for line in text.splitlines():
+        if line.startswith(DORMANT):
+            key, name = (line[len(DORMANT):].split('\t') + [''])[:2]
+            for word in (key, name, squeeze(name)):
+                if word.strip() and key.strip():
+                    found.setdefault(word.strip().casefold(), key.strip())
+    return found
 
 
 def posting_id(part: str) -> str | None:
@@ -170,6 +200,7 @@ class SmartRecruiters(Platform):
     newest_first = True
     never = ('otherLocations', 'team', 'expiresAt', 'offersEquity', 'companyWebsite')
     _known: set[str] | None = None
+    _dormant: dict[str, str] | None = None
 
     def read_link(self, text):
         link = text if re.match(r'^[a-z][a-z0-9+.-]*://', text, re.I) else f'https://{text}'
@@ -201,12 +232,21 @@ class SmartRecruiters(Platform):
         return parts[0], job
 
     def guess_board(self, name):
+        left_out = self.dormant()
+        found = left_out.get(name.strip().casefold()) or left_out.get(squeeze(name))
+        if found:
+            return found
         squeezed = re.sub(r'[^A-Za-z0-9-]+', '', name)
         return squeezed if COMPANY.match(squeezed) else None
 
+    def dormant(self) -> dict[str, str]:
+        if self._dormant is None:
+            self._dormant = dormant_sites(resources.files('ats_jobs').joinpath(f'data/{self.key}.tsv').read_text(encoding='utf-8'))
+        return self._dormant
+
     def known(self) -> set[str]:
         if self._known is None:
-            self._known = {board.key.lower() for board in self.boards()[0]}
+            self._known = {board.key.lower() for board in self.boards()[0]} | {k.lower() for k in self.dormant().values()}
         return self._known
 
     async def open(self, http, board):
