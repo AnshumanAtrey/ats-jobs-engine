@@ -1,38 +1,45 @@
 """
-Workable (apply.workable.com) jobs: each company's career page through its own JSON, and a keyword across every
+Workable (apply.workable.com) jobs: each company's career page through its own JSON, and a search across every
 company through Workable's public jobs feed. No key. Measured from this laptop on 2026-11-02:
 
 - GET https://apply.workable.com/api/v1/widget/accounts/<account>: one company's career page in one answer, the
   documented jobs widget (?details=true adds descriptions, 6.6 times the size). A job in several places comes once per
   place. published_on is the date the job page gives Google (datePosted, 10 of 10 pages rendered; created_at differed
-  on 8 of them). No search, no order, no work type beyond telecommuting. 404 "Not Found" is no such account; the old
+  on 8 of them; the page computes it in the reader's time zone, so a render from Los Angeles showed a day earlier).
+  No search, no order, no work type beyond telecommuting. 404 "Not Found" is no such account; the old
   https://www.workable.com/api/accounts/<account> redirects here.
 - GET https://apply.workable.com/api/v2/accounts/<account>/jobs/<shortcode>: one job, the call its page makes: the
   description, requirements and benefits, pay (salary_from, salary_to, currency, frequency) when shown, workplace
   (on_site, hybrid, remote), type (full, part, contract, temporary, other), departments, published, state. 404 "Job
   not found" for a job that closed and for a code that never existed alike (12 old links): both read as closed.
+  (POST /api/v3/accounts/<account>/jobs, the career page's own search, pages 10 jobs at a time: not needed.)
 - GET https://www.workable.com/boards/workable.xml: Workable's public feed of every job its customers list on its job
-  board (help.workable.com article 4420464031767: hourly, no filters), 861 MB, the oldest listing first (129,639 of
-  the first 129,721 steps), each job once per place, with title, company, website, city, state, country code, remote,
-  job type, description and the apply.workable.com/j/<shortcode> link. Its date is when the job board listed the job in
-  that place: the datePosted of that listing's jobs.workable.com page; the career page shows the published date, which
-  is earlier for jobs listed before the board began (2021-07-28) and for places added to an old job. It names no
-  hybrid or on-site. Cloudflare compresses it on the way (brotli about 131 MB, gzip about 128 MB); its first byte came
-  after 19 to 23 s and the answer ends 60 to 66 s after the request whatever has arrived: of 7 downloads from here 6
-  were cut (the most that arrived was three quarters of it) and one brotli download ended cleanly at 130.8 MB in
-  51 s. So a feed is read only once it has all arrived, and a short one gives nothing. About 9 downloads from one
-  address in 3 minutes made Cloudflare refuse it for an hour (429, Retry-After 3590).
+  board (help.workable.com article 4420464031767: hourly, no filters), about 860 MB (859,438,148 bytes at 17:17 UTC),
+  the oldest listing first (129,639 of the first 129,721 steps), with title, company, website, city, state, country
+  code, remote, job type, experience, description and the apply.workable.com/j/<shortcode> link, and no pay. A job
+  comes once per place, and its entries are not always together: in the first three quarters, 3,436 of 82,471 jobs
+  had entries apart, their first and last a median 30 days apart, since a place added later is listed when it is
+  added. So a job's entries become one job, with every place and the first entry's date; the career page's published
+  date can still be earlier (jobs listed before the board began on 2021-07-28). It names no hybrid or on-site.
+  Cloudflare compresses it on the way (brotli about 131 MB, gzip about 128 MB) and ignores Range (200, the whole
+  body). Its first byte comes after 17 to 24 s and the answer ends about 63 s after the request whatever has
+  arrived: of 9 downloads from here 8 were cut (the most that arrived was three quarters) and one brotli download
+  ended cleanly at 130.8 MB in 51 s. This line gives 3.8 to 4.1 MB/s (Cloudflare's speed test, OVH) and the feed
+  came at 2.3 to 4.4 MB/s, so here the line decides; a datacenter line has to be measured. A feed is read only once
+  it has all arrived, and a short one gives nothing. About 9 downloads from one address in 3 minutes made Cloudflare
+  refuse it for an hour (429, Retry-After 3590).
 - GET https://jobs.workable.com/api/v1/jobs/<id>: one job of Workable's job board (the links people paste from
   jobs.workable.com): created, workplace, pay; 410 is a job gone, 404 one that never was. Its search
-  (/api/v1/jobs?query=...) is not used: after 400 to 600 searches it refused each address of this laptop for a day
-  ("contact us ... for our jobs XML feed", Retry-After 86,400), and a keyword with a place needed 356 searches. The
-  penalty also reached that address's job answers and /j/ redirects on apply.workable.com, now and then, while its
-  career pages kept answering.
+  (/api/v1/jobs?query=...) is not used: it ranks by relevance with no date order (filters: day_range, workplace,
+  employment_type, experience), 20 jobs a page, and a burst of 32 searches at once (47 a second) got this laptop's
+  IPv6 address banned by Cloudflare for 24 hours on every workable.com host, career pages included (error code 1015,
+  Retry-After 86,400, still counting down 5 hours later), while its IPv4 address kept answering.
 
 Each run takes the route that fits it. A word, a place, a work type or a job type needs every company: the feed, read
 once (dates have a time); when it cannot be read, the career pages of the biggest companies for FALLBACK_SECONDS, and
 the message says so. A run for the newest jobs only (maybe within a period) reads the CAREER_PAGES biggest career pages
-and stops once maxJobs jobs posted today are held (dates are days). Named companies always read their career pages.
+and stops once maxJobs jobs posted today are held (dates are days). Named companies always read their career pages. A
+hybrid or on-site search asks each candidate job's own answer, since the lists mark only remote jobs.
 
 Accounts are lower case (apply.workable.com/BIFFA answers 404, its page redirects to /oops); shortcodes are ten hex
 digits in any case. Old links: <account>.workable.com/... and /<account>/jobs/<number> redirect to /<account>/j/<code>;
@@ -40,8 +47,7 @@ apply.workable.com/j/<code> redirects to the account's job, or to /oops once the
 apply.workable.com disallows nothing.
 
 Limits from one address: apply.workable.com answered 3 calls a second for 2 minutes and refused about half of 4 a
-second after 70 s (HTTP 429, Retry-After 0, gone within seconds), so its calls wait their turn (PACE); its own limiter
-also answers 429 with a Retry-After near 86,400 that is not the real wait.
+second after 70 s (HTTP 429, Retry-After 0, gone within seconds), so its calls wait their turn (PACE).
 """
 import asyncio
 import dataclasses
@@ -125,7 +131,8 @@ def job_type(text: str | None, experience: str | None = None) -> str | None:
 
 
 def pay_text(low, high, currency: str | None, period: str | None) -> str | None:
-    """28000, 32000, 'GBP', 'year' -> 'GBP 28,000 - 32,000 per year'. One amount when both are equal or one is missing."""
+    """28000, 32000, 'GBP', 'year' -> 'GBP 28,000 - 32,000 per year'. One amount when both are equal or one is
+    missing."""
     shown = [v for v in (low, high) if isinstance(v, (int, float)) and v > 0]
     amounts = list(dict.fromkeys(f'{v:,.2f}'.removesuffix('.00') for v in shown))
     if not amounts:
@@ -521,7 +528,8 @@ class Workable(Platform):
                                        headers={'Accept-Encoding': FEED_ENCODING}) as response:
                     STATS['calls'] += 1
                     if response.status_code == 429:
-                        raise BoardError('HTTP 429: Workable allows a few downloads of its feed an hour from one address')
+                        raise BoardError('HTTP 429: Workable allows a few downloads of its feed an hour from one '
+                                         'address')
                     if response.status_code != 200:
                         raise httpx.HTTPStatusError(f'HTTP {response.status_code}', request=response.request,
                                                     response=response)
@@ -731,7 +739,8 @@ class Workable(Platform):
         listed = {job['id']: job for job in self.from_widget(session, session['jobs'])}
         data = await self.job_answer(http, account, job_id)
         if job_id not in listed and (data is None or data.get('state') not in (None, 'published')):
-            return 'closed', {'company': session['name'], 'companySlug': account, 'companyWebsite': session.get('website')}
+            return 'closed', {'company': session['name'], 'companySlug': account,
+                              'companyWebsite': session.get('website')}
         job = listed.get(job_id) or {
             'id': job_id, 'company': session['name'], 'companySlug': account, 'companyWebsite': session.get('website'),
             'title': '', 'places': [], 'dateOnly': True, 'jobUrl': SHORT_LINK.format(code=job_id),
