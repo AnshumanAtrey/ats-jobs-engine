@@ -90,6 +90,7 @@ FALLBACK_SECONDS = 120        # career pages read, biggest first, when the feed 
 MONTHS = {m: i for i, m in enumerate(('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'), 1)}
 FEED_DATE = re.compile(r'(\d{1,2}) ([A-Z][a-z]{2}) (\d{4}) (\d{2}):(\d{2}):(\d{2})')
 TAG = re.compile(r'<[^>]*>')
+NOBODY = {'company': None, 'companySlug': None, 'companyWebsite': None}   # a gone job whose company is unknown
 PACE = 0.4                    # seconds between two calls to apply.workable.com: 2.5 a second, under the 3 measured
 LOG = logging.getLogger('apify')
 WORKPLACE = {'remote': 'remote', 'hybrid': 'hybrid', 'on_site': 'onsite'}
@@ -184,9 +185,13 @@ def matches(term, job: dict) -> bool:
     """A word in a career page job's title, or in its description when the page gave one (as a search would)."""
     if term.in_title(index(job.get('title'))):
         return True
-    if not job.get('description'):
+    description = job.get('description')
+    if not description:
         return False
-    text, words = folded_text(job['description'])
+    folded = description.casefold()
+    if not all(token in folded for token in term.tokens):    # most descriptions fail this cheap test first
+        return False
+    text, words = folded_text(description)
     return term.in_text(text, words)
 
 
@@ -625,10 +630,10 @@ class Workable(Platform):
         if BOARD_ID.match(job_id) and not CODE.match(job_id):     # a jobs.workable.com link: 410 is gone, 404 never was
             response = await send(http, 'GET', BOARD_JOB.format(id=job_id))
             if response.status_code in (404, 410):
-                return ('closed' if response.status_code == 410 else 'not found'), None
+                return ('closed' if response.status_code == 410 else 'not found'), dict(NOBODY)
             data = answer(response)
             if not isinstance(data, dict) or data.get('state') not in (None, 'published'):
-                return 'closed', None
+                return 'closed', dict(NOBODY)
             return 'open', self.from_board(job_id, data)
         account = session.get('account')
         if NUMBER.match(job_id):
@@ -639,7 +644,7 @@ class Workable(Platform):
             account = await self.account_of(http, job_id)
             session = await self.open(http, self.known().get(account) or Board(account, account)) if account else None
             if session is None:
-                return 'closed', {'company': None, 'companySlug': None, 'companyWebsite': None}
+                return 'closed', dict(NOBODY)
         listed = {job['id']: job for job in self.from_widget(session, session['jobs'])}
         data = await self.job_answer(http, account, job_id)
         if job_id not in listed and (data is None or data.get('state') not in (None, 'published')):

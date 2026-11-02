@@ -581,9 +581,10 @@ class Lookup(unittest.TestCase):
         self.assertEqual((status, job['company'], job['companySlug'], job['location'], job['workType'], job['postedAt']),
                          ('open', 'Bask Health', None, 'New York, New York, United States', 'remote', '2024-12-13T23:06:09.000Z'))
         self.assertEqual((job['salary'], job['places'][0]['country']), ('USD 150,000 - 180,000 per year', 'United States'))
-        self.assertEqual(self.check([Response(410, text='Gone')], 'omtQvzG25ZmkM1dS9dWiDj', {'everyone': True})[0], ('closed', None))
+        nobody = {'company': None, 'companySlug': None, 'companyWebsite': None}
+        self.assertEqual(self.check([Response(410, text='Gone')], 'omtQvzG25ZmkM1dS9dWiDj', {'everyone': True})[0], ('closed', nobody))
         self.assertEqual(self.check([Response(404, text='Job not found')], 'omtQvzG25ZmkM1dS9dWiDj', {'everyone': True})[0],
-                         ('not found', None))
+                         ('not found', nobody))
 
 
 if __name__ == '__main__':
