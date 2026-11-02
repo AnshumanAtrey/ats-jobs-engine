@@ -587,6 +587,17 @@ class WorkTypes(unittest.TestCase):
         self.assertEqual(([j['id'] for j in jobs], len(calls)), (['BBBBBBBBBB'], 1))
         self.assertIn('the 1 newest of 2 matching jobs not marked remote were checked one by one for hybrid', p.cfg.notes[-1])
 
+    def test_a_named_company_asks_its_jobs_too(self):
+        send, calls = sender([Response(200, {**V2, 'workplace': 'hybrid'})])
+        p = settings({'companies': ['biffa'], 'workType': ['hybrid']})
+
+        async def run():
+            return [page async for page in p.pages(None, {'account': 'biffa', 'name': 'Biffa', 'jobs': [ENTRY]}, None, None)]
+        with patch.object(workable, 'send', send), patch.object(workable, 'PACE', 0):
+            pages = asyncio.run(run())
+        self.assertEqual([[(j['id'], j['workType']) for j in page] for page in pages], [[('8A29959BE6', 'hybrid')]])
+        self.assertEqual(calls, [('GET', 'https://apply.workable.com/api/v2/accounts/biffa/jobs/8A29959BE6')])
+
 
 class Refusals(unittest.TestCase):
     def test_after_three_refusals_in_a_row_workable_is_not_asked_again(self):

@@ -412,6 +412,7 @@ class Workable(Platform):
         if term:        # a career page has no search: the word is matched here, as the job board would have
             wanted = terms([term])
             jobs = [j for j in jobs if wanted and matches(wanted[0], j)]
+        jobs = await self.workplaces(http, jobs, self.wanted(matched=term is not None))
         if jobs:
             yield jobs
 
@@ -421,6 +422,8 @@ class Workable(Platform):
         """The settings -> a test of one job: every filter but the work type, which Workable's lists state only for
         remote jobs (workplaces() asks the rest). matched: the words were already found here, in the title or in a
         description the job no longer carries."""
+        if self.cfg is None:            # no search: nothing to filter
+            return lambda job: True
         others = Filters(dataclasses.replace(self.cfg, work_types=[]))
         now = datetime.now(timezone.utc)
         return lambda job: others.passes(job, now, server_match=matched)
@@ -611,8 +614,10 @@ class Workable(Platform):
                 kept.append({**job, 'workType': kind})
         if checked < len(candidates):
             asked = ' or '.join(sorted(wanted - {'remote'}))
-            cfg.notes.append(f"Workable's feed marks only remote jobs, so the {checked:,} newest of {len(candidates):,} "
-                             f'matching jobs not marked remote were checked one by one for {asked}.')
+            note = (f"Workable's lists mark only remote jobs, so the {checked:,} newest of {len(candidates):,} "
+                    f'matching jobs not marked remote were checked one by one for {asked}.')
+            if not any(n.startswith("Workable's lists mark only remote jobs") for n in cfg.notes):
+                cfg.notes.append(note)          # once a run, though each named company is checked on its own
         return kept
 
     def from_board(self, job_id: str, data: dict) -> dict:
