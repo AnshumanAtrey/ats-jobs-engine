@@ -99,11 +99,24 @@ def read_search_term(token: str, platform=None) -> tuple[str | None, str | None,
     return (text, None, None) if text else (None, None, None)
 
 
+DORK_OR = re.compile(r'\s+(?:OR|\|)\s+')            # Google's OR: upper case, or |
+
+
+def alternatives(token: str) -> list[str]:
+    """A pasted dork with OR -> one dork per alternative, each keeping its operators:
+    'site:x "data engineer" OR "ml engineer"' -> ['site:x "data engineer"', 'site:x "ml engineer"']."""
+    text = _clean(token)
+    if not (DORK_OPERATOR.search(text) or DORK_TEXT.search(text)) or not DORK_OR.search(text):
+        return [token]
+    operators = ' '.join(DORK_OPERATOR.findall(text))
+    return [f'{operators} {part.strip()}'.strip() for part in DORK_OR.split(DORK_OPERATOR.sub(' ', text)) if part.strip()]
+
+
 def parse_terms(value, key: str, notes: list[str], skipped: list[tuple[str, str]],
                 boards: list[str] | None = None, platform=None) -> list[str]:
     """Search words -> terms. Boards named by a pasted dork are added to boards."""
     terms, seen = [], set()
-    for token in _items(value):
+    for token in [alternative for item in _items(value) for alternative in alternatives(item)]:
         term, note, board = read_search_term(token, platform)
         if board is not None and boards is not None and board.lower() not in (b.lower() for b in boards):
             boards.append(board)
