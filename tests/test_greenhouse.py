@@ -265,6 +265,17 @@ class Reading(unittest.TestCase):
         _, calls = self.collect([Response(200, {'jobs': []})], p)
         self.assertEqual(calls[0][1], {'pay_transparency': 'true', 'content': 'true'})
 
+    def test_only_descriptions_that_can_match_are_read_in_full(self):
+        p = platform()
+        p.description_terms = ('kubernetes', 'front end')
+        records = [{**RECORD, 'id': 1, 'content': '&lt;p&gt;Run &lt;b&gt;Kubernetes&lt;/b&gt; clusters&lt;/p&gt;'},
+                   {**RECORD, 'id': 2, 'content': '&lt;p&gt;Sell software&lt;/p&gt;'},
+                   {**RECORD, 'id': 3, 'content': 'Build our &lt;i&gt;frontend&lt;/i&gt;'},
+                   {**RECORD, 'id': 4, 'content': 'Caf&amp;eacute; kubern&amp;#101;tes'}]
+        pages, _ = self.collect([Response(200, {'jobs': records})], p)
+        self.assertEqual([j['description'] for j in pages[0]],
+                         ['Run Kubernetes clusters', None, 'Build our frontend', 'Caf\u00e9 kubernetes'])
+
     def test_a_missing_board(self):
         with self.assertRaises(BoardMissing):
             self.collect([Response(404, {'status': 404, 'error': 'Job not found'})])

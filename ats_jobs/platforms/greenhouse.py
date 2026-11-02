@@ -38,13 +38,14 @@ robots.txt on boards-api.greenhouse.io and boards.greenhouse.io disallows /embed
 """
 import asyncio
 import html as htmllib
+import os
 import re
 from datetime import timezone
 from urllib.parse import parse_qs, urlparse
 
 from ..http import BoardError, BoardMissing, send
 from ..inputs import JOB_TYPE_ALIASES, WORK_TYPE_ALIASES
-from ..rows import parse_time
+from ..rows import Term, parse_time, terms
 from .base import Board, Platform
 from .cornerstone import text_of
 from .deel import pay_text
@@ -59,6 +60,7 @@ TOKEN = re.compile(r'^[a-z0-9][a-z0-9_-]{0,99}$', re.I)
 JOB_ID = re.compile(r'^\d{1,20}$')
 BLOCK_WAIT_S = (20, 40, 60)          # a CloudFront block lifted within two minutes of the last call
 SENTENCE = re.compile(r'[a-z]\.\s+[A-Z]')
+ODD_ENTITY = re.compile(r'&amp;(?!(?:nbsp|amp|quot|lt|gt|apos|[lr][sd]quo|[mn]dash|hellip|bull|middot);)#?\w+;', re.I)
 JOB_TYPE_FIELDS = {'employment type', 'time type', 'job type', 'employment status', 'position type',
                    'type of employment', 'contract type', 'worker type', 'employee type'}
 WORK_TYPE_FIELDS = {'workplace type', 'location type', 'remote', 'work type', 'work arrangement', 'workplace',
@@ -145,6 +147,22 @@ def names(items: list | None) -> str | None:
     return ', '.join(dict.fromkeys(n for n in found if n)) or None
 
 
+def may_hold(content: str, wanted: list[Term]) -> bool:
+    """A cheap first look at a description, still escaped: can it hold one of the words searched? Every word of a term
+    is a prefix of the word it folds from, so a word that is not in the text is not in the description either. A
+    letter written as an entity would hide a word, so such text is looked at in full (none in 2,765 jobs)."""
+    text = content.casefold()
+    return bool(ODD_ENTITY.search(text)) or any(all(t in text for t in term.tokens) or (term.joined or '\0') in text
+                                                for term in wanted)
+
+
+def heavy_at_once() -> int:
+    """Lists with descriptions read at once. Biggest first, 32 of them held up to 0.97 GB on the laptop, so the number
+    follows the run's memory: 32 at 2 GB, 16 at 1 GB, 8 at 512 MB (ACTOR_MEMORY_MBYTES is set on Apify)."""
+    memory = int(os.environ.get('ACTOR_MEMORY_MBYTES') or 0)
+    return max(4, min(32, memory // 64)) if memory else 32
+
+
 def blocked(response) -> bool:
     """CloudFront's own refusal (an HTML page from server CloudFront), not an answer of the API."""
     return response.status_code == 403 and ('cloudfront' in response.headers.get('server', '').lower()
@@ -175,6 +193,7 @@ class Greenhouse(Platform):
 
     def __init__(self):
         self.hosts = list(HOSTS)          # this run's order: an address that blocks goes to the back
+        self.heavy = asyncio.Semaphore(heavy_at_once())
         self._sites: dict[str, str] | None = None
 
     # ---------- links and names ----------
@@ -286,14 +305,26 @@ class Greenhouse(Platform):
         }
 
     async def pages(self, http, session, term, days):
-        params = {'pay_transparency': 'true', **({'content': 'true'} if self.description_terms else {})}
+        wanted = terms(list(self.description_terms))
+        if not wanted:
+            yield await self._list(http, session, {'pay_transparency': 'true'}, wanted)
+            return
+        async with self.heavy:
+            yield await self._list(http, session, {'pay_transparency': 'true', 'content': 'true'}, wanted)
+
+    async def _list(self, http, session: dict, params: dict, wanted: list[Term]) -> list[dict]:
         response = await self.get(http, f'{session["token"]}/jobs', params)
         if response.status_code == 404:
             raise BoardMissing(session['token'])
         records = answer(response).get('jobs')
+        del response                        # the raw body of a big board with descriptions runs to tens of MB
         if not isinstance(records, list):
             raise BoardError('the job list was not a list')
-        yield [self.job(session, r) for r in records if isinstance(r, dict) and r.get('id')]
+        records = [r for r in records if isinstance(r, dict) and r.get('id')]
+        for r in records if wanted else ():
+            if not may_hold(r.get('content') or '', wanted):
+                r['content'] = None         # cannot match: not unescaped, stripped and searched (500 us a job)
+        return [self.job(session, r) for r in records]
 
     async def _one(self, http, session: dict, job_id: str):
         return await self.get(http, f'{session["token"]}/jobs/{job_id}', {'pay_transparency': 'true'})
