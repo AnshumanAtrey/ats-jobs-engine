@@ -16,16 +16,17 @@ Lever job sites (jobs.lever.co/<site>, jobs.eu.lever.co/<site>), read through Le
 - GET .../v0/postings/<site>/<id>: one posting. A site that does not exist, a posting that closed and a posting that
   never existed all answer 404 {"ok":false,"error":"Document not found"}, and the job page 404s alike, so a link on a
   live site that no longer answers is closed.
-- A site name keeps its case (AIFund answers, aifund does not; 174 of 2,335 sites have capitals). Posting ids are lower
-  case. jobs.lever.co/embed/<id>, the old embed link, answers 404 and names no site.
+- A site name keeps its case (AIFund answers, aifund does not; 177 of the 2,397 listed sites have capitals). Posting ids
+  are lower case. jobs.lever.co/embed/<id>, the old embed link, answers 404 and names no site.
 
-postedAt is createdAt: the job page's JobPosting markup gives its UTC day as datePosted on 27 of 27 pages of 13 sites
-(2 in the EU; one posting created at 00:12 UTC, others in 2009 and still open), while the XML feed's post_date is a
-later publication time. Pay comes with its interval (per-year-salary, per-hour-wage, ...), so the period is stated,
-never guessed. workplaceType is onsite, remote, hybrid or unspecified (the documentation says on-site). commitment is
-each company's own words (Full-time, CDI, Contract: Part-Time, Full Time/Part Time), read as a job type only where the
-words say one. country is the primary location's ISO code. No expiry date, requisition number, equity flag or company
-website: the job site's logo link points back to Lever on 76 of 100 sites and to the company on 10.
+postedAt is createdAt: the job page's JobPosting markup gives its UTC day as datePosted on 33 of 33 pages of 19 sites
+(3 in the EU; one posting created at 00:12 UTC, others in 2009 and still open; checked 2026-11-02 and 03), while the
+XML feed's post_date is a later publication time. Pay comes with its interval (per-year-salary, per-hour-wage, ...), so
+the period is stated, never guessed. workplaceType is onsite, remote, hybrid or unspecified (the documentation says
+on-site). commitment is each company's own words (Full-time, CDI, Contract: Part-Time, Full Time/Part Time), read as a
+job type only where the words say one. country is the primary location's ISO code. No expiry date, requisition number,
+equity flag or company website: the job site's logo link points back to Lever on 76 of 100 sites and to the company on
+10.
 
 No 429 and no Retry-After: 1,280 calls at 128 at once on api.lever.co, and full passes through Cloudflare at 32, 64, 96
 and 128 at once with no refusal; a pass meets a few 500, 502 and 504 and up to 14 calls that wait past 30 s, and each
