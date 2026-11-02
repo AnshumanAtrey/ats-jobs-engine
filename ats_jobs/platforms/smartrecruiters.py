@@ -128,6 +128,8 @@ def pay(compensation: dict | None) -> dict:
     currency, period = comp.get('currency') or None, PERIOD.get(str(comp.get('period') or '').upper())
     amounts = ' - '.join(dict.fromkeys(f'{v:,.2f}'.removesuffix('.00') for v in (low, high) if v is not None))
     text = ' '.join(p for p in (currency, amounts, PER.get(period)) if p)
+    if low is None:                    # a maximum alone is a ceiling: the job page says "up to USD 18.50 - hourly"
+        text = f'up to {text}'
     return {'salary': text, 'salaryMin': low, 'salaryMax': high, 'salaryCurrency': currency, 'salaryPeriod': period}
 
 

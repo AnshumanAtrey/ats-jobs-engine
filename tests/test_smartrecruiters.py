@@ -178,6 +178,14 @@ class Parsing(unittest.TestCase):
         self.assertEqual(pay({'salary': {'min': 20, 'currency': 'USD', 'period': 'hourly'}})['salaryPeriod'], 'hour')
         self.assertIsNone(pay({'min': 50000, 'currency': 'GBP'})['salaryPeriod'])
 
+    def test_a_ceiling_alone_reads_up_to(self):
+        # Dungarvin 744000159209739 on 2026-11-02 states only a maximum, and its job page says "up to USD 18.50 - hourly"
+        self.assertEqual(pay({'max': 18.5, 'currency': 'USD', 'period': 'HOURLY'}),
+                         {'salary': 'up to USD 18.50 an hour', 'salaryMin': None, 'salaryMax': 18.5,
+                          'salaryCurrency': 'USD', 'salaryPeriod': 'hour'})
+        self.assertEqual(pay({'min': 0, 'max': 2020.24, 'currency': 'EUR', 'period': 'MONTHLY'})['salary'],
+                         'up to EUR 2,020.24 a month')
+
     def test_zero_pay_is_no_pay(self):
         for nothing in ({'min': 0, 'max': 0, 'currency': 'USD', 'period': 'HOURLY'}, {'currency': 'USD'}, {}, None,
                         {'min': 'n/a', 'currency': 'USD'}):
