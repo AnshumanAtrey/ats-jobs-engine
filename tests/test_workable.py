@@ -533,6 +533,40 @@ class Details(unittest.TestCase):
         self.assertEqual(result['description'], 'Own the\nledger')
 
 
+class Refusals(unittest.TestCase):
+    def test_after_three_refusals_in_a_row_workable_is_not_asked_again(self):
+        calls = []
+
+        async def refused(http, method, url, **kwargs):
+            calls.append(url)
+            raise BoardError('HTTP 429')
+        p = settings({})
+        with patch.object(workable, 'send', refused), patch.object(workable, 'PACE', 0):
+            for _ in range(5):
+                with self.assertRaises(BoardError):
+                    asyncio.run(p.job_answer(None, 'biffa', '584D288213'))
+        self.assertEqual(len(calls), workable.REFUSALS)
+        self.assertIn('stopped answering this address', p.cfg.notes[-1])
+
+    def test_an_answer_in_between_starts_the_count_again(self):
+        answers = [BoardError('HTTP 429'), BoardError('HTTP 429'), Response(200, V2), BoardError('HTTP 429'), BoardError('HTTP 429'), Response(200, V2)]
+
+        async def mixed(http, method, url, **kwargs):
+            reply = answers.pop(0)
+            if isinstance(reply, Exception):
+                raise reply
+            return reply
+        p = settings({})
+        with patch.object(workable, 'send', mixed), patch.object(workable, 'PACE', 0):
+            got = []
+            for _ in range(6):
+                try:
+                    got.append(asyncio.run(p.job_answer(None, 'biffa', '584D288213'))['title'])
+                except BoardError:
+                    got.append('refused')
+        self.assertEqual(got, ['refused', 'refused', 'Accounts Payable', 'refused', 'refused', 'Accounts Payable'])
+
+
 class Lookup(unittest.TestCase):
     SESSION = {'account': 'biffa', 'name': 'Biffa Waste Services', 'website': 'https://www.biffa.co.uk/', 'jobs': [ENTRY]}
 

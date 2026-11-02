@@ -26,10 +26,10 @@ company through Workable's public jobs feed. No key. Measured from this laptop o
   (/api/v1/jobs?query=...) is not used: after 400 to 600 searches it refused each address of this laptop for a day
   ("contact us ... for our jobs XML feed", Retry-After 86,400), and a keyword with a place needed 356 searches.
 
-Each run takes the route that fits it: no keyword reads the career pages, biggest company first, and stops once
-maxJobs jobs posted today are held (dates are days); a keyword reads the feed once (dates have a time) and, when the feed
-cannot be read, the career pages of the biggest companies for FALLBACK_SECONDS, saying so in the notes. Named
-companies always read their career pages.
+Each run takes the route that fits it. A word, a place, a work type or a job type needs every company: the feed, read
+once (dates have a time); when it cannot be read, the career pages of the biggest companies for FALLBACK_SECONDS, and
+the message says so. A run for the newest jobs only (maybe within a period) reads the CAREER_PAGES biggest career pages
+and stops once maxJobs jobs posted today are held (dates are days). Named companies always read their career pages.
 
 Accounts are lower case (apply.workable.com/BIFFA answers 404, its page redirects to /oops); shortcodes are ten hex
 digits in any case. Old links: <account>.workable.com/... and /<account>/jobs/<number> redirect to /<account>/j/<code>;
@@ -82,8 +82,8 @@ BOARD_ID = re.compile(r'^(?:[1-9A-HJ-NP-Za-km-z]{20,24}|[0-9a-f]{8}-[0-9a-f]{4}-
 CODE_IN_TEXT = re.compile(r'/j/([0-9a-f]{10})(?![0-9a-z])', re.I)
 PAGE = 500                    # matching feed jobs handed to the engine at a time
 FEED_TIMEOUT = httpx.Timeout(120.0, connect=15.0)    # its first byte came after 19 to 23 s
-# Cloudflare compresses the feed on the way; brotli is the smaller (131 MB against 861 MB), and httpx-free decoding
-# needs the brotli package, else gzip
+# Cloudflare compresses the feed on the way: brotli (131 MB of 861 MB) finished in time, gzip did not. It is decoded
+# here with the brotli package, which the engine depends on; gzip only without it
 FEED_ENCODING = 'br' if importlib.util.find_spec('brotli') else 'gzip'
 BROTLI_ERRORS = (__import__('brotli').error,) if FEED_ENCODING == 'br' else ()
 FALLBACK_SECONDS = 120        # career pages read, biggest first, when the feed cannot be read
@@ -92,6 +92,7 @@ MONTHS = {m: i for i, m in enumerate(('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
 FEED_DATE = re.compile(r'(\d{1,2}) ([A-Z][a-z]{2}) (\d{4}) (\d{2}):(\d{2}):(\d{2})')
 TAG = re.compile(r'<[^>]*>')
 NOBODY = {'company': None, 'companySlug': None, 'companyWebsite': None}   # a gone job whose company is unknown
+REFUSALS = 3                  # failed calls in a row after which apply.workable.com is not asked again this run
 PACE = 0.4                    # seconds between two calls to apply.workable.com: 2.5 a second, under the 3 measured
 LOG = logging.getLogger('apify')
 WORKPLACE = {'remote': 'remote', 'hybrid': 'hybrid', 'on_site': 'onsite'}
@@ -210,6 +211,7 @@ class Workable(Platform):
     def __init__(self):
         self._turn = asyncio.Lock()
         self._last = 0.0
+        self._refused = 0
         self._known: dict[str, Board] | None = None
         self._names: dict[str, str] | None = None
         self.cfg = None
@@ -301,12 +303,25 @@ class Workable(Platform):
     # ---------- calls to apply.workable.com, one at a time ----------
 
     async def call(self, http, method: str, url: str, **kwargs):
+        """One call to apply.workable.com in its turn. After REFUSALS failed calls in a row (each already tried four
+        times over 11 s) the rest fail at once: Workable has stopped answering this address."""
+        if self._refused >= REFUSALS:
+            raise BoardError('Workable stopped answering this address')
         async with self._turn:
             wait = self._last + PACE - time.monotonic()
             if wait > 0:
                 await asyncio.sleep(wait)
             self._last = time.monotonic()
-        return await send(http, method, url, **kwargs)
+        try:
+            response = await send(http, method, url, **kwargs)
+        except BoardError:
+            self._refused += 1
+            if self._refused == REFUSALS and self.cfg is not None:
+                self.cfg.notes.append(f'Workable stopped answering this address after {REFUSALS} refused calls in a '
+                                      'row, so the career pages, details and links after that were not read.')
+            raise
+        self._refused = 0
+        return response
 
     async def career_page(self, http, account: str, descriptions: bool = False) -> dict | None:
         """The widget answer, or None when there is no such account."""
