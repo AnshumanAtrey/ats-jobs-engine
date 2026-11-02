@@ -124,6 +124,7 @@ class Run:
         self.companies_matched: set[str] = set()
         self.boards_missing: list[str] = []
         self.board_errors: list[dict] = []
+        self.boards_failed = 0             # boards that could not be read; a job whose details failed is not one
         self.links = {'open': 0, 'closed': 0, 'notFound': 0, 'couldNotCheck': 0}
         self.mode = 'check' if cfg.job_urls else 'search'
         self.feed: Board | None = None     # the one place listing every company's jobs, when a search reads it
@@ -294,6 +295,7 @@ class Run:
                         self.boards_missing.append(board.key)
                     except BoardError as exc:
                         self.board_error(board.key, exc)
+                        self.boards_failed += 1
                     finally:
                         self.boards_read += 1
                         self.boards_matched += 1 if hit else 0
@@ -410,7 +412,7 @@ class Run:
     def ran(self) -> bool:
         if self.mode == 'check':
             return sum(self.links.values()) > self.links['couldNotCheck']
-        return self.boards_read > len(self.board_errors)
+        return self.boards_read > self.boards_failed
 
     def message(self) -> str:
         cfg, seconds, name = self.cfg, round(time.monotonic() - self.started), self.platform.name

@@ -123,6 +123,16 @@ class Delivery(unittest.TestCase):
         self.assertEqual(dict(run.delivery.pushed), {'ok': 'job-details', 'nodetails': 'job'})
 
 
+class FailedDetails(unittest.TestCase):
+    def test_details_that_fail_do_not_fail_a_run_that_read_its_boards(self):
+        class NoDetails(Fake):
+            async def details(self, http, session, job):
+                raise BoardError('HTTP 429')
+        run = search(NoDetails({'a': [[job('1'), job('2', 'Analyst'), job('3', 'Cook')]]}), {'includeDetails': True})
+        self.assertEqual((run.delivery.rows, len(run.board_errors), run.ran()), (3, 3, True))
+        self.assertEqual(run.output('done')['status'], 'done')
+
+
 class Paging(unittest.TestCase):
     def pages(self, n=3):
         return [[job(f'{p}-{i}', title=f'Engineer {p} {i}', posted=p * 10) for i in range(2)] for p in range(n)]
