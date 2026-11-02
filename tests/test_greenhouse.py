@@ -1,14 +1,21 @@
 """Greenhouse: links, places, pay, custom fields, dates, blocks and lookups, on answers shaped like the Job Board API's
 own (boards-api.greenhouse.io and api.greenhouse.io, 2026-11-02)."""
 import asyncio
+import io
 import os
+import tempfile
 import unittest
+from contextlib import redirect_stdout
+from pathlib import Path
 from unittest.mock import patch
+
+import httpx
 
 from ats_jobs.http import BoardError, BoardMissing
 from ats_jobs.inputs import parse_input
 from ats_jobs.platforms.base import Board
 from ats_jobs.platforms.greenhouse import Greenhouse, custom_fields, heavy_at_once, names, pay_of, places_of, utc
+from scripts import refresh_greenhouse as refresh
 
 SESSION = {'token': 'gitlab'}
 CONTENT = '&lt;p&gt;Build the &lt;strong&gt;platform&lt;/strong&gt; &amp;amp; ship.&lt;/p&gt;&lt;p&gt;Next&lt;/p&gt;'
@@ -590,6 +597,66 @@ class Lookup(unittest.TestCase):
             self.check([Response(502, None)])
         with self.assertRaises(BoardError):
             self.check([Response(404, {}), Response(500, None)])
+
+
+class Refresh(unittest.TestCase):
+    """scripts/refresh_greenhouse.py, with no call leaving the machine."""
+
+    def test_sandbox_and_test_boards_are_not_job_boards(self):
+        for token, name in (('examplecorpsandbox', 'Example Corp'), ('agodasandbox', 'Agoda Sandbox'),
+                            ('alixpartnerssandbox', 'Alix test board'), ('exein', 'TEST BOARD'),
+                            ('gaptestjobboard', 'Test Job Board'), ('grayscale', 'Grayscale (Sandbox)'),
+                            ('testio', 'Termfront job board'), ('TestNISC', 'NISC')):
+            self.assertTrue(refresh.test_board(token, name), token)
+        for token, name in (('petvetcarecenterstesttest', 'PetVet Care Centers'), ('everagtester', 'Ever.Ag'),
+                            ('arevonenergyimpltest', 'Arevon'), ('newglobesandbox', 'NewGlobe'), ('sandboxx', 'Sandboxx'),
+                            ('testlio', 'Testlio'), ('blueprinttestprep', 'Blueprint Test Prep'), ('wekatest', 'WEKA')):
+            self.assertFalse(refresh.test_board(token, name), token)
+
+    def test_the_list_holds_no_test_board(self):
+        boards = Greenhouse().boards()[0]
+        self.assertGreater(len(boards), 8000)
+        self.assertEqual([b.key for b in boards if refresh.test_board(b.key, b.name)], [])
+
+    def freehire(self, budget: int, cache: Path):
+        """freehire with `budget` calls left today: facets, then one page per slice; then 429 and remaining 0."""
+        calls = []
+
+        def answer(request):
+            calls.append(str(request.url))
+            if len(calls) > budget:
+                return httpx.Response(429, json={'error': 'Rate limit reached.'},
+                                      headers={'x-ratelimit-limit': '2000', 'x-ratelimit-remaining': '0'})
+            query = dict(request.url.params)
+            if request.url.path.endswith('/facets'):
+                return httpx.Response(200, json={'data': {'facets': {'countries': {'gb': 5, 'de': 3}} if 'countries' not in query else {}}})
+            country = query.get('countries', 'all')
+            return httpx.Response(200, json={'data': [{'external_id': f'{country}board:1', 'url': None}]})
+        with httpx.Client(transport=httpx.MockTransport(answer)) as http, patch('scripts.refresh_greenhouse.time.sleep'), \
+                redirect_stdout(io.StringIO()):
+            return refresh.freehire(http, cache), calls
+
+    def test_a_spent_freehire_quota_stops_and_keeps_what_was_read(self):
+        with tempfile.TemporaryDirectory() as folder:
+            (tokens, complete), calls = self.freehire(4, Path(folder) / 'fh.json')
+        self.assertEqual((tokens, complete), ({'allboard', 'gbboard'}, False))
+        self.assertEqual(len(calls), 5)                  # the refused call is the last one, not read as an empty page
+
+    def test_a_later_run_goes_on_from_the_slices_read(self):
+        with tempfile.TemporaryDirectory() as folder:
+            cache = Path(folder) / 'fh.json'
+            self.freehire(4, cache)
+            (tokens, complete), calls = self.freehire(100, cache)
+        self.assertEqual((tokens, complete), ({'allboard', 'gbboard', 'deboard'}, True))
+        self.assertEqual([c for c in calls if '/search' in c], ['https://freehire.me/api/v1/jobs/search?source=greenhouse&limit=100&offset=0&countries=de'])
+
+    def test_a_github_list_that_moved_is_left_out(self):
+        def answer(request):
+            if request.url.path.endswith('greenhouse_companies.json'):
+                return httpx.Response(404, text='404: Not Found')
+            return httpx.Response(200, text='Apply at https://job-boards.greenhouse.io/figma/jobs/1 today')
+        with httpx.Client(transport=httpx.MockTransport(answer)) as http, redirect_stdout(io.StringIO()):
+            self.assertEqual(refresh.lists(http), {'figma'})
 
 
 if __name__ == '__main__':

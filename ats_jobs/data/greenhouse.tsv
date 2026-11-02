@@ -1,7 +1,7 @@
 # Greenhouse job boards, updated 2026-11-02: every board found that answers today, biggest first.
 # Columns: board token (any case reads the same board), company name, the company's own career site when
-# its jobs link there. Rebuilt by scripts/refresh_greenhouse.py;
-# 8,378 boards of 8,338 companies, 7,250 hiring, 224,327 open jobs before duplicates.
+# its jobs link there. Rebuilt by scripts/refresh_greenhouse.py, which leaves out sandbox and test boards;
+# 8,357 boards of 8,317 companies, 7,233 hiring, 223,821 open jobs before duplicates.
 svetness	Svetness Personal Training
 prolificacademicltd	Prolific Academic Ltd
 spacex	SpaceX
@@ -146,7 +146,6 @@ high-volume	DoorDash High Volume
 janestreet	Jane Street	https://www.janestreet.com
 wpp	WPP
 mediabrands	Omnicom Media
-examplecorpsandbox	Example Corp
 fanaticscommerce	Fanatics Commerce
 oscar	Oscar Health
 icapitalnetwork	iCapital
@@ -494,7 +493,6 @@ crestwoodcareers	Crestwood Behavioral Health
 keepersecurity	Keeper Security
 lusternational	Luster National
 marketechinternationalcorporationusa	Marketech International Corporation USA
-mergeapiintegrationsandbox	Merge API Integration Sandbox
 usenourish	Nourish
 questdefensesystemssolutionsinc	Quest Defense Systems & Solutions, Inc.	https://www.quest-defense.com
 secretariatadvisorsllc	Secretariat
@@ -979,7 +977,6 @@ trustpilot	Trustpilot	https://corporate.trustpilot.com
 twinhealth	Twin Health
 twistbioscience	Twist Bioscience
 abacus	ABACUS	https://abacustechnology.com
-alixpartnerssandbox	Alix test board	https://preview.www-sta.alixpartners.com
 amoriabond	Amoria Group
 arcesiumllc	Arcesium LLC
 blueskyinnovators	Blue Sky Innovators
@@ -1246,7 +1243,6 @@ theweathercompany	The Weather Company
 tines	Tines
 whitebit	WhiteBIT
 zuora	Zuora
-agodasandbox	Agoda Sandbox
 aidocmedical	Aidoc
 air	Air
 aspireinternaljobboard	Aspire Employment Opportunities
@@ -1331,7 +1327,6 @@ jukeboxhealth	Jukebox Health
 keyfactorinc	Keyfactor, Inc.
 meriton	Meriton
 nationwidevision	Nationwide Vision
-testnisc	NISC
 quantium	Quantium
 quinstreet	QuinStreet	https://www.quinstreet.com
 raisin	Raisin
@@ -1458,7 +1453,6 @@ neteasegames	NetEase Games
 pieinsurance	Pie Insurance
 rlsbio	RLS Radiopharmacies
 roboyo	Roboyo
-sonyplaystationworkdaysandbox	Sony Playstation Workday Sandbox
 sterlingtonpllc	Sterlington, PLLC
 scm	Stevens Capital Management LP
 straitsx	StraitsX
@@ -1784,7 +1778,6 @@ moonshot	Moonshot
 neptunenorth	Neptune North
 officespacesoftware	OfficeSpace Software
 optimadermatologycareers	Optima Dermatology
-pedsplustemplate	Pediatrics Plus Job Board
 perpay	Perpay - Career's Page
 pushpay	Pushpay
 rendezvousrobotics	Rendezvous Robotics
@@ -1892,7 +1885,6 @@ cohensteers	Cohen & Steers	https://www.cohenandsteers.com
 compaindustries	COMPA Industries
 current81	Current	https://current.com
 delartech	Delart
-example	Democorp
 designedconveyorsystems	Designed Conveyor Systems
 enstargrouplimited	Enstar Group	https://careers.enstargroup.com
 eudia	Eudia
@@ -3446,7 +3438,6 @@ honehealth	Hone Health
 hook	Hook
 hopskipdrive	HopSkipDrive
 ians	IANS
-imcsandbox33	IMC Sandbox
 veterans	IntelliDyne Jobs for Veterans
 internationalbusinessuniversity	International Business University
 interwellhealth	Interwell Health
@@ -4402,7 +4393,6 @@ telcoin	Telcoin
 tempo	Tempo	https://tempoenergy.com
 tenstorrentunlisted	Tenstorrent Unlisted/Referral Jobs
 terberg-techniek	Terberg Techniek
-testio	Termfront job board
 texaschillersystemsasp	Texas Chiller Systems
 thegershagency	The Gersh Agency
 thejarrellcompany	The Jarrell Company
@@ -5478,7 +5468,6 @@ gofellowsinternal	GO Tutor Corps Internal
 goodbysilversteinpartners	Goodby Silverstein & Partners
 gormanbunch	Gorman & Bunch Orthodontics
 gravity	Gravity
-grayscale	Grayscale (Sandbox)
 greenirony	Green Irony
 gremlin	Gremlin
 grin	GRIN	https://grin.co
@@ -6022,7 +6011,6 @@ deepfissioninc	Deep Fission, Inc
 deepwatchindia	Deepwatch India	https://www.deepwatch.com
 defensenewscareers	Defense News
 defuselabs	Defuse Labs
-dejabrewcoffeesandbox	Deja & Brew Coffee
 delasportbulgaria	Delasport
 deliveryassociates	Delivery Associates
 democracydefendersaction	Democracy Defenders Action
@@ -6031,7 +6019,6 @@ desertvista	Desert Vista Eye Specialist, PC
 gradle	Develocity
 digitalbiology	Digital Biology
 digitalhands	Digital Hands	https://www.digitalhands.com
-discosandbox	DISCO Sandbox
 dnascript	DNA Script
 dochollypetvet	Doc Holly Pet Vet
 dokoanimalhospital	DOKO Animal Hospital
@@ -6146,7 +6133,6 @@ tarrytown	Hudson Vets Tarrytown
 hysata	Hysata	https://hysata.com
 imbue	Imbue
 imi	IMI
-inbound	Inbound Application Test
 indigo	Indigo
 indomo	InDomo
 infaticaltd	INFATICA LTD
@@ -6620,7 +6606,6 @@ brightmode	Brightmode
 brinqa	Brinqa
 buildingdecarbonizationcoalition	Building Decarbonization Coalition
 buildkite-talent-community	Buildkite Talent Community
-builtinintegrationsandbox	BuiltIn Integration Sandbox
 burlingtonfamilydental	Burlington Family Dental
 byrdeyeclinic	Byrd Eye Clinic	https://www.byrdeyeclinic.com
 columbiacityvet	C. C. Veterinary Hospital
@@ -7153,8 +7138,6 @@ zeals	Technology & Product
 tellerparkvet	Teller Park Veterinary Clinic
 terremotobiosciencesinc	Terremoto Biosciences, Inc
 strigofr	Terrestar - Strigo
-gaptestjobboard	Test Job Board
-1	testjobpost
 testlio-community	Testlio Community
 tetra	Tetra	https://www.tetra.com
 aiedu	The AI Education Project
@@ -7347,7 +7330,6 @@ arbitalhealth	Arbital Health
 arceeai	arcee.ai
 archbow	Archbow
 bloom	Archrival Agents || Bloom Sampling Program
-arctouchaccessibilitytests	ArcTouch Accessibility Tests
 arielalternatives	Ariel Alternatives
 arkoselabsargentina	Arkose Labs - Argentina
 arkoselabsaustralia	Arkose Labs - Australia
@@ -7358,7 +7340,6 @@ armissecurity	Armis Security
 arrayeducation	Array Education
 arrivelogistics	Arrive Logistics
 karriereseite	ARTEFACT Germany
-artefacttest	Artefact_Test
 arteriaai	Arteria AI
 artium	Artium
 artstation	ArtStation
@@ -8190,7 +8171,6 @@ schillingscommunicationsunpublished	Schillings Communications Private Job Board
 schoolmint	SchoolMint
 scribeconcepts	ScribeConcepts
 securitycompass	Security Compass
-securitycompassadvisory	Security Compass Advisory Test
 sedo2	Sedo GmbH EN
 bentleys	Seek
 seer	Seer Inc.
@@ -8286,7 +8266,6 @@ tealmedia	Teal Media
 workonteamgaryvee	Team Gary
 trinternational	Team Rubicon International
 tefron	Tefron
-exein	TEST BOARD
 textus	TextUs
 thatlot	That Lot
 calyxinstitute	The Calyx Institute

@@ -12,10 +12,14 @@ site:boards.greenhouse.io dork as index queries, each source read once:
   8 minutes for job-boards.greenhouse.io and longer for boards.greenhouse.io;
 - with --freehire, freehire's public job API (freehire.me), whose external_id is <token>:<job id>. A query pages at
   most 10,000 rows, so it is read per country and the US per category: about 1,500 calls, one a second, of a quota
-  of 2,000 calls a day for one IP address;
+  of 2,000 calls a day for one IP address, shared by everything on the machine. A spent quota (429 with
+  x-ratelimit-remaining 0) stops it at once and is never read as an empty page: the slices it finished are kept in
+  ~/.cache/ats-jobs-engine for 3 days, and the next run goes on from them;
 - tokens given on the command line.
-A board is kept when its job list answers; when any check fails (Greenhouse refuses an address that made too many
-calls), the file is left as it was. Greenhouse reads tokens in any case, so they are kept in lower case.
+A board is kept when its job list answers and it is a company's job board: sandboxes and test boards are left out
+(test_board), because their template and test postings would come back as jobs. When any check fails (Greenhouse
+refuses an address that made too many calls), the file is left as it was. Greenhouse reads tokens in any case, so
+they are kept in lower case.
 Names are Greenhouse's own (the board's name); the website column is the company's own career site when every job
 of the board links there (stripe.com), which also reads links such as stripe.com/jobs/search?gh_jid=<id>. Biggest
 first, so a run stopped by its time limit has read the most jobs.
@@ -29,11 +33,12 @@ import gzip
 import io
 import json
 import math
+import os
 import re
 import sys
 import time
 from collections import Counter
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -63,7 +68,31 @@ ROOTS = {'job-boards.greenhouse.io': 'io,greenhouse,job-boards', 'boards.greenho
          'job-boards.eu.greenhouse.io': 'io,greenhouse,eu,job-boards', 'boards.eu.greenhouse.io': 'io,greenhouse,eu,boards'}
 URL = re.compile(r'https?://[^\s"\'<>()\]\\]*greenhouse\.io[^\s"\'<>()\]\\]*', re.I)
 PARALLEL = 16                  # a scan of 16,000 mostly dead names at about 90 calls a second got this IP blocked
+FREEHIRE_CACHE = Path(os.environ.get('XDG_CACHE_HOME') or Path.home() / '.cache') / 'ats-jobs-engine' / 'freehire-greenhouse.json'
+FREEHIRE_KEEP_DAYS = 3
+# Not a company's job board: sandboxes and test boards, whose template and test postings come back as jobs (Example
+# Corp's sandbox still posts them: 'Janitorial Cleaner - 39844' on 2026-11-02). The board's own name says so (Agoda
+# Sandbox, Alix test board, TEST BOARD), or the board was checked by hand on 2026-11-03. A token alone does not say
+# it: everagtester is the board Ever.Ag's careers page embeds, Arevon's careers page lists arevonenergyimpltest's
+# jobs, newglobesandbox holds NewGlobe's current ads, and Sandboxx and Testlio are companies.
+TEST_NAME = re.compile(r'\bsandbox\b|\btest (?:job )?board\b', re.I)
+TEST_BOARDS = {
+    'examplecorpsandbox',            # Example Corp: '01. Marketing Template', 'Janitorial Cleaner - 39844'
+    'example',                       # Democorp: demo postings with no publication date
+    'testio',                        # Termfront job board: 'Clown Wrangler', 'Mango Wrangler'
+    '1',                             # testjobpost
+    'inbound',                       # Inbound Application Test
+    'testnisc',                      # a copy of nisc (11 of its 13 titles)
+    'pedsplustemplate',              # a template of pediatricsplus, last posting 2024-02
+    'dejabrewcoffeesandbox',         # 'Loan Agreement', 'Copy of Customer Success Manager, New York'
+    'artefacttest', 'securitycompassadvisory', 'arctouchaccessibilitytests',   # Artefact_Test, ...Advisory Test, ...Tests
+}
 P = Greenhouse()
+
+
+def test_board(token: str, name: str) -> bool:
+    """A sandbox or test board, not a company's job board."""
+    return token.lower() in TEST_BOARDS or bool(TEST_NAME.search(name or ''))
 
 
 def token_of(url: str) -> str | None:
@@ -75,16 +104,23 @@ def lists(http: httpx.Client) -> set[str]:
     found = set()
     for path in LISTS:
         try:
-            text = http.get(RAW + path).text
+            response = http.get(RAW + path)
         except httpx.HTTPError as exc:
             print(f'{path}: {exc}')
             continue
-        if path.endswith('greenhouse_companies.json'):
-            found.update(t.lower() for t in json.loads(text) if isinstance(t, str))
-        elif path.endswith('boards.csv'):
-            for row in csv.DictReader(io.StringIO(text)):
-                if row.get('monitor_type') == 'greenhouse':
-                    found.add((json.loads(row.get('monitor_config') or '{}').get('token') or '').lower())
+        if response.status_code != 200:            # a list that moved answers 404 'Not Found'
+            print(f'{path}: HTTP {response.status_code}, left out')
+            continue
+        text = response.text
+        try:
+            if path.endswith('greenhouse_companies.json'):
+                found.update(t.lower() for t in json.loads(text) if isinstance(t, str))
+            elif path.endswith('boards.csv'):
+                for row in csv.DictReader(io.StringIO(text)):
+                    if row.get('monitor_type') == 'greenhouse':
+                        found.add((json.loads(row.get('monitor_config') or '{}').get('token') or '').lower())
+        except (ValueError, AttributeError) as exc:
+            print(f'{path}: not the shape it had ({exc}); only its links are read')
         found.update(filter(None, map(token_of, URL.findall(text))))
     return {t for t in found if TOKEN.match(t)}
 
@@ -154,31 +190,65 @@ def wayback(http: httpx.Client) -> set[str]:
     return found
 
 
-def freehire(http: httpx.Client) -> set[str]:
-    def get(path: str) -> dict:
+class Stop(Exception):
+    """freehire cannot be read on: its daily quota for this address is spent, or a call failed 5 times."""
+
+
+def freehire(http: httpx.Client, cache: Path = FREEHIRE_CACHE) -> tuple[set[str], bool]:
+    """-> (tokens, whether every slice was read). A refusal is never an empty page: on a spent quota this stops at
+    once, keeps the slices it finished (in cache, for FREEHIRE_KEEP_DAYS) and the next run goes on from them."""
+    def get(path: str):
         for attempt in range(5):
             try:
-                return http.get(FREEHIRE + path).json()
-            except (httpx.HTTPError, ValueError):
-                time.sleep(3 + attempt * 5)
-        return {}
-    facets = (get('/jobs/facets?source=greenhouse').get('data') or {}).get('facets') or {}
-    us = (get('/jobs/facets?source=greenhouse&countries=us').get('data') or {}).get('facets') or {}
-    slices = [''] + [f'&countries={c}' for c in facets.get('countries') or {}]
-    for category, count in (us.get('category') or {}).items():
-        types = ('full_time', 'part_time', 'contract', 'internship', 'fellowship') if count > 10_000 else ('',)
-        slices += [f'&countries=us&category={category}' + (f'&employment_type={t}' if t else '') for t in types]
-    found = set()
-    for where in slices:
-        for offset in range(0, 10_000, 100):
-            rows = get(f'/jobs/search?source=greenhouse&limit=100&offset={offset}{where}').get('data') or []
-            found.update((r.get('external_id') or '').split(':')[0].lower() for r in rows)
-            found.update(filter(None, (token_of(r.get('url') or '') for r in rows)))
-            time.sleep(1)
-            if len(rows) < 100:
-                break
-    print(f'freehire: {len(found):,} tokens from {len(slices)} slices')
-    return {t for t in found if TOKEN.match(t)}
+                response = http.get(FREEHIRE + path)
+            except httpx.HTTPError:
+                response = None
+            if response is not None and response.status_code == 429 and response.headers.get('x-ratelimit-remaining') == '0':
+                raise Stop(f'quota used up ({response.headers.get("x-ratelimit-limit")} calls a day for this address)')
+            if response is not None and response.status_code == 200:
+                try:
+                    data = response.json().get('data')
+                except (ValueError, AttributeError):
+                    data = None
+                if data is not None:
+                    return data
+            time.sleep(3 + attempt * 5)
+        raise Stop(f'{path} failed 5 times')
+
+    saved = json.loads(cache.read_text()) if cache.exists() else {}
+    fresh = saved.get('day', '') >= (date.today() - timedelta(days=FREEHIRE_KEEP_DAYS)).isoformat()
+    done: dict[str, list[str]] = saved.get('done', {}) if fresh else {}
+    slices: list[str] = []
+    try:
+        facets = get('/jobs/facets?source=greenhouse').get('facets') or {}
+        us = get('/jobs/facets?source=greenhouse&countries=us').get('facets') or {}
+        slices = [''] + [f'&countries={c}' for c in facets.get('countries') or {}]
+        for category, count in (us.get('category') or {}).items():
+            types = ('full_time', 'part_time', 'contract', 'internship', 'fellowship') if count > 10_000 else ('',)
+            slices += [f'&countries=us&category={category}' + (f'&employment_type={t}' if t else '') for t in types]
+        for where in slices:
+            if where in done:
+                continue
+            found = set()
+            for offset in range(0, 10_000, 100):
+                rows = get(f'/jobs/search?source=greenhouse&limit=100&offset={offset}{where}')
+                found.update((r.get('external_id') or '').split(':')[0].lower() for r in rows if isinstance(r, dict))
+                found.update(filter(None, (token_of(r.get('url') or '') for r in rows if isinstance(r, dict))))
+                time.sleep(1)
+                if len(rows) < 100:
+                    break
+            done[where] = sorted(t for t in found if TOKEN.match(t))
+        complete = True
+    except Stop as exc:
+        print(f'freehire STOPPED: {exc}. {len(done):,} of {len(slices) or "?"} slices read; run --freehire again '
+              f'tomorrow to go on from them. Its count below is of the slices read.')
+        complete = False
+    cache.parent.mkdir(parents=True, exist_ok=True)
+    cache.write_text(json.dumps({'day': saved.get('day') if fresh and saved.get('day') else date.today().isoformat(),
+                                 'done': done}))
+    tokens = {t for kept in done.values() for t in kept}
+    print(f'freehire: {len(tokens):,} tokens from {len(done)} slices' + ('' if complete else ' (incomplete)'))
+    return tokens, complete
 
 
 def known() -> set[str]:
@@ -207,13 +277,15 @@ async def check(http: httpx.AsyncClient, sem: asyncio.Semaphore, token: str) -> 
 async def main(args: list[str]) -> None:
     started = time.monotonic()
     sources: dict[str, set[str]] = {'file': known(), 'command line': {a.lower() for a in args if not a.startswith('--')}}
+    incomplete = []
     with httpx.Client(timeout=120, headers={'User-Agent': AGENT}, follow_redirects=True) as http:
         sources['GitHub lists'] = lists(http)
         sources['Common Crawl'] = common_crawl(http)
         if '--wayback' in args:
             sources['Wayback Machine'] = wayback(http)
         if '--freehire' in args:
-            sources['freehire'] = freehire(http)
+            sources['freehire'], complete = freehire(http)
+            incomplete += [] if complete else ['freehire']
     candidates = sorted({t for found in sources.values() for t in found if TOKEN.match(t)})
     print(f'{len(candidates):,} candidates: ' + ', '.join(f'{k} {len(v):,}' for k, v in sources.items()))
     sem = asyncio.Semaphore(PARALLEL)
@@ -225,23 +297,29 @@ async def main(args: list[str]) -> None:
     if failed:                     # a refused call is not a dead board: keep the list as it is
         print(f'{len(failed):,} boards could not be checked ({failed[0]["error"]}); the file was not rewritten. Run again later.')
         return
-    live = sorted((c for c in checked if c), key=lambda c: (-c['jobs'], c['name'].lower(), c['token']))
+    answering = [c for c in checked if c]
+    tests = sorted(c['token'] for c in answering if test_board(c['token'], c['name']))
+    live = sorted((c for c in answering if c['token'] not in tests), key=lambda c: (-c['jobs'], c['name'].lower(), c['token']))
     hiring = {c['token'] for c in live if c['jobs']}
     jobs = sum(c['jobs'] for c in live)
+    print(f'{len(tests):,} sandbox and test boards left out: {", ".join(tests[:20])}')
     for name, found in sources.items():
         alone = found - set().union(*(v for k, v in sources.items() if k != name))
-        print(f'{name}: {len(found & hiring):,} hiring boards, {len(alone & hiring):,} found by no other source')
+        print(f'{name}: {len(found & hiring):,} hiring boards, {len(alone & hiring):,} found by no other source'
+              + (' (incomplete)' if name in incomplete else ''))
     seen = Counter(sum(t in found for k, found in sources.items() if k != 'file') for t in hiring)
     chao1 = len(hiring) + seen[1] ** 2 / (2 * seen[2]) if seen[2] else math.nan
     lines = [f'# Greenhouse job boards, updated {date.today().isoformat()}: every board found that answers today, biggest first.',
              '# Columns: board token (any case reads the same board), company name, the company\'s own career site when',
-             '# its jobs link there. Rebuilt by scripts/refresh_greenhouse.py;',
+             '# its jobs link there. Rebuilt by scripts/refresh_greenhouse.py, which leaves out sandbox and test boards;',
              f'# {len(live):,} boards of {len({c["name"].lower() for c in live}):,} companies, {len(hiring):,} hiring, '
              f'{jobs:,} open jobs before duplicates.']
     lines += [f'{c["token"]}\t{c["name"]}\t{c["website"]}'.rstrip('\t') for c in live]
     OUT.write_text('\n'.join(lines) + '\n', encoding='utf-8')
     print(f'{len(live):,} live boards, {len(hiring):,} hiring, {jobs:,} jobs; Chao1 over the sources {chao1:,.0f} hiring '
-          f'boards (a lower bound: the sources are not independent); {round(time.monotonic() - started)} s')
+          f'boards (a lower bound on the total, so found / Chao1 is at most the share found; the sources are not '
+          f'independent' + (f', and {", ".join(incomplete)} was cut short' if incomplete else '') +
+          f'); {round(time.monotonic() - started)} s')
 
 
 if __name__ == '__main__':

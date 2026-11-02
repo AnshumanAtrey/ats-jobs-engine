@@ -26,8 +26,8 @@ before had not: reading the boards of the list makes few 404s. A refusal is wait
 A run is paced to 80 calls a second, below both, whatever the latency.
 
 Dates carry a time, so no board order lets a run stop early: the 100 newest jobs came from boards at places 4 to 5,711
-of the list. A pass over all 8,378 boards is 8,378 calls and 19.8 MB gzipped (pay ranges add 6.6%), 112 s on this
-laptop. A description search downloads every description (about 600 MB gzipped), and a first look at each escaped
+of the list. A pass is one call a board: over the first list's 8,378 boards, 19.8 MB gzipped (pay ranges add 6.6%),
+112 s on this laptop. A description search downloads every description (about 600 MB gzipped), and a first look at each escaped
 text skips the work on those that cannot match: 44 s of CPU instead of 150 s for kubernetes. One board's list with
 descriptions holds up to about 150 MB while it is read (body and parsed JSON: Pulse 152 MB, Anduril 125, Prolific 115,
 2026-11-03), and boards go biggest first, so the lists read at once follow the run's memory.
