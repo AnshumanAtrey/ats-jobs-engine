@@ -40,6 +40,14 @@ DETAIL = {
 }
 
 
+# SmartRecruiters' own answers that a posting cannot be read, as measured on 2026-11-03
+NEVER_WAS = {'id': '1bbf9fad-c677-4de8-a3cc-bf075094a6c2', 'code': 'RESOURCE_NOT_FOUND',
+             'message': '[MDC: ppa-2462d23b] Response code: 404. Reason: Resource not found'}
+ANOTHER_COMPANY = {'id': '65d5680c-9aa3-45e6-9a95-5802867228e2', 'code': 'ILLEGAL_ARGUMENT',
+                   'message': '[MDC: ppa-8e6e0c67] Response code: 400. Reason: Provided companyIdentifier (Visa) does not '
+                              'match companyIdentifier (TBD20261030Visa) from publication.'}
+
+
 class Response:
     def __init__(self, status_code, data=None, text=''):
         self.status_code, self.data, self.text = status_code, data, text
@@ -403,11 +411,15 @@ class Reading(unittest.TestCase):
         _, calls = run(collect(P, dict(SESSION), 'sales && "marketing" -remote'), [listing([])])
         self.assertEqual(calls[0][1]['q'], 'sales marketing remote')
 
-    def test_a_missing_company_a_locked_one_and_a_failing_one(self):
-        for status in (400, 401, 404):
-            with self.assertRaises(BoardMissing):
-                run(collect(P, dict(SESSION)), [Response(status)])
-        for bad in (Response(403), Response(500), Response(200), Response(200, ['not', 'an', 'object'])):
+    def test_a_locked_company_and_a_failing_one(self):
+        with self.assertRaises(BoardMissing):           # CHECK24 locked its Posting API
+            run(collect(P, dict(SESSION)), [Response(401, text='<title>401 Authorization Required</title>')])
+        # a company that does not exist answers 200 with no posting, so a 404 (a path that moved: Cloudflare's page) or
+        # a 400 (a refused parameter) is the API changing: read as no company, every run would succeed with nothing
+        moved = Response(404, text='<html><head><title>404 Not Found</title></head></html>')
+        refused = Response(400, {'code': 'VALIDATION_ERROR', 'message': 'limit must be between 1 and 100'})
+        for bad in (moved, refused, Response(400, text='Bad Request'), Response(403), Response(500), Response(200),
+                    Response(200, ['not', 'an', 'object'])):
             with self.assertRaises(BoardError):
                 run(collect(P, dict(SESSION)), [bad])
 
@@ -462,8 +474,8 @@ class Lookup(unittest.TestCase):
     def test_a_closed_job_and_a_job_that_never_was(self):
         self.assertEqual(self.check([Response(200, {**DETAIL, 'active': False})]), ('closed', None))
         self.assertEqual(self.check([Response(200, {**DETAIL, 'active': None})]), ('closed', None))
-        self.assertEqual(self.check([Response(404, {'httpCode': 404, 'code': 'RESOURCE_NOT_FOUND'})]), ('not found', None))
-        self.assertEqual(self.check([Response(400, text='Bad Request')], 'abc'), ('not found', None))
+        self.assertEqual(self.check([Response(404, NEVER_WAS)]), ('not found', None))
+        self.assertEqual(self.check([Response(400, ANOTHER_COMPANY)]), ('not found', None))
         locked = Response(401, text='<html><head><title>401 Authorization Required</title></head></html>')
         self.assertEqual(self.check([locked]), ('not found', None))
 
@@ -473,6 +485,15 @@ class Lookup(unittest.TestCase):
         with self.assertRaises(BoardError):
             self.check([Response(200)])
 
+    def test_a_400_or_404_that_is_not_smartrecruiters_word_stays_an_error(self):
+        # only SmartRecruiters' own JSON says a posting is not there; Cloudflare's 404 page is a path that moved, and a
+        # plain 'Bad Request' text that is no id, which read_link never sends (2026-11-03)
+        for odd in (Response(404, text='<html><head><title>404 Not Found</title></head></html>'),
+                    Response(400, text='Bad Request'), Response(400, {'code': 'VALIDATION_ERROR', 'message': 'limit'}),
+                    Response(404, ['RESOURCE_NOT_FOUND'])):
+            with self.assertRaises(BoardError):
+                self.check([odd])
+
     def test_a_blocked_address_could_not_check(self):
         with self.assertRaises(BoardError):
             self.check([Response(403, text='Sorry, you have been blocked')])
@@ -481,10 +502,11 @@ class Lookup(unittest.TestCase):
 
     def test_details_that_are_gone_leave_the_job_as_it_was(self):
         job = P.job(SESSION, RECORD)
-        same, _ = run(P.details(None, dict(SESSION), job), [Response(404)])
+        same, _ = run(P.details(None, dict(SESSION), job), [Response(404, NEVER_WAS)])
         self.assertIs(same, job)
-        with self.assertRaises(BoardError):
-            run(P.details(None, dict(SESSION), job), [Response(500)])
+        for bad in (Response(500), Response(404, text='<title>404 Not Found</title>')):
+            with self.assertRaises(BoardError):
+                run(P.details(None, dict(SESSION), job), [bad])
 
 
 class Refresh(unittest.TestCase):
@@ -499,6 +521,7 @@ class Refresh(unittest.TestCase):
         out = Path(tempfile.mkdtemp()) / 'smartrecruiters.tsv'
         text = listed if isinstance(listed, str) else '# updated 2026-11-01\n' + ''.join(f'{k}\t{v}\n' for k, v in listed.items())
         out.write_text(text, encoding='utf-8')
+        self.last_out = out
 
         async def box(http):
             return {}
@@ -545,17 +568,42 @@ class Refresh(unittest.TestCase):
         with self.assertRaises(SystemExit):
             self.refresh(listed, {k: 'no answer' for k in listed})
 
-    def test_a_blocked_address_is_retried_then_fails(self):
+    def test_a_blocked_address_or_a_changed_api_is_retried_then_fails(self):
         from scripts import refresh_smartrecruiters as refresh
 
-        class Blocked:
+        class Answers:
+            def __init__(self, response):
+                self.response, self.calls = response, 0
+
             async def get(self, url, params=None):
-                return Response(403, text='Sorry, you have been blocked')
+                self.calls += 1
+                return self.response
 
         async def no_wait(seconds):
             return None
-        with patch.object(refresh.asyncio, 'sleep', no_wait), self.assertRaises(RuntimeError):
-            asyncio.run(refresh.get_json(Blocked(), 'https://api.smartrecruiters.com/v1/companies/Acme/postings', {}))
+        url = 'https://api.smartrecruiters.com/v1/companies/Acme/postings'
+        for refused in (Response(403, text='Sorry, you have been blocked'), Response(404, text='<title>404 Not Found</title>'),
+                        Response(400, text='Bad Request')):
+            http = Answers(refused)
+            with patch.object(refresh.asyncio, 'sleep', no_wait), self.assertRaises(RuntimeError):
+                asyncio.run(refresh.get_json(http, url, {}))
+            self.assertEqual(http.calls, 5, refused.status_code)
+        locked = Answers(Response(401, text='<title>401 Authorization Required</title>'))
+        self.assertIsNone(asyncio.run(refresh.get_json(locked, url, {})))       # CHECK24: no readable site
+
+    def test_a_list_that_collapses_is_not_written(self):
+        # the review's drift: with every site answering as if it had no job, the list was rewritten with 0 sites
+        listed = {f'Site{i}': f'Site {i}' for i in range(30)}
+        before = '# updated 2026-11-01\n' + ''.join(f'{k}\t{v}\n' for k, v in listed.items())
+        for answers in ({k: {'totalFound': 0, 'content': []} for k in listed},
+                        {k: self.hiring(k, k, 3) if i < 15 else {'totalFound': 0, 'content': []}
+                         for i, k in enumerate(listed)}):
+            with self.assertRaises(SystemExit):
+                self.refresh(before, answers)
+            self.assertEqual(self.last_out.read_text(encoding='utf-8'), before)
+        few_left = {k: self.hiring(k, k, 3) if i < 22 else {'totalFound': 0, 'content': []} for i, k in enumerate(listed)}
+        rows = [line for line in self.refresh(before, few_left).splitlines() if not line.startswith('#')]
+        self.assertEqual(len(rows), 22)            # 8 of 30 leaving is within the ten a refresh may lose
 
 
 if __name__ == '__main__':

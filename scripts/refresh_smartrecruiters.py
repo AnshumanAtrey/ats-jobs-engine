@@ -18,7 +18,9 @@ stays until SmartRecruiters stops serving it. Slugs, links, or files of them giv
 
 A site is kept when the Posting API lists an open job on it, with SmartRecruiters' own identifier and company name
 (identifiers are read in any case, so case variants count once). Biggest first, so a run reads the busiest boards first.
-A listed site that does not answer stays, at the end; when more than 1% do not answer, the file is left as it was.
+A listed site that does not answer stays, at the end; when more than 1% do not answer, the file is left as it was. Only
+a locked company (401) reads as no site: any other refusal is retried and then counts as no answer. A list that would
+read no site, or lose more than a tenth of the sites runs read now, is not written either: that is the API changing.
 
 A posting stays open until its company closes it, and many never do. A site with nothing posted in two years is written
 as a #~ comment line after the others (key, name, newest posting, postings): runs leave it out, a run that names it
@@ -77,13 +79,16 @@ def word_starts(text: str) -> set[str]:
 
 
 async def get_json(http: httpx.AsyncClient, url: str, params: dict):
+    """The JSON answer, None for a company that locked its Posting API (401, CHECK24). Every other answer is retried and
+    then fails: a company that does not exist answers 200 with no posting, so a 400 or 404 means the API changed (a moved
+    path is Cloudflare's 404), and a 403 is a blocked address. Read as 'no site', either would empty the list."""
     for attempt in range(5):
         try:
             response = await http.get(url, params=params)
             if response.status_code == 200:
                 return response.json()
-            if response.status_code in (400, 401, 404):    # 401: a company that locked its Posting API (CHECK24);
-                return None                                  # 403 is a blocked address: retried, then a failure
+            if response.status_code == 401:
+                return None
         except (httpx.HTTPError, ValueError):
             pass
         await asyncio.sleep(1 + attempt * 3)
@@ -175,12 +180,14 @@ def wayback() -> set[str]:
     return slugs
 
 
-def known() -> dict[str, str]:
-    """The sites in the file now, read in runs or left out as dormant: identifier -> company name."""
+def known() -> tuple[dict[str, str], set[str]]:
+    """The sites in the file now: (every one, read in runs or left out: identifier -> company name, the folded
+    identifiers of those read in runs)."""
     lines = OUT.read_text(encoding='utf-8').splitlines() if OUT.exists() else []
     rows = [line.removeprefix(DORMANT).split('\t') for line in lines
             if line and (not line.startswith('#') or line.startswith(DORMANT))]
-    return {row[0]: (row[1] if len(row) > 1 else row[0]) for row in rows}
+    active = {line.split('\t')[0].lower() for line in lines if line and not line.startswith('#')}
+    return {row[0]: (row[1] if len(row) > 1 else row[0]) for row in rows}, active
 
 
 def given(args: list[str]) -> set[str]:
@@ -215,7 +222,7 @@ async def main(args: list[str]) -> None:
     started = time.monotonic()
     limits = httpx.Limits(max_connections=CHECK_PARALLEL * 2, max_keepalive_connections=CHECK_PARALLEL)
     async with httpx.AsyncClient(timeout=httpx.Timeout(45, connect=15), limits=limits, headers={'User-Agent': AGENT}) as http:
-        listed = known()
+        listed, before = known()
         sources = {'company box': set(await company_box(http)), 'already listed': set(listed),
                    'given': given([a for a in args if a != '--no-wayback'])}
         if '--no-wayback' not in args:
@@ -248,6 +255,11 @@ async def main(args: list[str]) -> None:
     since = (datetime.now(timezone.utc) - timedelta(days=ACTIVE_DAYS)).strftime('%Y-%m-%dT%H:%M:%S')
     active = [s for s in live if not s.get('newest') or s['newest'] >= since]      # no answer: stays where runs read it
     dormant = [s for s in live if s.get('newest') and s['newest'] < since]
+    # a list that collapsed is the API changing, not companies leaving: a day moves a handful of sites out of runs
+    lost = before - {s['slug'].lower() for s in active}
+    if not active or len(lost) > max(10, len(before) // 10):
+        sys.exit(f'{len(active):,} career sites would be read in runs and {len(lost):,} of the {len(before):,} read now '
+                 f'would leave them (first: {", ".join(sorted(lost)[:5])}), so {OUT.name} was left as it was.')
     companies = {s['name'].lower() for s in active}
     jobs, old_jobs = sum(s['jobs'] for s in active), sum(s['jobs'] for s in dormant)
     lines = [f'# SmartRecruiters career sites, updated {date.today().isoformat()}: every career site found with a job posted '

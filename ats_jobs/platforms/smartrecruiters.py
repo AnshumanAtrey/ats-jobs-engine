@@ -11,8 +11,10 @@ through SmartRecruiters' public Posting API. No key. Measured 2026-11-02:
   (CHECK24). The list has no pay and no description.
 - GET .../postings/<id> (id, uuid or jobAdId): the job ad's four HTML sections, active, postingUrl, applyUrl, and
   compensation {min, max, currency, period} on 34 of 400 sampled jobs, 9 of them a maximum alone, which the job page
-  calls "up to". A closed posting answers 200 with active false (ServiceNow's 2021 ids); one that never existed 404;
-  text that is no id 400; another company's id 400.
+  calls "up to". A closed posting answers 200 with active false (ServiceNow's 2021 ids); one that never existed 404
+  with JSON code RESOURCE_NOT_FOUND; another company's id 400 with code ILLEGAL_ARGUMENT naming the companyIdentifier;
+  text that is no id a plain-text 400 "Bad Request" (2026-11-03). A path that does not exist (/postingz, /v2/...) is
+  Cloudflare's HTML 404, and a refused parameter (limit=-1, releasedAfter=garbage) a 400 VALIDATION_ERROR.
 - GET https://jobs.smartrecruiters.com/sr-jobs/company-name-lookup?q=<company>: the identifier and name of a company,
   "" when there is none: how a typed company is told apart from one with no open job. It knows only the companies in
   SmartRecruiters' job search ("" for AbbVie, 1,989 open jobs), so a company's postings are asked first.
@@ -69,10 +71,11 @@ POSTING = re.compile(r'^(\d{6,})(?:-|$)')
 UUID = re.compile(r'^([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})(?:-|$)', re.I)
 ENTITY = re.compile(r'&(?:#\d+|#x[0-9a-f]+|[a-z]+);', re.I)
 PAGE_SIZE = 100
-# 400 is text that is no company or posting, 404 a posting that never existed, 401 a company that locked its Posting
-# API (CHECK24, 1 of about 16,000 companies on 2026-11-02): none of them is SmartRecruiters failing to answer. No company
-# answered 403; it is what a blocked address gets, so it stays an error and cannot pass for a company that is not there
-NOT_READABLE = (400, 401, 404)
+# 401 is a company that locked its Posting API (CHECK24, 1 of about 16,000 companies on 2026-11-02). A company that does
+# not exist answers 200 with no posting, so on the list endpoint a 400 is a parameter it refused and a 404 a path that
+# moved (Cloudflare's HTML page): both stay errors, so an API change fails the run instead of finding nothing. No company
+# answered 403; it is what a blocked address gets, so it stays an error too
+LOCKED = 401
 # A board's first page is short, because most boards only confirm that they hold nothing newer than the jobs already
 # kept. With no word every board has jobs and its newest one decides (an empty form read 12,102 boards in 112 s with
 # 1, 129 s with 10); a word search is slower per call and many boards hold a few matches (202 s with 10, 262 s with 1).
@@ -186,6 +189,22 @@ def job_ad(record: dict) -> str | None:
             title = htmllib.escape(clean(section.get('title')))
             parts.append(f'<h3>{title}</h3>{text}' if title else text)
     return ''.join(parts) or None
+
+
+def missing(response) -> bool:
+    """SmartRecruiters' own word that a posting cannot be read: JSON code RESOURCE_NOT_FOUND (404, an id that never
+    existed), ILLEGAL_ARGUMENT naming the companyIdentifier (400, another company's posting), or a locked company (401).
+    A 400 or 404 in any other shape (plain 'Bad Request', Cloudflare's HTML) is not, and stays an error."""
+    if response.status_code == LOCKED:
+        return True
+    if response.status_code not in (400, 404):
+        return False
+    try:
+        data = response.json()
+    except ValueError:
+        return False
+    code = data.get('code') if isinstance(data, dict) else None
+    return code == 'RESOURCE_NOT_FOUND' or (code == 'ILLEGAL_ARGUMENT' and 'companyIdentifier' in str(data.get('message')))
 
 
 def answer(response) -> dict:
@@ -317,7 +336,7 @@ class SmartRecruiters(Platform):
 
     async def _list(self, http, session: dict, params: dict) -> dict:
         response = await send(http, 'GET', API.format(company=session['company']), params=params)
-        if response.status_code in NOT_READABLE:
+        if response.status_code == LOCKED:
             raise BoardMissing(session['company'])
         return answer(response)
 
@@ -365,26 +384,19 @@ class SmartRecruiters(Platform):
                 phrase_end = more[-1]['postedAt'] or ''
             yield [j if j['id'] in phrase_ids or wanted.in_title(index(j['title'])) else {**j, 'id': None} for j in page]
 
-    async def _detail(self, http, session: dict, job_id: str) -> tuple[int, dict]:
+    async def _detail(self, http, session: dict, job_id: str) -> dict | None:
+        """One posting, or None when SmartRecruiters says it cannot be read (missing()). BoardError for any other answer."""
         response = await send(http, 'GET', f'{API.format(company=session["company"])}/{job_id}')
-        if response.status_code != 200:
-            return response.status_code, {}
-        return 200, answer(response)
+        return None if missing(response) else answer(response)
 
     async def details(self, http, session, job):
-        status, record = await self._detail(http, session, job['id'])
-        if status in NOT_READABLE:
-            return job
-        if status != 200:
-            raise BoardError(f'HTTP {status}')
-        return self.enrich(job, record)
+        record = await self._detail(http, session, job['id'])
+        return job if record is None else self.enrich(job, record)
 
     async def lookup(self, http, session, job_id):
-        status, record = await self._detail(http, session, job_id)
-        if status in NOT_READABLE:
+        record = await self._detail(http, session, job_id)
+        if record is None:
             return 'not found', None
-        if status != 200:
-            raise BoardError(f'HTTP {status}')
         if record.get('active') is not True:
             return 'closed', None
         return 'open', self.enrich(self.job(session, record), record)
