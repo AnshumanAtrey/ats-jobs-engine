@@ -342,14 +342,16 @@ class Workable(Platform):
             self._last = time.monotonic()
         try:
             response = await send(http, method, url, **kwargs)
-        except BoardError:
+        except BoardError as exc:
             self._refused += 1
+            if 'HTTP 429' in str(exc):
+                exc = BoardError('Workable refused this address (HTTP 429), which can last up to a day')
             if self._refused >= REFUSALS and not self._told and self.cfg is not None:
                 self._told = True
                 self.cfg.notes.append(f'Workable stopped answering this address after {REFUSALS} refused calls in a '
                                       'row (it can refuse an address for up to a day), so the career pages, details '
                                       'and links after that were not read. Run again later.')
-            raise
+            raise exc
         self._refused = 0
         return response
 

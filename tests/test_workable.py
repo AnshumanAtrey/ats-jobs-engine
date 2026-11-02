@@ -660,6 +660,14 @@ class Refusals(unittest.TestCase):
         self.assertEqual(len(calls), workable.REFUSALS)
         self.assertIn('stopped answering this address', p.cfg.notes[-1])
 
+    def test_a_refusal_is_named_in_plain_words(self):
+        async def refused(http, method, url, **kwargs):
+            raise BoardError('HTTP 429')
+        with patch.object(workable, 'send', refused), patch.object(workable, 'PACE', 0):
+            with self.assertRaises(BoardError) as caught:
+                asyncio.run(settings({}).job_answer(None, 'biffa', '584D288213'))
+        self.assertEqual(str(caught.exception), 'Workable refused this address (HTTP 429), which can last up to a day')
+
     def test_an_answer_in_between_starts_the_count_again(self):
         answers = [BoardError('HTTP 429'), BoardError('HTTP 429'), Response(200, V2), BoardError('HTTP 429'), BoardError('HTTP 429'), Response(200, V2)]
 
