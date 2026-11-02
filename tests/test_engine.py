@@ -183,6 +183,20 @@ class Enough(unittest.TestCase):
         self.assertFalse(search(platform, {'maxJobs': 5}).enough)
 
 
+class Descriptions(unittest.TestCase):
+    def test_a_platform_hears_that_descriptions_are_searched(self):
+        class Listening(Fake):
+            heard = []
+
+            async def pages(self, http, session, term, days):
+                Listening.heard.append(self.search_descriptions)
+                async for page in super().pages(http, session, term, days):
+                    yield page
+        search(Listening({'a': [[job('1')]]}), {'searchTerms': ['engineer'], 'searchDescriptions': True})
+        search(Listening({'a': [[job('1')]]}), {'searchTerms': ['engineer']})
+        self.assertEqual(Listening.heard, [True, False])
+
+
 class Places(unittest.TestCase):
     def test_a_job_that_names_no_place_is_opened_for_a_place_filter(self):
         class Vague(Fake):

@@ -175,6 +175,7 @@ class Run:
 
     async def search(self) -> None:
         cfg, platform = self.cfg, self.platform
+        platform.search_descriptions = cfg.search_descriptions
         filters = Filters(cfg)
         now = datetime.now(timezone.utc)
         targets = [self.board(k) for k in cfg.companies] or self.boards
