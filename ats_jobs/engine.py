@@ -359,30 +359,33 @@ class Run:
         by_board: dict[str, tuple[str, list]] = {}
         for key, job_id, _ in cfg.job_urls:
             by_board.setdefault(key.lower(), (key, []))[1].append(job_id)
-        found: dict[tuple, tuple] = {}     # (board, job id) -> (status, job)
+        # (board in lower case, job id) -> (status, job): links are grouped by the board in lower case, so a company's
+        # links typed in other cases (BoschGroup, BOSCHGROUP) find their answers too
+        found: dict[tuple, tuple] = {}
         sem = asyncio.Semaphore(platform.concurrency)
 
         async with client(platform.actor, platform.concurrency * 2) as http:
             async def one(key: str, job_ids: list[str]) -> None:
+                board = key.lower()
                 async with sem:
                     try:
                         session = await platform.open(http, self.board(key))
                         if session is None:
                             self.boards_missing.append(key)
-                            found.update({(key, j): ('not found', None) for j in job_ids})
+                            found.update({(board, j): ('not found', None) for j in job_ids})
                             return
                         for job_id in job_ids:
-                            found[(key, job_id)] = await platform.lookup(http, session, job_id)
+                            found[(board, job_id)] = await platform.lookup(http, session, job_id)
                     except BoardError as exc:
                         self.board_error(key, exc)
-                        found.update({(key, j): ('error', None) for j in job_ids if (key, j) not in found})
+                        found.update({(board, j): ('error', None) for j in job_ids if (board, j) not in found})
 
             self.phase = 'links'
             await self.run_all([one(key, ids) for key, ids in by_board.values()])
 
         rows = []
         for key, job_id, url in cfg.job_urls:
-            status, job = found.get((key, job_id), ('error', None))
+            status, job = found.get((key.lower(), job_id), ('error', None))
             if status == 'error':
                 self.links['couldNotCheck'] += 1
                 continue

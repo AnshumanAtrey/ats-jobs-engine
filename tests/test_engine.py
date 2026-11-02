@@ -81,6 +81,36 @@ async def _quiet(message):
     return None
 
 
+class Linked(Fake):
+    """Links x/<company>/<job>; company keys are read in any case, as on SmartRecruiters and Workday."""
+
+    def read_link(self, text):
+        parts = text.split('/')
+        return (parts[1], parts[2]) if len(parts) == 3 and parts[0] == 'x' else None
+
+    async def open(self, http, board):
+        return board.key.lower() if board.key.lower() in self.sites else None
+
+    async def lookup(self, http, session, job_id):
+        site = self.sites[session]
+        if site == 'down':
+            raise BoardError('HTTP 500')
+        found = [j for page in site for j in page if j['id'] == job_id]
+        return ('open', dict(found[0], jobUrl=f'https://x/{job_id}')) if found else ('not found', None)
+
+
+def check(platform, links):
+    @asynccontextmanager
+    async def no_client(actor, connections=64):
+        yield None
+    run = engine.Run(platform, parse_input({'jobUrls': links}, platform), [Board(k, k) for k in platform.sites], None,
+                     Delivered())
+    with patch.object(engine, 'client', no_client), patch.object(engine, 'safe_status', _quiet), \
+            patch.object(engine, 'seconds_left_in_run', lambda: None):
+        asyncio.run(run.check_links())
+    return run
+
+
 class Delivery(unittest.TestCase):
     def test_the_newest_jobs_of_all_boards_come_first(self):
         run = search(Fake({'a': [[job('1', 'One', 5), job('2', 'Two', 1)]], 'b': [[job('3', 'Three', 0), job('4', 'Four', 9)]]}), {'maxJobs': 3})
@@ -133,6 +163,19 @@ class Delivery(unittest.TestCase):
     def test_details_are_charged_only_when_they_came(self):
         run = search(Fake({'a': [[job('ok'), job('nodetails', title='Analyst')]]}), {'includeDetails': True})
         self.assertEqual(dict(run.delivery.pushed), {'ok': 'job-details', 'nodetails': 'job'})
+
+
+class Links(unittest.TestCase):
+    def test_links_to_one_company_in_any_case_are_all_checked(self):
+        # live review 2026-11-03: three open Bosch links typed boschgroup, BoschGroup and BOSCHGROUP gave 1 row and
+        # "2 links could not be checked (SmartRecruiters did not answer)" after 3 answered calls
+        run = check(Linked({'acme': [[job('1'), job('2', 'Analyst'), job('3', 'Cook')]]}), ['x/acme/1', 'x/Acme/2', 'x/ACME/3'])
+        self.assertEqual(([i for i, _ in run.delivery.pushed], run.links['couldNotCheck']), (['1', '2', '3'], 0))
+        self.assertEqual(run.links['open'], 3)
+
+    def test_a_board_that_fails_leaves_its_links_unchecked(self):
+        run = check(Linked({'acme': 'down', 'other': [[job('9')]]}), ['x/acme/1', 'x/ACME/2', 'x/other/9'])
+        self.assertEqual(([i for i, _ in run.delivery.pushed], run.links['couldNotCheck']), (['9'], 2))
 
 
 class Paging(unittest.TestCase):
