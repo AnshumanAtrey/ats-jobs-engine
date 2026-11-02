@@ -454,6 +454,13 @@ class EveryCompany(unittest.TestCase):
             return first, second
         self.assertEqual((asyncio.run(run()), http.opened), ((['F44ED9E40A', '0908074E5D'], []), 1))
 
+    def test_an_encoding_that_was_not_asked_for_falls_back(self):
+        session = {'account': 'biffa', 'name': 'Biffa Waste Services', 'website': None,
+                   'jobs': [{**ENTRY, 'title': 'HGV Engineer'}]}
+        pages, opened, p = self.collect([(200, [b'\x8b\x0b\x80'], 'br')], fallback={'biffa': session})
+        self.assertEqual((pages, opened), ([['8A29959BE6']], 1))
+        self.assertIn('an encoding that was not asked for (br)', p.cfg.notes[-1])
+
     def test_a_server_error_is_tried_again(self):
         self.assertEqual(self.collect([(503, []), (200, [FEED_XML])])[:2], ([['F44ED9E40A']], 2))
 

@@ -177,12 +177,13 @@ def words_of(html: str | None) -> str | None:
 
 
 def decoder(encoding: str):
-    """The content encoding of a download -> a function from its bytes, in order, to plain bytes."""
+    """The content encoding of a download -> a function from its bytes, in order, to plain bytes. BoardError for an
+    encoding that was not asked for, so the run falls back instead of failing."""
     if encoding in ('gzip', 'x-gzip'):
         return zlib.decompressobj(16 + zlib.MAX_WBITS).decompress
     if encoding in ('', 'identity'):
         return lambda chunk: chunk
-    raise httpx.DecodingError(f'unknown content encoding {encoding}')
+    raise BoardError(f'the feed came in an encoding that was not asked for ({encoding[:40]})')
 
 
 def answer(response) -> dict | list:
