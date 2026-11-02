@@ -160,6 +160,27 @@ class Delivery(unittest.TestCase):
         search(Listening({'a': [[job('1')]]}), {'searchTerms': ['engineer']})
         self.assertEqual(heard, [True, False])
 
+    def test_a_board_with_a_record_of_an_unexpected_shape_is_one_failed_board_not_a_failed_run(self):
+        # live review 2026-11-03: one record {'location': 'Remote'} on one board ended the run with exit 91, OUTPUT
+        # left 'running' and 0 rows, although the other boards were fine
+        class Odd(Fake):
+            async def pages(self, http, session, term, days):
+                if session == 'odd':
+                    raise AttributeError("'str' object has no attribute 'get'")
+                async for page in super().pages(http, session, term, days):
+                    yield page
+        run = search(Odd({'odd': [[job('x')]], 'a': [[job('1')]], 'b': [[job('2', 'Analyst')]]}), {})
+        self.assertEqual(sorted(i for i, _ in run.delivery.pushed), ['1', '2'])
+        self.assertEqual(run.board_errors, [{'board': 'odd', 'error': "AttributeError: 'str' object has no attribute 'get'"}])
+        self.assertTrue(run.ran())
+
+    def test_details_of_an_unexpected_shape_leave_the_job_without_them(self):
+        class Odd(Fake):
+            async def details(self, http, session, job):
+                raise TypeError('odd details')
+        run = search(Odd({'a': [[job('1')]]}), {'includeDetails': True})
+        self.assertEqual((run.delivery.pushed, run.board_errors[0]['error']), ([('1', 'job')], 'TypeError: odd details'))
+
     def test_details_are_charged_only_when_they_came(self):
         run = search(Fake({'a': [[job('ok'), job('nodetails', title='Analyst')]]}), {'includeDetails': True})
         self.assertEqual(dict(run.delivery.pushed), {'ok': 'job-details', 'nodetails': 'job'})
@@ -176,6 +197,16 @@ class Links(unittest.TestCase):
     def test_a_board_that_fails_leaves_its_links_unchecked(self):
         run = check(Linked({'acme': 'down', 'other': [[job('9')]]}), ['x/acme/1', 'x/ACME/2', 'x/other/9'])
         self.assertEqual(([i for i, _ in run.delivery.pushed], run.links['couldNotCheck']), (['9'], 2))
+
+
+    def test_a_link_answer_of_an_unexpected_shape_is_a_link_not_checked(self):
+        class Odd(Linked):
+            async def lookup(self, http, session, job_id):
+                if session == 'odd':
+                    raise KeyError('active')
+                return await super().lookup(http, session, job_id)
+        run = check(Odd({'odd': [[job('1')]], 'acme': [[job('2')]]}), ['x/odd/1', 'x/acme/2'])
+        self.assertEqual(([i for i, _ in run.delivery.pushed], run.links['couldNotCheck']), (['2'], 1))
 
 
 class Paging(unittest.TestCase):

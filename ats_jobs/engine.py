@@ -169,7 +169,10 @@ class Run:
         return {k: v for k, v in row.items() if k not in self.platform.never}
 
     def board_error(self, key: str, exc: Exception) -> None:
-        self.board_errors.append({'board': key, 'error': str(exc)[:200]})
+        """A board, or a job's details, that could not be read. Anything but a BoardError is a record of a shape the
+        platform did not expect, named by its type: it costs that board, never the run."""
+        text = str(exc) if isinstance(exc, BoardError) else f'{type(exc).__name__}: {exc}'
+        self.board_errors.append({'board': key, 'error': text[:200]})
 
     # ---------- search ----------
 
@@ -285,7 +288,7 @@ class Run:
                                     break
                     except BoardMissing:
                         self.boards_missing.append(board.key)
-                    except BoardError as exc:
+                    except Exception as exc:  # noqa: BLE001  a BoardError, or a record the platform did not expect
                         self.board_error(board.key, exc)
                     finally:
                         self.boards_read += 1
@@ -331,7 +334,7 @@ class Run:
                     return
                 try:
                     job.update(await platform.details(http, sessions.get(board.key), job))
-                except BoardError as exc:
+                except Exception as exc:  # noqa: BLE001  a BoardError, or a record the platform did not expect
                     self.board_error(board.key, exc)
                 finally:
                     self.details_read += 1
@@ -376,7 +379,7 @@ class Run:
                             return
                         for job_id in job_ids:
                             found[(board, job_id)] = await platform.lookup(http, session, job_id)
-                    except BoardError as exc:
+                    except Exception as exc:  # noqa: BLE001  a BoardError, or a record the platform did not expect
                         self.board_error(key, exc)
                         found.update({(board, j): ('error', None) for j in job_ids if (board, j) not in found})
 
