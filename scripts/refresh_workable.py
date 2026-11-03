@@ -280,11 +280,22 @@ async def career_page(http, turns: Turns, account: str) -> dict | None:
         return {'error': f'HTTP {response.status_code}'}
 
 
+def held(page: dict | None, company: dict) -> int:
+    """How many of a feed company's jobs a career page that answered lists. One is proof that the account is the
+    company's own; a name or Common Crawl's votes alone are not: generic names (Elevate, Company) pointed to the
+    wrong account, or to one that no longer answers (2026-11-03)."""
+    return len(page['codes'] & company['jobs']) if page and 'error' not in page else 0
+
+
 def holds(page: dict | None, company: dict) -> bool:
-    """A career page that answered and lists one of a feed company's jobs: that company's own account. A name or
-    Common Crawl's votes alone are not enough: generic names (Elevate, Company) pointed to the wrong account, or to
-    one that no longer answers (2026-11-03)."""
-    return bool(page) and 'error' not in page and bool(page['codes'] & company['jobs'])
+    return held(page, company) > 0
+
+
+def unheld(page: dict | None, company: dict) -> list[str]:
+    """The company's job codes its account does not list, when they are more than half of 6 or more: two accounts
+    share the company's name in the feed (elevate-47 lists 1 of Elevate's 427 jobs, elevate-7 the rest)."""
+    rest = sorted(company['jobs'] - (page or {}).get('codes', set()))
+    return rest[:CODES_PER_COMPANY] if len(rest) * 2 > len(company['jobs']) >= 6 else []
 
 
 async def paced(items, work, label: str) -> list:
@@ -328,11 +339,11 @@ async def main(extra: list[str], feed_file: str | None) -> None:
         for account, page in pages.items():
             if page and 'error' not in page:
                 by_name.setdefault(page['name'].casefold(), []).append(account)
-        owner = {}                                   # feed company name -> its account
+        owner = {}                                   # feed company name -> the account listing most of its jobs
         for company in companies.by_name.values():
             mine = [a for a in by_name.get(company['name'].casefold(), []) if holds(pages[a], company)]
             if mine:
-                owner[company['name']] = mine[0]
+                owner[company['name']] = max(mine, key=lambda a: held(pages[a], company))
         unowned = sorted((c for c in companies.by_name.values() if c['name'] not in owner),
                          key=lambda c: -len(c['jobs']))
         voted = {c['name']: account_by_codes(codes, c) for c in unowned}
@@ -349,6 +360,18 @@ async def main(extra: list[str], feed_file: str | None) -> None:
         results += (more := await paced(new, lambda a: career_page(http, turns, a), 'feed accounts checked'))
         pages.update(zip(new, more))
         owner.update((c['name'], a) for c, a in zip(ranked, found) if isinstance(a, str) and holds(pages.get(a), c))
+        # a name two accounts share: the jobs the owner does not list redirect to the other account
+        split = [c for c in companies.by_name.values() if c['name'] in owner and unheld(pages[owner[c['name']]], c)]
+        other = await paced(split, lambda c: account_of(http, turns, unheld(pages[owner[c['name']]], c)),
+                            'companies sharing a name resolved')
+        found += other
+        new = sorted({a for a in other if isinstance(a, str) and a not in pages and ACCOUNT.match(a)})
+        more = await paced(new, lambda a: career_page(http, turns, a), 'accounts sharing a name checked')
+        results += more
+        pages.update(zip(new, more))
+        for c, a in zip(split, other):
+            if isinstance(a, str) and held(pages.get(a), c) > held(pages[owner[c['name']]], c):
+                owner[c['name']] = a
     calls = len(results) + len(found)
     lost = unanswered(results) + unanswered(found)
     if turns.refused:
