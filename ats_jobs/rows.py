@@ -196,9 +196,10 @@ def job_places(job: dict) -> tuple[list[str], set[str]]:
         stored = country_code(entry.get('country'), allow_codes=True)
         if stored:
             codes.add(stored)
-        for part in _location_parts(name):
-            # "Atlanta, Georgia" with a US address is the state: the one country name that is also a US state
-            codes.update(c for c in _part_codes(part) if not (c == 'GE' and stored == 'US'))
+        found = {c for part in _location_parts(name) for c in _part_codes(part)}
+        # "Atlanta, Georgia" with a US address, or with the United States in its own text, is the state: the one
+        # country name that is also a US state
+        codes.update(found - {'GE'} if stored == 'US' or 'US' in found else found)
     return texts, codes
 
 

@@ -65,12 +65,13 @@ def job(job_id, title='Engineer', posted=0, where='Berlin'):
     return {'id': job_id, 'title': title, 'location': where, 'postedAt': day(posted), 'dateOnly': True}
 
 
-def search(platform, raw, boards=None):
+def search(platform, raw, boards=None, delivery=None):
     @asynccontextmanager
     async def no_client(actor, connections=64):
         yield None
     keys = boards or list(platform.sites)
-    run = engine.Run(platform, parse_input(raw, platform), [Board(k, k.split('/')[0]) for k in keys], None, Delivered())
+    run = engine.Run(platform, parse_input(raw, platform), [Board(k, k.split('/')[0]) for k in keys], None,
+                     delivery or Delivered())
     with patch.object(engine, 'client', no_client), patch.object(engine, 'safe_status', _quiet), \
             patch.object(engine, 'seconds_left_in_run', lambda: None):
         asyncio.run(run.search())
@@ -181,6 +182,70 @@ class Enough(unittest.TestCase):
         sites = {f'c{i}': [[dict(job(f'{i}-{n}', f'Job {i} {n}'), postedAt=f'{TODAY}T08:00:00+00:00', dateOnly=False) for n in range(5)]] for i in range(3)}
         platform = Fake(sites, concurrency=1)
         self.assertFalse(search(platform, {'maxJobs': 5}).enough)
+
+
+class Descriptions(unittest.TestCase):
+    def test_a_platform_hears_the_words_of_a_description_search(self):
+        class Listening(Fake):
+            heard = []
+
+            async def pages(self, http, session, term, days):
+                Listening.heard.append(self.description_terms)
+                async for page in super().pages(http, session, term, days):
+                    yield page
+        search(Listening({'a': [[job('1')]]}), {'searchTerms': ['engineer'], 'searchDescriptions': True})
+        search(Listening({'a': [[job('1')]]}), {'searchTerms': ['engineer']})
+        self.assertEqual(Listening.heard, [('engineer',), ()])
+
+
+class Summary(unittest.TestCase):
+    """The OUTPUT record and the status message say what was read, so a lost board is never silent."""
+
+    def test_a_board_that_fails_is_not_counted_as_read_and_makes_the_run_partial(self):
+        run = search(Fake({'a': 'down', 'b': [[job('1')]], 'c': [[job('2', 'Two')]]}), {})
+        self.assertIn('on 2 Fake boards', run.message())
+        self.assertIn('1 Fake board could not be read: boardsWithErrors in OUTPUT says why.', run.message())
+        self.assertEqual(run.status(), 'partial')
+
+    def test_a_missing_board_is_not_counted_as_read(self):
+        run = search(Fake({'a': 'missing', 'b': [[job('1')]]}), {})
+        self.assertIn('on 1 Fake board in', run.message())
+        self.assertEqual(run.status(), 'done')
+
+    def test_companies_that_all_have_no_board_read_nothing_and_say_so(self):
+        class Named(Fake):
+            def guess_board(self, name):
+                return name
+        run = search(Named({'nosuch': 'missing'}), {'companies': ['nosuch']})
+        self.assertRegex(run.message(), r'^Nothing was read in \d+ s\. No Fake board for: nosuch\.$')
+        self.assertEqual(run.status(), 'done')
+
+    def test_details_that_fail_do_not_fail_the_run_that_delivered(self):
+        class Flaky(Fake):
+            async def details(self, http, session, job):
+                if job['id'] == 'bad':
+                    raise BoardError('HTTP 502')
+                return await super().details(http, session, job)
+        run = search(Flaky({'a': [[job('ok'), job('bad', 'Analyst')]]}), {'includeDetails': True})
+        self.assertTrue(run.ran(), 'two rows were delivered and charged, so the run must not end FAILED')
+        self.assertEqual((run.status(), run.delivery.rows), ('partial', 2))
+        self.assertIn('The details of 1 job could not be read, so they were saved without them.', run.message())
+
+    def test_the_record_written_at_the_start_says_it_is_reading(self):
+        platform = Fake({'a': [[job('1')]], 'b': [[job('2')]]})
+        run = engine.Run(platform, parse_input({}, platform), [Board('a', 'a'), Board('b', 'b')], None, Delivered())
+        self.assertEqual(run.output('running')['message'], 'Reading 2 Fake boards.')
+
+    def test_a_spending_limit_says_how_many_matched_and_how_many_were_saved(self):
+        class Limited(Delivered):
+            async def push(self, rows, event):
+                self.limit = True
+                return await super().push(rows[:2], event)
+        run = search(Fake({'a': [[job('1', 'One'), job('2', 'Two')]], 'b': [[job('3', 'Three')]]}), {'maxJobs': 0},
+                     delivery=Limited())
+        self.assertIn('Found 3 matching jobs at 2 companies on 2 Fake boards, saved the 2 newest in', run.message())
+        self.assertIn('Stopped early: your spending limit', run.message())
+        self.assertEqual(run.status(), 'partial')
 
 
 class Places(unittest.TestCase):

@@ -24,6 +24,9 @@ class Platform:
     ranked_search = False    # a word search comes back by relevance, so only a list with no word is newest first
     page_cap: int | None = None    # pages read per board and word, unless every match was asked for
     never: tuple = ()        # row fields this platform never publishes: left out of its rows
+    description_terms: tuple = ()     # set by the engine: the words of a run that searches descriptions, so a
+                                      # platform whose job list leaves descriptions out can ask for them and skip
+                                      # the text that holds none of these words
 
     def boards(self) -> tuple[list[Board], str | None]:
         """data/<key>.tsv -> (boards, the date of the list). Lines: key, name, website; # lines are comments."""

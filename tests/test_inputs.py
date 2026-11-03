@@ -59,6 +59,14 @@ class SearchTerms(unittest.TestCase):
         cfg = parse({'searchTerms': ['site:jobs.ashbyhq.com/ramp intitle:engineer']})
         self.assertEqual((cfg.search_terms, cfg.companies), (['engineer'], ['ramp']))
 
+    def test_a_dork_with_or_searches_each_alternative(self):
+        cfg = parse({'searchTerms': ['site:jobs.ashbyhq.com "data engineer" OR "ml engineer"']})
+        self.assertEqual((cfg.search_terms, cfg.companies), (['data engineer', 'ml engineer'], []))
+        cfg = parse({'searchTerms': ['site:jobs.ashbyhq.com/ramp intext:frontend | intext:backend']})
+        self.assertEqual((cfg.search_terms, cfg.companies), (['frontend', 'backend'], ['ramp']))
+        cfg = parse({'searchTerms': ['site:jobs.ashbyhq.com intext:"research and development"', 'sales or marketing']})
+        self.assertEqual(cfg.search_terms, ['research development', 'sales or marketing'])     # no OR: as before
+
     def test_dork_without_words_is_skipped_with_a_reason(self):
         cfg = parse({'searchTerms': ['site:jobs.ashbyhq.com']})
         self.assertEqual(cfg.search_terms, [])
@@ -92,6 +100,13 @@ class Places(unittest.TestCase):
         self.assertEqual((cfg.locations, cfg.work_types), (['US', 'Germany'], ['remote']))
         cfg = parse({'location': 'Remote 100%'})
         self.assertEqual((cfg.locations, cfg.work_types), ([], ['remote']))
+
+    def test_a_place_with_no_letters_is_skipped_with_a_reason(self):
+        cfg = parse({'location': ['!!!', 'Berlin', '-']})
+        self.assertEqual(cfg.locations, ['Berlin'])
+        self.assertEqual([why for _, why in cfg.skipped], ['"!!!" in location has no letters or digits to match.',
+                                                           '"-" in location has no letters or digits to match.'])
+        self.assertEqual(parse({'location': '???'}).locations, [])     # alone, it is every place, not none
 
     def test_offline_means_onsite(self):
         cfg = parse({'workType': ['offline']})

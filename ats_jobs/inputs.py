@@ -99,11 +99,24 @@ def read_search_term(token: str, platform=None) -> tuple[str | None, str | None,
     return (text, None, None) if text else (None, None, None)
 
 
+DORK_OR = re.compile(r'\s+(?:OR|\|)\s+')            # Google's OR: upper case, or |
+
+
+def alternatives(token: str) -> list[str]:
+    """A pasted dork with OR -> one dork per alternative, each keeping its operators:
+    'site:x "data engineer" OR "ml engineer"' -> ['site:x "data engineer"', 'site:x "ml engineer"']."""
+    text = _clean(token)
+    if not (DORK_OPERATOR.search(text) or DORK_TEXT.search(text)) or not DORK_OR.search(text):
+        return [token]
+    operators = ' '.join(DORK_OPERATOR.findall(text))
+    return [f'{operators} {part.strip()}'.strip() for part in DORK_OR.split(DORK_OPERATOR.sub(' ', text)) if part.strip()]
+
+
 def parse_terms(value, key: str, notes: list[str], skipped: list[tuple[str, str]],
                 boards: list[str] | None = None, platform=None) -> list[str]:
     """Search words -> terms. Boards named by a pasted dork are added to boards."""
     terms, seen = [], set()
-    for token in _items(value):
+    for token in [alternative for item in _items(value) for alternative in alternatives(item)]:
         term, note, board = read_search_term(token, platform)
         if board is not None and boards is not None and board.lower() not in (b.lower() for b in boards):
             boards.append(board)
@@ -174,13 +187,18 @@ def parse_choices(value, key: str, allowed: tuple[str, ...], aliases: dict[str, 
 REMOTE_WORDS = re.compile(r'\b(?:fully\s+)?remote(?:ly)?\b|\bwfh\b', re.I)
 
 
-def parse_locations(value, work_types: list[str], notes: list[str]) -> tuple[list[str], list[str]]:
+def parse_locations(value, work_types: list[str], notes: list[str],
+                    skipped: list[tuple[str, str]]) -> tuple[list[str], list[str]]:
     """Places -> (places, work types). "Remote" typed as a place asks for remote jobs, so it moves to
     the work type (a place next to it still filters, as in "Remote, United States" or "Remote EMEA").
-    "Worldwide", "Anywhere" and "Global" stay places: they find the jobs open everywhere."""
+    "Worldwide", "Anywhere" and "Global" stay places: they find the jobs open everywhere. An entry with
+    no letter or digit ("!!!") would match no job, so it is skipped with a reason."""
     chosen, moved = [], list(work_types)
     for token in _items(value):
         text = _clean(token)
+        if not re.search(r'[^\W_]', text):
+            skipped.append((token, f'"{token}" in location has no letters or digits to match.'))
+            continue
         toks = places.tokens(text)
         if places.world_query(toks):
             notes.append(f'Read "{text}" in location as jobs open worldwide: marked worldwide, global or anywhere, '
@@ -340,7 +358,7 @@ def parse_input(raw: dict | None, platform, company_names: dict[str, list[str]] 
     if _items(raw.get('jobUrls')) and not job_urls:
         notes.append('None of the job links could be read, so the run searched instead. ' + skipped[0][1])
     work_types = parse_choices(raw.get('workType'), 'workType', WORK_TYPES, WORK_TYPE_ALIASES, notes)
-    locations, work_types = parse_locations(raw.get('location'), work_types, notes)
+    locations, work_types = parse_locations(raw.get('location'), work_types, notes, skipped)
     companies = parse_companies(_items(raw.get('companies')) + pasted_boards, platform, company_names, notes, skipped)
     if _items(raw.get('companies')) and not companies:
         notes.append('None of the companies could be read, so every company was searched. ' + skipped[-1][1])
