@@ -381,6 +381,38 @@ class CutRuns(unittest.TestCase):
         self.assertEqual((run.boards_read, run.ran(), run.status()), (0, False, 'failed'))
 
 
+class Streaming(unittest.TestCase):
+    def test_details_are_read_a_push_chunk_at_a_time_and_stop_at_the_spending_limit(self):
+        # Lever live review 2026-11-03: an every-job run with details read every description before delivering a row
+        asked = []
+
+        class Counting(Fake):
+            async def details(self, http, session, job):
+                asked.append(job['id'])
+                return {**job, 'description': 'Full text'}
+
+        class Limited(Delivered):
+            def can_pay(self, event):
+                return self.rows < 3
+
+            async def push(self, rows, event):
+                done = await super().push(rows[:max(0, 3 - self.rows)], event)
+                self.limit = self.rows >= 3
+                return done
+
+        jobs = [job(str(i), f'Role {i}', posted=i) for i in range(10)]
+        with patch.object(engine, 'PUSH_CHUNK', 2):
+            run = search(Counting({'a': [jobs]}), {'includeDetails': True, 'maxJobs': 100}, delivery=Limited())
+        self.assertEqual([i for i, _ in run.delivery.pushed], ['0', '1', '2'])
+        self.assertEqual((sorted(asked), run.stop), (['0', '1', '2', '3'], 'limit'))
+
+    def test_a_run_without_details_delivers_every_chunk_newest_first(self):
+        jobs = [job(str(i), f'Role {i}', posted=i) for i in range(5)]
+        with patch.object(engine, 'PUSH_CHUNK', 2):
+            run = search(Fake({'a': [jobs]}), {'maxJobs': 100})
+        self.assertEqual([i for i, _ in run.delivery.pushed], ['0', '1', '2', '3', '4'])
+
+
 class Enough(unittest.TestCase):
     def test_a_run_stops_once_today_fills_the_list(self):
         sites = {f'c{i}': [[job(f'{i}-{n}', f'Job {i} {n}') for n in range(5)]] for i in range(9)}

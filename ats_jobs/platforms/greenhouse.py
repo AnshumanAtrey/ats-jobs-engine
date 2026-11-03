@@ -65,7 +65,7 @@ import httpx
 
 from ..http import BoardError, BoardMissing, send
 from ..inputs import JOB_TYPE_ALIASES, WORK_TYPE_ALIASES
-from ..rows import Term, parse_time, terms
+from ..rows import Term, parse_time, plain, terms
 from .base import Board, Platform
 from .cornerstone import text_of
 from .deel import pay_text
@@ -203,8 +203,9 @@ def names(items: list | None) -> str | None:
 def may_hold(content: str, wanted: list[Term]) -> bool:
     """A cheap first look at a description, still escaped: can it hold one of the words searched? Every word of a term
     is a prefix of the word it folds from, so a word that is not in the text is not in the description either. A
-    letter written as an entity would hide a word, so such text is looked at in full (none in 2,765 jobs)."""
-    text = content.casefold()
+    letter written as an entity would hide a word, so such text is looked at in full (none in 2,765 jobs). The text is
+    folded like the terms, case and accents, so 'Ingénieur' answers a search for ingenieur."""
+    text = plain(content.casefold())
     return bool(ODD_ENTITY.search(text)) or any(all(t in text for t in term.tokens) or (term.joined or '\0') in text
                                                 for term in wanted)
 

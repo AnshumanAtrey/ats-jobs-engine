@@ -324,15 +324,31 @@ class Run:
 
             chosen = self.newest_copies(sorted(kept if cfg.max_jobs is None else heap,
                                                key=lambda item: (item[0], item[1]), reverse=True))
-            if cfg.include_details:
-                await self.read_details(http, chosen, texts, sessions)
+            self.details_wanted = len(chosen) if cfg.include_details else 0
+            event = DETAILS_EVENT if cfg.include_details else LINK_EVENT
+            # A push chunk at a time: a chunk's details are read just before it is delivered and let go after, so memory
+            # holds one chunk of descriptions, and no details are read for jobs past the spending limit (an every-job run
+            # with details peaked at 2.1 GB when every description was read first, Lever live review 2026-11-03).
+            for start in range(0, len(chosen), PUSH_CHUNK):
+                if not self.delivery.can_pay(event):
+                    self.stop = 'limit'
+                    break
+                part = chosen[start:start + PUSH_CHUNK]
+                if cfg.include_details:
+                    await self.read_details(http, part, texts, sessions)
+                self.phase = 'saving'
+                rows = []
+                for _, _, board, job in part:
+                    has_details = cfg.include_details and bool(job.get('description') or job.get('descriptionHtml'))
+                    rows.append((self.row(board, job, cfg.include_details), DETAILS_EVENT if has_details else LINK_EVENT))
+                await self.deliver_all(rows)
+                for _, _, _, job in part:
+                    job.pop('description', None)
+                    job.pop('descriptionHtml', None)
+                if self.stop == 'limit':
+                    break
 
         self.phase = 'saving'
-        rows = []
-        for _, _, board, job in chosen:
-            has_details = cfg.include_details and bool(job.get('description') or job.get('descriptionHtml'))
-            rows.append((self.row(board, job, cfg.include_details), DETAILS_EVENT if has_details else LINK_EVENT))
-        await self.deliver_all(rows)
 
     def newest_copies(self, items: list) -> list:
         """Newest first -> each job once, up to maxJobs: an older copy is still held when a newer one came after it."""
@@ -345,8 +361,8 @@ class Run:
         return chosen[:self.cfg.max_jobs]
 
     async def read_details(self, http, chosen: list, texts: dict, sessions: dict) -> None:
+        """The details of one push chunk of the chosen jobs; search() sets details_wanted for the whole run."""
         platform = self.platform
-        self.details_wanted = len(chosen)
         # the listing's own descriptions are already in hand: restore them before the time-limited calls, so a run that
         # reaches its time limit still delivers them (the live review of 2026-11-03 found a cut run delivered none)
         for _, _, board, job in chosen:

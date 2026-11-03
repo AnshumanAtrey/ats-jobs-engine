@@ -14,7 +14,9 @@ import httpx
 from ats_jobs.http import BoardError, BoardMissing
 from ats_jobs.inputs import parse_input
 from ats_jobs.platforms.base import Board
-from ats_jobs.platforms.greenhouse import Greenhouse, custom_fields, heavy_at_once, names, pay_of, places_of, utc
+from ats_jobs.platforms.greenhouse import (Greenhouse, custom_fields, heavy_at_once, may_hold, names, pay_of, places_of,
+                                           utc)
+from ats_jobs.rows import Term
 from scripts import refresh_greenhouse as refresh
 
 SESSION = {'token': 'gitlab'}
@@ -589,6 +591,14 @@ class Details(unittest.TestCase):
         light = P.job(SESSION, {k: v for k, v in RECORD.items() if k != 'content'})
         job, _ = self.details([Response(404, {'status': 404, 'error': 'Job not found'})], light)
         self.assertEqual(job, light)
+
+
+class DescriptionSearch(unittest.TestCase):
+    def test_a_description_with_accents_answers_a_search_typed_either_way(self):
+        # SmartRecruiters finisher 2026-11-03: may_hold compared accent-free terms with the text as written
+        self.assertTrue(may_hold('Ingénieur logiciel', [Term('ingenieur')]))
+        self.assertTrue(may_hold('Ingénieur logiciel', [Term('ingénieur')]))
+        self.assertFalse(may_hold('Plombier', [Term('ingenieur')]))
 
 
 class Lookup(unittest.TestCase):
