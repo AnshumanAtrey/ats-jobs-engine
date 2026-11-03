@@ -21,11 +21,13 @@ region that holds it ("Kenya" finds "Remote - EMEA"); a region matches jobs in a
 posted for an overlapping region ("EMEA" finds "Greece (Remote)" and "Remote - Europe"); "Worldwide"
 matches jobs marked worldwide, global or anywhere, and jobs whose location is just "Remote" with no
 country in their address. Jobs marked worldwide match every country and region too. A city, or anything
-else, matches by its words inside a location. Country codes come from the structured place a platform stores
+else, matches by its words inside a location; a US, Canadian, Australian or Indian state typed as its code (TX,
+ON, NSW) also matches its name. Country codes come from the structured place a platform stores
 (where codes such as US or GB are allowed) and from full country names inside the location text (where a
 two-letter part such as CA is a state, not Canada, so only names count).
 """
 import re
+import unicodedata
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from functools import lru_cache
@@ -145,11 +147,32 @@ class Area:
     open_remote: bool
 
 
+STATE_COUNTRIES = ('US', 'CA', 'AU', 'IN')     # where people write a state as its code: TX, ON, NSW, KA
+
+
+@lru_cache(maxsize=1024)
+def state_names(text: str) -> tuple[str, ...]:
+    """A typed state code -> the words of the states it names: 'TX' -> ('texas',), 'WA' -> ('washington', 'western
+    australia'). Workable's places, and many others, write the name, so "TX" alone found none of them. Only a code
+    that is not a country (CA stays Canada) is read this way, in STATE_COUNTRIES."""
+    code = text.strip().upper()
+    if not re.fullmatch(r'[A-Z]{2,3}', code):
+        return ()
+    try:
+        import pycountry
+    except ImportError:
+        return ()
+    found = (pycountry.subdivisions.get(code=f'{country}-{code}') for country in STATE_COUNTRIES)
+    plain = (unicodedata.normalize('NFKD', s.name).encode('ascii', 'ignore').decode() for s in found if s)
+    return tuple(dict.fromkeys(' '.join(words(name)) for name in plain))
+
+
 class Place:
     def __init__(self, text: str):
         self.text = text
         self.words = ' '.join(words(text))
         self.kind, self.countries = classify_place(text)
+        self.also = state_names(text) if self.kind == 'text' else ()
 
     def covers(self, region: frozenset[str]) -> bool:
         """A job posted for a region is for this place when the region lies inside it ("Europe" for EMEA)
@@ -164,7 +187,7 @@ class Place:
         if self.kind in ('region', 'country') and (
                 area.worldwide or area.countries & self.countries or any(self.covers(r) for r in area.regions)):
             return True
-        return bool(self.words) and any(f' {self.words} ' in f' {" ".join(words(t))} ' for t in area.texts)
+        return any(f' {w} ' in f' {" ".join(words(t))} ' for w in (self.words, *self.also) if w for t in area.texts)
 
 
 def entries(job: dict) -> list[dict]:
