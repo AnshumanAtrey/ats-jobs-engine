@@ -27,11 +27,12 @@ company through Workable's public jobs feed. No key. Measured from this laptop o
   Cloudflare compresses it on the way (gzip about 128 MB, brotli about 131 MB) and ignores Range (200, the whole
   body). Its first byte comes after 17 to 24 s and the answer ends about 63 s after the request whatever has
   arrived: of 11 downloads from here 10 were cut (the most that arrived reached the listings of 2026-10-14, about
-  three quarters) and one brotli download ended cleanly at 130.8 MB in 51 s. This line gives 3.8 to 4.1 MB/s
-  (Cloudflare's speed test, OVH): the plain feed came at that speed, gzip and brotli at about 15 MB/s of XML, below
-  it, so a datacenter line may be cut too and has to be measured. A cut feed still holds every open job listed before
-  the cut (the routes below). About 9 downloads from one address in 3 minutes made Cloudflare refuse it for an hour
-  (429, Retry-After 3590).
+  three quarters) and one brotli download ended cleanly at 130.8 MB in 51 s; the reviews' 4 downloads on 2026-11-02
+  and 03 were all cut (one at 63.8 s with 63.3 MB of gzip, 1.55 MB/s; the furthest reached 2026-10-22). This line
+  gives 3.8 to 4.1 MB/s (Cloudflare's speed test, OVH): the plain feed came at that speed, gzip and brotli at about
+  15 MB/s of XML, below it, so a datacenter line may be cut too and has to be measured. A cut feed still holds every
+  open job listed before the cut (the routes below). About 9 downloads from one address in 3 minutes made Cloudflare
+  refuse it for an hour (429, Retry-After 3590).
 - GET https://jobs.workable.com/api/v1/jobs/<id>: one job of Workable's job board (the links people paste from
   jobs.workable.com): created, workplace, and no pay (none in 5 answers read, and its app shows none); 410 is a job
   gone (8 of 10 links from older crawls), 404 one that never was. Its search
@@ -774,12 +775,13 @@ class Workable(Platform):
         jobs = list(found.values()) + [job for job in partial if job['id'] not in found
                                        and job.get('companySlug') not in same]
         pages = f'{len(read):,} compan{"y" if len(read) == 1 else "ies"}'
-        self.incomplete = True              # the run's OUTPUT says partial: the newest jobs of most companies are missing
+        self.incomplete = True              # OUTPUT says partial: the newest jobs of most companies are missing
         if not cut:
             note = (f"Workable's jobs feed could not be read ({reason}), so these jobs come from the career pages of "
                     f"the {pages} biggest on our list of {len(known):,}. Other companies' jobs are not in this run.")
         elif read:
-            which = f'{pages} with the most matching jobs' if counts else f'{len(read):,} biggest ' + pages.split(' ')[1]
+            which = (f'{pages} with the most matching jobs' if counts
+                     else f'{len(read):,} biggest ' + pages.split(' ')[1])
             note = (f"Workable's jobs feed was cut after its listings of {cut}, so the jobs listed since then come "
                     f'only from the career pages of the {which} (of {len(known):,} on our list). The newest jobs of '
                     'other companies are not in this run.')
