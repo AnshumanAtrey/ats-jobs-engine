@@ -32,8 +32,9 @@ A sandbox, test or demo account (test_site) is written as a #! comment line, rea
 templates and copies of real jobs (22 sites read in runs on 2026-11-03 held 3,073, among them SopraSteriaSandbox and
 LinkedIn QA).
 
-On 2026-11-02: 2,943 career sites of 2,931 companies with a job posted within two years, 242,790 open jobs before
-duplicates. All hiring sites by source (alone in brackets): the company box 11,203 (6,022), the Wayback Machine 4,566 (530), freehire's public API 3,848 from
+On 2026-11-03 (--no-wayback, 692 s, 12,751 candidates, every one answered): 2,917 career sites of 2,907 companies with
+a job posted within two years, 239,651 open jobs before duplicates; 9,626 dormant sites and 46 sandbox, test and demo
+accounts left out. On 2026-11-02, with the Wayback Machine, all hiring sites by source (alone in brackets): the company box 11,203 (6,022), the Wayback Machine 4,566 (530), freehire's public API 3,848 from
 69,143 of its 172,042 rows (514), Common Crawl 1,518 (10), jobseek 142 (0). Of the sites outside the job search,
 capture-recapture between freehire (744) and the Wayback Machine (857, 224 in both) puts their number near 2,846
 (Chao1 over four sources 3,939) against the 1,387 found, and those seen by one source hold a median of 2 jobs: about
