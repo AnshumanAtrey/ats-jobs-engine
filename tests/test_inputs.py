@@ -51,7 +51,7 @@ class SearchTerms(unittest.TestCase):
         self.assertEqual(parse({'searchTerms': 'frontend, Frontend; designer'}).search_terms, ['frontend', 'designer'])
 
     def test_google_dork_reads_as_the_keyword(self):
-        term, note, board = read_search_term('site:jobs.ashbyhq.com intext:"frontend"', P)
+        term, note, board, ex = read_search_term('site:jobs.ashbyhq.com intext:"frontend"', P)
         self.assertEqual((term, board), ('frontend', None))
         self.assertIn('Google dork', note)
 
@@ -71,6 +71,15 @@ class SearchTerms(unittest.TestCase):
         cfg = parse({'searchTerms': ['site:jobs.ashbyhq.com']})
         self.assertEqual(cfg.search_terms, [])
         self.assertIn('no keyword', cfg.skipped[0][1])
+
+    def test_a_dork_minus_reads_as_an_excluded_term(self):
+        cfg = parse({'searchTerms': ['site:jobs.ashbyhq.com intitle:"data engineer" -senior -"staff engineer"']})
+        self.assertEqual(cfg.search_terms, ['data engineer'])
+        self.assertCountEqual(cfg.exclude_terms, ['senior', 'staff engineer'])
+
+    def test_a_dork_with_or_in_parentheses_drops_the_brackets(self):
+        cfg = parse({'searchTerms': ['site:jobs.ashbyhq.com (frontend OR "front end")']})
+        self.assertEqual(cfg.search_terms, ['frontend', 'front end'])
 
     def test_board_link_in_the_search_box_searches_that_company(self):
         cfg = parse({'searchTerms': ['https://jobs.ashbyhq.com/openai', 'researcher']})

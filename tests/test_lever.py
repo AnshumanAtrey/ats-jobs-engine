@@ -496,5 +496,12 @@ class CopyKey(unittest.TestCase):
             self.assertNotEqual(p.copy_key(base), p.copy_key({**base, field: value}), field)
 
 
+class DorkBoard(unittest.TestCase):
+    def test_a_pasted_dork_for_an_eu_site_searches_that_site(self):
+        # live review 2026-11-03: the eu board key was handed to read_company, which took its slash for a foreign URL
+        cfg = parse_input({'searchTerms': ['site:jobs.eu.lever.co/engelvoelkers intitle:engineer']}, Lever(), {})
+        self.assertEqual((cfg.search_terms, cfg.companies), (['engineer'], ['engelvoelkers/eu']))
+
+
 if __name__ == '__main__':
     unittest.main()
