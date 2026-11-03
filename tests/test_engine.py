@@ -123,6 +123,14 @@ class Delivery(unittest.TestCase):
         self.assertEqual(dict(run.delivery.pushed), {'ok': 'job-details', 'nodetails': 'job'})
 
 
+class Status(unittest.TestCase):
+    def test_a_platform_that_read_part_of_what_it_lists_makes_the_run_partial(self):
+        run = search(Fake({'a': [[job('1')]]}, incomplete=True), {})
+        self.assertEqual((run.status(), run.delivery.rows), ('partial', 1))
+        self.assertEqual(search(Fake({'a': [[job('1')]]}), {}).status(), 'done')
+        self.assertEqual(search(Fake({'a': 'down'}), {}).status(), 'failed')
+
+
 class FailedDetails(unittest.TestCase):
     def test_details_that_fail_do_not_fail_a_run_that_read_its_boards(self):
         class NoDetails(Fake):

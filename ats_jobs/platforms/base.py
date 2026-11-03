@@ -24,6 +24,7 @@ class Platform:
     ranked_search = False    # a word search comes back by relevance, so only a list with no word is newest first
     page_cap: int | None = None    # pages read per board and word, unless every match was asked for
     never: tuple = ()        # row fields this platform never publishes: left out of its rows
+    incomplete = False       # set during a run that read only part of what the platform lists (a feed cut short)
 
     def search_all(self, boards: list[Board], cfg) -> list[Board]:
         """What a search reads when no company is named: every board (or some of them), or one board that is not on

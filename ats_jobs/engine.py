@@ -488,8 +488,15 @@ class Run:
             'finishedAt': now_iso() if status != 'running' else None,
         }
 
+    def status(self) -> str:
+        """failed when nothing could be read; partial when the run stopped early or the platform read only part of what
+        it lists (a feed cut short); else done."""
+        if not self.ran():
+            return 'failed'
+        return 'partial' if self.stop or self.platform.incomplete else 'done'
+
     async def write_output(self, final: bool) -> None:
-        status = ('partial' if self.stop else 'done') if self.ran() else 'failed'
+        status = self.status()
         try:
             await Actor.set_value('OUTPUT', self.output(status if final else 'running'))
         except Exception as exc:  # noqa: BLE001
