@@ -361,6 +361,13 @@ class Lever(Platform):
                 return self.session(name, where, company, live=True)
         return None
 
+    def copy_key(self, job: dict) -> tuple:
+        """Lever sites list one title at one place many times, for other stores, teams, job types or pay: the live
+        review of 2026-11-03 found 2,029 of the 2,701 rows a full search dropped were such distinct jobs (BoxLunch &
+        Hot Topic lost 1,506 of 4,666), so these are part of the key and only true copies drop."""
+        return (*super().copy_key(job), job.get('team'), job.get('department'), job.get('employmentType'),
+                job.get('workType'), job.get('salary'))
+
     def job(self, session: dict, record: dict) -> dict:
         categories = record.get('categories') if isinstance(record.get('categories'), dict) else {}
         found = places(record)

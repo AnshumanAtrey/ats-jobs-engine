@@ -141,6 +141,16 @@ class Delivery(unittest.TestCase):
         self.assertEqual(run.delivery.rows, 2)
         self.assertEqual(run.duplicates, 1)
 
+    def test_jobs_the_platform_tells_apart_beyond_title_and_place_are_all_kept(self):
+        # lever live review 2026-11-03: one title at three Edmonton malls came back as one row
+        class Stores(Fake):
+            def copy_key(self, job):
+                return (*super().copy_key(job), job.get('team'))
+        jobs = [{**job('1'), 'team': 'Kingsway'}, {**job('2'), 'team': 'West Edmonton'}, {**job('3'), 'team': 'Kingsway'}]
+        run = search(Stores({'acme': [jobs]}), {})
+        self.assertEqual((run.delivery.rows, run.duplicates), (2, 1))
+        self.assertEqual(search(Fake({'acme': [jobs]}), {}).delivery.rows, 1)    # the default: title and place
+
     def test_two_words_finding_one_job_is_one_row(self):
         site = [[job('1', title='Data Engineer')]]
         run = search(Fake({'a': site}), {'searchTerms': ['data', 'engineer']})

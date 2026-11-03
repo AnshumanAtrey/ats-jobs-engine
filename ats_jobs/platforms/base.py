@@ -3,6 +3,8 @@ from dataclasses import dataclass
 from importlib import resources
 from typing import AsyncIterator
 
+from ..rows import dedupe_key
+
 
 @dataclass(frozen=True)
 class Board:
@@ -34,6 +36,11 @@ class Platform:
         the list and lists every company's jobs, when the platform has one and the settings (inputs.Config, given on
         every search) suit it. The jobs of such a place carry their own company, companySlug and companyWebsite."""
         return boards
+
+    def copy_key(self, job: dict) -> tuple:
+        """What makes two jobs of one company one job, kept once (the newest): the title at its place. A platform whose
+        listings repeat a title at a place for other stores, teams or pay adds those, so distinct jobs stay."""
+        return dedupe_key(job)
 
     def boards(self) -> tuple[list[Board], str | None]:
         """data/<key>.tsv -> (boards, the date of the list). Lines: key, name, website; # lines are comments."""

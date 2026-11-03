@@ -28,7 +28,7 @@ from apify import Actor
 from .http import STATS, BoardError, BoardMissing, client
 from .inputs import Config, parse_input
 from .platforms import PLATFORMS, Board, Platform
-from .rows import Filters, dedupe_key, job_row, link_row, parse_time
+from .rows import Filters, job_row, link_row, parse_time
 
 LINK_EVENT = 'job'                 # these two must equal the event keys of the pricing in .actor/store.json
 DETAILS_EVENT = 'job-details'
@@ -247,7 +247,7 @@ class Run:
                 hit = True
                 posted = parse_time(job.get('postedAt')) or OLDEST
                 name = job.get('company') or board.name      # jobs of a place for every company name their own
-                key = (name.casefold(), *dedupe_key(job))
+                key = (name.casefold(), *platform.copy_key(job))
                 if key in seen:
                     self.duplicates += 1
                     if posted <= seen[key]:
@@ -334,7 +334,7 @@ class Run:
         """Newest first -> each job once, up to maxJobs: an older copy is still held when a newer one came after it."""
         copies, chosen = set(), []
         for item in items:
-            key = ((item[3].get('company') or item[2].name).casefold(), *dedupe_key(item[3]))
+            key = ((item[3].get('company') or item[2].name).casefold(), *self.platform.copy_key(item[3]))
             if key not in copies:
                 copies.add(key)
                 chosen.append(item)

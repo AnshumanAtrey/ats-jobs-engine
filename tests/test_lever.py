@@ -486,5 +486,15 @@ class Refresh(unittest.TestCase):
         self.assertEqual([b.key for b in Lever().boards()[0] if sandbox(b.key, b.name)], [])
 
 
+class CopyKey(unittest.TestCase):
+    def test_one_title_at_one_place_for_another_store_team_type_or_pay_is_another_job(self):
+        # live review 2026-11-03: BoxLunch & Hot Topic lost 1,506 of 4,666 store jobs to the title-and-place key
+        p, base = Lever(), {'title': 'Full-Time Assistant Manager', 'location': 'Edmonton, AB'}
+        self.assertEqual(p.copy_key(base), p.copy_key(dict(base)))
+        for field, value in (('team', 'Kingsway Mall'), ('department', 'Stores'), ('employmentType', 'part-time'),
+                             ('workType', 'onsite'), ('salary', 'CA$17 an hour')):
+            self.assertNotEqual(p.copy_key(base), p.copy_key({**base, field: value}), field)
+
+
 if __name__ == '__main__':
     unittest.main()
