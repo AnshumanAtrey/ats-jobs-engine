@@ -41,6 +41,13 @@ A posting stays open until its company closes it, and many never do: of the 12,5
 McKesson 38 from 2023), while 606 had posted within a day. Their job pages still mark them up as JobPostings.
 data/smartrecruiters.tsv keeps those sites as #~ comment lines, which runs leave out and read only when named.
 
+Sandbox, test and demo accounts post tests, templates and copies of real jobs: on 2026-11-03, 22 of the sites read in
+runs held 3,073 such postings (SopraSteriaSandbox 'Test_Rohan_Noida', LinkedIn QA 'Test offer feilds', Acme Corp. demo
+'Product Manager'), and 33 real sites held 748 more (Pilot Flying J's '(J_SYNC_TEST)Deli Baker', Christian Brothers
+Automotive's 'TEST KS007 - Blue Valley General Application'). The refresh writes such accounts as #! comment lines,
+read only when named, and a job whose title says it is a test is passed over (TEST_TITLE): never Test Engineer or
+Sample Preparer, nor Lely's 'Test – en Service Engineer' (Dutch: test and service).
+
 The job search on jobs.smartrecruiters.com (sr-jobs/search) spans companies but answers only the newest 100 of a query
 (offset and limit are ignored), leaves out the 1,387 hiring sites that opted out (AbbVie, City of New York) and 446 of
 the 4,909 newest postings of 80 companies it does hold (some almost all), with fewer fields: it cannot vouch that no
@@ -110,19 +117,30 @@ JOB_TYPE = {'permanent': 'full-time', 'full-time': 'full-time', 'part-time': 'pa
 ODD_COUNTRIES = {'XK': 'Kosovo', 'XX': None, 'UN': None}
 PERIOD = {'YEARLY': 'year', 'MONTHLY': 'month', 'WEEKLY': 'week', 'DAILY': 'day', 'HOURLY': 'hour'}
 PER = {'year': 'a year', 'month': 'a month', 'week': 'a week', 'day': 'a day', 'hour': 'an hour'}
-# data/smartrecruiters.tsv writes a career site with nothing posted in two years as a comment line with this start:
-# runs leave it out, and a company typed in the companies field still finds it
-DORMANT = '#~\t'
+# data/smartrecruiters.tsv writes a career site with nothing posted in two years, and a sandbox, test or demo account,
+# as comment lines with these starts: runs leave them out, and a company typed in the companies field still finds them
+DORMANT, TEST_SITE = '#~\t', '#!\t'
+LEFT_OUT = (DORMANT, TEST_SITE)
+# A posting that says it is a test, measured on every posting of 2026-11-03 (748 on 33 real sites, every shape read): an
+# integration's copies, '(J_SYNC_TEST)Deli Baker' (Pilot Flying J, 311); 'TEST KS007 - Blue Valley General Application'
+# (Christian Brothers Automotive, 335); 'Test Job 2', 'DC TEST Job Template', 'Driver Helper (Job Template)'; a test that
+# says do not apply ('TEST - bitte nicht bewerben: Restaurant Manager'); a title that is only test words ('test', 'TEST-2',
+# 'Demo New 2023'). 'do not apply' alone is not one (ITPractice's real '... PLEASE DO NOT APPLY UNLESS YOU ARE VERY FLUENT')
+TEST_TITLE = re.compile(
+    r'J_SYNC_TEST|(?-i:^TEST [A-Z]{2}\d{3} - )|\btest[\s_-]*jobs?\b|\bjob template\b'
+    r'|\btest\b.*\b(?:do not apply|nicht bewerben)\b|\b(?:do not apply|nicht bewerben)\b.*\btest\b'
+    r'|^\W*(?:(?:test(?:ing)?|demo|dummy|sample|template)\W*)+(?:(?:job|posting|position|role|ad|offer|new|copy)\W*)*\d*\W*$',
+    re.I)
 
 
 def squeeze(text: str) -> str:
     return re.sub(r'[^0-9a-z]+', '', text.casefold())
 
 
-def dormant_sites(text: str) -> dict[str, str]:
-    """The #~ lines of the company file -> {company name, its squeezed form or key, folded: key}. Every site's own key
-    comes first: AccionLabs2, named AccionLabs, sits above the site AccionLabs in the file (18 such pairs, 2026-11-02)."""
-    sites = [(line[len(DORMANT):].split('\t') + [''])[:2] for line in text.splitlines() if line.startswith(DORMANT)]
+def left_out_sites(text: str) -> dict[str, str]:
+    """The #~ and #! lines of the company file -> {company name, its squeezed form or key, folded: key}. Every site's own
+    key comes first: AccionLabs2, named AccionLabs, sits above the site AccionLabs in the file (18 such pairs, 2026-11-02)."""
+    sites = [(line.split('\t', 1)[1].split('\t') + [''])[:2] for line in text.splitlines() if line.startswith(LEFT_OUT)]
     found = {key.strip().casefold(): key.strip() for key, _ in sites if key.strip()}
     for key, name in sites:
         for word in (name, squeeze(name)):
@@ -266,7 +284,7 @@ class SmartRecruiters(Platform):
     newest_first = True
     never = ('otherLocations', 'team', 'expiresAt', 'offersEquity', 'companyWebsite')
     _known: set[str] | None = None
-    _dormant: dict[str, str] | None = None
+    _left_out: dict[str, str] | None = None
     rate, next_call = RATE, 0.0
 
     def read_link(self, text):
@@ -301,21 +319,21 @@ class SmartRecruiters(Platform):
         return parts[0], job
 
     def guess_board(self, name):
-        left_out = self.dormant()
+        left_out = self.left_out()
         found = left_out.get(name.strip().casefold()) or left_out.get(squeeze(name))
         if found:
             return found
         squeezed = re.sub(r'[^A-Za-z0-9-]+', '', name)
         return squeezed if COMPANY.match(squeezed) else None
 
-    def dormant(self) -> dict[str, str]:
-        if self._dormant is None:
-            self._dormant = dormant_sites(resources.files('ats_jobs').joinpath(f'data/{self.key}.tsv').read_text(encoding='utf-8'))
-        return self._dormant
+    def left_out(self) -> dict[str, str]:
+        if self._left_out is None:
+            self._left_out = left_out_sites(resources.files('ats_jobs').joinpath(f'data/{self.key}.tsv').read_text(encoding='utf-8'))
+        return self._left_out
 
     def known(self) -> set[str]:
         if self._known is None:
-            self._known = {board.key.lower() for board in self.boards()[0]} | {k.lower() for k in self.dormant().values()}
+            self._known = {board.key.lower() for board in self.boards()[0]} | {k.lower() for k in self.left_out().values()}
         return self._known
 
     async def pace(self) -> None:
@@ -397,8 +415,9 @@ class SmartRecruiters(Platform):
         while True:
             data = await self._list(http, session, {**params, 'limit': size, 'offset': offset})
             records = [r for r in data.get('content') or [] if isinstance(r, dict) and r.get('id')]
-            if records:
-                yield [self.job(session, r) for r in records]
+            if records:                  # a test posting loses its id: the engine passes over it but sees the page end
+                yield [{**job, 'id': None} if TEST_TITLE.search(job['title']) else job
+                       for job in (self.job(session, r) for r in records)]
             offset += len(data.get('content') or [])
             if not records or offset >= (data.get('totalFound') or 0):
                 return

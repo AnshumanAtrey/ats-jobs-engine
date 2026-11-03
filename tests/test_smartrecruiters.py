@@ -8,7 +8,7 @@ from unittest.mock import patch
 from ats_jobs.http import BoardError, BoardMissing
 from ats_jobs.inputs import parse_input
 from ats_jobs.platforms.base import Board
-from ats_jobs.platforms.smartrecruiters import (DORMANT, SmartRecruiters, clean, country_name, dormant_sites, job_ad,
+from ats_jobs.platforms.smartrecruiters import (DORMANT, LEFT_OUT, TEST_SITE, TEST_TITLE, SmartRecruiters, clean, country_name, left_out_sites, job_ad,
                                                 job_type, pay, place, posting_id, slug)
 from ats_jobs.rows import Filters, job_area
 
@@ -323,13 +323,13 @@ class Dormant(unittest.TestCase):
 
     def setUp(self):
         self.platform = SmartRecruiters()
-        self.platform._dormant = dormant_sites(self.TEXT)
+        self.platform._left_out = left_out_sites(self.TEXT)
 
     def test_the_lines_are_read_by_name_squeezed_name_and_key(self):
-        self.assertEqual(dormant_sites(self.TEXT), {
+        self.assertEqual(left_out_sites(self.TEXT), {
             'mckesson1': 'McKesson1', 'mckesson': 'McKesson1', 'adeebaeservicespvtltd': 'AdeebaEServicesPvtLtd',
             'adeeba e services pvt. ltd.': 'AdeebaEServicesPvtLtd'})
-        self.assertEqual(dormant_sites('BoschGroup\tBosch Group\n# a comment\n'), {})
+        self.assertEqual(left_out_sites('BoschGroup\tBosch Group\n# a comment\n'), {})
 
     def test_a_typed_company_finds_its_dormant_site(self):
         for typed in ('McKesson', 'mckesson', 'Mc Kesson', 'mckesson1', 'Adeeba e Services Pvt. Ltd.'):
@@ -339,17 +339,27 @@ class Dormant(unittest.TestCase):
     def test_a_sites_own_key_wins_over_another_sites_name(self):
         # the file's order: AccionLabs2, named AccionLabs, comes before the site AccionLabs, so typing AccionLabs read
         # AccionLabs2 (18 such pairs on 2026-11-02, SegulaTechnologies among them)
-        self.platform._dormant = dormant_sites(f'{DORMANT}AccionLabs2\tAccionLabs\t2017-08-31\t5\n'
+        self.platform._left_out = left_out_sites(f'{DORMANT}AccionLabs2\tAccionLabs\t2017-08-31\t5\n'
                                                f'{DORMANT}AccionLabs\tAccion Labs\t2016-09-30\t3\n')
         self.assertEqual(self.platform.guess_board('AccionLabs'), 'AccionLabs')
         self.assertEqual(self.platform.guess_board('accionlabs2'), 'AccionLabs2')
 
-    def test_every_dormant_site_on_file_is_found_by_its_own_key(self):
+    def test_every_site_left_out_on_file_is_found_by_its_own_key(self):
         from importlib import resources
         text = resources.files('ats_jobs').joinpath('data/smartrecruiters.tsv').read_text(encoding='utf-8')
-        found = dormant_sites(text)
-        keys = [line[len(DORMANT):].split('\t')[0] for line in text.splitlines() if line.startswith(DORMANT)]
+        found = left_out_sites(text)
+        keys = [line.split('\t')[1] for line in text.splitlines() if line.startswith(LEFT_OUT)]
         self.assertEqual([key for key in keys if found.get(key.casefold()) != key], [])
+
+    def test_a_test_account_is_read_only_when_named(self):
+        text = self.TEXT + ('# Left out of runs, read when named: 1 sandbox, test and demo accounts.\n'
+                            f'{TEST_SITE}SopraSteria2\tSopraSteriaSandbox\t2026-10-30\t603\n')
+        self.platform._left_out = left_out_sites(text)
+        self.assertEqual(self.platform.guess_board('SopraSteriaSandbox'), 'SopraSteria2')
+        self.platform._known = None
+        with patch.object(SmartRecruiters, 'boards', lambda self: ([Board('BoschGroup', 'Bosch Group')], '2026-11-03')):
+            session, calls = run(self.platform.open(None, Board('SopraSteria2', 'SopraSteria2')), [])
+        self.assertEqual((session, calls), ({'company': 'SopraSteria2'}, []))
 
     def test_a_dormant_site_opens_without_a_call(self):
         self.platform._known = None
@@ -367,9 +377,17 @@ class Dormant(unittest.TestCase):
         left_out = re.search(r'^# Left out of runs, read when named: ([\d,]+) career sites', text, re.M)
         dormant = [line for line in text.splitlines() if line.startswith(DORMANT)]
         self.assertEqual(len(dormant), int(left_out.group(1).replace(',', '')) if left_out else 0)
+        tests = re.search(r'^# Left out of runs, read when named: ([\d,]+) sandbox, test and demo accounts', text, re.M)
+        test_lines = [line for line in text.splitlines() if line.startswith(TEST_SITE)]
+        self.assertEqual(len(test_lines), int(tests.group(1).replace(',', '')) if tests else 0)
         keys = {b.key.lower() for b in boards}
-        self.assertFalse(keys & {line[len(DORMANT):].split('\t')[0].lower() for line in dormant})
+        self.assertFalse(keys & {line.split('\t')[1].lower() for line in dormant + test_lines})
         self.assertEqual(len(keys), len(boards))
+
+    def test_no_sandbox_test_or_demo_account_is_read_in_runs(self):
+        from scripts.refresh_smartrecruiters import test_site
+        found = [(b.key, b.name) for b in SmartRecruiters().boards()[0] if test_site(b.key, b.name)]
+        self.assertEqual(found, [])
 
 
 class Opening(unittest.TestCase):
@@ -461,6 +479,26 @@ class Reading(unittest.TestCase):
                     Response(200, ['not', 'an', 'object'])):
             with self.assertRaises(BoardError):
                 run(collect(P, dict(SESSION)), [bad])
+
+    def test_a_job_that_says_it_is_a_test_is_passed_over_without_ending_the_board(self):
+        # 2026-11-03: Pilot Flying J's '(J_SYNC_TEST)...' were 24% of its rows, charged as jobs
+        tests = [{**RECORD, 'id': f'{i}', 'name': name} for i, name in enumerate(
+            ('(J_SYNC_TEST)Deli Baker', 'TEST KS007 - Blue Valley General Application', 'Test Job 2'))]
+        real = [{**RECORD, 'id': '8', 'name': 'Test Engineer'}, {**RECORD, 'id': '9', 'name': 'Sample Preparer'}]
+        pages, calls = run(collect(P, dict(SESSION)), [listing(tests[:1], total=5), listing(tests[1:] + real, total=5, offset=1)])
+        self.assertEqual([[j['id'] for j in page] for page in pages], [[None], [None, None, '8', '9']])
+        self.assertEqual(len(calls), 2)
+
+    def test_titles_that_say_test_and_real_ones(self):
+        for title in ('(J_SYNC_TEST)Cashier', 'TEST AZ013 - Gilbert-San Tan General Application', 'DC TEST Job Template',
+                      'Driver Helper (Job Template)', 'This is a test Job', 'TEST - bitte nicht bewerben: Restaurant Manager',
+                      'Subtitling Project Coordinator - TEST TEST TEST DO NOT APPLY', 'test', 'TEST-2', 'Demo New 2023'):
+            self.assertTrue(TEST_TITLE.search(title), title)
+        for title in ('Test Engineer', 'Software Test Engineer', 'Sample Preparer', 'Tester', 'Testing Associate',
+                      'Test – en Service Engineer (Regio Rotterdam/West-Brabant)', 'Test- und Inbetriebnahmetechniker (m/w/d)',
+                      'Windows Systems Administrator (PLEASE DO NOT APPLY UNLESS YOU ARE VERY FLUENT IN ENGLISH)',
+                      'Teste Engenheiro', 'test ks007 - lower case is no store code'):
+            self.assertFalse(TEST_TITLE.search(title), title)
 
     def test_odd_records_are_skipped_or_read(self):
         pages, _ = run(collect(P, dict(SESSION)), [listing([None, {'name': 'no id'}, {'id': '9', 'name': 'Only an id'}])])
@@ -702,6 +740,19 @@ class Refresh(unittest.TestCase):
             self.assertEqual(http.calls, 5, refused.status_code)
         locked = Answers(Response(401, text='<title>401 Authorization Required</title>'))
         self.assertIsNone(asyncio.run(refresh.get_json(locked, url, {})))       # CHECK24: no readable site
+
+    def test_sandbox_test_and_demo_accounts_are_written_apart(self):
+        listed = {'BoschGroup': 'Bosch Group', 'JoveoSandbox': 'Joveo Sandbox', 'Kombo': 'Kombo',
+                  'YggdrasilSandbox': 'Yggdrasil', 'HikeQA': 'HikeQA', 'TestingXperts': 'TestingXperts'}
+        answers = {k: self.hiring(k, v, 3) for k, v in listed.items()}
+        for answer in answers.values():
+            answer['content'][0]['releasedDate'] = '2026-11-01T10:00:00.000Z'
+        text = self.refresh(listed, answers)
+        runs = [line.split('\t')[0] for line in text.splitlines() if not line.startswith('#')]
+        self.assertEqual(sorted(runs), ['BoschGroup', 'HikeQA', 'TestingXperts', 'YggdrasilSandbox'])
+        self.assertEqual(sorted(line.split('\t')[1] for line in text.splitlines() if line.startswith(TEST_SITE)),
+                         ['JoveoSandbox', 'Kombo'])
+        self.assertIn('# Left out of runs, read when named: 2 sandbox, test and demo accounts, whose 6 postings', text)
 
     def test_a_list_that_collapses_is_not_written(self):
         # the review's drift: with every site answering as if it had no job, the list was rewritten with 0 sites

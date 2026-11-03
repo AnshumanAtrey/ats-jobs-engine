@@ -28,6 +28,10 @@ reads it, and the next refresh checks it again. On 2026-11-02, 9,650 of the 12,5
 since 2024-11-02 and held 180,513 postings (129,639 on sites whose newest is from 2017), while 606 sites posted within
 a day.
 
+A sandbox, test or demo account (test_site) is written as a #! comment line, read only when named: its postings are tests,
+templates and copies of real jobs (22 sites read in runs on 2026-11-03 held 3,073, among them SopraSteriaSandbox and
+LinkedIn QA).
+
 On 2026-11-02: 2,943 career sites of 2,931 companies with a job posted within two years, 242,790 open jobs before
 duplicates. All hiring sites by source (alone in brackets): the company box 11,203 (6,022), the Wayback Machine 4,566 (530), freehire's public API 3,848 from
 69,143 of its 172,042 rows (514), Common Crawl 1,518 (10), jobseek 142 (0). Of the sites outside the job search,
@@ -52,7 +56,7 @@ import httpx
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from ats_jobs.platforms.smartrecruiters import API, COMPANY, DORMANT, SmartRecruiters  # noqa: E402
+from ats_jobs.platforms.smartrecruiters import API, COMPANY, DORMANT, LEFT_OUT, TEST_SITE, SmartRecruiters  # noqa: E402
 
 OUT = ROOT / 'ats_jobs' / 'data' / 'smartrecruiters.tsv'
 LOOKUP = 'https://jobs.smartrecruiters.com/sr-jobs/company-lookup'
@@ -65,6 +69,25 @@ CHECK_PARALLEL = 48
 ACTIVE_DAYS = 730            # a site with nothing posted in two years is written as a #~ comment line: runs leave it out
 CAMEL = re.compile(r'[A-Z]+(?=[A-Z][a-z])|[A-Z]?[a-z]+|[A-Z]+|\d+')
 PLATFORM = SmartRecruiters()
+# Not a company's career site: sandbox, test and demo accounts. SmartRecruiters' own company name says so ('Joveo
+# Sandbox', 'SopraSteriaSandbox', 'SEEK SR TEST Account', 'Anton Paar GmbH Demo', 'prod-mum-a1-testco', 'Partners
+# Internal Quality Control', SmartRecruiters' own AllOffersTabTest1804148cLgQR00), or the site was read by hand on
+# 2026-11-03. A key alone says nothing: YggdrasilSandbox (named Yggdrasil) is where Yggdrasil Gaming's own careers page
+# takes its jobs from, HikeQA is a testing company with a real job, TestingXperts and QA Mentor are companies.
+TEST_NAME = re.compile(r'sandbox|\btests?\b|\btestco\b|test\d{6}|\bdemo\b|\buat\b|internal quality control', re.I)
+TEST_SITES = {key.lower() for key in (
+    'SutherlandSBX',                 # a copy of the site Sutherland: 'Job Template: Associate - Customer Service ...'
+    'Ramboll2',                      # a test copy of Ramboll3: 'test consultant', 'Romania test', 'Engineer API Finland'
+    'AcmeCorp091614',                # Acme Corp. demo: 'Product Manager' 53 times, 'test'
+    'Kombo', 'HackerRank', 'AccurateBackground', 'PitchYouintegration',   # integration tests: 'Test1 - Kombo x Snag'
+    'Saassyco', 'TycoonsProdCorporation', 'LinkedInQA',                  # 'Smart Recruiters Test', 'fefefe', 'Test offer feilds'
+    'MatterhornEarlyAccessPROD-FRAN',                                     # SmartRecruiters' early access: 'french man'
+)}
+
+
+def test_site(key: str, name: str) -> bool:
+    """A sandbox, test or demo account, not a company's career site."""
+    return key.lower() in TEST_SITES or bool(TEST_NAME.search(name or ''))
 
 
 def word_starts(text: str) -> set[str]:
@@ -184,8 +207,8 @@ def known() -> tuple[dict[str, str], set[str]]:
     """The sites in the file now: (every one, read in runs or left out: identifier -> company name, the folded
     identifiers of those read in runs)."""
     lines = OUT.read_text(encoding='utf-8').splitlines() if OUT.exists() else []
-    rows = [line.removeprefix(DORMANT).split('\t') for line in lines
-            if line and (not line.startswith('#') or line.startswith(DORMANT))]
+    rows = [(line.split('\t', 1)[1] if line.startswith(LEFT_OUT) else line).split('\t') for line in lines
+            if line and (not line.startswith('#') or line.startswith(LEFT_OUT))]
     active = {line.split('\t')[0].lower() for line in lines if line and not line.startswith('#')}
     return {row[0]: (row[1] if len(row) > 1 else row[0]) for row in rows}, active
 
@@ -251,7 +274,9 @@ async def main(args: list[str]) -> None:
     kept = [folded[s.lower()] for s in failed if s.lower() in folded and s.lower() not in sites]   # no answer: not "no jobs"
     for slug, name in kept:
         sites[slug.lower()] = {'slug': slug, 'name': name, 'jobs': 0}
-    live = sorted(sites.values(), key=lambda s: (-s['jobs'], s['name'].lower(), s['slug']))
+    every = sorted(sites.values(), key=lambda s: (-s['jobs'], s['name'].lower(), s['slug']))
+    tests = [s for s in every if test_site(s['slug'], s['name'])]
+    live = [s for s in every if not test_site(s['slug'], s['name'])]
     since = (datetime.now(timezone.utc) - timedelta(days=ACTIVE_DAYS)).strftime('%Y-%m-%dT%H:%M:%S')
     active = [s for s in live if not s.get('newest') or s['newest'] >= since]      # no answer: stays where runs read it
     dormant = [s for s in live if s.get('newest') and s['newest'] < since]
@@ -273,12 +298,18 @@ async def main(args: list[str]) -> None:
     # the list's date is read from a comment line holding "updated", so no other comment line may hold the word
     lines += [f'{DORMANT}{s["slug"]}\t{s["name"]}\t{s["newest"][:10]}\t{s["jobs"]}'.replace('updated', 'Updated')
               for s in dormant]
+    lines += [f'# Left out of runs, read when named: {len(tests):,} sandbox, test and demo accounts, whose '
+              f'{sum(s["jobs"] for s in tests):,} postings are tests, templates and copies. #! key, name, newest posting, '
+              f'postings:']
+    lines += [f'{TEST_SITE}{s["slug"]}\t{s["name"]}\t{s.get("newest", "")[:10]}\t{s["jobs"]}'.replace('updated', 'Updated')
+              for s in tests]
     OUT.write_text('\n'.join(lines) + '\n', encoding='utf-8')
     per_source = Counter()
     for name, slugs in sources.items():
         per_source[name] = len({found_by[s.lower()] for s in slugs if s.lower() in found_by})
     print(f'{len(active):,} career sites of {len(companies):,} companies, {jobs:,} jobs; left out with nothing since '
-          f'{since[:10]}: {len(dormant):,} sites, {old_jobs:,} postings; {round(time.monotonic() - started)} s; '
+          f'{since[:10]}: {len(dormant):,} sites, {old_jobs:,} postings; sandbox, test and demo accounts: {len(tests):,}; '
+          f'{round(time.monotonic() - started)} s; '
           f'hiring sites by source: {dict(per_source)}; kept without an answer: {len(kept)}')
 
 
