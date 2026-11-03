@@ -793,6 +793,23 @@ class Refusals(unittest.TestCase):
                 asyncio.run(p.job_answer(None, 'biffa', 'CCCCCCCCCC'))
         self.assertEqual(len(calls), 2)
 
+    def test_a_call_waiting_its_turn_when_the_refusal_comes_is_not_sent(self):
+        calls = []
+
+        async def fetch(http, method, url, **kwargs):
+            calls.append(url)
+            await asyncio.sleep(0.01)              # refused while the next call waits out the pace
+            return Response(429)
+        p = settings({})
+
+        async def run():
+            return await asyncio.gather(p.job_answer(None, 'biffa', 'AAAAAAAAAA'),
+                                        p.job_answer(None, 'biffa', 'BBBBBBBBBB'), return_exceptions=True)
+        with patch.object(workable, 'fetch', fetch), patch.object(workable, 'PACE', 0.05):
+            got = asyncio.run(run())
+        self.assertTrue(all(isinstance(g, workable.Stopped) for g in got))
+        self.assertEqual(len(calls), 1)
+
     def test_a_403_or_a_challenge_is_a_refusal_too(self):
         for reply in (Response(403, text='Forbidden'), Response(503, headers={'cf-mitigated': 'challenge'}),
                       Response(200, text='<html>Just a moment...</html>', headers={'content-type': 'text/html'})):
