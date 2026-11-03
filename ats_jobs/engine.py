@@ -117,6 +117,7 @@ class Run:
         self.checked_at = now_iso()
         self.stop: str | None = None
         self.enough = False
+        self.cut_short = False             # a newest-first board stopped where its jobs could no longer make the cut
         self.phase = ''
         self.boards_total = self.boards_read = self.boards_matched = self.details_read = self.details_wanted = 0
         self.boards_failed = self.details_failed = 0     # boards whose list, and jobs whose details, could not be read
@@ -170,7 +171,10 @@ class Run:
         return {k: v for k, v in row.items() if k not in self.platform.never}
 
     def board_error(self, key: str, exc: Exception) -> None:
-        self.board_errors.append({'board': key, 'error': str(exc)[:200]})
+        """A board, or a job's details, that could not be read. Anything but a BoardError is a record of a shape the
+        platform did not expect, named by its type: it costs that board, never the run."""
+        text = str(exc) if isinstance(exc, BoardError) else f'{type(exc).__name__}: {exc}'
+        self.board_errors.append({'board': key, 'error': text[:200]})
 
     # ---------- search ----------
 
@@ -283,10 +287,11 @@ class Run:
                                 last, cut = parse_time(jobs[-1].get('postedAt')) or OLDEST, floor()
                                 by_date = platform.newest_first and not (term and platform.ranked_search)
                                 if by_date and ((cut and last < cut) or (window and last < window)):
+                                    self.cut_short = self.cut_short or bool(cut and last < cut)
                                     break
                     except BoardMissing:
                         self.boards_missing.append(board.key)
-                    except BoardError as exc:
+                    except Exception as exc:  # noqa: BLE001  a BoardError, or a record the platform did not expect
                         self.board_error(board.key, exc)
                         self.boards_failed += 1
                     finally:
@@ -333,7 +338,7 @@ class Run:
                     return
                 try:
                     job.update(await platform.details(http, sessions.get(board.key), job))
-                except BoardError as exc:
+                except Exception as exc:  # noqa: BLE001  a BoardError, or a record the platform did not expect
                     self.board_error(board.key, exc)
                     self.details_failed += 1
                 finally:
@@ -362,30 +367,33 @@ class Run:
         by_board: dict[str, tuple[str, list]] = {}
         for key, job_id, _ in cfg.job_urls:
             by_board.setdefault(key.lower(), (key, []))[1].append(job_id)
-        found: dict[tuple, tuple] = {}     # (board, job id) -> (status, job)
+        # (board in lower case, job id) -> (status, job): links are grouped by the board in lower case, so a company's
+        # links typed in other cases (BoschGroup, BOSCHGROUP) find their answers too
+        found: dict[tuple, tuple] = {}
         sem = asyncio.Semaphore(platform.concurrency)
 
         async with client(platform.actor, platform.concurrency * 2) as http:
             async def one(key: str, job_ids: list[str]) -> None:
+                board = key.lower()
                 async with sem:
                     try:
                         session = await platform.open(http, self.board(key))
                         if session is None:
                             self.boards_missing.append(key)
-                            found.update({(key, j): ('not found', None) for j in job_ids})
+                            found.update({(board, j): ('not found', None) for j in job_ids})
                             return
                         for job_id in job_ids:
-                            found[(key, job_id)] = await platform.lookup(http, session, job_id)
-                    except BoardError as exc:
+                            found[(board, job_id)] = await platform.lookup(http, session, job_id)
+                    except Exception as exc:  # noqa: BLE001  a BoardError, or a record the platform did not expect
                         self.board_error(key, exc)
-                        found.update({(key, j): ('error', None) for j in job_ids if (key, j) not in found})
+                        found.update({(board, j): ('error', None) for j in job_ids if (board, j) not in found})
 
             self.phase = 'links'
             await self.run_all([one(key, ids) for key, ids in by_board.values()])
 
         rows = []
         for key, job_id, url in cfg.job_urls:
-            status, job = found.get((key, job_id), ('error', None))
+            status, job = found.get((key.lower(), job_id), ('error', None))
             if status == 'error':
                 self.links['couldNotCheck'] += 1
                 continue
@@ -435,12 +443,15 @@ class Run:
         else:
             where = plural(self.answered(), self.where)
             people = plural(len(self.companies_matched), 'company')
-            rows = self.delivery.rows
-            if rows and rows >= self.matching:
-                text = f'Found and saved {plural(rows, "matching job")} at {people} on {where} in {seconds} s.'
-            elif rows:
-                text = (f'Found {plural(self.matching, "matching job")} at {people} on {where}, '
-                        f'saved the {rows:,} newest in {seconds} s.')
+            if self.delivery.rows:
+                # boards cut short were not read to their end, so what they held below the cut was never counted
+                every = not self.cut_short and self.delivery.rows >= self.matching
+                newest = '' if every else f', saved the {self.delivery.rows:,} newest'
+                counted = ('at least ' if self.cut_short else '') + plural(self.matching, 'matching job')
+                text = f'Found {counted} at {people} on {where}{newest} in {seconds} s.'
+                if every:
+                    text = (f'Found and saved {plural(self.delivery.rows, "matching job")} at {people} '
+                            f'on {where} in {seconds} s.')
             elif self.matching and cfg.max_jobs == 0:
                 text = f'Found {plural(self.matching, "matching job")} on {where} in {seconds} s (maxJobs is 0).'
             elif not self.answered():

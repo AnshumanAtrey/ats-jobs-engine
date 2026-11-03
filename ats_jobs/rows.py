@@ -11,8 +11,9 @@ company itself, so a board that is not on our list still shows it.
 
 Matching is by words, not by a list of job titles: a search term matches a title when every word of
 the term is in it. Words are cut at anything that is not a letter or digit (C++ and C# keep their
-sign), an s plural is folded, and two neighbouring words also count joined, so frontend, front end and
-front-end match each other while java does not match JavaScript. Descriptions, when searched, must hold
+sign), accents are dropped (developpeur finds Développeur, Zürich finds Zurich), an s plural is folded,
+and two neighbouring words also count joined, so frontend, front end and front-end match each other
+while java does not match JavaScript. Descriptions, when searched, must hold
 the term as a phrase.
 
 Places match by what they stand for (ats_jobs/places.py). A country matches jobs in it and jobs posted for a
@@ -25,6 +26,7 @@ else, matches by its words inside a location. Country codes come from the struct
 two-letter part such as CA is a state, not Canada, so only names count).
 """
 import re
+import unicodedata
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from functools import lru_cache
@@ -32,6 +34,7 @@ from functools import lru_cache
 from . import places
 
 WORD = re.compile(r'[^\W_]+[+#]*')
+ACCENT = re.compile('[\u0300-\u036f]')   # the accents of Latin, Greek and Cyrillic letters, once split off (é: e + ´)
 # Everyday country names that are not ISO names (pycountry knows the ISO ones: "United States",
 # "Germany", "Viet Nam"), and the country codes people write in text.
 COUNTRY_ALIASES = {
@@ -44,8 +47,14 @@ COUNTRY_ALIASES = {
 }
 
 
+def plain(text: str) -> str:
+    """'ingénieur développeur' -> 'ingenieur developpeur': accents dropped; Hangul, Indic, Arabic and Thai as written."""
+    return text if text.isascii() else unicodedata.normalize('NFC', ACCENT.sub('', unicodedata.normalize('NFD', text)))
+
+
 def words(text: str | None) -> list[str]:
-    return WORD.findall((text or '').casefold())
+    """The words of a text, folded to lower case without accents: a term typed either way finds both."""
+    return WORD.findall(plain((text or '').casefold()))
 
 
 def fold(word: str) -> str:

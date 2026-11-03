@@ -82,6 +82,36 @@ async def _quiet(message):
     return None
 
 
+class Linked(Fake):
+    """Links x/<company>/<job>; company keys are read in any case, as on SmartRecruiters and Workday."""
+
+    def read_link(self, text):
+        parts = text.split('/')
+        return (parts[1], parts[2]) if len(parts) == 3 and parts[0] == 'x' else None
+
+    async def open(self, http, board):
+        return board.key.lower() if board.key.lower() in self.sites else None
+
+    async def lookup(self, http, session, job_id):
+        site = self.sites[session]
+        if site == 'down':
+            raise BoardError('HTTP 500')
+        found = [j for page in site for j in page if j['id'] == job_id]
+        return ('open', dict(found[0], jobUrl=f'https://x/{job_id}')) if found else ('not found', None)
+
+
+def check(platform, links):
+    @asynccontextmanager
+    async def no_client(actor, connections=64):
+        yield None
+    run = engine.Run(platform, parse_input({'jobUrls': links}, platform), [Board(k, k) for k in platform.sites], None,
+                     Delivered())
+    with patch.object(engine, 'client', no_client), patch.object(engine, 'safe_status', _quiet), \
+            patch.object(engine, 'seconds_left_in_run', lambda: None):
+        asyncio.run(run.check_links())
+    return run
+
+
 class Delivery(unittest.TestCase):
     def test_the_newest_jobs_of_all_boards_come_first(self):
         run = search(Fake({'a': [[job('1', 'One', 5), job('2', 'Two', 1)]], 'b': [[job('3', 'Three', 0), job('4', 'Four', 9)]]}), {'maxJobs': 3})
@@ -119,9 +149,53 @@ class Delivery(unittest.TestCase):
         run = search(Fake({'a': 'missing', 'b': 'down', 'c': [[job('1')]]}), {})
         self.assertEqual((run.boards_missing, run.delivery.rows, len(run.board_errors)), (['a'], 1, 1))
 
+    def test_a_board_with_a_record_of_an_unexpected_shape_is_one_failed_board_not_a_failed_run(self):
+        # live review 2026-11-03: one record {'location': 'Remote'} on one board ended the run with exit 91, OUTPUT
+        # left 'running' and 0 rows, although the other boards were fine
+        class Odd(Fake):
+            async def pages(self, http, session, term, days):
+                if session == 'odd':
+                    raise AttributeError("'str' object has no attribute 'get'")
+                async for page in super().pages(http, session, term, days):
+                    yield page
+        run = search(Odd({'odd': [[job('x')]], 'a': [[job('1')]], 'b': [[job('2', 'Analyst')]]}), {})
+        self.assertEqual(sorted(i for i, _ in run.delivery.pushed), ['1', '2'])
+        self.assertEqual(run.board_errors, [{'board': 'odd', 'error': "AttributeError: 'str' object has no attribute 'get'"}])
+        self.assertTrue(run.ran())
+
+    def test_details_of_an_unexpected_shape_leave_the_job_without_them(self):
+        class Odd(Fake):
+            async def details(self, http, session, job):
+                raise TypeError('odd details')
+        run = search(Odd({'a': [[job('1')]]}), {'includeDetails': True})
+        self.assertEqual((run.delivery.pushed, run.board_errors[0]['error']), ([('1', 'job')], 'TypeError: odd details'))
+
     def test_details_are_charged_only_when_they_came(self):
         run = search(Fake({'a': [[job('ok'), job('nodetails', title='Analyst')]]}), {'includeDetails': True})
         self.assertEqual(dict(run.delivery.pushed), {'ok': 'job-details', 'nodetails': 'job'})
+
+
+class Links(unittest.TestCase):
+    def test_links_to_one_company_in_any_case_are_all_checked(self):
+        # live review 2026-11-03: three open Bosch links typed boschgroup, BoschGroup and BOSCHGROUP gave 1 row and
+        # "2 links could not be checked (SmartRecruiters did not answer)" after 3 answered calls
+        run = check(Linked({'acme': [[job('1'), job('2', 'Analyst'), job('3', 'Cook')]]}), ['x/acme/1', 'x/Acme/2', 'x/ACME/3'])
+        self.assertEqual(([i for i, _ in run.delivery.pushed], run.links['couldNotCheck']), (['1', '2', '3'], 0))
+        self.assertEqual(run.links['open'], 3)
+
+    def test_a_board_that_fails_leaves_its_links_unchecked(self):
+        run = check(Linked({'acme': 'down', 'other': [[job('9')]]}), ['x/acme/1', 'x/ACME/2', 'x/other/9'])
+        self.assertEqual(([i for i, _ in run.delivery.pushed], run.links['couldNotCheck']), (['9'], 2))
+
+
+    def test_a_link_answer_of_an_unexpected_shape_is_a_link_not_checked(self):
+        class Odd(Linked):
+            async def lookup(self, http, session, job_id):
+                if session == 'odd':
+                    raise KeyError('active')
+                return await super().lookup(http, session, job_id)
+        run = check(Odd({'odd': [[job('1')]], 'acme': [[job('2')]]}), ['x/odd/1', 'x/acme/2'])
+        self.assertEqual(([i for i, _ in run.delivery.pushed], run.links['couldNotCheck']), (['2'], 1))
 
 
 class Paging(unittest.TestCase):
@@ -132,6 +206,40 @@ class Paging(unittest.TestCase):
         platform = Fake({'a': [[job('x', 'Engineer X', 5), job('y', 'Engineer Y', 5)]], 'b': self.pages()}, newest_first=True, concurrency=1)
         search(platform, {'maxJobs': 2})
         self.assertEqual([r for r in platform.read if r[0] == 'b'], [('b', None, 1), ('b', None, 2)])
+
+    def test_a_count_cut_short_says_at_least(self):
+        # live review 2026-11-03: the same empty search said 4,593 matching jobs with maxJobs 5, about 13,000 with 100
+        # and 226,371 with every page read: boards that stop early never count what they held below the cut
+        def sites():
+            return {'a': [[job('x', 'Engineer X', 5), job('y', 'Engineer Y', 5)]], 'b': self.pages()}
+        cut = search(Fake(sites(), newest_first=True, concurrency=1), {'maxJobs': 2})
+        self.assertIn('Found at least 6 matching jobs at 2 companies on 2 Fake boards, saved the 2 newest', cut.message())
+        every = search(Fake(sites(), newest_first=True, concurrency=1), {'maxJobs': 0})
+        self.assertIn('Found and saved 8 matching jobs', every.message())
+        window = search(Fake({'a': self.pages()}, newest_first=True), {'postedWithin': '3 days', 'maxJobs': 0})
+        self.assertNotIn('at least', window.message())
+
+    def test_a_spending_limit_on_every_match_says_how_many_matched(self):
+        # f-everything, 2026-11-03: maxJobs 0 stopped by the limit said 'Found and saved 20,000 matching jobs' when
+        # 222,724 matched
+        class Limited(Delivered):
+            def can_pay(self, event):
+                return not self.limit
+
+            async def push(self, rows, event):
+                done = await super().push(rows[:2], event)
+                self.limit = True
+                return done
+
+        @asynccontextmanager
+        async def no_client(actor, connections=64):
+            yield None
+        platform = Fake({'a': self.pages()})
+        run = engine.Run(platform, parse_input({'maxJobs': 0}, platform), [Board('a', 'a')], None, Limited())
+        with patch.object(engine, 'client', no_client), patch.object(engine, 'safe_status', _quiet), \
+                patch.object(engine, 'seconds_left_in_run', lambda: None):
+            asyncio.run(run.search())
+        self.assertIn('Found 6 matching jobs at 1 company on 1 Fake board, saved the 2 newest', run.message())
 
     def test_a_date_window_stops_a_board_with_no_date_search(self):
         platform = Fake({'a': self.pages()}, newest_first=True)
