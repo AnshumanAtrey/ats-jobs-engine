@@ -427,7 +427,7 @@ class Run:
             people = plural(len(self.companies_matched), 'company')
             if self.delivery.rows:
                 # boards cut short were not read to their end, so what they held below the cut was never counted
-                every = not self.cut_short and (cfg.max_jobs is None or self.matching <= self.delivery.rows)
+                every = not self.cut_short and self.delivery.rows >= self.matching
                 newest = '' if every else f', saved the {self.delivery.rows:,} newest'
                 counted = ('at least ' if self.cut_short else '') + plural(self.matching, 'matching job')
                 text = f'Found {counted} at {people} on {where}{newest} in {seconds} s.'

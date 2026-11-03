@@ -230,6 +230,28 @@ class Paging(unittest.TestCase):
         window = search(Fake({'a': self.pages()}, newest_first=True), {'postedWithin': '3 days', 'maxJobs': 0})
         self.assertNotIn('at least', window.message())
 
+    def test_a_spending_limit_on_every_match_says_how_many_matched(self):
+        # f-everything, 2026-11-03: maxJobs 0 stopped by the limit said 'Found and saved 20,000 matching jobs' when
+        # 222,724 matched
+        class Limited(Delivered):
+            def can_pay(self, event):
+                return not self.limit
+
+            async def push(self, rows, event):
+                done = await super().push(rows[:2], event)
+                self.limit = True
+                return done
+
+        @asynccontextmanager
+        async def no_client(actor, connections=64):
+            yield None
+        platform = Fake({'a': self.pages()})
+        run = engine.Run(platform, parse_input({'maxJobs': 0}, platform), [Board('a', 'a')], None, Limited())
+        with patch.object(engine, 'client', no_client), patch.object(engine, 'safe_status', _quiet), \
+                patch.object(engine, 'seconds_left_in_run', lambda: None):
+            asyncio.run(run.search())
+        self.assertIn('Found 6 matching jobs at 1 company on 1 Fake board, saved the 2 newest', run.message())
+
     def test_a_date_window_stops_a_board_with_no_date_search(self):
         platform = Fake({'a': self.pages()}, newest_first=True)
         search(platform, {'postedWithin': '3 days', 'maxJobs': 0})
