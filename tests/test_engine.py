@@ -1,5 +1,6 @@
 """One search from end to end on a fake platform: which pages are read, what is kept, what is charged."""
 import asyncio
+import time
 import unittest
 from contextlib import asynccontextmanager
 from datetime import date, timedelta
@@ -284,6 +285,30 @@ class Paging(unittest.TestCase):
         platform = Fake({'a': self.pages(9)}, page_cap=2)
         search(platform, {'maxJobs': 0})
         self.assertEqual(len(platform.read), 9)
+
+
+class TimeLimit(unittest.TestCase):
+    def test_a_call_still_out_at_the_time_limit_does_not_hold_the_delivery(self):
+        class Slow(Fake):
+            async def pages(self, http, session, term, days):
+                if session == 'slow':
+                    await asyncio.sleep(5)          # an answer that would come after the platform stops the run
+                async for page in super().pages(http, session, term, days):
+                    yield page
+
+        @asynccontextmanager
+        async def no_client(actor, connections=64):
+            yield None
+        platform = Slow({'fast': [[job('1')]], 'slow': [[job('2', 'Analyst')]]})
+        run = engine.Run(platform, parse_input({}, platform), [Board('fast', 'fast'), Board('slow', 'slow')], None,
+                         Delivered())
+        started = time.monotonic()
+        with patch.object(engine, 'client', no_client), patch.object(engine, 'safe_status', _quiet), \
+                patch.object(engine, 'seconds_left_in_run', lambda: engine.RUN_SAFETY_MARGIN_S + 0.3):
+            asyncio.run(run.search())
+        self.assertLess(time.monotonic() - started, 3)
+        self.assertEqual(([i for i, _ in run.delivery.pushed], run.stop), (['1'], 'time'))
+        self.assertIn('time limit', run.message())
 
 
 class Enough(unittest.TestCase):

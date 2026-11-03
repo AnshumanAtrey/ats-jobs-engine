@@ -1,0 +1,2399 @@
+# Lever job sites, updated 2026-11-03: every jobs.lever.co and jobs.eu.lever.co site we could find whose API and job site answer today, biggest first.
+# Columns: board key (the site name, its case matters; an EU site ends in /eu), company name. Rebuilt by scripts/refresh_lever.py;
+# 2,396 sites of 2,392 companies, 2,061 hiring, 76,465 open jobs before duplicates. Left out: 467 sites the API answers for whose job site and job pages answer 404 (1,412 postings with dead links) and 12 demo and test sites with template or test postings.
+boxlunch	BoxLunch & Hot Topic
+tsmg	TSMG
+aogarciaagency	AO Garcia Agency
+jobgether	Jobgether
+vohra	Vohra Physicians
+usasurveyjob	Toward Jobs
+cgsfederal	Contact Government Services, LLC
+lifestance	LifeStance Health
+paytmpayments	Paytm Payments Services
+insomniacookies	Insomnia Cookies
+veeva	Veeva Systems
+gopuff	Gopuff
+shieldai	Shield AI
+bluelightconsulting	Bluelight Consulting
+ivcevidensia/eu	IVC
+destinationknot	Destination Careers
+lyrahealth	Lyra Health
+cscgeneration-2	CSC Generation
+weloglobal	Welo Global
+jetsetpilates	JETSET Pilates
+aisle_and_abroad	Aisles & Abroad
+getwingapp	Wing Assistant
+21hhs	21st Century Home Health Services Inc.
+engelvoelkers/eu	Engel & Völkers
+summitwashholdings	Summit Wash Holdings
+CesiumAstro	CesiumAstro
+gorh	Go RH
+palantir	Palantir Technologies
+sunsrce	SunSource
+simonmed	SimonMed Imaging
+abtaba	Above and Beyond Therapy
+buckmason	Buck Mason
+solidcore	[solidcore]
+arcteryx.com	ARC'TERYX
+distro	Distro
+zoox	Zoox
+sila	Sila Services
+Aprio	Aprio
+beautybarrage	Beauty Barrage
+brillio-2	Brillio
+menta	The Menta Education Group
+csmcy/eu	Columbia Shipmanagement
+paytm	Paytm
+xsolla	Xsolla
+InfrastructureandCapitalProjects	Accenture Construct
+agile-defense	Agile Defense
+ajax	Ajax Systems
+mobileye/eu	Mobileye
+daniels-sharpsmart	Daniels Health
+octoenergy	Octopus Energy Group
+flynncompanies	Flynn Group of Companies
+lsaweb	Language Services Associates, Inc.
+momentshospice-2	Moments Hospice
+rws	RWS TrainAI
+ciandt	CI&T
+thinkahead	AHEAD
+cogentanalytics	Cogent Talent Solutions
+ninjavan	Ninja Van
+wachter	Wachter, Inc.
+lalamove	Lalamove
+cfsenergy	Commonwealth Fusion Systems
+parnalllaw	Parnall Law
+woven-by-toyota	Woven by Toyota
+fyzicalhq	FYZICAL Therapy & Balance Centers
+givinghhc	Giving Home Health Care
+murgadoautomotive	Murgado Automotive Group
+mosaictherapy	Mosaic Pediatric Therapy
+theodo	Theodo
+standtogether	Stand Together
+pigment	Pigment
+quantinuum/eu	Quantinuum
+ghj	GHJ
+wadetrim	Wade Trim
+despegar	Despegar
+cirrus/eu	Cirrus Logic
+filevine	Filevine
+insiderone	Insider One
+lb-capital	LB Capital
+sonarsource	Sonar
+tandh	Thomas & Hutton
+amityfdn	Amity Foundation
+linkrehabwellness	Link Rehab and Wellness
+print-recruiting	Social Influence LLC
+tomjames	Tom James Company
+lessen	Lessen
+Yassir	Yassir
+zeeco	Zeeco
+spear	Spear Physical and Occupational Therapy
+crestoperations	Crest Industries
+getlabs	Getlabs
+aleph	Aleph
+veepee	Veepee
+gohighlevel	HighLevel
+andersencorp	Andersen Corporation/Renewal by Andersen
+espace	E-Space
+seb/eu	SEB
+amtengineering	AMT Engineering
+lansingschools	Lansing School District
+csit	Centre for Strategic Infocomm Technologies
+creatio/eu	Creatio
+crosscountry-consulting	CrossCountry Consulting
+field-ai	FieldAI
+getfivestar	Five Star Solutions
+kpler	Kpler
+idt	IDT
+rocketship	Rocketship Public Schools
+kyivstar	Kyivstar
+stanleygroup	Stanley Consultants
+crypto	Crypto.com
+pattern	Pattern
+roshalimaging	Roshal Health
+dnb	Dun & Bradstreet
+waremalcomb	Ware Malcomb
+dnllc	DN LLC
+pingwind	PingWind
+heyrowan	Rowan
+jushico	Jushi
+cagents	CAI
+lunaphysicaltherapy	Luna Physical Therapy
+prima/eu	Prima
+mainspringenergy	Mainspring Energy
+spineandsportsmed	SportsMed Physical Therapy
+waabi	Waabi
+disher	DISHER
+premiertruck	Premier Truck Group
+ion	ION Group
+coins	Coins.ph
+Bosta	Bosta
+pnlfin/eu	Finom
+tkda	TKDA
+bfsaulhotels	B.F. Saul Company Hospitality Group
+mujininc	Mujin
+qualysoft	Qualysoft
+cargo-partner	cargo-partner
+extremenetworks	Extreme Networks
+payjoy	PayJoy
+cfgi	CFGI
+spotify	Spotify
+westernacher/eu	Westernacher Consulting
+sophos	Sophos
+cwsc	Computer World Services
+hightechhigh	High Tech High
+kidsdentalbrands	Kids Dental Brands
+ableserve	ABM Industries
+shopback-2	ShopBack
+hermeus	Hermeus
+highbarhealth	Highbar Physical Therapy
+magicalbeginningslc	Magical Beginnings
+tutorintelligence	Tutor Intelligence
+eqbank	EQ Bank | Canada's Challenger Bank
+gtifabrication	GTI Fabrication
+gojob	Gojob
+happyhiller	Hiller Plumbing, Heating, Cooling & Electrical
+larian	Larian Studios
+brighterstridesaba	Brighter Strides ABA
+elfbeauty	e.l.f. Beauty
+immiland-canada-inc	Immiland Canada Inc.
+springoakliving	Spring Oak Senior Living
+bcipkg	Buckeye Corrugated, Inc.
+Civitta	Civitta
+ltjgroup	Latin Top Jobs Group
+networkconnex	Network Connex
+penumbrainc	Penumbra
+protolabs	Protolabs
+emma-sleep	Emma – The Sleep Company
+pointclickcare	PointClickCare
+anavationllc	AnaVation
+hive	Deploy
+tryjeeves	Jeeves
+medcarepediatric	MedCare Pediatric
+skillerszone	Skillerszone
+bluebottlecoffee	Blue Bottle Coffee
+hypersonica-prod	Hypersonica
+loftorbital	Loft Orbital Solutions
+bonedry	Bone Dry Roofing
+keyloop	Keyloop
+redhorsecorp	Redhorse Corporation
+lingarogroup	Lingaro
+expansia	Aether Aerospace
+hcvt	Holthouse
+primee	Prime Electric
+componentrepairtechnologies	Component Repair Technologies
+foth	Foth
+nitra	nitra
+saviynt	Saviynt
+zoyi	Channel Corp.
+littlesprouts	Little Sprouts, LLC
+xm/eu	XM Careers
+actionlife	Action Property Management
+ippon	Ippon Technologies
+arsiem	ARSIEM
+bannerbank	Banner Bank
+beghouconsulting	Beghou Consulting
+circlecareservices	Circle Care Services
+ircagroup	Irca Group
+ispace-inc	ispace, inc.
+matchgroup	Match Group
+whymonster	Monster Tree Service
+circadiahealth	Circadia Health
+megaport	Megaport
+purplelandmgmt	Purple Land Management
+qualdoc	Qualdoc
+sambatv	Samba
+source.ai	Source
+unlimit	Unlimit
+xcimer	Xcimer Energy
+arrivelogistics	Arrive Logistics
+quenchwater	Culligan Quench
+feldinc	Feld Entertainment
+margo-group	MARGO
+woodardcurran	Woodard & Curran
+avalerehealth	Avalere Health
+olx/eu	OLX
+ttecdigital	TTEC Digital
+allegiantair	Allegiant
+portagepointpartners	Portage Point Partners
+masterycharter	Mastery Schools
+omnidesigntech	Omni Design Technologies
+thea.energy	Thea Energy
+vohrawoundteam	Vohra Wound Physician Management
+amarbank	Amar Bank
+carewest	Carewest Innovative Healthcare
+mantisinnovation	Mantis Innovation
+p3vetpartners	P3 Veterinary Partners
+bpmcpa	BPM LLP
+karllagerfeld/eu	Karl Lagerfeld
+lionbridge/eu	Lionbridge
+appletreedental	Apple Tree Dental
+hevodata	Hevo Data
+lendbuzz	Lendbuzz
+life	Life.Church
+mulberry	Mulberry
+pharmachoicecanada	PharmaChoice Canada
+ro	Ro
+telesat	Telesat
+threattec	Threat Tec, LLC
+true-environmental	True Environmental
+capital	capital.com
+cimgroup	CIM Group, LP
+tenna	Tenna
+zeneducate	Zen Educate
+cirquedusoleil	Cirque du Soleil Entertainment Group
+wearedream	DREAM
+carolinacenterforaba	Kind Behavioral Health
+meesho	Meesho
+reply	Reply
+weekdayworks	Weekday
+aldar	Aldar Properties PJSC
+evr	Elk Valley Resources
+velaura	Velaura
+akicita-cyber	Akicita Federal, LLC
+appen	CrowdGen by Appen
+dadavidson	D.A. Davidson
+serverfarm	Serverfarm
+sfeir	SFEIR
+acronaviation	Acron Aviation
+germanamerican	German American Bank
+glsllc	Global Lending Services
+includedhealth	Included Health
+infraservices	InfraServices
+jacquemus/eu	JACQUEMUS
+mendix	Mendix
+okanagan	Okanagan College
+alice-bob	Alice & Bob
+dabsinc	DABS, Inc.
+orcabiosystems	Orca Bio
+parallelwireless	Parallel Wireless
+rivieradininggroup	Riviera Dining Group
+steerbridge	SteerBridge
+togetherhood	Togetherhood
+valdeseng	Valdes Architecture & Engineering
+carelinks-aba	Carelinks ABA
+fantom-corporation	Fantom Corporation
+RyzLabs	RYZ Labs
+sandboxvr	Sandbox VR
+sqaservices	SQA Services
+360learning	360Learning
+aeva	Aeva, Inc.
+brightonjones	Brighton Jones
+clovirtualfashion	CLO Virtual Fashion
+hawthorne-health	Hawthorne Health
+knix	Knix
+linkllc	Link, LLC
+plus-2	PlusAI
+protective	Protective
+synergyecp	Synergy ECP
+vo2-group	VO2 Group
+wpromote	Wpromote
+bloomwellcare	Bloomwell Autism Therapy
+farfetch	Farfetch
+fetchpackage	Fetch
+jumpcloud	JumpCloud
+silhouette	DNAM Brands
+erg	ERG
+guidestareldercare	GuideStar Eldercare
+ifm-us	Institute of Foundation Models
+singerlewak	SingerLewak
+tx-inc.com	TELEXISTENCE Inc.
+terrascend	TerrAscend
+velo3d	Velo3D
+apexaba	Apex ABA Therapy
+arootah	Arootah
+lvs1	Long View Systems
+spawglass	SpawGlass
+xtb/eu	XTB
+assist-world	Assist World
+atomcomputing	Atom Computing
+camstex	CAMS - Texas
+caseware	Caseware
+ceso	CESO, Inc.
+coupa	Coupa Software, Inc.
+GoToGroup	GoTo Group
+horizon-blue-aba	Horizon Blue ABA
+kickmaker	Kickmaker
+trendyol	Trendyol
+verkor	Verkor
+walkerconsultants	Walker Consultants
+wwprosolutions	World Wide Professional Solutions
+diamondfoundry	Diamond Foundry
+lovehoneygroup/eu	Lovehoney Group
+momsmeals	Mom's Meals
+nahc	nahc.io
+scottlogic	Scott Logic
+truezerotech	True Zero Technologies
+windownation	Window Nation
+wr	World Relief
+AIFund	AIFund
+aledade	Aledade PBC
+cti-md	Constellation Technologies, Inc
+floqast	FloQast
+jobandtalent	Job&Talent
+petehealth	PeteHealth
+dreamgolf	dreamgolf
+epwealth	EP Wealth Advisors
+magnetforensics	Magnet Forensics
+spreetail	Spreetail
+candlinspection	C and L Inspection
+fehrandpeers	Fehr & Peers
+glacierfish	Glacier Fish
+havenparkcommunities	Havenpark Communities
+richards-supply	Richards Building Supply
+skaylink/eu	Skaylink
+thinkingbox	Thinkingbox
+acceldata	Acceldata
+ahschc	Asian Health Services
+bhhc	Berkshire Hathaway Homestate Companies
+brindleyengineering	Brindley Engineering
+doctrine	Doctrine
+fixinssoulkitchen	Fixins Soul Kitchen
+muttdata	Muttdata
+netlight	Netlight
+oddin	Oddin
+pp-la	Planned Parenthood Los Angeles
+provectus	Provectus
+servicewire	Service Wire
+Sprinto	Sprinto
+StudioThree	Studio Three
+upscale-ai	Upscale, Inc.
+bisnow	Bisnow
+drivetrain	Drivetrain
+efficioconsulting/eu	Efficio
+chipping-concrete	Express Chipping Inc
+heartbeathealth	Heartbeat Health
+hopeservices	Hope Services
+incompasshealth	In Compass Health
+kpmgnz	KPMG New Zealand
+scaleway	Scaleway
+USMobile	US Mobile
+ridezum	Zūm
+angellist	AngelList
+deltasands	Delta Solutions & Strategies
+dilitrust	DiliTrust
+ekimetrics	Ekimetrics
+Legend	Legend
+lochgroup	Lochmueller Group
+nexuse-group	Nexus Engineering Group
+zopa	Zopa
+alimentiv-2	Alimentiv
+arraylabs.io	Array Labs
+certik	CertiK
+coinspaid/eu	Coinspaid
+Complex	Complex
+Flex	Flex
+magnals	Magna Legal Services
+nextgenfed	NextGen Federal Systems
+restaurant365	Restaurant365
+rover	Rover.com
+SpaceSystemsIntegration	Space Systems Integration
+swile	Swile
+watchguard	WatchGuard Technologies, Inc.
+AMIRI	AMIRI
+fwgsolutions	FWG Solutions, Inc.
+layup	Layup Parts
+redwoodcu	Redwood Credit Union
+scholarrock	Scholar Rock
+skillcloudhcm	Skillcloud HCM
+solecp	Sole Construction Partners
+sunrisefarms	Sunrise Farms
+titanwh	Titan Wealth Holdings Limited
+bounteous	Bounteous
+bricknetworks	BRICK Networks
+emburse	Emburse
+headlight.health	Headlight
+intersect	Intersect
+level99	Level99 Entertainment
+prophethomes	Prophet Homes
+qvest.us	Qvest US
+shyftlabs	ShyftLabs
+sysdig	Sysdig
+vivenu	vivenu GmbH
+wmg	Warner Music Group
+wise-integration	WISE INTEGRATION
+zeta	Zeta
+Affinex-Financial	Affinex Financial
+BTSE	BTSE
+everseen/eu	Everseen
+finn	FINN
+dodmg	HRL Laboratories
+innophos	Innophos
+kippsocal	KIPP SoCal Public Schools
+kobie	Kobie Marketing
+objectway/eu	Objectway
+significanceinc	Significance, Inc.
+uft	United Flow Technologies
+vacancies	United Tech
+vitana-pediatric	Vitana Pediatric & Orthodontic Partners
+capitalsolutionsgroup	Capital Solutions Group
+clearedge	ClearEdge
+dijital-team-pty-ltd	Dijital Team
+felix-construction	Felix Construction
+hophr	Hop
+mactores	Mactores
+malt	Malt
+mythic-ai.com	Mythic
+newwestern	New Western
+quadcode/eu	Quadcode
+seranbio	Serán BioScience
+titanelectric-ga	Titan Electric
+toptal	Toptal
+abzena/eu	Abzena Inc.
+AugustBioservices	August Bioservices
+er-meds	Er-Meds
+everbridge	Everbridge
+flowlife	Flow
+lcbcchurch	LCBC Church
+MachinaLabs	Machina Labs
+pivotal	Pivotal
+rightsideup	Right Side Up
+smartenergy	Smart Energy Group
+syntronic	Syntronic
+versapay	Versapay
+adunaglobal	Aduna Global
+ae-2	AE
+appen-2	Appen
+arundellodge	Arundel Lodge, Inc.
+dnwest	Donor Network West
+edgeofs	Edge OFS
+EnaraHealth	Enara Health
+freedompay	FreedomPay
+gonetspeed	GoNetspeed
+h1	H1
+laminarprojects	Laminar Projects
+longwall	Long Wall
+luxurypresence	Luxury Presence
+nium	Nium
+Pretto	Pretto
+restore-dispensaries	Restore Dispensaries
+solutuslegal	Solutus Legal Search
+tevora	Tevora
+brevo	Brevo
+canopy-ad	Canopy A&D
+celerion	Celerion
+convergentresearch	Convergent Research
+dlocal	dLocal
+entrata	Entrata
+finix	Finix
+merlinlabs	Merlin Labs
+opencast/eu	Opencast
+q-ctrl	Q-CTRL
+serv-u-success	Serv-U-Success
+ttxinc	Therma-Tron-X, Inc.
+venusaero	Venus Aerospace
+vesync	Vesync
+ana-corp	ANA
+ans	ANS
+bhvr	Behaviour Interactive
+biaenergy	Bia Energy
+bigblue	Bigblue
+bluecatnetworks	BlueCat
+brightedge	BrightEdge
+brooksrunning	Brooks Running
+canarytechnologies	Canary Technologies Corp
+endpointclinical	Endpoint Clinical
+global-cxm	Global Certification & Verification Group
+goodleap	GoodLeap
+last-energy	Last Energy
+meds	Meds
+foresea-technologies	OVRSEA
+pditechnologies	PDI Technologies
+rise	RISE
+waterworks	Waterworks
+adlook	Adlook
+capstan-medical	Capstan Medical, Inc.
+captivateiq	CaptivateIQ
+coderio	Coderio
+d-fendsolutions	D-Fend Solutions
+fireworkhq	Firework
+flashapp	Flash
+furientis	Furientis
+iru	Iru
+economicmodeling	Lightcast
+novaspace	Novaspace
+skylineconstruction	Skyline Construction
+sunshinesachs	Sunshine Sachs Morgan & Lylis
+tri	Toyota Research Institute
+winamax	WINAMAX
+aethoshotels	Aethos
+auw	Applied Underwriters
+egen	Egen
+haywardtyler	Hayward Tyler
+hhaexchange	HHAeXchange
+humble-robotics	Humble Robotics
+inflowfed	INflow Federal
+kabam	Kabam
+kepler	Kepler Communications
+lindblad-expeditions	Lindblad Expeditions
+matillion	Matillion
+milhouseinc	Milhouse Engineering and Construction, Inc.
+moonpay	MoonPay
+neowiz	Neowiz
+ppgny	Planned Parenthood of Greater New York
+pmaconsultants	PMA Consultants Careers
+safran-ai	Safran.AI
+smarsh	Smarsh
+soum	SOUM
+southshorecompanies	Southshore Enterprises, Inc.
+sprymethods	Spry Methods
+uvcyber	UltraViolet Cyber
+websummit	Web Summit
+anchorage	Anchorage Digital
+anybotics	ANYbotics
+athenapsych	Athena
+brightbee	BrightBee
+court-avenue	CourtAvenue
+dynamiccatholic	Dynamic Catholic
+fitzmark	FitzMark
+freebalance.com	FreeBalance
+glide	GLIDE
+hatchit	Hatch IT
+heetch	Heetch
+kogan	Kogan.com
+madhappy	Madhappy
+manaycpa.com	Manay CPA
+myodetox	Myo
+osedea	OSEDEA
+ovoko/eu	Ovoko
+ppfa	Planned Parenthood Federation of America
+pphp	Planned Parenthood Hudson Peconic, Inc.
+porter	Porter Cares, Inc.
+solarlandscape	Solar Landscape
+tomtom/eu	TomTom
+trailappliances	Trail Appliances Ltd.
+veo	Veo
+walkme	WalkMe
+zocks	Zocks
+agicap	Agicap
+apcoholdings	APCO Holdings
+apryse	Apryse
+bfsaul	B.F. Saul Company
+colibrigroup	Colibri Group
+cyderes	Cyderes
+eliyan	Eliyan
+lumafield	Lumafield
+massive-rocket	Massive Rocket
+merklescience	Merkle Science
+nuvacore	NUVACORE
+ppse	Planned Parenthood Southeast, Inc.
+ravl_io	RAVL
+Simfluent	Simfluent
+storiogroup	Storio group
+valpeo.com	VALPEO
+westyost	West Yost
+wgsn	WGSN
+zimperium	Zimperium
+alertus	Alertus Technologies
+ajccanada	Allison Jones Consulting Services
+analyticpartners	Analytic Partners
+Catbird	Catbird
+contentsquare	Contentsquare
+econstruct	econstruct
+equativ	Equativ
+foodsmart	Foodsmart
+hayeslocums	Hayes Locums
+kitware	Kitware
+netomi	Netomi
+onit	Onit, Inc.
+outreach	Outreach
+make-rain	Rainmaker Technology Corporation
+safe	Safe Security
+sharpsmart	Sharpsmart
+skyways	Skyways
+systemex	Systemex
+viseven	Viseven
+wealthfront	Wealthfront
+wepclinical	WEP Clinical
+wintermute-trading	Wintermute
+zencore	Zencore
+BlackCloak	BlackCloak
+centuria	Centuria
+dozee	Dozee
+heartworksvt	Heartworks Early Education
+kariusdx	Karius
+kwalee/eu	Kwalee
+levelai	Level AI
+mayer-llp	Mayer LLP
+metabase	Metabase
+mindtickle	Mindtickle
+peakgames	Peak
+promiserobotics	Promise Robotics
+superiorexecutiveandlegalrecruiting	Superior Executive Legal Recruiting
+tangraminteriors	Tangram Interiors
+thepeoplebrand	The People Brand
+virtualitics	Virtualitics, Inc
+aeratechnology	Aera Technology
+appzen	AppZen, Inc.
+azul	Azul
+brafton	Brafton
+campusworksinc	CampusWorks, Inc.
+cologix	Cologix
+cprime	Cprime
+dmautoleasing	D&M Auto Leasing
+deliverect	Deliverect
+diamondlandscaping-2	Diamond Landscaping
+dutch	Dutch
+eleks	Eleks
+rynoss	EverService Holdings, LLC
+fampay	Fam
+florence	Florence Health
+gess	GESS
+hypebeast	Hypebeast
+ibility	Ibility
+jetsupport	Jet Support Services, Inc.
+runlaminar	Laminar
+lrdgonline	LRDG Language Research Development Group
+minders	Minders
+msconsultants	ms consultants, inc.
+sait	SAIT
+talent-2-win	Talent2Win
+teamshares	Teamshares
+texas-original	Texas Original
+thuma	Thuma
+tiberius	Tiberius Aerospace Inc.
+tusker	Tusker
+verygoodsecurity	VGS
+vida	Vida Health
+westair	Western Aircraft
+Zeller	Zeller
+arcadia	Arcadia
+belvederetrading	Belvedere Trading
+caliza-financial-technologies	Caliza
+challengecharterschools	Challenge Preparatory Charter School
+collate	Collate
+decilegroup	Decile Group
+dempseyuniform-2	Dempsey Uniform & Linen Supply
+deuna	DEUNA
+dialogdesign	DIALOG
+doxel	Doxel
+dreamgames	Dream Games
+enablecomp	EnableComp
+FixGroup	Fix Group Management
+Fliff	Fliff
+lwolf	Lone Wolf Technologies
+mcgillstlaurent	McGill St Laurent
+myob-2	MYOB
+nainnorcal	NAI Northern California
+next-health	Next Health
+odaseva	Odaseva
+omnisend	Omnisend
+picus	Picus
+Qover	Qover
+quantum-health	Quantum Health, Inc.
+rbanw	rbanw
+rgi	Reinventing Geospatial, Inc. (RGi)
+sar	SAR Academy & SAR High School
+schmidt-entities	schmidt-entities
+SimbeRobotics	Simbe Robotics
+snappr	Snappr
+commerce-undergraduate	The CUS
+thiga	Thiga
+uaustin	UATX
+valiantys	Valiantys
+visioninvest	Vision Invest
+wahed.com	Wahed
+aavelabs/eu	Aave Labs
+airslate	airSlate
+redsox	Boston Red Sox
+canvasww	Canvas Worldwide
+datalabusa	Datalab USA
+drivemode	Drivemode
+dulcedo	Dulcedo Management
+fieldfastener	Field Fastener
+fieldnation	Field Nation
+fullscript	Fullscript
+greenlight	Greenlight Financial Technology
+gridware	Gridware
+hkr/eu	HKR.TEAM
+Meirowitz-Wasserberg	Meirowitz & Wasserberg, LLP
+getmidas	Midas
+moneyboxapp	Moneybox
+novir	Novir
+numan/eu	Numan
+rezolutebio	Rezolute
+rigetti	Rigetti Computing
+springrecruits	Succession Planning for Railroads Investing in the Next Generation LLC
+summitmgmt-corp	Summit Management Corporation
+TalentusGlobal	Talentus Global
+uei	Universal Electronics Inc.
+wattpad	WEBTOON Entertainment Inc. (Wattpad & WEBTOON Family of Brands)
+wenvision	wenvision
+wypoon/eu	Wypoon Technologies
+amanotes	Amanotes
+atibusinessgroup	ATI Business Group
+base-flowa	base | flowa
+BDG	BDG
+bee-talents	Bee Talents
+bioagilytix	BioAgilytix
+bloomon	Bloom & Wild Group
+brightmachines	Bright Machines
+chownow	ChowNow
+cic	CIC
+coalfire	Coalfire
+cyara	Cyara
+ecosystem	Ecosystem
+electricmind	Electric Mind
+equitasacademy	Equitas Academy Charter Schools
+everlywell	Everlywell
+exowatt	Exowatt
+Fairmat	Fairmat
+great-gray-group	Great Gray
+gursey	Gursey
+jamcity	Jam City
+kgroupcompanies	K Group Companies
+mantra	Mantra
+mcaconnect	MCA Connect
+neuron7	Neuron 7
+pine-services	Pine Services Group
+placemakr	Placemakr
+planettechnologies	Planet Technologies
+pplm	Planned Parenthood League of Massachusetts
+quandri	Quandri
+rainfocus	RainFocus
+sonatype	Sonatype
+stable-money1	Stable Money
+vana	Vana
+vestiairecollective	Vestiaire Collective
+voltus	Voltus
+worldwidemissioncritical	Worldwide Mission Critical, LLC
+agiloft	Agiloft
+americaatwork	America At Work
+anotherco	another
+appnation	AppNation
+atmosera	Atmosera
+bv	Banco BV
+Beamy	Beamy
+beedie	Beedie
+behaviorcaretherapy	BehaviorCare Therapy
+charcuterie	Charcuterie Artisans
+coatesgroup	Coates Group
+Coda	Coda
+coretechsecurity/eu	CoreTech Security Services
+cred	CRED
+EnergyVault	Energy Vault
+entefy	Entefy
+foodstuffs	Foodstuffs North Island
+funxyz	fun.xyz
+Gantri	Gantri
+Gogolook	Gogolook
+insify	Insify
+Kyverna	Kyverna Therapeutics
+lucasmuseum	Lucas Museum of Narrative Art
+nolapublicschools	NOLA Public Schools
+onetogether-solutions	OneTogether Solutions
+oni/eu	ONI
+paramedicservices	Paramedic Services of Illinois
+ppil	Planned Parenthood of Illinois
+ppnne	Planned Parenthood of Northern New England
+ppsne	Planned Parenthood of Southern New England, Inc.
+ppwi	Planned Parenthood of Wisconsin, Inc.
+princeton10	Princeton10
+proper	Proper
+pyka	Pyka
+quantco-	QuantCo
+riverdale	Riverdale Country School
+stradaeducation	Strada Education Foundation
+superside	Superside
+teambuilders	TeamBuilders Behavioral Health
+unisoninfra	Unison Infrastructure
+wc-br	Westminster-Canterbury of the Blue Ridge
+Zanskar	Zanskar
+achievers	Achievers
+air-tek	Air-tek
+Allata	Allata
+asapp-2	ASAPP
+biocatch	BioCatch
+blockslearning	Building Blocks Early Learning Center
+cleanspark	CleanSpark
+companial	Companial
+crosslaketech	Crosslake Technologies LLC
+diabolocom/eu	Diabolocom
+freedomsolarpower	Freedom Power
+hottopic	Hot Topic & BoxLunch
+iCodde	iCodde
+integrabeauty	Integra Beauty
+InteriorMarketingGroup	Interior Marketing Group
+intropic	Intropic
+januxrx	Janux Therapeutics
+justwatch	JustWatch
+kcasbio	KCAS Bio
+lightedge	Lightedge
+mable	Mable
+macquarietechnologygroup	Macquarie Technology Group
+moorecolson	Moore Colson
+mytos	Mytos
+neighbor	Neighbor
+Nomagic	Nomagic
+nacsworld	North America Construction (1993) Ltd. - NAC Constructors Ltd.
+objective	Objective Corporation
+offchainlabs	Offchain
+overhead-garage-door	OGD Overhead Garage Door
+outsight	Outsight
+panopto	Panopto
+PhoenixTailings	Phoenix Tailings
+ppsat	Planned Parenthood South Atlantic
+profoundresearch	Profound Research
+promesaacademy	Promesa Academy
+researchinnovations.com	Research Innovations
+tovala	Tovala
+TrilogyFederal	Trilogy Federal
+totalsystech	TSTC
+unzer/eu	Unzer
+valarian	Valarian Technologies Limited
+weride	WeRide.ai
+windfalldata	Windfall
+apolloresearch	Apollo Research
+bellwetheram-2	Bellwether
+bluesight	Bluesight
+boardintelligence	Board Intelligence
+bold-orange	Bold Orange Company, LLC
+c12qe	C12 Quantum Electronics
+compassx	CompassX Group
+crescent-biopharma	Crescent Biopharma
+diversified-automation	Diversified Automation
+doonails	Doonails
+eastern-communications	Eastern Communications
+emilabs	Emi Labs
+firemon	FireMon
+fp	Future Processing
+gausslabs	Gauss Labs
+gushwork	Gushwork
+highlandfleets-2	Highland Electric Fleets
+immuta	Immuta
+inkitt	Inkitt
+kapta-space	Kapta Space
+kivaconfections	Kiva Confections
+levelup	LevelUp
+getmaple	Maple
+marshallreddick	Marshall Reddick Real Estate
+mega	Mega HR, Inc.
+multiplylabs	Multiply Labs
+olo	Olo
+OpenPayd	OpenPayd
+Packmatic	Packmatic GmbH
+playbook	Playbook
+pocketfm	Pocket Entertainment Corp
+PPA	Progressive Physician Associates
+aventon	Ride Aventon
+Ridwell	Ridwell
+ScaleMicrogridSolutions	Scale Microgrid Solutions
+servicerocket	ServiceRocket
+shakudo	Shakudo
+siteimprove/eu	Siteimprove
+smiledigitalhealth	Smile Digital Health
+spinai	Spin Technology
+spiria	Spiria
+teecom	TEECOM
+terrific-innovation	Terrific
+theathletic	The Athletic Media Company
+too-lost	Too Lost
+ultrahealthproviders	Ultra Health
+until	Until
+Versana	Versana
+viamericas	Viamericas
+virginiagreen	Virginia Green
+wolverineconstruction	Wolverine Construction
+world-view-enterprises-inc.	World View
+zilliz	Zilliz
+activecampaign	ActiveCampaign
+advancell	AdvanCell
+aipconnect	AIP Connect
+airalo	Airalo
+alifsemi	Alif Semiconductor
+alluxio	Alluxio
+boston-materials	Boston Materials
+civitech	Civitech
+cxnpl	Constantinople
+dailywire	Daily Wire
+dexterity	Dexterity
+digitalmediamanagement	Digital Media Management
+DiversifiedRadiology	Diversified Radiology
+easybrain	Easybrain
+egenesisbio	eGenesis
+esalen	Esalen Institute
+factor	Factor
+faspac	Faspac
+firstup	Firstup
+futureof-life	Future of Life Organizations
+galepartners	GALE
+gradion	GRADION
+grailbio	GRAIL
+hawaiianhost	Hawaiian Host Group
+hush	HUSH
+kestrel-intelligence	Kestrel Intelligence
+lifeforce	Lifeforce
+lightship	Lightship
+loadsmart	Loadsmart
+lumotive	Lumotive
+max-ssm	MAX Surgical Specialty Management
+metergysolutions	Metergy Solutions
+milltownpartners	Milltown Partners
+mindful	Mindful
+missiongraduates	Mission Graduates
+mistplay	Mistplay
+moonpig	Moonpig
+okendo	Okendo
+oktopost	Oktopost
+Onehouse	Onehouse
+o-p-e-n	Open Inc.
+openx	OpenX
+padsplit	PadSplit
+planned	Planned Parenthood of the Pacific Southwest
+promenade	Promenade
+prosper	Prosper
+regal.ai	Regal
+regenxbio	REGENXBIO
+resilinc	Resilinc
+rightformula	Right Formula LTD
+rosaiclabs	RosaicLabs
+royalambulance	Royal Ambulance
+smart-working-solutions	Smart Working Solutions
+spear-ai	Spear AI
+splend	Splend
+spyke-games	Spyke Games
+sdatasystems.com	Strategic Data Systems
+studypoint	StudyPoint
+therealdeal	The Real Deal
+univeris.com	Univeris
+valdera	Valdera
+veritran	Veritran
+worldscape-technology	Worldscape Technology Inc.
+xepelin	Xepelin
+ywcaworks	YWCA Seattle King Snohomish
+z1tech	Z1 Tech
+zurichinstruments	Zurich Instruments
+4front	4Front Ventures
+ampd-energy	Ampd Energy
+ampeco-global	Ampeco Ltd
+animocabrands	Animoca Brands Limited
+AustralianMotoringServices	Australian Motoring Services
+AviveSolutions	Avive
+beegreen	Bee Green Recycling & Supply
+bellotalabs	Bellota Labs
+blue	BlueCloud Services, Inc.
+bosonai	Boson AI
+cloudinary	Cloudinary
+CollectlyInc	Collectly
+daos-hub	Daos hub
+esrtreit	Empire State Realty Trust
+fanatee	Fanatee
+forbrightbank	Forbright Bank
+freiheit-2	freiheit.com technologies
+goodamerican	Good American
+GurobiOptimization	Gurobi Optimization
+handoff	Handoff
+impossiblecloud	Impossible Cloud
+infinit	INFINIT
+investorflow	InvestorFlow
+irvine-clinical	Irvine Clinical Research
+JourneyClinical	Journey Clinical
+lamudi	Lamudi
+lifescipartners	LifeSci Partners
+lodgify	Lodgify
+lovepop	Lovepop
+mashgin	Mashgin
+masterborn-2	MasterBorn
+MissionWired	MissionWired
+nfq	NFQ
+oowlish	Oowlish Technology
+orasio/eu	Orasio
+osaro	OSARO
+perrknight	Perr&Knight
+petdesk	PetDesk
+piccollage	PicCollage
+pt78	Platinum Technologies
+pleased	Pleased Inc
+policyme	PolicyMe
+propellerhead	Propellerhead
+protectenvironmental	Protect Environmental
+purvis	PURVIS
+qwello.eu	Qwello
+redcanyonsoftware	Red Canyon Engineering & Software
+reekon-tools	REEKON Tools
+rfa-2	RFA
+riocan	RioCan
+sapiosciences	Sapio Sciences
+Sauce	Sauce
+serigraph	Serigraph
+seven-starling	Seven Starling
+sitetracker	Sitetracker
+snaplogic	SnapLogic
+streck	Streck, LLC
+telligen	Telligen
+theblacktux	The Black Tux
+tramgroup	Tokai Rika Group
+totalexpert	Total Expert
+trueml	TrueML
+truv	Truv by Checkr
+valgenesis	ValGenesis
+Wayground	Wayground (formerly Quizizz)
+workwave	WorkWave
+yuno	Yuno
+100ms	100MS
+additionwealth	Addition
+aero	Aero
+alliedbeverage	Allied Beverage Group
+alloy	Alloy.ai
+applydigital	APPLY
+landmarkbio	Artis BioSolutions
+ashoka	Ashoka
+ataccama	Ataccama
+aviyatech	Aviya Aerospace Systems
+bazaarvoice	Bazaarvoice
+belkins	Belkins
+blinq	Blinq
+BlueMatrix	BlueMatrix
+bogaardgroup	Bogaard Group International
+byborgenterprises/eu	Byborg Enterprises
+cmgx	Capital Markets Gateway
+carusoaffiliated	Caruso
+charmindustrial	Charm Industrial
+controlup	ControlUp
+delfidiagnostics	DELFI Diagnostics, Inc.
+ekohealth	Eko
+epoch-ai	Epoch AI
+fabertechnologies	Faber Work
+flux-mobility	Flux Mobility
+gmo	GMO
+Hively	Hively
+independencehl	Independence Home Loans, LLC.
+infinitygroup/eu	INFINITY GROUP
+level-zero-health	Level Zero Health
+lirvanalabs	Lirvana Labs
+ltaresearch	LTA Research
+microventures	MicroVentures
+morningbrew	Morning Brew Inc.
+neon	Neon Pagamentos
+nibiru	Nibiru
+corebts	NRI North America
+omnidian	Omnidian
+peoplegrove	PeopleGrove
+perforce	Perforce
+picklerobot	Pickle Robot Company
+ppgreatplains	Planned Parenthood Great Plains
+ppmd	Planned Parenthood of Maryland
+plenti	Plenti
+portcast	Portcast
+procreate	Procreate
+rapidmicrobio	Rapid Micro Biosystems
+redbee	redbee
+redwoodstrategygroup	Redwood Strategy Group, Inc.
+reign	Reign
+retro	Retro
+roadrunner-studios	Roadrunner Venture Studio
+rookcoffee	Rook Coffee
+sfmoma	SFMOMA
+sggc/eu	SG Growth Capital Pte Ltd
+sietefoods-2	Siete Foods
+skyboxlabs	SkyBox Labs
+skyralio	Skyral Group
+sofarsounds	Sofar Sounds
+softworld	Softworld
+sportalliance/eu	Sport Alliance GmbH
+starcompliance	StarCompliance
+tala	Tala
+tekton	Tekton
+teleo	Teleo
+terrahq	Terra
+thesalesfactory	The Sales Factory
+traildsoftware	Traild
+trainsweateat	TrainSweatEat
+trueplatform	True Platform
+gouspack	US Pack Services LLC
+vicicollection	VICI
+vwgds/eu	Volkswagen Group Digital Solutions [Portugal]
+vrchat	VRChat
+Way	Way
+willowhealth.com	Willow Health
+Zadara	Zadara
+zaimler	zaimler
+90seconds	90 Seconds
+adidevelopments	Adi Development Group
+advancedagrilytics	Advanced Agrilytics
+alliedreit	Allied
+amo/eu	Amo
+artera	Artera
+artera-2	Artera
+atrium-therapeutics	Atrium Therapeutics
+avertium	Avertium
+bekk	Bekk
+bellese	Bellese
+bhg-inc	BHG Financial
+bloom	Bloom
+blueengine	Blue Engine
+britecore	BriteCore
+Burro	Burro
+cents	Cents
+cin7	Cin7
+Clozd	Clozd
+convelio	Convelio
+CYE	Cye
+cypher-games	Cypher Games
+dsi	Design Solutions & Integration
+Dioxycle	Dioxycle
+Earnestpartners	EARNEST Partners
+easystreetcap	Easy Street Capital
+editorialist	Editorialist
+Emesent	Emesent
+envato-2	Envato
+enveda	Enveda
+evernest	Evernest
+evolved-aerospace/eu	Evolved Aerospace
+finch	Finch
+foxitsoftware	Foxit
+grand	Grand Games
+h2eventgroup	H2 Event Group
+hutker-architects-inc	Hutker Architects, Inc.
+insomniacdesign	Insomniac Design
+Ionicpartners	Ionic Partners
+klivvr	Klivvr
+loganpm	Logan Property Management
+logrocket	LogRocket
+makpar	Makpar
+massschoolbuildings	Massachusetts School Building Authority
+melitagroup	Melita Group
+mirego	Mirego
+mojave-energy-systems	Mojave Energy Systems
+mulhalls	Mulhalls
+nasafcu	NASA Federal Credit Union
+orbaerospace	Orb Aerospace
+packagex	PackageX
+paralleldomain	Parallel Domain
+payugpo	PayU GPO
+pelmorex	Pelmorex
+pendulum	Pendulum™
+pentagrp	Penta Group
+ppde	Planned Parenthood of Delaware
+planner5d	Planner5D
+reynoldsrowella	Reynolds + Rowella
+rivr	RIVR
+robbinsrecruiting	Robbins Recruiting
+seaportglobal	Seaport Global Holdings LLC
+simulmedia	Simulmedia
+solestial	Solestial, Inc.
+solopulseco	SoloPulse
+soniresources	Soni
+strategicgears	Strategic Gears
+subsense	Subsense
+swissborg	SwissBorg
+T6TalentPartners	T6 Talent Partners
+teamsnap	TeamSnap
+terawattinfrastructure	Terawatt Infrastructure
+Trend-Health-Partners	Trend Health Partners
+turgon-ai	Turgon AI
+unusual	Unusual Ventures
+vendavo	Vendavo
+waveapps	Wave HQ
+wingtra-2	Wingtra AG
+workingfamilies	Working Families Party
+younited	Younited
+zartis	Zartis
+adaptovate/eu	ADAPTOVATE
+adeptid	AdeptID
+aerispartners.com	Aeris Partners
+alector	Alector
+alpinestars	Alpinestars
+altaml	AltaML
+altarum	Altarum
+anomali	Anomali
+apex-paramedics	Apex Paramedics
+apex-ai	Apex.AI
+acds	Apprenticely
+asobostudio/eu	Asobo Studio
+auxia	Auxia
+beaverprocess	Beaver Process Equipment
+betr	Betr
+brainchildbio	BrainChild Bio
+capricor	Capricor Therapeutics
+cartrawler	CarTrawler
+clearcapital	Clear Capital | CubiCasa | restb.ai
+Clearer	Clearer.io
+clevelandconstruction	Cleveland Construction
+coinmarketcap	Coin Market Cap Ltd
+coolbet	Coolbet
+cuningham	Cuningham
+dng	David&Goliath
+deleteme	DeleteMe
+dollskill	Dolls Kill
+doola	doola
+ElectrifiedThermalSolutions	Electrified Thermal
+elementsolutions	Element Solutions
+elroyair	Elroy Air
+killbusyseason	Exponent
+findem	Findem
+founderscard	FoundersCard
+freedomprep	Freedom Preparatory Academy Charter Schools
+happyco	HappyCo
+harrisonst	Harrison Street
+hsag	Health Services Advisory Group, Inc.
+innogames/eu	InnoGames
+innovativesol-2	Innovative Solutions
+intrafi	IntraFi
+istaridigital.ai	Istari Digital
+iyzico	iyzico
+korrobio	Korro Bio
+kpaonline	KPA
+leversys	Leversys
+lexeotx	Lexeo Therapeutics
+mamamoney	Mama Money
+maverickx	MaverickX
+wearemeru	MERU
+mindy	Mindy Support
+minesense	MineSense
+modeln	Model N
+moo	MOO
+mPower	mPower, Inc.
+mylaurelhealth	myLaurel
+NJStateOfficeofInnovation	New Jersey Innovation Authority
+numeris	Numeris
+NuvoAir	NuvoAir
+pacificquest	Pacific Quest
+paradigm-health	Paradigm Health
+ppmi	Planned Parenthood of Michigan
+PocketHealth	PocketHealth
+pibenchmark	PredictX
+project-healthy-minds	Project Healthy Minds
+protrials	ProTrials Research, Inc.
+quantummetric	Quantum Metric
+recordpoint	RecordPoint
+sanabenefits	Sana Benefits
+sep	SEP
+siho	SIHO Insurance Services
+skydance	Skydance
+sunstudio	SUN.STUDIO
+swingdev	SwingDev—a hippo company
+system1	System1
+tagup	Tagup
+heritagevt	The Heritage Automotive Group
+kingfish-company	The Kingfish Company
+thirdfort/eu	Thirdfort Limited
+todaytixgroup	TodayTix Group
+tracktik	Trackforce
+tradelink/eu	TradeLink
+trinityhunt	Trinity Hunt Partners
+visionrt/eu	Vision RT Ltd.
+get-vocal-pbc	Vocal Media
+wisdomtree-2	Wisdomtree UK
+zensurance	Zensurance
+hashtagpaid	#paid
+1inch	1inch
+4SIGHTSupplyChain	4SIGHT Supply Chain
+airdna	AirDNA
+airtm	Airtm
+ambirobotics	Ambi Robotics
+americantall	American Tall
+aqueduct-tech	Aqueduct Technologies Inc.
+audinate	Audinate
+people-ai	Backstory
+bare-funeral-group	Bare Funeral Group Pty Ltd
+bedrockenergy	Bedrock Energy
+BeemEnergy	Beem
+BestEgg	Best Egg
+biointellisense	Biointellisense
+blablacar	BlaBlaCar
+pslove-pte	Blood
+bluecore-energy	BlueCore Energy
+blueland	Blueland
+brightlyworks	Brightly Works
+CatalystMobility	Catalyst Mobility
+ClinicalHealthNetworkForTransformation	Clinical Health Network For Transformation
+craftwater	Craftwater
+crytek	Crytek
+cxtsoftware	CXT Software
+dga	Democratic Governors Association
+deputy	Deputy
+dynamic-connections	Dynamic Connections
+easol/eu	Easol
+ecldc	ECL
+ellevationeducation	Ellevation
+enable	Enable
+esper	Esper
+fatetherapeutics	Fate Therapeutics, Inc.
+firstent	First Entertainment Credit Union
+fluxergy-2	Fluxergy
+frontier/eu	Frontier Developments
+galatea-associates	Galatea Associates
+genalyte	Genalyte, Inc
+genbio	GenBio AI
+geocomply-2	GeoComply
+gettyimages	Getty Images
+ghsmartjobs	ghSMART
+goalbookapp-2	Goalbook
+gomaterials	GoMaterials
+gravisrobotics	Gravis Robotics
+Grid	Grid
+hasi	HASI
+havenpoint-health	HavenPoint Health
+healthcare	HealthCare
+hgen	Hgen
+Hivemapper	Hivemapper
+hivemind-capital	Hivemind Capital Partners
+honkforhelp	HONK
+houzz	Houzz
+idealistconsulting	Idealist Consulting
+idmworks	IDMWORKS
+imo-online	IMO Health
+Instrumentl	Instrumentl
+jam-loop	Jamloop
+KingfishGroup	Kingfish Group
+lgt-cpa	Lane Gorman Trubitt
+launchhousing	Launch Housing
+launchsquad	LaunchSquad
+lever/eu	Lever
+markt-pilot/eu	MARKT-PILOT GmbH
+marquetteassociates	Marquette Associates
+medi.ci	Medici
+metr	METR
+ModernIntelligence	Modern Intelligence
+newzealandtradeandenterprise	New Zealand Trade and Enterprise
+optionmetrics	OptionMetrics
+Osmind	Osmind
+pexa	PEXA Group
+pinkoi	Pinkoi
+precede	Precede
+prolific-machines	Prolific Machines
+qrypt	Qrypt
+qubicaamf/eu	QubicaAMF
+questanalytics	Quest Analytics
+RaptStudio	Rapt Studio
+raya	Raya
+relayrobotics.com	Relay Robotics
+reviverx	ReviveRX and Ways2Well
+rhombus-systems	Rhombus
+sarmal-inc	Sarmal Inc
+scality	Scality
+seerinteractive	Seer Interactive
+sequel-med-tech	Sequel Med Tech
+silverbackstrategies	Silverback Strategies
+sogoodsoyou	So Good So You
+stellar/eu	Stellar Global
+symphony/eu	Symphony
+tendo	Tendo
+termgrid	Termgrid Inc.
+text	Text
+thetrevorproject	The Trevor Project
+thrivecausemetics	Thrive Causemetics
+topdesk	TOPdesk
+truetandem	True Tandem
+turvo	Turvo
+trendyol-go	Uber Eats Trendyol Go
+ullico	Ullico
+unitedwayla	United Way of Greater Los Angeles
+unitq	unitQ
+valkyrietrading	Valkyrie Trading
+vivo-care	Vivo Care
+xby2	X by 2
+adora	Adora Technologies Inc
+afero	Afero
+agatesoftware	Agate Software
+agtonomy	Agtonomy
+allears-vet	All Ears Veterinary
+alom	ALOM Technologies
+ansatzcapital	Ansatz Capital
+appsamurai	AppSamurai
+basis	Basis
+blbglaw	Bernstein Litowitz Berger & Grossmann LLP
+binance	Binance
+blackshark/eu	Blackshark.ai
+boxbot	Boxbot
+charitywater	charity: water
+caslservice	Chinese American Service League
+coderpad	CoderPad
+coloradocoalition	Colorado Coalition for the Homeless
+crossfit	CrossFit, LLC
+crowdhealth	CrowdHealth
+cura	Cura
+CVRx	CVRx, Inc.
+cx2	CX2
+deepsky	Deep Sky
+dexcarehealth	DexCare
+didomi	Didomi
+disqo	DISQO
+getduranta	Duranta
+ethena	Ethena
+FairTradeRealEstate	Fair Trade Real Estate
+Fathom5	Fathom5
+finquery	FinQuery
+galvanick	Galvanick
+gatorbio	Gator Bio
+gauntlet	Gauntlet
+genomines/eu	GENOMINES
+heaten-germany-gmbh	HEATEN
+hellonanny	Hello Nanny!®
+highstreetit	Highstreet
+HowGood	HowGood
+ironflow	Ironflow AI
+kenko	Kenko AI
+klearnow	KlearNow.ai
+koalahealth	Koala Health
+leadershipconnect	Leadership Connect
+liatrio	Liatrio
+Lillio	Lillio (formerly HiMama)
+lumaril-corporation	Lumaril Corporation
+lumiq-learn	LumiQ
+Medchart	Marble
+medical-outsourcing-solutions	Medical Outsourcing Solutions
+miteksystems-2	Mitek Systems
+modernlife	Modern Life
+npowermedicine	N-Power Medicine
+nationaljournal	National Journal
+nextech	Nextech
+nio-usa	NIO USA, INC
+noodle	Noodle
+novosfiber	NOVOS FiBER
+optotune/eu	Optotune
+otilumionics	OTI Lumionics Inc.
+outsourcedstaff	Outsourced Staff
+patchmypc	Patch My PC
+pivotenergy	Pivot Energy
+placeshowroom.com	Place Showroom
+ppcentralcoast	Planned Parenthood California Central Coast
+pppsgv	Planned Parenthood Pasadena and San Gabriel Valley, Inc.
+portpro	PortPro
+primeexecutiveoffice	Prime Executive Office
+quadlock	Quad Lock
+qwoted	Qwoted
+rapidai	RapidAI
+repurposeglobal	rePurpose Global
+revealtech	Reveal Technology
+revinate	Revinate
+rai	Robotics and AI Institute
+robust-ai	Robust.ai
+rovio-2	Rovio
+salvohealth	Salvo Health
+sfgiants	San Francisco Giants
+sierraclub	Sierra Club
+silverfin/eu	Silverfin
+smithmicro	Smith Micro Software, Inc.
+solfl	SOLFL
+stichting-studenten-huisvesting	SSH
+starkbank	Stark Bank
+superannotate	SuperAnnotate AI
+supercharge/eu	Supercharge
+swapcard	Swapcard
+symplicity	Symplicity
+t5datacenters-2	T5 Properties LLC
+tali-ai	Tali AI
+tag	Technology Advancement Group
+topazlabs	Topaz Labs
+torchdental	Torch Dental
+trackmind	Trackmind
+trivenibio	Triveni Bio
+trustarc	TrustArc
+vivrelle	Vivrelle
+wavicledata	Wavicle Data Solutions
+wellfit	Wellfit Technologies
+wisecode	WISEcode
+workinprogress	WorkInProgress
+wra-ca	WRA, Inc.
+zerorisc	zeroRISC
+zerotier	ZeroTier
+6ix	6ix
+Academy	Academy
+activetheory	Active Theory
+advocate	Advocate
+arbitalhealth	Arbital Health
+arbitrumfoundation	Arbitrum Foundation
+artbio	ARTBIO
+artifactuprising.com	Artifact Uprising
+avalanchestudios	Avalanche Studios Group
+baselane	Baselane
+bis	BIS Safety Software
+braviantholdings	Braviant Holdings
+brilliant	Brilliant
+businesswire	Business Wire
+callan	Callan
+casino-cash-trac	CCT
+charter-impact	Charter Impact
+clearpoint	ClearPoint
+copia	Copia Automation
+cruxocm	CruxOCM
+curai	Curai
+dataroid	Dataroid
+digital-matter	Digital Matter
+distru	Distru
+duetti	Duetti
+e184	e184
+crgo	Enigma Aerospace
+EnvisionRPO	Envision RPO
+epsilon3	Epsilon3
+fi	Fi
+flourish-schools	Flourish Schools
+foundation-llm-technologies	Foundation EGI
+fulcrumpro	Fulcrum
+fullspectrumsoftware	Full Spectrum
+glass-health-inc	Glass Health Inc.
+globalstrategygroup	Global Strategy Group
+grantstreet	Grant Street Group
+grape-health/eu	grape insurance AG
+HDVI	HDVI
+heyjane	Hey Jane
+Huckleberrylabs	Huckleberry Labs
+immutable	Immutable
+inductivehealth	InductiveHealth
+infinitepl	Infinite pl
+infobase	Infobase
+InstituteforProteinInnovation	Institute for Protein Innovation
+instrument	Instrument
+intenseye	intenseye
+intrepidcollegeprep	Intrepid College Prep Schools
+invinity	Invinity Energy Systems
+joshstoysandgames	Josh's Toys & Games
+junoniapartners	Junonia Partners
+kavak	Kavak
+kotm	Kids on the Move
+supportkind	KIND
+kolibrigames	Kolibri Games
+luminary-labs	Luminary Labs
+LyciaTherapeutics	Lycia Therapeutics
+machina-games	Machina Games
+maquettevirtuelle	Maquette Virtuelle
+markham	Markham LLC
+mars-men	Mars Men
+meetingtomorrow	Meeting Tomorrow
+metasite	Metasite Business Solutions
+hellomongoose	Mongoose
+motifsystems	Motif
+mulliganfunding	Mulligan Funding
+musixmatch	Musixmatch S.p.a
+neighbors-reliance	Neighbor's Reliance Insurance Services
+nobullproject	NOBULL
+octavefederal	Octave Federal
+ogury	Ogury
+optimussbr	Optimus SBR
+dnagenotek	OraSure Technologies Inc.
+outlast	Outlast
+pacificoenergy	Pacifico Energy
+paralleladvisors	Parallel Advisors
+patch	Patch
+pillartechnology	Pillar Technology
+ppmw	Planned Parenthood of Metropolitan Washington, DC, Inc.
+ppmontana	Planned Parenthood of Montana, Inc.
+ppwp	Planned Parenthood of Western Pennsylvania
+pioneer-services	Powered by Pioneer
+powerex	Powerex Corp.
+prestolabs	Presto
+propelsoftware	Propel Software Solutions
+qsic	QSIC
+radformation	Radformation
+revefi	Revefi
+revelationssearch	Revelations Executive Search
+rezotx	Rezo Therapeutics
+rocketpartners	Rocket Partners
+sideinc	Side
+siteground	SiteGround
+skygrid	SkyGrid
+skywarditsolutions	Skyward IT Solutions, LLC
+softdocs	Softdocs
+spreedly	Spreedly
+sprucestreetcomp	Spruce Street Compliance
+startengine	StartEngine
+supermove	Supermove
+sycurio	Sycurio
+synapticure	Synapticure
+synthego	Synthego
+tahoebio-ai	Tahoe Therapeutics
+Terraformation	Terraformation
+thebouqs.com	The Bouqs Company
+travertine	Travertine
+triallibrary	Trial Library
+trility	Trility Consulting
+txse	TXSE
+myubiquity	Ubiquity Retirement and Savings (dba Decimal Inc)
+verisinsights	Veris Insights
+myvessel	Vessel Technologies
+fullyvested	Vested
+viget	Viget
+zippi	Zippi
+32Co	01Health
+4seasonstransport	4Seasons Transportation
+5amventures	5AM Ventures
+abovelending	Above Lending
+adjarabet	Adjarabet.com
+aerostrat	Aerostrat
+aevi/eu	Aevi
+afin-bank	Afin Bank Limited
+aizon	Aizon
+amsty	AmSty
+aquabyte	Aquabyte
+arable	Arable
+athena-education	Athena Education
+athletetoathlete	Athlete to Athlete
+attovia-therapeutics	Attovia Therapeutics
+autofi	AutoFi
+badge-group	Badge
+bamko	BAMKO
+bentoboxent	Bento Box Entertainment
+bespokepost	Bespoke Post
+beyondcloudconsulting	Beyond Cloud Consulting Inc.
+blackbirdinteractive	Blackbird Interactive
+blencorp	BLEN
+blinkux	Blink UX
+bluecoding	Blue Coding
+BreezeBio	BreezeBio
+BusaraCenter	Busara Center for Behavioral Economics
+bwfzuri	BWF Zuri
+careernowbrands	Career Now Brands
+cbtnuggets	CBT Nuggets
+getcircuit	Circuit
+clarifyhealth	Clarify Health
+getcollaborative	Collaborative Strategies
+commencis	Commencis
+commoncause	Common Cause
+compstak	CompStak
+concurrency	Concurrency
+controlai/eu	ControlAI
+crypto-banter	Crypto Banter
+deltaairportconsultants	Delta Airport Consultants
+digitalfish	DigitalFish, Inc
+elk-marketing	elk Marketing
+emilyslist	EMILYs List
+ethree	Energy and Environmental Economics
+enter-rcm-llc	Enter
+evry-health	Evry Health
+Expana/eu	Expana
+Farcast	Farcast
+findigs	Findigs
+fintual	Fintual
+fgi	Fort Garry Industries
+fundrise	Fundrise
+rideonewheel	Future Motion
+futurenow	Future Now
+hannaandersson	Hanna Andersson
+headroyce	Head-Royce School
+hiringourheroes	Hiring Our Heroes
+hmbl-tech	HMBL
+imentor	iMentor
+incorta	Incorta
+innodata	Innodata
+jito	Jito Foundation
+jito.wtf	Jito Labs
+jmawireless	JMA Wireless
+jobin	Jobin
+jobscan-2	Jobscan
+joltcharge	JOLT
+juneshine	JuneShine Brands
+keboola	Keboola
+sgff.org	Lean In
+leantaas	LeanTaaS
+loopreturns	Loop
+loopgames	Loop Games
+luumlash	LUUM
+magnopus	Magnopus
+ml4t	Management Leadership For Tomorrow
+joycharter	Maureen Joy Charter School
+mcchrystalgroup	McChrystal Group
+mechanicalorchard	Mechanical Orchard
+mirastarfcu	Mirastar FCU
+moka.care	Moka.Care
+mti-inc	Monterey Technologies Inc
+Nestig	Nestig
+nomihealth	Nomi Health
+novara	Novara
+nuuds	nuuds
+myollie	Ollie
+onboarded	Onboarded
+ou-education-services	OU Education Services
+our-place	Our Place
+outcomesai	OutcomesAI
+peerspace	Peerspace
+ppau	Planned Parenthood Association of Utah
+ppgr	Planned Parenthood Great Rivers
+ppkeystone	Planned Parenthood Keystone
+plooto	Plooto
+developintelligence	Pluralsight
+prizeout	Prizeout
+productventures	Product Ventures
+projectkittyhawk	Project Kitty Hawk
+prometheanworld	Promethean
+proof	Proof
+purple-technology	Purple Team
+ranger	Ranger
+realself	RealSelf
+recognisebank	Recognise Bank
+redoxengine	Redox
+renofi	RenoFi
+ribbon	Ribbon.ai
+ROH	ROH
+schneidergis	Schneider Geospatial
+seattleartmuseum	Seattle Art Museum
+simpleventures	simpleventures
+skinny-dipped	Skinny Dipped
+skio	Skio
+slate	Slate
+sonrai-security	Sonrai Security
+SoundStack	SoundStack
+source	Source
+SparkClimateSolutions	Spark Climate Solutions
+sprypointservices	SpryPoint
+getsquire	SQUIRE
+state-policy-network	State Policy Network
+sundae-creative	Sundae Creative Agency
+sunwatercapital	Sunwater Capital
+superstate	Superstate
+swiftconnect	SwiftConnect
+tact	TACT
+Termius	Termius
+engine	The Engine
+thefp	The Free Press
+thefyndergroup	The Fynder Group
+thepieexecsearch	The PIE Executive Search
+uprightproject	The Upright Project
+thrive-therapies	Thrive Therapies Group
+thunkable	Thunkable
+tonkean	Tonkean
+tpgsi	Turning Point Global Solutions
+Ubiminds	Ubiminds
+utilityglobal	Utility Global
+vailsys	Vail Systems Inc.
+viabill	ViaBill
+vidsy	Vidsy
+villa-homes	Villa Homes
+vogo	Vogo
+voltalabs	Volta Labs, Inc.
+volta-medical/eu	Volta Medical
+wasatchglobal	Wasatch Global Investors
+project-wayfinder	Wayfinder
+whiterivertoyota	White River Toyota
+xentral/eu	Xentral
+zambezi	Zambezi
+zingtree	Zingtree
+15five	15Five
+2A	2A
+accesssoftek	Access Softek
+acord	ACORD Corporation
+actian	Actian Corporation
+aifi	AiFi
+algorized	Algorized, Inc.
+Alignable	Alignable
+ammobia	Ammobia
+andersgroup	Anders Group
+apexpi	APEX Investigation
+argonaut	Argonaut, Inc.
+articulate	Articulate
+atavistik-bio	Atavistik Bio
+atomi	Atomi
+aurora-dev	Aurora Labs
+authentic8	Authentic8
+Autify	Autify, Inc.
+automatiq	Automatiq
+aviahealth	AVIA
+baoinc	BAO, Inc
+bighealth	Big Health
+bizlibrary	BizLibrary
+brighte	Brighte
+bkln	Brooklyn Investment Group
+cascademgt	Cascade Asset Management Company
+cascade-climate	Cascade Climate
+ChamberofProgress	Chamber of Progress
+checker	Checker
+ciellos	Ciellos
+go-cloudforce	Cloudforce
+cocollective	co:collective
+Cofactr	Cofactr
+collabora	Collabora
+commercearchitects	Commerce Architects
+commonfuture	Common Future
+communityactionhouse	Community Action House
+computercare	ComputerCare
+conversica	Conversica
+corner-health	Corner Health
+creatordeck	Creator Deck
+crowdriff	CrowdRiff
+culturekings	Culture Kings
+cyberonesecurity	CyberOne Security
+dualitas-therapeutics	Dualitas Therapeutics
+easypost-2	EasyPost
+edpuzzle	Edpuzzle
+elty	Elty
+employ	Employ
+encore-renewable-energy	Encore Renewable Energy
+energyrecovery	Energy Recovery
+epm	Equity Prime Mortgage
+evergreenstrategygroup	Evergreen Strategy Group
+evidentid	Evident ID
+futo-org	FUTO
+glow.co	Glow
+gofluent	goFluent
+gr0	GR0
+influ2	Influ2
+insomniacookiesuk/eu	Insomnia Cookies UK Ltd
+refugeerights/eu	International Refugee Assistance Project
+iheartjane	Jane Technologies
+jaspertx	Jasper Therapeutics
+jitxinc	Jitx Inc.
+joelefrank	Joele Frank
+kinsta	Kinsta
+kruzeconsulting	Kruze Consulting
+ladders	Ladders
+lsa-hr	Language Services Associates, Inc.
+listo	Listo
+logz	Logz.io
+lucidworks	Lucidworks
+lyrebirdstudio	Lyrebird Studio
+magnet-defense	Magnet Defense
+mahmee	Mahmee
+mangolanguage	Mango Languages
+marigoldhealth	Marigold Health
+max-retail	Max Retail
+mhnchicago	Medical Home Network
+metaprise.ai	Metaprise
+microvision	MicroVision
+milocredit	Milo
+mobile-action	MobileAction
+newton	Newton
+nimbletalent	Nimble Talent
+noblereach	NobleReach Foundation
+nobody	NOBODY
+oliverwyman	Oliver Wyman Labs
+onceuponafarm	Once Upon a Farm
+AkashNetwork	Overclock Labs
+pacific-environment	Pacific Environment
+ppmnj	Planned Parenthood of Metropolitan New Jersey
+plume	Plume
+pointb	Point B
+poki	Poki
+postera	PostEra
+Potloc	Potloc
+prominentedge	Prominent Edge LLC
+psivant	Psivant Therapeutics, Inc.
+quantlane	Quantlane
+quincyinst	Quincy Institute
+raidium	Raidium
+raine	Raine Group
+RareCyte	RareCyte
+reachpower	Reach
+representus	RepresentUs
+revenueanalytics	Revenue Analytics
+RiptideTech	Riptide Technology
+risealliance	Rise Alliance
+securecodewarrior	Secure Code Warrior
+serotonin	Serotonin
+shakacode	ShakaCode
+showpo-2	Showpo
+signinsolutions	Sign In Solutions
+smartcuts	Smartcuts
+Snif	Snif
+stoneridgesoftware	Stoneridge Software
+sundrivesolar	Sundrive
+swave/eu	Swave
+SwiftlySystems	Swiftly
+swissblock	Swissblock
+thalolabs	Thalo Labs
+The-Battery-Network	The Battery Network
+theculinistas	The Culinistas
+thimble	Thimble
+tinybird	Tinybird
+toku	Toku
+transmutex	Transmutex SA
+treering	Treering
+trellis	Trellis
+tribe-payments	Tribe Payments
+trustedhousesitters.com	TrustedHousesitters
+tuumplatform/eu	Tuum
+util-assist	Util-Assist Inc.
+verifiable	Verifiable
+viaseparations	Via Separations, Inc.
+viome	Viome Life Sciences
+voltai	Volt
+wtads	Walz Tetrick Advertising
+wisdomtree	WisdomTree
+wishpond	Wishpond Technologies
+a1-home-solutions	A1 Home Solutions
+acumenllc	Acumen, LLC
+adhoclabs	Ad Hoc Labs
+AfarMedia	AFAR
+Agerpoint	Agerpoint
+alltrails	AllTrails
+anagramsecurity	Anagram
+arsenalbio	Arsenal Biosciences
+australianethical	Australian Ethical
+bofcorp	B-O-F Corporation
+backerkit	BackerKit
+biobus.org	BioBus
+Black-White-Zebra	Black & White Zebra
+cambiumnetworks	Cambium Networks
+cardiosense	Cardiosense
+catalist	Catalist
+cellares	Cellares
+centerlinebiomedical.com	Centerline Biomedical
+centrifuge	Centrifuge
+chargelab-inc	ChargeLab Inc.
+cheerz	Cheerz
+cherre	Cherre
+chestnutcarbon	Chestnut Carbon
+churchatthepark	Church at the Park
+ppsworegon	Click Here to be Redirected to Planned Parenthood of Southwestern Oregon's New Career Center
+coingecko	CoinGecko
+copper-company	Copper
+crumbl	Crumbl
+cygn	Cygnal
+getdeardoc	DearDoc
+deepgenomics	Deep Genomics
+designetics	Designetics
+getdimension	Dimension
+doranjones	Doran Jones Inc.
+earthspecies	Earth Species Project
+eleostech	Eleos Technologies
+empassion.com	Empassion
+engene	enGene
+engine-ventures	Engine Ventures
+enhanced-us	Enhanced Games
+erpsuccesspartners	ERP Success Partners
+explodingkittens	Exploding Kittens
+familywellhealth	FamilyWell Health
+askfavor	Favor
+fevo	FEVO
+figfinancial	Fig
+fireflyon	Firefly
+fiscalnote	FiscalNote
+FlareTherapeutics	Flare Therapeutics
+fuellabs	Fuel Labs
+genuine-health	Genuine Health
+girlswhocode	Girls Who Code
+healx	Healx
+hevo	HEVO
+horizon	Horizon Robotics
+thehousemajoritypac	House Majority PAC
+Hydrow	Hydrow, Inc.
+ifeel	ifeel
+imagexmedia	ImageX
+innocraft	InnoCraft
+inpay-2	Inpay
+InsightM	Insight M
+integrators.cz	Integrators services a.s.
+januaryinc	January
+jmi	JMI Equity
+jupiterintel	Jupiter Intelligence, Inc.
+jvs-boston	JVS Boston
+karmacheck	KarmaCheck
+KeloniaTX	Kelonia Therapeutics
+kacl	Kenora Association for Community Living
+kitmanlabs	Kitman Labs
+lemnis	Lemnis
+Lumary	Lumary
+LyraCollective	Lyra Collective
+mammothbiosci	Mammoth Biosciences
+marqvision	MarqVision
+Mediafly	Mediafly
+meili	Meilisearch
+mightyid	MightyID
+minted	Minted
+modulate	Modulate
+moltenindustries	Molten Industries
+mothernewyork	Mother USA
+mtspartners	MTS Health Partners, L.P.
+mypassglobal	MyPass Global
+algorex	N1 Health
+newwesterncorporate	New Western Corporate
+nextovation	NextOvation
+niagenbioscience	Niagen Bioscience
+nimbus	Nimbus
+ole-management	Ole Life
+OstealTherapeutics	Osteal Therapeutics
+PacerPro	PacerPro
+paramobility	Para Mobility
+pathpoint	Pathpoint
+mcgovern	Patrick J McGovern Foundation
+peppy/eu	Peppy
+pillarbiosciences	Pillar Biosciences
+piplabs	PIP Labs
+popsockets	PopSockets
+prilenia	Prilenia
+primefiber	Prime Fiber
+purchasingplatform	Purchasing Platform
+pushpress	PushPress
+quanticdream/eu	QUANTIC DREAM
+quilted-health	Quilted Health
+reach.industries	Reach Industries
+reddogmedia	Red Dog Media
+relay-commerce	Relay Commerce
+replate	Replate
+replimune	Replimune
+richards-services	Richards Services
+rubyplay	Ruby Play
+tildei	Runhappy
+pansns	RxNS
+sakon	Sakon
+SatelliteInnovations	Satellite Innovations
+scale3c	ScaleTech
+simply-protein	Simply Protein for Pets, Inc
+skyslope	SkySlope
+Smile.io	Smile.io
+socratesglobal	Socrates Global
+solutiondesign	Solution Design Group
+soraschools	Sora Schools
+sphere-laboratories	Sphere Laboratories, Inc.
+catalate	Spotlio
+stackhawk	StackHawk
+staffingfitness	Staffing Fitness
+stardog	Stardog
+gostudion	Studion
+sure	Sure
+goswift	Swiftly, Inc.
+synolotx	Synolo Therapeutics
+syntax	Syntax
+teramind	Teramind
+theinformationlab	The Information Lab
+topicalsrx	Topicals
+traackr	Traackr
+transparentpartners	Transparent Partners
+trumarkco	Trumark Homes
+twingate	Twingate
+txidigital	TXI
+gouconnect	uConnect
+unifyconsulting	Unify Consulting
+unitedaestheticsalliance	United Aesthetics Alliance
+UpMetrics	UpMetrics
+uqual	UQUAL
+vergesense	VergeSense
+vevo	Vevo
+vipdesk	VIPdesk Connect
+Virtus	Virtus
+visby	Visby Medical
+VRsystems	VR Systems, Inc
+whiterabbit	Whiterabbit.ai
+wilburlabs	Wilbur Labs
+WindsorManagement	Windsor Management
+yonexusa	Yonex USA
+zerion	Zerion
+zerohomes	Zero Homes
+zinovo	Zinovo
+ciceksepeti	Çiçeksepeti
+2os	2nd Order Solutions
+3jane	3jane
+energy-by-5	5
+weareaccord	Accord Group
+accurate	Accurate Background
+adverum	Adverum Biotechnologies, Inc.
+aigen	Aigen
+aiwyn	Aiwyn
+meetalbert	Albert
+labelbox	Alignerr
+alignment.org	Alignment Research Center
+alveotechnologies	Alveo Technologies
+amberelectric	Amber Electric
+amicustherapeutics/eu	Amicus Therapeutics
+apax	Apax Partners
+appcues-2	Appcues
+appfollow	AppFollow
+aragon	Aragon
+arcadiascience	Arcadia Science
+archivecom	Archive
+arinna	Arinna, Inc.
+ascentcore/eu	AscentCore Technology
+assurance	Assurance Careers
+astrus	Astrus
+attabotics	Attabotics
+avante	Avante
+avero	Avero
+avioconsulting	AVIO Consulting
+Ayr	Ayr
+badgermapping	Badger Maps
+bananajobs	Banana Jobs
+Betstamp	Betstamp
+blox-route	bloXroute Labs
+honeybeerobotics	Blue Origin Early Career Programs
+bluerocktx	BlueRock Therapeutics
+bolster	Bolster Inc.
+bonsaileadershipgroup	Bonsai Leadership Group
+brainstorminc	BrainStorm, Inc.
+BreakwaterTech	Breakwater Technology
+brighthire	BrightHire
+brotherhoodcrusade	Brotherhood Crusade
+buoysoftware	Buoy Software
+burga	BURGA
+buyboxexperts	Buy Box Experts
+carboncapture	CarbonCapture Inc.
+careology	Careology
+carlyriangroup	Carly Rian Group
+catlabs	CAT Labs Inc.
+catalyze	Catalyze
+cdcfoundation	CDC Foundation
+celestia	Celestia Labs
+aisafety	Center for AI Safety
+humanetech	Center For Humane Technology
+circlepharma	Circle Pharma
+ccachicago	Civic Consulting Alliance
+clerky	Clerky
+clicktime	ClickTime
+cnmllp	CNM LLP
+codeway	Codeway
+cogility	Cogility
+comply	Comply
+connexiatelerad	Connexia
+contactout/eu	contactout - Partner
+continuumglobal	ContinuumGlobal, Inc
+roy-cooper	Cooper for NC
+copilotkit	CopilotKit, Inc.
+corbalt	Corbalt
+Credo	Credo
+crossvale	crossvale
+crowworks	Crow Works
+culdesac	Culdesac
+cullinanoncology	Cullinan Therapeutics
+curri	Curri
+cyngn	Cyngn
+dayblinkconsulting	DayBlink
+Decentraland	Decentraland
+demiurgestudios	Demiurge Studios
+desbytech	DESBY Technologies
+docebo	Docebo
+doubledown	DoubleDown Interactive
+drkfoundation	Draper Richards Kaplan Foundation
+obol-tech	DV Labs
+dwolla	Dwolla
+dzen	Dzen
+Eastwall	Eastwall
+easyagile	Easy Agile
+edera	Edera
+electric-twin	Electric Twin
+emersoncollective	Emerson Collective
+emersonhc	Emerson Human Capital Consulting
+empiricotx	Empirico
+endpointclosing	Endpoint
+eneba/eu	Eneba
+energeticcapital	Energetic
+estenda	Estenda Solutions
+evrealty-us	EV Realty
+Eve	Eve
+extropic	Extropic
+exygy	Exygy
+fantasy	Fantasy
+femalefounders-fund	Female Founders Fund
+find	Find
+findhelp	Findhelp, A Public Benefit Corporation
+fond	Fond
+forourfuturefund	For Our Future Action Fund
+form	FORM
+thefreeosk	Freeosk
+freshworks	Freshworks
+frontify	Frontify
+genesis	Genesis Global
+giddyup	GiddyUp
+ghcorps	Global Health Corps
+golfscopeinc	GOLF+
+goodeggs	Good Eggs
+goodwatercap	Goodwater Capital
+gordian-bio	Gordian Biotechnology
+grizzly.co	Grizzly
+gynger	Gynger
+halosbodycams	Halos Body Cams
+harmonicdesign	Harmonic Design
+heard	Heard
+WarblerLabs	Heron Finance
+hexa	Hexa
+highspot	Highspot
+hihello	HiHello
+hint	Hint Health
+hopelab	Hopelab
+Hyperlane	Hyperlane
+idearoom	IdeaRoom
+ideasunited	Ideas United
+ilek.fr	ilek
+illumination	Illumination
+indexventures	Index Ventures
+climate-collaborative	India Climate Collaborative
+induprotx.com	InduPro Therapeutics
+IPHI	Institute for Public Health Innovation
+integrate	Integrate
+ivo	Ivo
+kaiko/eu	Kaiko
+kapwing	Kapwing
+kasada	Kasada
+kasheesh	Kasheesh
+Kibeam	Kibeam, Inc.
+kimiatherapeutics	Kimia Therapeutics
+Kimmeridge	Kimmeridge
+kochava	Kochava
+kontakt	Kontakt.io
+kpmg	KPMG LLP
+kto/eu	KTO
+kubra	KUBRA
+lacocinasf.org	La Cocina
+lavictoria	La Victoria Lab
+lever-for-change	Lever for Change
+limitbreak	Limit Break
+lionheartkid	Lionheart Children’s Academy
+liveoakfiber	LiveOak Fiber
+livingcarbon	Living Carbon
+longtail-ai	Longtail Technologies, Inc.
+LuminDigital	Lumin Digital
+lyraclinical	Lyra Clinical Associates
+lyrebirdhealth	Lyrebird Health
+lyterian	Lyterian
+mrss	M+R
+m33growth	M33 Growth
+manifestmedex	Manifest MedEx
+maple-finance	Maple
+marcusmillichap	Marcus & Millichap
+margueritecaseyfoundation	Marguerite Casey Foundation
+marketcircle	Marketcircle
+mit	Massachusetts Institute of Technology
+mavenoid/eu	Mavenoid
+maxmind	MaxMind
+mediagenix	Mediagenix
+medrhythms	MedRhythms
+MBRDNA	Mercedes-Benz R&D North America
+missioncap	Mission Capital Advisors
+MOstudio	MO
+Modjo	Modjo
+moonsong-labs	Moonsong Labs
+mosaic-2	Mosaic
+myPlaceHealth	myPlace Health
+myvest	MyVest
+nava	Nava
+netvirta	Netvirta
+nevados	Nevados
+nextshiftlearning	Next Shift Learning
+next-decade	NextDecade
+nflexperience	NFL Experience
+nfx	NFX
+NICMAP	NIC MAP
+nimblerx	NimbleRx
+NoibuTechnologies	Noibu
+nomadmktg	Nomad Marketing
+nominal	Nominal
+oci	Object Computing, Inc.
+observablehq	Observable
+oleria-security	Oleria Security
+oneup	OneUp Games
+obsglobal	Online Business Systems
+oomnitza	Oomnitza
+openresearch	OpenResearch
+orijin	Orijin, a public benefit corporation
+outpacebio	Outpace Bio
+parcelvision	ParcelHero
+perennial	Perennial
+pipedrive	Pipedrive
+pixcel	Pixcel
+ppaz	Planned Parenthood Arizona, Inc.
+ppcw	Planned Parenthood Columbia Willamette
+ppnorcal	Planned Parenthood Northern California
+ppcwny	Planned Parenthood of Central and Western New York, Inc.
+ppgwni	Planned Parenthood of Greater Washington and North Idaho
+ppmet	Planned Parenthood of Middle & East Tennessee, Inc.
+ppgnnj	Planned Parenthood of Northern, Central and Southern New Jersey, Inc.
+ppncny	Planned Parenthood of the North Country New York, Inc.
+pprm	Planned Parenthood of the Rocky Mountains, Inc.
+ppsouthtexas	Planned Parenthood South Texas
+ppsp	Planned Parenthood Southeastern Pennsylvania
+ppswo	Planned Parenthood Southwest Ohio Region
+playco	Playco
+playplay	PlayPlay
+plusgrade	Plusgrade
+pmdsoft	pMD
+polleverywhere	Poll Everywhere
+powdevs	Powdevs
+ppro	PPRO
+prefixbox	Prefixbox
+productable	Productable
+prosus/eu	Prosus
+provi	Provi
+proxima	Proxima
+proximafusion	Proxima Fusion
+qbio	Q Bio
+qonto	Qonto
+quantcast	Quantcast
+QuantumWorkplace	Quantum Workplace
+quartzy	Quartzy
+rackspace	Rackspace
+railroad19	Railroad19, Inc
+ramenvr	Ramen VR
+rangeenergy	Range Energy
+ravensburger-north-america	Ravensburger North America
+recast-software	Recast Software
+recess	RECESS
+redi.health	Redi.Health
+refed	ReFED
+shopreli	Reli.
+reliable	Reliable Robotics
+rendernetworks	Render Networks
+retired	Retired.com
+rld-foundation	Richard L. Duchossois Foundation
+RoboticAssistanceDevices	Robotic Assistance Devices
+rocketcommunications	Rocket Communications
+roico	ROI Communication
+RouteThis	RouteThis
+saga-xyz	Saga
+sageviewadvisory	SageView Advisory Group
+satoricapital	Satori Capital
+ScaleBio	ScaleBio
+scanifly	Scanifly
+scholarsoffinance	Scholars of Finance
+sentibio	Senti Biosciences
+sesame	Sesame
+signal	Signal Messenger
+silasg	Sila
+strategysource	Sinecure Inc.
+solutionsjournalism	Solutions Journalism Network
+spiceai	Spice AI
+stackedsp	StackedSP Inc
+tom-steyer	Steyer for Governor 2026
+straighterline	StraighterLine
+SublimeSystems	Sublime Systems
+sugarcrm	SugarAI
+surglogs	Surglogs
+surpassgames	Surpass Games
+swordhealth	Sword Health
+symmetryinvestments	Symmetry Investments
+SymmetrySystems	Symmetry Systems
+tandems	Tandems
+tdthornton	TD Thornton
+tdaboulder	TDA_Boulder
+techtalentproject	Tech Talent Project
+teck-2	Teck Resources Limited
+TECLA	TECLA
+textnow	TextNow
+tgsmc	TGS
+theblockcrypto	The Block
+bridge2rwanda	The BRIDGE Talent Services
+theex	The Canadian National Exhibition
+thedispatch	The Dispatch
+div	The DIV Fund
+the-sia-foundation	The Sia Foundation
+voleon	The Voleon Group
+third-plateau	Third Plateau
+Thrackle	Thrackle
+thrive-financial	Thrive Financial, LLC
+jointopo	Topography Health
+tracksuit-limited	Tracksuit
+tractian	Tractian
+translifeline	Trans Lifeline
+transcarent	Transcarent
+trela	Trela
+trevipay	TreviPay
+tripalink	Tripalink
+tsugu/eu	Tsugu AG
+upguard	UpGuard
+v2sa	V2 Strategic Advisors
+valence	Valence
+valorepartners	Valore Partners
+allstarservicesnow	Vault Roofing
+veic	VEIC
+veonhq	VEON-HQ
+aperturehealth	Verisys
+vidrovr	Vidrovr
+visotrust	VISO TRUST
+vivacitylabs	VivaCity
+voterparticipation	Voter Participation Center
+vowforgirls	VOW for Girls
+vtg	VTG
+wahi	Wahi
+waitwhat	WaitWhat
+walkerandcompany	Walker & Company
+wealthsimple	Wealthsimple
+webfx	webfx.com
+WeSalute	WeSalute
+whereby	Whereby
+whoop	Whoop
+wildlight	Wildlight Entertainment
+winnco	WinnCompanies
+wisr	Wisr
+epifi	Workloom
+woven-planet	Woven Planet Holdings, Inc.
+wovenlight	WovenLight
+yardzen	Yardzen
+zazzle	Zazzle

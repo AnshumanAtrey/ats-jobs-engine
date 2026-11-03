@@ -167,9 +167,15 @@ class Run:
             await safe_status(self.progress_line())
 
     async def run_all(self, coros) -> None:
+        """The calls together, given up RUN_SAFETY_MARGIN_S before the run's time limit: a call still out then would
+        let the platform stop the run before anything is delivered (one Lever list took six minutes to arrive)."""
         progress = asyncio.create_task(self.progress_loop())
+        left = seconds_left_in_run()
         try:
-            await asyncio.gather(*coros)
+            await asyncio.wait_for(asyncio.gather(*coros),
+                                   None if left is None else max(left - RUN_SAFETY_MARGIN_S, 0))
+        except TimeoutError:
+            self.stop = self.stop or 'time'
         finally:
             progress.cancel()
 
