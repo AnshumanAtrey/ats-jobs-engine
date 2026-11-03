@@ -10,8 +10,9 @@ place, work type, job type and posting date, and delivers the newest jobs first.
   in memory (a heap). A platform that pages newest first stops as soon as a board can no longer make the cut.
 - Job links mode (jobUrls): each link is looked up live: open, closed, or not found.
 - Charging: one event per delivered row, "job" for a row without details and for a closed or not-found link,
-  "job-details" for a row with details. The SDK delivers only the rows the spending limit can pay for. No start
-  fee. No input stops a run: unreadable fields fall back to their defaults with a note.
+  "job-details" for a row with details. The SDK delivers only the rows the spending limit can pay for. The engine
+  charges no start fee; a pricing with Apify's apify-actor-start event has it charged by Apify before the run. No input
+  stops a run: unreadable fields fall back to their defaults with a note.
 """
 import asyncio
 import heapq
@@ -31,6 +32,7 @@ from .rows import Filters, dedupe_key, job_row, link_row, parse_time
 
 LINK_EVENT = 'job'                 # these two must equal the event keys of the pricing in .actor/store.json
 DETAILS_EVENT = 'job-details'
+START_EVENT = 'apify-actor-start'  # Apify's own run start event, charged before the run when the pricing defines it
 RUN_SAFETY_MARGIN_S = 30           # stop reading boards this close to the run's time limit and deliver
 PROGRESS_EVERY_S = 5
 PUSH_CHUNK = 500
@@ -126,11 +128,14 @@ class Run:
         self.companies_matched: set[str] = set()
         self.boards_missing: list[str] = []
         self.board_errors: list[dict] = []
+        self.boards_failed = 0             # boards that could not be read; a job whose details failed is not one
         self.links = {'open': 0, 'closed': 0, 'notFound': 0, 'couldNotCheck': 0}
         self.mode = 'check' if cfg.job_urls else 'search'
+        self.feed: Board | None = None     # the one place listing every company's jobs, when a search reads it
         by_key = {b.key.lower(): b for b in boards}
         self.by_key = by_key
         self.where = f'{platform.name} {platform.site_word}'
+        self.input_notes = len(cfg.notes)  # notes past these come from the platform while it reads: the message says them
 
     # ---------- shared helpers ----------
 
@@ -145,6 +150,8 @@ class Run:
         return False
 
     def progress_line(self) -> str:
+        if self.phase == 'boards' and self.feed:
+            return f'Read {self.jobs_listed:,} jobs of {self.feed.name}, {plural(self.matching, "matching job")} so far.'
         if self.phase == 'boards':
             return (f'Read {self.boards_read:,} of {self.boards_total:,} {self.where}s, '
                     f'{plural(self.matching, "matching job")} so far.')
@@ -183,7 +190,10 @@ class Run:
         platform.description_terms = tuple(cfg.search_terms) if cfg.search_descriptions else ()
         filters = Filters(cfg)
         now = datetime.now(timezone.utc)
-        targets = [self.board(k) for k in cfg.companies] or self.boards
+        everyone = platform.search_all(self.boards, cfg)
+        targets = [self.board(k) for k in cfg.companies] or everyone
+        if not cfg.companies and len(everyone) == 1 and everyone[0] not in self.boards:
+            self.feed = everyone[0]         # one place listing every company, not one of the boards
         self.boards_total = len(targets)
         terms = (cfg.search_terms if platform.server_search and cfg.search_terms else [None])
         # a job dated yesterday can be under a day old, so the platform is asked for a day more
@@ -230,7 +240,8 @@ class Run:
                     continue
                 hit = True
                 posted = parse_time(job.get('postedAt')) or OLDEST
-                key = (board.name.casefold(), *dedupe_key(job))
+                name = job.get('company') or board.name      # jobs of a place for every company name their own
+                key = (name.casefold(), *dedupe_key(job))
                 if key in seen:
                     self.duplicates += 1
                     if posted <= seen[key]:
@@ -239,7 +250,7 @@ class Run:
                 else:
                     self.matching += 1
                 seen[key] = posted
-                self.companies_matched.add(board.name)
+                self.companies_matched.add(name)
                 keep(posted, board, job)
             return hit
 
@@ -317,7 +328,7 @@ class Run:
         """Newest first -> each job once, up to maxJobs: an older copy is still held when a newer one came after it."""
         copies, chosen = set(), []
         for item in items:
-            key = (item[2].name.casefold(), *dedupe_key(item[3]))
+            key = ((item[3].get('company') or item[2].name).casefold(), *dedupe_key(item[3]))
             if key not in copies:
                 copies.add(key)
                 chosen.append(item)
@@ -391,7 +402,7 @@ class Run:
             self.phase = 'links'
             await self.run_all([one(key, ids) for key, ids in by_board.values()])
 
-        rows = []
+        rows, opened = [], set()
         for key, job_id, url in cfg.job_urls:
             status, job = found.get((key.lower(), job_id), ('error', None))
             if status == 'error':
@@ -400,10 +411,15 @@ class Run:
             self.links['notFound' if status == 'not found' else status] += 1
             board = self.board(key)
             if status == 'open':
-                rows.append((self.row(board, job, cfg.include_details),
-                             DETAILS_EVENT if cfg.include_details else LINK_EVENT))
+                row = self.row(board, job, cfg.include_details)
+                if (row['jobId'], row['jobUrl']) in opened:      # the same job pasted in two link forms: one row
+                    continue
+                opened.add((row['jobId'], row['jobUrl']))
+                rows.append((row, DETAILS_EVENT if cfg.include_details else LINK_EVENT))
             else:
-                row = link_row(platform.key, company(board), job_id, url, status, self.checked_at)
+                who = company(board) if job is None else {      # a lookup can name the company of a job that is gone
+                    'name': job.get('company'), 'slug': job.get('companySlug'), 'website': job.get('companyWebsite')}
+                row = link_row(platform.key, who, job_id, url, status, self.checked_at)
                 rows.append(({k: v for k, v in row.items() if k not in platform.never}, LINK_EVENT))
         await self.deliver_all(rows)
 
@@ -417,11 +433,6 @@ class Run:
     def answered(self) -> int:
         """Boards whose jobs were read: not missing, not failing."""
         return self.boards_read - len(self.boards_missing) - self.boards_failed
-
-    def status(self) -> str:
-        if not self.ran():
-            return 'failed'
-        return 'partial' if self.stop or self.board_errors else 'done'
 
     def reading(self) -> str:
         """The message while the run works."""
@@ -439,9 +450,10 @@ class Run:
                 text += f' {plural(links["couldNotCheck"], "link")} could not be checked ({name} did not answer).'
         elif not self.ran():
             first = self.board_errors[0]['error'] if self.board_errors else f'no {self.where} could be read'
-            text = f'No {self.where} could be read: {first}.'
+            text = f'{self.feed.name[0].upper()}{self.feed.name[1:]} could not be read: {first}.' if self.feed else \
+                f'No {self.where} could be read: {first}.'
         else:
-            where = plural(self.answered(), self.where)
+            where = self.feed.name if self.feed else plural(self.answered(), self.where)
             people = plural(len(self.companies_matched), 'company')
             if self.delivery.rows:
                 # boards cut short were not read to their end, so what they held below the cut was never counted
@@ -469,6 +481,8 @@ class Run:
             text += f' Stopped early: {STOP_REASONS[self.stop]}'
         if cfg.companies and self.boards_missing:
             text += f' No {self.where} for: {", ".join(self.boards_missing[:5])}.'
+        for note in cfg.notes[self.input_notes:]:
+            text += f' {note}'
         if cfg.skipped:
             text += f' Skipped {plural(len(cfg.skipped), "entry")}: {cfg.skipped[0][1]}'
         return text.replace('entrys', 'entries').replace('companys', 'companies')
@@ -507,6 +521,13 @@ class Run:
             'finishedAt': now_iso() if status != 'running' else None,
         }
 
+    def status(self) -> str:
+        """failed when nothing could be read; partial when the run stopped early or the platform read only part of what
+        it lists (a feed cut short); else done."""
+        if not self.ran():
+            return 'failed'
+        return 'partial' if self.stop or self.board_errors or self.platform.incomplete else 'done'
+
     async def write_output(self, final: bool) -> None:
         try:
             await Actor.set_value('OUTPUT', self.output(self.status() if final else 'running'))
@@ -536,8 +557,10 @@ async def main(platform_key: str) -> None:
         await run.write_output(final=False)
         first_event = DETAILS_EVENT if cfg.include_details and not cfg.job_urls else LINK_EVENT
         if not delivery.can_pay(first_event):
+            # Apify charges a start event, when the pricing has one, before the run begins
+            started = delivery.ppe and START_EVENT in delivery.cm.get_pricing_info().per_event_prices
             message = ('The maximum cost of this run is too low for one job, so nothing was searched and nothing '
-                       'was charged. Raise the maximum cost per run and start again.')
+                       f'{"else " if started else ""}was charged. Raise the maximum cost per run and start again.')
             await Actor.set_value('OUTPUT', {'status': 'done', 'message': message, 'jobsSaved': 0})
             await safe_status(message)
             return

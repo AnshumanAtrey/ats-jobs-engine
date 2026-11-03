@@ -15,6 +15,7 @@ Pure module: no Apify or network import, so the tests run offline.
 """
 import re
 from dataclasses import dataclass, field
+from urllib.parse import parse_qs, urlparse
 
 from . import places
 from .rows import classify_place
@@ -137,10 +138,13 @@ def parse_terms(value, key: str, notes: list[str], skipped: list[tuple[str, str]
     return terms
 
 
-def route_links(value, platform, notes: list[str]) -> tuple[list[str], list[str], list[str]]:
-    """Main search box -> (words, job links, board links). A link of this platform pasted there is read
-    for what it is: a job link is checked, a board link searches that company."""
-    words, jobs, boards = [], [], []
+def route_links(value, platform, notes: list[str],
+                skipped: list[tuple[str, str]]) -> tuple[list[str], list[str], list[str], list[str]]:
+    """Main search box -> (words, job links, board links, places). A link of this platform pasted there is read
+    for what it is: a job link is checked, a board link searches that company, a search link
+    (?query=engineer&location=Germany) searches its words and place, and a link that names none of these is
+    skipped with the note the companies field gives, instead of being searched as words."""
+    words, jobs, boards, where = [], [], [], []
     for token in _items(value):
         text = _clean(token)
         link = None if DORK_OPERATOR.search(text) or DORK_TEXT.search(text) else platform.read_link(text)
@@ -152,8 +156,21 @@ def route_links(value, platform, notes: list[str]) -> tuple[list[str], list[str]
             boards.append(text)
             notes.append(f'Read {text} in searchTerms as the {link[0]} board.')
             continue
+        if link is not None:
+            query = parse_qs(urlparse(text if IS_URL.match(text) else f'https://{text}').query)
+            asked = [v.strip() for key in ('query', 'q', 'keywords') for v in query.get(key, []) if v.strip()]
+            place = [v.strip() for v in query.get('location', []) if v.strip()]
+            if asked or place:
+                words += asked
+                where += place
+                notes.append(f'Read {text} in searchTerms as a search for {" and ".join(asked) or "every job"}'
+                             f'{" in " + " and ".join(place) if place else ""}.')
+            else:
+                skipped.append((token, f'"{text}" is a {platform.name} link with no company in it. Paste a link '
+                                       f'such as {platform.board_example}.'))
+            continue
         words.append(token)
-    return words, jobs, boards
+    return words, jobs, boards, where
 
 
 def _alias(text: str, aliases: dict[str, str]) -> str | None:
@@ -353,12 +370,12 @@ def parse_input(raw: dict | None, platform, company_names: dict[str, list[str]] 
     raw = raw or {}
     notes: list[str] = []
     skipped: list[tuple[str, str]] = []
-    words, pasted_jobs, pasted_boards = route_links(raw.get('searchTerms'), platform, notes)
+    words, pasted_jobs, pasted_boards, pasted_places = route_links(raw.get('searchTerms'), platform, notes, skipped)
     job_urls = parse_job_urls(_items(raw.get('jobUrls')) + pasted_jobs, platform, skipped)
     if _items(raw.get('jobUrls')) and not job_urls:
-        notes.append('None of the job links could be read, so the run searched instead. ' + skipped[0][1])
+        notes.append('None of the job links could be read, so the run searched instead. ' + skipped[-1][1])
     work_types = parse_choices(raw.get('workType'), 'workType', WORK_TYPES, WORK_TYPE_ALIASES, notes)
-    locations, work_types = parse_locations(raw.get('location'), work_types, notes, skipped)
+    locations, work_types = parse_locations(_items(raw.get('location')) + pasted_places, work_types, notes, skipped)
     companies = parse_companies(_items(raw.get('companies')) + pasted_boards, platform, company_names, notes, skipped)
     if _items(raw.get('companies')) and not companies:
         notes.append('None of the companies could be read, so every company was searched. ' + skipped[-1][1])

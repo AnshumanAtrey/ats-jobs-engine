@@ -6,7 +6,8 @@ import unittest
 from datetime import datetime, timedelta, timezone
 
 from ats_jobs.inputs import parse_input
-from ats_jobs.rows import Filters, Term, country_code, dedupe_key, index, job_places, job_row, plain, words, work_type
+from ats_jobs.rows import (Filters, Place, Term, country_code, dedupe_key, index, job_area, job_places, job_row,
+                            plain, words, work_type)
 
 from .stub import Stub
 
@@ -91,6 +92,19 @@ class Countries(unittest.TestCase):
     def test_a_state_in_free_text_is_not_a_country(self):
         self.assertIsNone(country_code('CA', False))
         self.assertEqual(country_code('CA', True), 'CA')
+
+    def test_a_state_typed_as_its_code_finds_its_name(self):
+        """Workable's places write a state's name (Austin, Texas); people type TX as often as Texas."""
+        def matches(typed, where):
+            return Place(typed).matches(job_area({'places': [{'name': where}]}))
+        self.assertTrue(matches('TX', 'Austin, Texas, United States'))
+        self.assertTrue(matches('tx', 'Austin, TX'))                                  # its own words still count
+        self.assertTrue(matches('ON', 'Toronto, Ontario, Canada'))
+        self.assertTrue(matches('KA', 'Bengaluru, Karnataka, India'))
+        self.assertTrue(matches('WA', 'Seattle, Washington, United States'))
+        self.assertTrue(matches('WA', 'Perth, Western Australia, Australia'))          # a code two countries use
+        self.assertFalse(matches('CA', 'Los Angeles, California, United States'))      # CA stays Canada
+        self.assertFalse(matches('TX', 'Saint Paul, Minnesota, United States'))
 
     def test_job_places_hold_every_country(self):
         texts, codes = job_places(job())

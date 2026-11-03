@@ -7,7 +7,8 @@ A platform turns its own records into one job shape (a plain dict):
   description, descriptionHtml.
 places is every place the job names: {'name': text, 'city': ..., 'region': ..., 'country': name or code}.
 dateOnly says postedAt holds a day and no time. Missing keys read as unknown. company is for a platform that names the
-company itself, so a board that is not on our list still shows it.
+company itself, so a board that is not on our list still shows it. companySlug and companyWebsite are for a feed of
+every company's jobs (Platform.search_all): a job that has them replaces the board's.
 
 Matching is by words, not by a list of job titles: a search term matches a title when every word of
 the term is in it. Words are cut at anything that is not a letter or digit (C++ and C# keep their
@@ -21,7 +22,8 @@ region that holds it ("Kenya" finds "Remote - EMEA"); a region matches jobs in a
 posted for an overlapping region ("EMEA" finds "Greece (Remote)" and "Remote - Europe"); "Worldwide"
 matches jobs marked worldwide, global or anywhere, and jobs whose location is just "Remote" with no
 country in their address. Jobs marked worldwide match every country and region too. A city, or anything
-else, matches by its words inside a location. Country codes come from the structured place a platform stores
+else, matches by its words inside a location; a US, Canadian, Australian or Indian state typed as its code (TX,
+ON, NSW) also matches its name. Country codes come from the structured place a platform stores
 (where codes such as US or GB are allowed) and from full country names inside the location text (where a
 two-letter part such as CA is a state, not Canada, so only names count).
 """
@@ -153,11 +155,32 @@ class Area:
     open_remote: bool
 
 
+STATE_COUNTRIES = ('US', 'CA', 'AU', 'IN')     # where people write a state as its code: TX, ON, NSW, KA
+
+
+@lru_cache(maxsize=1024)
+def state_names(text: str) -> tuple[str, ...]:
+    """A typed state code -> the words of the states it names: 'TX' -> ('texas',), 'WA' -> ('washington', 'western
+    australia'). Workable's places, and many others, write the name, so "TX" alone found none of them. Only a code
+    that is not a country (CA stays Canada) is read this way, in STATE_COUNTRIES."""
+    code = text.strip().upper()
+    if not re.fullmatch(r'[A-Z]{2,3}', code):
+        return ()
+    try:
+        import pycountry
+    except ImportError:
+        return ()
+    found = (pycountry.subdivisions.get(code=f'{country}-{code}') for country in STATE_COUNTRIES)
+    plain = (unicodedata.normalize('NFKD', s.name).encode('ascii', 'ignore').decode() for s in found if s)
+    return tuple(dict.fromkeys(' '.join(words(name)) for name in plain))
+
+
 class Place:
     def __init__(self, text: str):
         self.text = text
         self.words = ' '.join(words(text))
         self.kind, self.countries = classify_place(text)
+        self.also = state_names(text) if self.kind == 'text' else ()
 
     def covers(self, region: frozenset[str]) -> bool:
         """A job posted for a region is for this place when the region lies inside it ("Europe" for EMEA)
@@ -172,7 +195,7 @@ class Place:
         if self.kind in ('region', 'country') and (
                 area.worldwide or area.countries & self.countries or any(self.covers(r) for r in area.regions)):
             return True
-        return bool(self.words) and any(f' {self.words} ' in f' {" ".join(words(t))} ' for t in area.texts)
+        return any(f' {w} ' in f' {" ".join(words(t))} ' for w in (self.words, *self.also) if w for t in area.texts)
 
 
 def entries(job: dict) -> list[dict]:
@@ -361,8 +384,8 @@ def job_row(platform: str, company: dict, job: dict, checked_at: str, details: b
         'applyUrl': job.get('applyUrl'),
         'status': 'open',
         'platform': platform,
-        'companySlug': company.get('slug'),
-        'companyWebsite': company.get('website'),
+        'companySlug': job['companySlug'] if 'companySlug' in job else company.get('slug'),
+        'companyWebsite': job['companyWebsite'] if 'companyWebsite' in job else company.get('website'),
         'jobId': job.get('id'),
         'checkedAt': checked_at,
     }

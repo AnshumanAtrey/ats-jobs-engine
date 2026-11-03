@@ -1,0 +1,1034 @@
+"""Workable: links, the feed, career pages, jobs and lookups, on answers shaped like Workable's own (2026-11-02)."""
+import asyncio
+import gzip
+import re
+import time
+import unittest
+from unittest.mock import patch
+
+import httpx
+
+from ats_jobs import rows
+from ats_jobs.http import BoardError, client
+from ats_jobs.inputs import parse_input
+from ats_jobs.platforms import workable
+from ats_jobs.platforms.base import Board
+from ats_jobs.platforms.workable import EVERYONE, Workable, job_type, pay_text, place
+
+BIFFA = Board('biffa', 'Biffa Waste Services', 'https://www.biffa.co.uk/')
+ENTRY = {'title': ' Class 1  ADR Driver ', 'shortcode': '8A29959BE6', 'code': 'I&C', 'employment_type': 'Full-time',
+         'telecommuting': False, 'department': 'Driver', 'url': 'https://apply.workable.com/j/8A29959BE6',
+         'shortlink': 'https://apply.workable.com/j/8A29959BE6', 'application_url': 'https://apply.workable.com/j/8A29959BE6/apply',
+         'published_on': '2026-10-30', 'created_at': '2026-10-28', 'country': 'United Kingdom', 'city': 'Greenland',
+         'state': 'England', 'education': '', 'experience': '', 'function': '', 'industry': 'Renewables & Environment',
+         'locations': [{'country': 'United Kingdom', 'countryCode': 'GB', 'city': 'Greenland', 'region': 'England', 'hidden': False}]}
+SECOND_PLACE = {**ENTRY, 'city': 'Sheffield', 'locations': [{**ENTRY['locations'][0], 'city': 'Sheffield'}]}
+WIDGET = {'name': 'Biffa Waste Services', 'description': '<p>Waste</p>', 'jobs': [ENTRY, SECOND_PLACE]}
+V2 = {'id': 6230970, 'shortcode': '584D288213', 'title': 'Accounts Payable', 'remote': False,
+      'location': {'city': 'High Wycombe', 'country': 'United Kingdom', 'countryCode': 'GB', 'region': 'England'},
+      'locations': [{'city': 'High Wycombe', 'country': 'United Kingdom', 'countryCode': 'GB', 'hidden': False, 'region': 'England'}],
+      'state': 'published', 'isInternal': False, 'code': '8271', 'published': '2026-10-28T00:00:00.000Z', 'type': 'full',
+      'language': 'en', 'department': ['Group Central Functions'], 'accountUid': '5e8562c2-fa9d-4396-966e-5bfafe6c37ec',
+      'approvalStatus': 'approved', 'workplace': 'on_site', 'salary_from': 28000, 'salary_to': 28000,
+      'salary_currency_iso_code': 'GBP', 'salary_frequency': 'year', 'description': '<h3>Accounts Payable</h3><p>Own the ledger</p>',
+      'requirements': '<p>AP experience</p>', 'benefits': ''}
+FEED_XML = b'''<?xml version="1.0" encoding="utf-8"?>
+<source>
+  <publisher>Workable</publisher>
+  <publisherurl>https://www.workable.com</publisherurl>
+  <job>
+    <title>
+      <![CDATA[System  Engineer]]>
+    </title>
+    <date>
+      <![CDATA[Mon, 02 Nov 2026 10:24:17 UTC]]>
+    </date>
+    <referencenumber>
+      <![CDATA[f44ed9e40a]]>
+    </referencenumber>
+    <url>
+      <![CDATA[https://apply.workable.com/j/F44ED9E40A]]>
+    </url>
+    <company>
+      <![CDATA[Biffa Waste Services]]>
+    </company>
+    <city>
+      <![CDATA[Hyderabad]]>
+    </city>
+    <state>
+      <![CDATA[Telangana]]>
+    </state>
+    <country>
+      <![CDATA[IN]]>
+    </country>
+    <remote>
+      <![CDATA[true]]>
+    </remote>
+    <postalcode>
+      <![CDATA[]]>
+    </postalcode>
+    <description>
+      <![CDATA[<p>Build &amp; run <b>servers</b></p><p>Next</p>]]>
+    </description>
+    <education>
+      <![CDATA[Bachelor's Degree]]>
+    </education>
+    <jobtype>
+      <![CDATA[Contract]]>
+    </jobtype>
+    <category>
+      <![CDATA[Information Technology]]>
+    </category>
+    <experience>
+      <![CDATA[Mid-Senior level]]>
+    </experience>
+    <website>
+      <![CDATA[https://www.biffa.co.uk/]]>
+    </website>
+  </job>
+  <job>
+    <title><![CDATA[No code]]></title>
+    <referencenumber><![CDATA[]]></referencenumber>
+  </job>
+  <job>
+    <title><![CDATA[Driver]]></title>
+    <date><![CDATA[Sun, 01 Nov 2026 08:00:00 UTC]]></date>
+    <referencenumber><![CDATA[0908074E5D]]></referencenumber>
+    <company><![CDATA[Odorzx]]></company>
+    <country><![CDATA[]]></country>
+    <remote><![CDATA[false]]></remote>
+    <jobtype><![CDATA[Other]]></jobtype>
+  </job>
+</source>
+'''
+
+
+class Response:
+    def __init__(self, status_code, data=None, text='', headers=None):
+        self.status_code, self.data, self.text, self.headers = status_code, data, text, headers or {}
+
+    def json(self):
+        if self.data is None:
+            raise ValueError('not JSON')
+        return self.data
+
+
+def sender(answers: list):
+    async def send(http, method, url, **kwargs):
+        calls.append((method, url))
+        return answers.pop(0)
+    calls = []
+    return send, calls
+
+
+def platform() -> Workable:
+    p = Workable()
+    p._known = {'biffa': BIFFA, 'bask-health-1': Board('bask-health-1', 'Bask Health'),
+                'bask-health': Board('bask-health', 'Bask Health')}
+    return p
+
+
+P = platform()
+
+
+class Identity(unittest.TestCase):
+    def test_every_call_names_our_own_store_page(self):
+        """The actor's Store slug is workable-job-search: workable-jobs-search is another developer's actor (api-co,
+        seen on the Store on 2026-11-02), and the user agent of every call links to the actor's page."""
+        http = client(Workable.actor)
+        try:
+            self.assertIn('https://apify.com/anshumanatrey/workable-job-search)', http.headers['User-Agent'])
+        finally:
+            asyncio.run(http.aclose())
+
+
+class Links(unittest.TestCase):
+    def test_career_pages(self):
+        for text in ('https://apply.workable.com/biffa', 'https://apply.workable.com/biffa/', 'apply.workable.com/biffa/?lng=en',
+                     'https://apply.workable.com/BIFFA/', 'https://biffa.workable.com/', 'http://biffa.workable.com',
+                     'https://apply.workable.com/api/v1/widget/accounts/biffa?details=true',
+                     'https://www.workable.com/api/accounts/biffa?details=true', 'https://apply.workable.com/api/v1/accounts/biffa',
+                     'https://apply.workable.com/api/v3/accounts/biffa/jobs', 'https://apply.workable.com/biffa/jobs'):
+            self.assertEqual(P.read_link(text), ('biffa', None), text)
+
+    def test_job_links(self):
+        for text in ('https://apply.workable.com/biffa/j/584D288213', 'https://apply.workable.com/biffa/j/584d288213/',
+                     'https://apply.workable.com/biffa/j/584D288213/apply?utm_source=x', 'HTTPS://APPLY.WORKABLE.COM/BIFFA/J/584D288213/',
+                     'https://biffa.workable.com/j/584D288213', 'https://apply.workable.com/biffa/jobs/view/584D288213.md',
+                     'https://apply.workable.com/api/v2/accounts/biffa/jobs/584D288213',
+                     'https://apply.workable.com/biffa?lng=en%2Fj%2F584D288213&utm_source=board',
+                     'https://apply.workable.com/biffa/jobs/j/584D288213?utm_source=board&utm_medium=getro.com',
+                     'https://apply.workable.com/biffa/j/584D288213/j/584D288213'):
+            self.assertEqual(P.read_link(text), ('biffa', '584D288213'), text)
+
+    def test_old_job_numbers(self):
+        self.assertEqual(P.read_link('https://apply.workable.com/biffa/jobs/6230970'), ('biffa', '6230970'))
+        self.assertEqual(P.read_link('https://contact.workable.com/jobs/2639701/candidates/new'), ('contact', '2639701'))
+        self.assertEqual(P.read_link('https://apply.workable.com/bw-energy/j/5805616/'), ('bw-energy', '5805616'))
+
+    def test_links_that_name_no_account(self):
+        for text in ('https://apply.workable.com/j/584D288213', 'apply.workable.com/j/584d288213/apply',
+                     'https://www.workable.com/j/584D288213'):
+            self.assertEqual(P.read_link(text), (EVERYONE.key, '584D288213'), text)
+        self.assertEqual(P.read_link('https://jobs.workable.com/view/omtQvzG25ZmkM1dS9dWiDj/remote-engineer-at-bask'),
+                         (EVERYONE.key, 'omtQvzG25ZmkM1dS9dWiDj'))
+
+    def test_workable_links_with_no_company(self):
+        for text in ('https://apply.workable.com/', 'apply.workable.com', 'https://apply.workable.com/oops',
+                     'https://apply.workable.com/null/biffa/llms.txt',
+                     'https://apply.workable.com/j/', 'https://www.workable.com/boards/workable.xml', 'https://jobs.workable.com/'):
+            self.assertEqual(P.read_link(text), (None, None), text)
+
+    def test_other_text_is_no_link(self):
+        for text in ('https://example.com/j/584D288213', 'software engineer', 'biffa', 'https://help.workable.com/hc',
+                     'https://resources.workable.com/hiring', 'https://www.workable.com/pricing', 'https://evilworkable.com/biffa',
+                     'https://apply.workable.com.example.com/biffa', 'jobs.lever.co/biffa'):
+            self.assertIsNone(P.read_link(text), text)
+
+    def test_a_website_finds_its_company(self):
+        self.assertEqual(P.aliases(BIFFA), ['biffa.co.uk'])
+        self.assertEqual(P.aliases(Board('x', 'X', 'bask.health')), ['bask.health'])
+        self.assertEqual(P.aliases(Board('y', 'Y')), [])
+
+    def test_a_typed_company_becomes_an_account(self):
+        self.assertEqual(P.guess_board('Biffa Waste Services'), 'biffa-waste-services')
+        self.assertEqual(P.guess_board('Hugging Face'), 'hugging-face')
+        self.assertIsNone(P.guess_board('...'))
+
+    def test_a_pasted_dork(self):
+        cfg = parse_input({'searchTerms': ['site:apply.workable.com intext:engineer']}, P, {})
+        self.assertEqual((cfg.search_terms, cfg.companies), (['engineer'], []))
+        cfg = parse_input({'searchTerms': ['site:apply.workable.com/biffa engineer']}, P, {})
+        self.assertEqual((cfg.search_terms, cfg.companies), (['engineer'], ['biffa']))
+
+    def test_a_link_copied_with_a_full_stop_keeps_its_job(self):
+        self.assertEqual(P.read_link('https://apply.workable.com/huggingface/j/DB4D7C0EC8.'), ('huggingface', 'DB4D7C0EC8'))
+        self.assertEqual(P.read_link('apply.workable.com/biffa/,'), ('biffa', None))
+
+    def test_a_link_naming_no_company_in_the_search_box_is_not_searched_as_words(self):
+        for text in ('https://jobs.workable.com/company/9o3Lw7wNrjJ2wFJr6XCoWa/jobs-at-hugging-face',
+                     'https://apply.workable.com/', 'https://jobs.workable.com/'):
+            cfg = parse_input({'searchTerms': [text]}, P, {})
+            self.assertEqual(cfg.search_terms, [], text)
+            self.assertIn('is a Workable link with no company in it', cfg.skipped[0][1])
+
+    def test_a_job_board_search_link_searches_its_words_and_place(self):
+        cfg = parse_input({'searchTerms': ['https://jobs.workable.com/search?query=data+engineer&location=Germany']}, P, {})
+        self.assertEqual((cfg.search_terms, cfg.locations, cfg.skipped), (['data engineer'], ['Germany'], []))
+
+    def test_a_job_link_in_the_search_box_is_checked(self):
+        cfg = parse_input({'searchTerms': ['https://apply.workable.com/j/584D288213']}, P, {})
+        self.assertEqual(cfg.job_urls, [('*', '584D288213', 'https://apply.workable.com/j/584D288213')])
+
+
+class Parsing(unittest.TestCase):
+    def test_places_and_types(self):
+        self.assertEqual(place({'city': 'High Wycombe', 'region': 'England', 'country': 'United Kingdom'})['name'],
+                         'High Wycombe, England, United Kingdom')
+        self.assertEqual(place({'city': '', 'region': None, 'country': 'France'}),
+                         {'name': 'France', 'city': None, 'region': None, 'country': 'France'})
+        self.assertIsNone(place({'city': None, 'region': '', 'country': None}))
+        for text, kind in (('Full-time', 'full-time'), ('Part-time', 'part-time'), ('Contract', 'contract'),
+                           ('Temporary', 'temporary'), ('Other', None), (None, None)):
+            self.assertEqual(job_type(text), kind)
+        self.assertEqual((job_type('Full-time', 'Internship'), job_type('', ' internship '), job_type('Contract', 'Entry level')),
+                         ('intern', 'intern', 'contract'))
+
+    def test_a_state_written_as_a_code_reads_as_its_name(self):
+        """The feed writes the state as a code for 99% of US, Canadian, Australian and Indian jobs (2026-11-03),
+        career pages and job pages write its name: "Texas" has to find an Austin, TX feed entry."""
+        def where(city, state, country):
+            return P.from_feed({'referencenumber': 'ABCDEF1234', 'title': 'Nurse', 'company': 'X', 'city': city,
+                                'state': state, 'country': country})['places'][0]
+        austin = where('Austin', 'TX', 'US')
+        self.assertEqual((austin['name'], austin['region']), ('Austin, Texas, United States', 'Texas'))
+        self.assertTrue(rows.Place('Texas').matches(rows.job_area({'places': [austin]})))
+        self.assertEqual(where('Toronto', 'ON', 'CA')['name'], 'Toronto, Ontario, Canada')
+        self.assertEqual(where('Bengaluru', 'KA', 'IN')['region'], 'Karnataka')        # no accent: none is typed
+        self.assertEqual(where('Sydney', 'NSW', 'AU')['region'], 'New South Wales')
+        self.assertEqual(where('Leeds', 'England', 'GB')['region'], 'England')         # a name stays
+        self.assertEqual(where('Nowhere', 'ZZ', 'US')['region'], 'ZZ')                 # so does a code nobody knows
+
+    def test_a_place_part_written_twice_or_with_a_stray_comma(self):
+        self.assertEqual(place({'city': 'Bogotá', 'region': 'Bogota', 'country': 'Colombia'})['name'], 'Bogotá, Colombia')
+        self.assertEqual(place({'city': 'San Antonio,', 'region': 'Texas', 'country': 'United States'})['name'],
+                         'San Antonio, Texas, United States')
+
+    def test_pay_without_a_period_has_no_period(self):
+        self.assertEqual(workable.pay(28000, 32000, 'GBP', None),
+                         {'salary': 'GBP 28,000 - 32,000', 'salaryMin': 28000, 'salaryMax': 32000, 'salaryCurrency': 'GBP',
+                          'salaryPeriod': None})
+        job = P.enrich({'id': 'x', 'title': 'T'}, {**V2, 'salary_from': 30000, 'salary_to': 40000, 'salary_frequency': None})
+        self.assertEqual((job['salary'], job['salaryPeriod']), ('GBP 30,000 - 40,000', None))
+
+    def test_pay(self):
+        self.assertEqual(pay_text(28000, 28000, 'GBP', 'year'), 'GBP 28,000 per year')
+        self.assertEqual(pay_text(18.5, 22, 'USD', 'hour'), 'USD 18.50 - 22 per hour')
+        self.assertEqual(pay_text(0, 50000, 'EUR', None), 'EUR 50,000')
+        self.assertIsNone(pay_text(None, 0, 'EUR', 'year'))
+
+    def test_a_job_in_two_places_is_one_job(self):
+        session = {'account': 'biffa', 'name': 'Biffa Waste Services', 'website': 'https://www.biffa.co.uk/'}
+        jobs = P.from_widget(session, WIDGET['jobs'])
+        self.assertEqual(len(jobs), 1)
+        job = jobs[0]
+        self.assertEqual((job['id'], job['title'], job['location'], job['otherLocations']),
+                         ('8A29959BE6', 'Class 1 ADR Driver', 'Greenland, England, United Kingdom', ['Sheffield, England, United Kingdom']))
+        self.assertEqual((job['postedAt'], job['dateOnly'], job['employmentType'], job['department'], job['reference']),
+                         ('2026-10-30', True, 'full-time', 'Driver', 'I&C'))
+        self.assertEqual((job['company'], job['companySlug'], job['companyWebsite'], job['workType']),
+                         ('Biffa Waste Services', 'biffa', 'https://www.biffa.co.uk/', None))
+        self.assertEqual((job['jobUrl'], job['applyUrl']),
+                         ('https://apply.workable.com/j/8A29959BE6', 'https://apply.workable.com/j/8A29959BE6/apply'))
+
+    def test_an_entry_without_a_location_list_uses_its_own_place(self):
+        jobs = P.from_widget({'account': 'x', 'name': 'X'}, [{**ENTRY, 'locations': []}])
+        self.assertEqual(jobs[0]['location'], 'Greenland, England, United Kingdom')
+
+    def test_odd_widget_entries(self):
+        session = {'account': 'x', 'name': 'X'}
+        odd = [{'shortcode': None, 'title': 'No code'}, {'shortcode': 'ABCDEF1234', 'title': None, 'locations': None,
+               'telecommuting': True, 'department': '', 'code': None, 'published_on': None, 'employment_type': None}]
+        jobs = P.from_widget(session, odd)
+        self.assertEqual([(j['id'], j['title'], j['places'], j['workType'], j['department'], j['postedAt']) for j in jobs],
+                         [('ABCDEF1234', '', [], 'remote', None, None)])
+
+    def test_details_add_pay_workplace_and_the_whole_text(self):
+        job = P.enrich({'id': '584D288213', 'title': 'Accounts Payable', 'postedAt': '2026-10-28', 'dateOnly': True}, V2)
+        self.assertEqual((job['salary'], job['salaryMin'], job['salaryMax'], job['salaryCurrency'], job['salaryPeriod']),
+                         ('GBP 28,000 per year', 28000, 28000, 'GBP', 'year'))
+        self.assertEqual((job['workType'], job['employmentType'], job['department'], job['reference']),
+                         ('onsite', 'full-time', 'Group Central Functions', '8271'))
+        self.assertEqual(job['description'], 'Accounts Payable\nOwn the ledger\nAP experience')
+        self.assertEqual(job['location'], 'High Wycombe, England, United Kingdom')
+
+    def test_details_give_a_feed_job_the_day_its_page_gives(self):
+        feed_job = {'id': '584D288213', 'title': 'Accounts Payable', 'postedAt': '2026-11-02T10:24:17+00:00', 'dateOnly': False}
+        job = P.enrich(feed_job, V2)
+        self.assertEqual((job['postedAt'], job['dateOnly']), ('2026-10-28', True))
+        job = P.enrich(feed_job, {**V2, 'published': None})
+        self.assertEqual((job['postedAt'], job['dateOnly']), ('2026-11-02T10:24:17+00:00', False))
+
+    def test_an_internship_stays_an_internship_with_details(self):
+        job = P.enrich({'id': 'x', 'title': 'Intern', 'employmentType': 'intern'}, V2)
+        self.assertEqual(job['employmentType'], 'intern')
+
+    def test_details_without_pay(self):
+        job = P.enrich({'id': 'x', 'title': 'T'}, {**V2, 'salary_from': None, 'salary_to': 0, 'workplace': None, 'remote': True})
+        self.assertEqual((job['salary'], job['salaryMin'], job['salaryCurrency'], job['workType'], job['postedAt']),
+                         (None, None, None, 'remote', '2026-10-28'))
+
+
+BOARD_ITEM = {'department': 'Engineering', 'id': 'b50514a8-a2ec-4f76-aa25-f94e6d4efa88', 'title': ' Senior  Back-End Engineer ',
+              'state': 'published', 'description': '<p>Build &amp; ship</p>', 'requirementsSection': '<p>Python</p>',
+              'benefitsSection': '', 'employmentType': 'Full-time',
+              'url': 'https://jobs.workable.com/view/omtQvzG25ZmkM1dS9dWiDj/remote-senior-back-end-engineer',
+              'language': 'en', 'locations': ['TELECOMMUTE', 'New York, New York, United States'],
+              'location': {'city': 'New York', 'subregion': 'New York', 'countryName': 'United States'},
+              'created': '2026-11-02T09:00:00.000Z', 'updated': '2026-11-02T09:00:00.000Z',
+              'company': {'id': '5e8562c2', 'title': 'Biffa Waste Services', 'website': 'https://www.biffa.co.uk/'},
+              'isFeatured': False, 'workplace': 'hybrid'}
+
+
+def item(job_id, created, **over):
+    return {**BOARD_ITEM, 'id': job_id, 'created': created, **over}
+
+
+class Board_(unittest.TestCase):
+    def test_a_job_board_job(self):
+        job = P.from_board(BOARD_ITEM['id'], BOARD_ITEM)
+        self.assertEqual((job['title'], job['company'], job['companySlug'], job['companyWebsite']),
+                         ('Senior Back-End Engineer', 'Biffa Waste Services', 'biffa', 'https://www.biffa.co.uk/'))
+        self.assertEqual((job['location'], job['places'][0]['country'], job['workType'], job['employmentType'], job['department']),
+                         ('New York, New York, United States', 'United States', 'hybrid', 'full-time', 'Engineering'))
+        self.assertEqual((job['postedAt'], job['dateOnly'], job.get('salary')), ('2026-11-02T09:00:00.000Z', False, None))
+        self.assertEqual(job['description'], 'Build & ship\nPython')
+        self.assertEqual(job['jobUrl'], BOARD_ITEM['url'])
+
+    def test_odd_job_board_records(self):
+        job = P.from_board('x', {'id': 'x', 'title': None, 'locations': None, 'location': None, 'company': None,
+                                 'workplace': None, 'created': None})
+        self.assertEqual((job['title'], job['places'], job['company'], job['workType'], job['postedAt'], job['jobUrl']),
+                         ('', [], None, None, None, 'https://jobs.workable.com/view/x'))
+        job = P.from_board('y', {'locations': ['TELECOMMUTE'], 'workplace': None})
+        self.assertEqual((job['workType'], job['places']), ('remote', []))
+
+    def test_worldwide_is_explained(self):
+        p = settings({'location': ['Worldwide']})
+        self.assertIn('Workable gives every job a country, so no job is marked worldwide', p.cfg.notes[-1])
+
+    def test_a_filter_reads_the_feed_and_the_newest_jobs_the_biggest_career_pages(self):
+        p = platform()
+        boards = [Board(f'c{i}', f'C{i}') for i in range(workable.CAREER_PAGES + 5)]
+        for raw in ({'searchTerms': ['engineer']}, {'location': ['Germany']}, {'workType': ['hybrid']},
+                    {'employmentType': ['part-time']}, {'location': ['remote']}):
+            self.assertEqual(p.search_all(boards, parse_input(raw, p, {})), [workable.EVERYONE], raw)
+        self.assertEqual(p.search_all(boards, parse_input({'postedWithin': '24 hours'}, p, {})), boards[:workable.CAREER_PAGES])
+        self.assertEqual(p.search_all(boards, parse_input({}, p, {})), boards[:workable.CAREER_PAGES])
+        self.assertEqual(p.cfg.search_terms, [])
+
+
+def settings(raw=None):
+    p = platform()
+    p.search_all([BIFFA], parse_input(raw or {'searchTerms': ['engineer']}, p, {}))
+    return p
+
+
+class Feed(unittest.TestCase):
+    def read(self, data: bytes, size: int, p=None):
+        feed, close, _ = (p or settings({'includeDetails': True})).reader()
+        for i in range(0, len(data), size):
+            feed(data[i:i + size])
+        return close()
+
+    def test_a_feed_job(self):
+        jobs = self.read(FEED_XML, 4096)
+        self.assertEqual([j['id'] for j in jobs], ['F44ED9E40A', '0908074E5D'])
+        job = jobs[0]
+        self.assertEqual((job['title'], job['company'], job['companySlug'], job['companyWebsite']),
+                         ('System Engineer', 'Biffa Waste Services', 'biffa', 'https://www.biffa.co.uk/'))
+        self.assertEqual((job['location'], job['places'][0]['country'], job['workType'], job['employmentType']),
+                         ('Hyderabad, Telangana, India', 'India', 'remote', 'contract'))
+        self.assertEqual((job['postedAt'], job['dateOnly'], job['jobUrl'], job['applyUrl']),
+                         ('2026-11-02T10:24:17+00:00', False, 'https://apply.workable.com/j/F44ED9E40A',
+                          'https://apply.workable.com/j/F44ED9E40A/apply'))
+        self.assertNotIn('description', job)        # details() reads the job's own answer, which has all of it
+
+    def test_a_searched_description_is_matched_as_it_passes_and_not_held(self):
+        jobs = self.read(FEED_XML, 4096, settings({'searchTerms': ['servers'], 'searchDescriptions': True}))
+        self.assertEqual([(j['id'], 'description' in j) for j in jobs], [('F44ED9E40A', False)])
+        self.assertEqual(self.read(FEED_XML, 4096, settings({'searchTerms': ['servers']})), [])
+
+    def test_any_chunk_size_reads_the_same(self):
+        self.assertEqual(self.read(FEED_XML, 7), self.read(FEED_XML, 100000))
+
+    def test_odd_records(self):
+        job = self.read(FEED_XML, 512)[1]
+        self.assertEqual((job['company'], job['companySlug'], job['places'], job['location'], job['workType'],
+                          job['employmentType'], job['jobUrl']),
+                         ('Odorzx', None, [], None, None, None, 'https://apply.workable.com/j/0908074E5D'))
+
+    def test_a_job_listed_once_per_place_is_one_job(self):
+        def entry(code, city, when):
+            return (f'<job><title><![CDATA[Driver]]></title><date><![CDATA[{when}]]></date><referencenumber><![CDATA[{code}]]>'
+                    f'</referencenumber><company><![CDATA[Zgraph]]></company><city><![CDATA[{city}]]></city>'
+                    f'<state><![CDATA[Florida]]></state><country><![CDATA[US]]></country></job>')
+        when, later, earlier = 'Sun, 15 Mar 2026 20:17:38 UTC', 'Mon, 16 Mar 2026 08:00:00 UTC', 'Sat, 14 Mar 2026 09:00:00 UTC'
+        # a job's entries need not be together: a place added later comes later, with the day it was added
+        xml = ('<source>' + entry('D7C890D403', 'Miami', when) + entry('D7C890D403', 'Orlando', when)
+               + entry('ABCDEF1234', 'Tampa', when) + entry('D7C890D403', 'Tampa', later)
+               + entry('ABCDEF1234', 'Naples', earlier) + '</source>').encode()
+        jobs = self.read(xml, 50)
+        self.assertEqual([(j['id'], j['location'], j['otherLocations'], j['postedAt']) for j in jobs],
+                         [('D7C890D403', 'Miami, Florida, United States',
+                           ['Orlando, Florida, United States', 'Tampa, Florida, United States'], '2026-03-15T20:17:38+00:00'),
+                          ('ABCDEF1234', 'Tampa, Florida, United States', ['Naples, Florida, United States'],
+                           '2026-03-14T09:00:00+00:00')])
+
+    def test_a_shared_company_name_names_no_account(self):
+        job = P.from_feed({'referencenumber': 'ABCDEF1234', 'title': 'Engineer', 'company': 'Bask Health'})
+        self.assertIsNone(job['companySlug'])
+
+    def test_dates_and_countries(self):
+        self.assertEqual(workable.feed_date('Wed, 28 Jul 2021 10:24:17 UTC'), '2021-07-28T10:24:17+00:00')
+        self.assertIsNone(workable.feed_date(''))
+        self.assertEqual((workable.country_name('GB'), workable.country_name('us'), workable.country_name('XK2')),
+                         ('United Kingdom', 'United States', 'XK2'))
+
+    def test_the_search_chooses_what_is_kept(self):
+        def ids(raw):
+            return [j['id'] for j in self.read(FEED_XML, 4096, settings(raw))]
+        self.assertEqual(ids({'searchTerms': ['engineer']}), ['F44ED9E40A'])
+        self.assertEqual(ids({'searchTerms': ['engineer'], 'excludeTerms': ['system']}), [])
+        self.assertEqual(ids({'employmentType': ['contract']}), ['F44ED9E40A'])
+        old = {'title': 'Engineer', 'postedAt': '2020-01-01T00:00:00+00:00'}
+        self.assertFalse(settings({'searchTerms': ['engineer'], 'postedWithin': '7 days'}).wanted(matched=True)(old))
+        driver = {'title': 'Driver', 'description': 'Drive our fleet', 'postedAt': '2026-11-02T00:00:00+00:00'}
+        self.assertFalse(settings({'searchTerms': ['fleet'], 'includeDetails': True}).wanted()(driver))
+        self.assertTrue(settings({'searchTerms': ['fleet'], 'searchDescriptions': True}).wanted()(driver))
+        self.assertTrue(settings({'searchTerms': ['fleet'], 'searchDescriptions': True}).wanted(matched=True)(
+            {**driver, 'description': None}))       # a feed job's description was matched as it passed
+        leeds = {**driver, 'title': 'Fleet driver', 'places': [{'name': 'Leeds, England, United Kingdom',
+                                                                'country': 'United Kingdom'}]}
+        self.assertFalse(settings({'searchTerms': ['fleet'], 'location': ['Germany']}).wanted(matched=True)(leeds))
+
+
+class Stream:
+    """http.stream() of a feed: (status, chunks, encoding), where a chunk can be an error that breaks the download."""
+    def __init__(self, plays: list):
+        self.plays, self.opened = plays, 0
+
+    def stream(self, method, url, **kwargs):
+        play = self.plays.pop(0)
+        self.opened += 1
+
+        class Context:
+            async def __aenter__(ctx):
+                if isinstance(play, Exception):
+                    raise play
+                return ctx
+
+            async def __aexit__(ctx, *args):
+                return False
+
+            status_code = play[0] if isinstance(play, tuple) else None
+            headers = {'content-encoding': play[2]} if isinstance(play, tuple) and len(play) > 2 else {}
+            request = httpx.Request('GET', url)
+
+            async def aiter_raw(ctx, size=None):
+                for chunk in play[1]:
+                    if isinstance(chunk, Exception):
+                        raise chunk
+                    yield chunk
+        return Context()
+
+
+async def _instant(seconds):
+    return None
+
+
+class EveryCompany(unittest.TestCase):
+    def collect(self, plays, raw=None, fallback=None, known=None):
+        http = Stream(plays)
+        p = settings(raw)
+        if known is not None:
+            p._known = known
+        opened = []
+
+        async def career(http_, board):
+            opened.append(board.key)
+            return fallback.get(board.key) if fallback else None
+        p.open = career
+        p.pages_opened = opened
+
+        async def run():
+            return [[j['id'] for j in page] async for page in p.pages(http, {'everyone': True}, 'engineer', None)]
+        with patch.object(workable.asyncio, 'sleep', _instant):
+            return asyncio.run(run()), http.opened, p
+
+    def test_the_whole_feed(self):
+        chunks = [FEED_XML[i:i + 200] for i in range(0, len(FEED_XML), 200)]
+        pages, opened, p = self.collect([(200, chunks)], {'searchTerms': ['engineer', 'driver']})
+        self.assertEqual((pages, opened), ([['F44ED9E40A', '0908074E5D']], 1))
+        self.assertFalse(p.incomplete)
+
+    def test_a_compressed_feed(self):
+        packed = gzip.compress(FEED_XML)
+        self.assertEqual(self.collect([(200, [packed[:300], packed[300:]], 'gzip')])[:2], ([['F44ED9E40A']], 1))
+
+    def test_one_download_serves_every_word(self):
+        http = Stream([(200, [FEED_XML])])
+        p = settings({'searchTerms': ['engineer', 'driver']})
+        session = {'everyone': True}
+
+        async def run():
+            first = [j['id'] for page in [x async for x in p.pages(http, session, 'engineer', None)] for j in page]
+            second = [x async for x in p.pages(http, session, 'driver', None)]
+            return first, second
+        self.assertEqual((asyncio.run(run()), http.opened), ((['F44ED9E40A', '0908074E5D'], []), 1))
+
+    def test_an_encoding_that_was_not_asked_for_falls_back(self):
+        session = {'account': 'biffa', 'name': 'Biffa Waste Services', 'website': None,
+                   'jobs': [{**ENTRY, 'title': 'HGV Engineer'}]}
+        pages, opened, p = self.collect([(200, [b'\x8b\x0b\x80'], 'br')], fallback={'biffa': session})
+        self.assertEqual((pages, opened), ([['8A29959BE6']], 1))
+        self.assertIn('an encoding that was not asked for (br)', p.cfg.notes[-1])
+
+    def test_a_server_error_is_tried_again(self):
+        self.assertEqual(self.collect([(503, []), (200, [FEED_XML])])[:2], ([['F44ED9E40A']], 2))
+
+    CUT = FEED_XML[:FEED_XML.index(b'</job>') + 10]                 # the first job, then the cut
+    BIFFA_PAGE = {'account': 'biffa', 'name': 'Biffa Waste Services', 'website': None,
+                  'jobs': [{**ENTRY, 'title': 'HGV Engineer'}]}
+
+    # two Biffa jobs, then the cut
+    SECOND = (b'<job><title><![CDATA[Site Engineer]]></title><date><![CDATA[Mon, 02 Nov 2026 11:00:00 UTC]]></date>'
+              b'<referencenumber><![CDATA[AAAAAAAAAA]]></referencenumber><company><![CDATA[Biffa Waste Services]]>'
+              b'</company><country><![CDATA[GB]]></country></job>')
+    TWO_CUT = FEED_XML[:FEED_XML.index(b'</job>') + 6] + SECOND + b'<jo'
+
+    def test_a_career_page_holding_a_job_of_the_cut_part_stands_for_its_company(self):
+        broken = httpx.RemoteProtocolError('peer closed connection without sending complete message body')
+        same = {**self.BIFFA_PAGE, 'jobs': [{**ENTRY, 'title': 'HGV Engineer'},
+                                            {**ENTRY, 'shortcode': 'F44ED9E40A', 'title': 'System Engineer'}]}
+        pages, opened, p = self.collect([(200, [self.TWO_CUT, broken])], fallback={'biffa': same})
+        # the page holds F44ED9E40A, so it is Biffa's own account: its entry replaces the feed's, and the feed's other
+        # Biffa job, which the page no longer lists, has closed
+        self.assertEqual((pages, opened), ([['8A29959BE6', 'F44ED9E40A']], 1))     # a cut download is not tried again
+        self.assertIn('was cut after its listings of 2026-11-02, so the jobs listed since then come only from the '
+                      'career pages of the 1 company with the most matching jobs (of 3 on our list)', p.cfg.notes[-1])
+
+    def test_a_career_page_holding_none_of_its_feed_jobs_leaves_them_in(self):
+        # the company's name pointed to another account (a generic name such as Elevate): its feed jobs stay
+        broken = httpx.RemoteProtocolError('cut')
+        pages, _, p = self.collect([(200, [self.TWO_CUT, broken])], fallback={'biffa': self.BIFFA_PAGE})
+        self.assertEqual(pages, [['8A29959BE6', 'F44ED9E40A', 'AAAAAAAAAA']])
+        self.assertTrue(p.incomplete)               # the run's OUTPUT says partial
+
+    def test_with_no_match_in_the_cut_part_the_biggest_pages_are_read_and_named_so(self):
+        broken = httpx.RemoteProtocolError('cut')
+        _, _, p = self.collect([(200, [self.CUT, broken])], {'searchTerms': ['chef']}, fallback={'biffa': self.BIFFA_PAGE})
+        self.assertIn('come only from the career pages of the 1 biggest company (of 3 on our list)', p.cfg.notes[-1])
+
+    def test_the_companies_with_the_most_matching_jobs_in_the_cut_part_come_first(self):
+        known = {'zz': Board('zz', 'ZZ Co'), 'biffa': BIFFA}            # zz is the bigger company on our list
+        broken = httpx.RemoteProtocolError('cut')
+        _, _, p = self.collect([(200, [self.CUT, broken])], fallback={'biffa': self.BIFFA_PAGE}, known=known)
+        self.assertEqual(p.pages_opened, ['biffa', 'zz'])
+
+    def test_a_cut_feed_with_no_career_page_keeps_the_jobs_that_came(self):
+        broken = httpx.RemoteProtocolError('cut')
+        for plays in ([(200, [self.CUT, broken])], [(200, [self.CUT])]):     # cut by an error, or ended short
+            pages, _, p = self.collect(plays, fallback={})
+            self.assertEqual(pages, [['F44ED9E40A']])
+            self.assertIn('was cut after its listings of 2026-11-02 and no career page answered', p.cfg.notes[-1])
+
+    def test_a_refusal_falls_back_at_once(self):
+        session = {'account': 'biffa', 'name': 'Biffa Waste Services', 'website': None,
+                   'jobs': [{**ENTRY, 'title': 'HGV Engineer'}]}
+        pages, opened, p = self.collect([(429, [])], fallback={'biffa': session})
+        self.assertEqual((pages, opened), ([['8A29959BE6']], 1))
+        self.assertIn('429', p.cfg.notes[-1])
+
+    def test_no_feed_and_no_career_page_is_an_error(self):
+        with self.assertRaises(BoardError) as caught:
+            self.collect([(429, [])], fallback={})
+        self.assertIn('429', str(caught.exception))
+        self.assertIn('no career page answered', str(caught.exception))
+
+
+class CareerPages(unittest.TestCase):
+    def run_open(self, answers, board=BIFFA):
+        send, calls = sender(answers)
+        with patch.object(workable, 'fetch', send), patch.object(workable, 'PACE', 0), \
+                patch.object(workable.asyncio, 'sleep', _instant):
+            return asyncio.run(platform().open(None, board)), calls
+
+    def test_a_career_page(self):
+        session, calls = self.run_open([Response(200, WIDGET)])
+        self.assertEqual((session['account'], session['name'], session['website'], len(session['jobs'])),
+                         ('biffa', 'Biffa Waste Services', 'https://www.biffa.co.uk/', 2))
+        self.assertEqual(calls, [('GET', 'https://apply.workable.com/api/v1/widget/accounts/biffa')])
+
+    def test_no_such_account(self):
+        self.assertEqual(self.run_open([Response(404, text='Not Found')])[0], None)
+
+    def test_text_that_cannot_be_an_account_is_never_sent(self):
+        session, calls = self.run_open([], Board('../secret', 'x'))
+        self.assertEqual((session, calls), (None, []))
+
+    def test_a_failure_stays_an_error(self):
+        for bad in ([Response(500)] * (len(workable.RETRY_S) + 1), [Response(200)], [Response(200, {'name': 'x'})]):
+            with self.assertRaises(BoardError):
+                self.run_open(bad)
+
+    def test_the_job_board_needs_no_call(self):
+        self.assertEqual(self.run_open([], EVERYONE), ({'everyone': True}, []))
+
+    def test_a_word_on_a_career_page_is_matched_here(self):
+        other = {**ENTRY, 'shortcode': 'ABCDEF1234', 'title': 'Accounts Payable', 'locations': [ENTRY['locations'][0]],
+                 'description': '<p>Drive our ADR fleet</p>'}
+
+        async def run(term, session):
+            return [[j['id'] for j in page] async for page in P.pages(None, session, term, None)]
+        plain = {'account': 'biffa', 'name': 'Biffa', 'jobs': [ENTRY, other]}
+        self.assertEqual(asyncio.run(run('driver', plain)), [['8A29959BE6']])
+        self.assertEqual(asyncio.run(run('fleet', plain)), [['ABCDEF1234']])      # only when the page gave descriptions
+        self.assertEqual(asyncio.run(run('chef', plain)), [])
+
+    def test_descriptions_are_asked_for_only_when_searched(self):
+        send, calls = sender([Response(200, WIDGET), Response(200, WIDGET)])
+        p = platform()
+        with patch.object(workable, 'fetch', send), patch.object(workable, 'PACE', 0):
+            p.search_all([BIFFA], parse_input({'searchTerms': ['driver'], 'searchDescriptions': True}, p, {}))
+            asyncio.run(p.open(None, BIFFA))
+            p.search_all([BIFFA], parse_input({'searchTerms': ['driver']}, p, {}))
+            asyncio.run(p.open(None, BIFFA))
+        self.assertEqual([c[1] for c in calls], ['https://apply.workable.com/api/v1/widget/accounts/biffa?details=true',
+                                                 'https://apply.workable.com/api/v1/widget/accounts/biffa'])
+
+    def test_pages_of_a_career_page(self):
+        async def run():
+            return [page async for page in P.pages(None, {'account': 'biffa', 'name': 'Biffa', 'jobs': WIDGET['jobs']}, None, None)]
+        pages = asyncio.run(run())
+        self.assertEqual([[j['id'] for j in page] for page in pages], [['8A29959BE6']])
+
+
+class Details(unittest.TestCase):
+    JOB = {'id': '584D288213', 'title': 'Accounts Payable', 'company': 'Biffa Waste Services', 'companySlug': 'biffa',
+           'postedAt': '2026-10-28', 'dateOnly': True, 'places': []}
+
+    def details(self, answers, job, session=None):
+        send, calls = sender(answers)
+        with patch.object(workable, 'fetch', send), patch.object(workable, 'PACE', 0):
+            return asyncio.run(platform().details(None, session or {'everyone': True}, dict(job))), calls
+
+    def test_a_career_page_job_reads_its_own_answer(self):
+        job, calls = self.details([Response(200, V2)], self.JOB)
+        self.assertEqual((job['salary'], job['workType'], job['department'], job['postedAt'], job['description']),
+                         ('GBP 28,000 per year', 'onsite', 'Group Central Functions', '2026-10-28',
+                          'Accounts Payable\nOwn the ledger\nAP experience'))
+        self.assertEqual(calls, [('GET', 'https://apply.workable.com/api/v2/accounts/biffa/jobs/584D288213')])
+
+    def test_a_job_with_no_account_finds_it_first(self):
+        moved = Response(301, headers={'location': '/biffa/j/584D288213'})
+        job, calls = self.details([moved, Response(200, V2)], {**self.JOB, 'companySlug': None})
+        self.assertEqual((job['salary'], len(calls)), ('GBP 28,000 per year', 2))
+
+    def test_a_job_that_closed_meanwhile_stays_as_listed(self):
+        job, _ = self.details([Response(404, text='Job not found')], self.JOB)
+        self.assertEqual(job, self.JOB)
+
+    def test_a_job_whose_answer_is_gone_keeps_its_own_text(self):
+        job = {**self.JOB, 'descriptionHtml': '<p>Own the</p><p>ledger</p>', 'description': 'Own the\nledger'}
+        result, _ = self.details([Response(404, text='Job not found')], job)
+        self.assertEqual(result, job)
+
+
+class WorkTypes(unittest.TestCase):
+    JOBS = [{'id': 'AAAAAAAAAA', 'title': 'Engineer', 'workType': 'remote', 'companySlug': 'biffa', 'postedAt': '2026-11-02T09:00:00+00:00'},
+            {'id': 'BBBBBBBBBB', 'title': 'Engineer', 'workType': None, 'companySlug': 'biffa', 'postedAt': '2026-11-02T08:00:00+00:00'},
+            {'id': 'CCCCCCCCCC', 'title': 'Engineer', 'workType': None, 'companySlug': 'biffa', 'postedAt': '2026-11-02T07:00:00+00:00'}]
+
+    def run_check(self, raw, answers):
+        send, calls = sender(answers)
+        p = settings(raw)
+        with patch.object(workable, 'fetch', send), patch.object(workable, 'PACE', 0):
+            return asyncio.run(p.workplaces(None, [dict(j) for j in self.JOBS], p.wanted(matched=True))), calls, p
+
+    def test_a_hybrid_search_asks_the_jobs_not_marked_remote(self):
+        jobs, calls, p = self.run_check({'searchTerms': ['engineer'], 'workType': ['hybrid']},
+                                        [Response(200, {**V2, 'workplace': 'hybrid'}), Response(200, {**V2, 'workplace': 'on_site'})])
+        self.assertEqual([(j['id'], j['workType']) for j in jobs], [('BBBBBBBBBB', 'hybrid')])
+        self.assertEqual(len(calls), 2)
+        self.assertEqual(p.cfg.notes, [])
+
+    def test_remote_jobs_need_no_question(self):
+        jobs, calls, _ = self.run_check({'searchTerms': ['engineer'], 'workType': ['remote', 'onsite']},
+                                        [Response(200, {**V2, 'workplace': 'hybrid'}), Response(200, {**V2, 'workplace': 'on_site'})])
+        self.assertEqual([(j['id'], j['workType']) for j in jobs], [('AAAAAAAAAA', 'remote'), ('CCCCCCCCCC', 'onsite')])
+        jobs, calls, _ = self.run_check({'searchTerms': ['engineer'], 'workType': ['remote']}, [])
+        self.assertEqual((len(jobs), calls), (3, []))
+
+    def test_the_newest_max_jobs_are_enough(self):
+        jobs, calls, p = self.run_check({'searchTerms': ['engineer'], 'workType': ['hybrid'], 'maxJobs': 1},
+                                        [Response(200, {**V2, 'workplace': 'hybrid'})])
+        self.assertEqual(([j['id'] for j in jobs], len(calls)), (['BBBBBBBBBB'], 1))
+        self.assertIn('the 1 newest of 2 matching jobs not marked remote were checked one by one for hybrid', p.cfg.notes[-1])
+
+    def test_a_named_company_asks_its_jobs_too(self):
+        send, calls = sender([Response(200, {**V2, 'workplace': 'hybrid'})])
+        p = settings({'companies': ['biffa'], 'workType': ['hybrid']})
+
+        async def run():
+            return [page async for page in p.pages(None, {'account': 'biffa', 'name': 'Biffa', 'jobs': [ENTRY]}, None, None)]
+        with patch.object(workable, 'fetch', send), patch.object(workable, 'PACE', 0):
+            pages = asyncio.run(run())
+        self.assertEqual([[(j['id'], j['workType']) for j in page] for page in pages], [[('8A29959BE6', 'hybrid')]])
+        self.assertEqual(calls, [('GET', 'https://apply.workable.com/api/v2/accounts/biffa/jobs/8A29959BE6')])
+
+
+def answering(replies: list):
+    """A fetch() giving each reply in turn (a Response, or an exception it raises), and the URLs it was asked."""
+    async def fetch(http, method, url, **kwargs):
+        calls.append(url)
+        reply = replies.pop(0)
+        if isinstance(reply, Exception):
+            raise reply
+        return reply
+    calls = []
+    return fetch, calls
+
+
+def asking(p, replies, times=1, sleeps=None, code='584D288213'):
+    """job_answer() asked `times` times in a row -> what each gave (a title, 'stopped: ...' or 'error: ...'), and the
+    calls that reached Workable. sleeps collects every wait, which takes no time here."""
+    fetch, calls = answering(list(replies))
+
+    async def nap(seconds):
+        if sleeps is not None:
+            sleeps.append(seconds)
+    got = []
+    with patch.object(workable, 'fetch', fetch), patch.object(workable, 'PACE', 0), \
+            patch.object(workable.asyncio, 'sleep', nap):
+        for _ in range(times):
+            try:
+                got.append(asyncio.run(p.job_answer(None, 'biffa', code))['title'])
+            except workable.Stopped as exc:
+                got.append(f'stopped: {exc}')
+            except BoardError as exc:
+                got.append(f'error: {exc}')
+    return got, calls
+
+
+class Refusals(unittest.TestCase):
+    """Workable's Cloudflare banned an address for a day after calls went on into its refusals (2026-11-02): the
+    first refusal stops the run's calls, and nothing is tried again into one."""
+
+    def test_one_refusal_stops_every_later_call(self):
+        p = settings({'searchTerms': ['engineer']})
+        got, calls = asking(p, [Response(429, text='error code: 1015', headers={'retry-after': '0'})], times=4)
+        self.assertEqual(len(calls), 1)
+        self.assertEqual(got, ['stopped: Workable refused this address (HTTP 429)']
+                         + ['stopped: Workable stopped answering this address'] * 3)
+        self.assertIn('Workable refused this address (HTTP 429) after 1 call to apply.workable.com, so the run '
+                      'stopped asking it', p.cfg.notes[-1])
+        self.assertEqual(len(p.cfg.notes), 1)
+
+    def test_an_answer_to_a_call_made_before_the_refusal_does_not_lift_it(self):
+        calls = []
+
+        async def fetch(http, method, url, **kwargs):
+            calls.append(url)
+            if url.endswith('AAAAAAAAAA'):          # sent first, refused after B was sent
+                await asyncio.sleep(0.01)
+                return Response(429)
+            await asyncio.sleep(0.03)              # sent next, answers after the refusal came
+            return Response(200, V2)
+        p = settings({})
+
+        async def run():
+            return await asyncio.gather(p.job_answer(None, 'biffa', 'AAAAAAAAAA'),
+                                        p.job_answer(None, 'biffa', 'BBBBBBBBBB'), return_exceptions=True)
+        with patch.object(workable, 'fetch', fetch), patch.object(workable, 'PACE', 0):
+            first, second = asyncio.run(run())
+            self.assertIsInstance(first, workable.Stopped)
+            self.assertEqual(second['title'], 'Accounts Payable')
+            with self.assertRaises(workable.Stopped):
+                asyncio.run(p.job_answer(None, 'biffa', 'CCCCCCCCCC'))
+        self.assertEqual(len(calls), 2)
+
+    def test_a_call_waiting_its_turn_when_the_refusal_comes_is_not_sent(self):
+        calls = []
+
+        async def fetch(http, method, url, **kwargs):
+            calls.append(url)
+            await asyncio.sleep(0.01)              # refused while the next call waits out the pace
+            return Response(429)
+        p = settings({})
+
+        async def run():
+            return await asyncio.gather(p.job_answer(None, 'biffa', 'AAAAAAAAAA'),
+                                        p.job_answer(None, 'biffa', 'BBBBBBBBBB'), return_exceptions=True)
+        with patch.object(workable, 'fetch', fetch), patch.object(workable, 'PACE', 0.05):
+            got = asyncio.run(run())
+        self.assertTrue(all(isinstance(g, workable.Stopped) for g in got))
+        self.assertEqual(len(calls), 1)
+
+    def test_a_403_or_a_challenge_is_a_refusal_too(self):
+        for reply in (Response(403, text='Forbidden'), Response(503, headers={'cf-mitigated': 'challenge'}),
+                      Response(200, text='<html>Just a moment...</html>', headers={'content-type': 'text/html'})):
+            got, calls = asking(settings({}), [reply], times=2)
+            self.assertEqual(len(calls), 1, reply.status_code)
+            self.assertTrue(got[0].startswith('stopped: Workable refused this address ('), got)
+
+    def test_a_refusal_is_not_tried_again(self):
+        sleeps = []
+        asking(settings({}), [Response(429)], sleeps=sleeps)
+        self.assertEqual(sleeps, [])
+
+    def test_server_errors_and_broken_connections_are_tried_again_in_turn(self):
+        sleeps = []
+        got, calls = asking(settings({}), [Response(502), httpx.ConnectError('down'), Response(200, V2)], sleeps=sleeps)
+        self.assertEqual((got, len(calls), sleeps), (['Accounts Payable'], 3, list(workable.RETRY_S[:2])))
+
+    def test_three_calls_without_an_answer_stop_the_run(self):
+        tries = len(workable.RETRY_S) + 1
+        p = settings({})
+        got, calls = asking(p, [Response(500)] * tries * workable.REFUSALS, times=workable.REFUSALS + 1)
+        self.assertEqual(got, ['error: HTTP 500'] * workable.REFUSALS + ['stopped: Workable stopped answering this address'])
+        self.assertEqual(len(calls), tries * workable.REFUSALS)
+        self.assertIn(f'Workable did not answer {workable.REFUSALS} calls in a row (HTTP 500)', p.cfg.notes[-1])
+
+    def test_an_answer_in_between_starts_the_count_again(self):
+        failed = [Response(500)] * (len(workable.RETRY_S) + 1)
+        got, _ = asking(settings({}), (failed * 2 + [Response(200, V2)]) * 2, times=6)
+        self.assertEqual(got, ['error: HTTP 500', 'error: HTTP 500', 'Accounts Payable'] * 2)
+
+    def test_the_wait_a_refusal_asks_for_is_said(self):
+        p = settings({'searchTerms': ['engineer']})
+        asking(p, [Response(429, headers={'retry-after': '86112'})])
+        self.assertIn('(HTTP 429) after 1 call to apply.workable.com, for about 24 hours, so the run', p.cfg.notes[-1])
+
+    def test_a_run_for_the_newest_jobs_says_how_to_reach_the_feed(self):
+        p = settings({'maxJobs': 100})  # the empty form
+        p._read = 1                     # a career page had answered, so the run stays on career pages
+        asking(p, [Response(429)])
+        self.assertIn("Type a job title, a place, remote or a job type to search Workable's jobs feed", p.cfg.notes[-1])
+
+
+class Budget(unittest.TestCase):
+    """About 1,800 calls in 20 minutes got refusals on every call, then a day's ban (2026-11-02): BUDGET calls a run."""
+
+    def test_a_run_makes_at_most_its_budget_of_calls(self):
+        p = settings({})
+        with patch.object(workable, 'BUDGET', 3):
+            got, calls = asking(p, [Response(200, V2)] * 3, times=5)
+        self.assertEqual(got, ['Accounts Payable'] * 3 + ['stopped: the run made its 3 calls to apply.workable.com'] * 2)
+        self.assertEqual(len(calls), 3)
+        self.assertIn('This run made 3 calls to apply.workable.com, the most one run makes', p.cfg.notes[-1])
+
+    def test_details_past_the_budget_come_as_listed(self):
+        job = {'id': '584D288213', 'title': 'Accounts Payable', 'companySlug': 'biffa'}
+        fetch, calls = answering([])
+        p = settings({'includeDetails': True})
+        with patch.object(workable, 'fetch', fetch), patch.object(workable, 'BUDGET', 0):
+            self.assertEqual(asyncio.run(p.details(None, None, dict(job))), job)
+        self.assertEqual(calls, [])
+
+    def test_links_to_one_company_read_its_page_once(self):
+        def moved(code):
+            return Response(301, headers={'location': f'/biffa/j/{code}'})
+        fetch, calls = answering([moved('8A29959BE6'), Response(200, WIDGET), Response(200, {**V2, 'shortcode': '8A29959BE6'}),
+                                  moved('584D288213'), Response(200, V2)])
+        p = platform()
+        with patch.object(workable, 'fetch', fetch), patch.object(workable, 'PACE', 0):
+            first = asyncio.run(p.lookup(None, {'everyone': True}, '8A29959BE6'))
+            second = asyncio.run(p.lookup(None, {'everyone': True}, '584D288213'))
+        self.assertEqual((first[0], second[0]), ('open', 'open'))
+        self.assertEqual(sum('/widget/' in c for c in calls), 1)
+
+
+class Pace(unittest.TestCase):
+    def test_the_measured_limits_stay(self):
+        """apply.workable.com answered 3 calls a second for 2 minutes and refused half of 4 a second after 70 s; about
+        1,800 calls at 1.5 to 2.2 a second over 20 minutes got refusals, then a day's ban (2026-11-02). A change to
+        these is a change to how likely a run is to get Apify's shared address banned: measure first."""
+        self.assertEqual((workable.PACE, Workable.concurrency, workable.BUDGET, workable.REFUSALS), (0.5, 8, 1000, 3))
+        self.assertEqual((workable.FALLBACK_SECONDS, workable.WORKPLACE_SECONDS, workable.CAREER_PAGES), (120, 90, 300))
+        self.assertEqual(workable.RETRY_S, (1, 3, 7))
+
+    def test_calls_start_a_pace_apart_however_many_wait(self):
+        started = []
+
+        async def fetch(http, method, url, **kwargs):
+            started.append(time.monotonic())
+            return Response(200, V2)
+        p = settings({})
+
+        async def run():
+            await asyncio.gather(*(p.job_answer(None, 'biffa', f'{i:010d}') for i in range(4)))
+        with patch.object(workable, 'fetch', fetch), patch.object(workable, 'PACE', 0.05):
+            asyncio.run(run())
+        gaps = [b - a for a, b in zip(started, started[1:])]
+        self.assertEqual(len(gaps), 3)
+        self.assertGreaterEqual(min(gaps), 0.045)
+
+    def test_the_cut_feed_fallback_stops_after_its_seconds(self):
+        p = settings()
+        p._known = {f'c{i}': Board(f'c{i}', f'C{i}') for i in range(10)}
+        opened = []
+
+        async def page(http, board):
+            opened.append(board.key)
+            time.sleep(0.03)
+            return {'account': board.key, 'name': board.name, 'jobs': []}
+        p.open = page
+        with patch.object(workable, 'FALLBACK_SECONDS', 0.05):
+            asyncio.run(p.career_pages(None, [], '2026-10-01', 'cut'))
+        self.assertLess(len(opened), 5)
+
+    def test_work_type_checks_stop_after_their_seconds(self):
+        jobs = [{'id': f'{i:010d}', 'title': 'Engineer', 'workType': None, 'companySlug': 'biffa',
+                 'postedAt': '2026-11-02T09:00:00+00:00'} for i in range(10)]
+
+        async def fetch(http, method, url, **kwargs):
+            time.sleep(0.03)
+            return Response(200, {**V2, 'workplace': 'on_site'})
+        p = settings({'searchTerms': ['engineer'], 'workType': ['hybrid']})
+        with patch.object(workable, 'fetch', fetch), patch.object(workable, 'PACE', 0), \
+                patch.object(workable, 'WORKPLACE_SECONDS', 0.05):
+            asyncio.run(p.workplaces(None, jobs, p.wanted(matched=True)))
+        checked = int(re.search(r'the (\d+) newest of 10 matching jobs not marked remote were checked', p.cfg.notes[-1])[1])
+        self.assertLess(checked, 5)
+
+
+class NewestJobs(unittest.TestCase):
+    """The empty form reads the biggest career pages; Apify's daily test runs it. When Workable refuses them before
+    any answered, the run reads the feed, which www.workable.com served while apply.workable.com refused."""
+
+    def opened(self, raw, replies, boards):
+        fetch, calls = answering(list(replies))
+        p = settings(raw)
+        got = []
+        with patch.object(workable, 'fetch', fetch), patch.object(workable, 'PACE', 0):
+            for board in boards:
+                try:
+                    got.append(asyncio.run(p.open(None, board)))
+                except workable.Stopped:
+                    got.append('stopped')
+        return got, calls, p
+
+    def test_refused_before_any_career_page_answered_the_run_reads_the_feed(self):
+        got, calls, p = self.opened({'maxJobs': 100}, [Response(429)], [BIFFA, Board('zz', 'ZZ')])
+        self.assertEqual((got, len(calls)), ([{'everyone': True}, 'stopped'], 1))
+        self.assertIn("No career page had answered, so these are the newest jobs of Workable's jobs feed", p.cfg.notes[-1])
+
+    def test_a_career_page_that_answered_keeps_the_run_on_career_pages(self):
+        got, _, _ = self.opened({'maxJobs': 100}, [Response(200, WIDGET), Response(429)], [BIFFA, Board('zz', 'ZZ')])
+        self.assertEqual((got[0]['account'], got[1]), ('biffa', 'stopped'))
+
+    def test_named_companies_never_read_the_feed(self):
+        got, _, _ = self.opened({'companies': ['biffa']}, [Response(429)], [BIFFA])
+        self.assertEqual(got, ['stopped'])
+
+
+class Lookup(unittest.TestCase):
+    SESSION = {'account': 'biffa', 'name': 'Biffa Waste Services', 'website': 'https://www.biffa.co.uk/', 'jobs': [ENTRY]}
+
+    def check(self, answers, job_id, session=None):
+        send, calls = sender(answers)
+        with patch.object(workable, 'fetch', send), patch.object(workable, 'PACE', 0):
+            return asyncio.run(platform().lookup(None, dict(session or self.SESSION), job_id)), calls
+
+    def test_a_listed_job_is_open_with_its_details(self):
+        (status, job), calls = self.check([Response(200, {**V2, 'shortcode': '8A29959BE6'})], '8A29959BE6')
+        self.assertEqual((status, job['id'], job['salary'], job['company'], job['companySlug']),
+                         ('open', '8A29959BE6', 'GBP 28,000 per year', 'Biffa Waste Services', 'biffa'))
+        self.assertIn('/api/v2/accounts/biffa/jobs/8A29959BE6', calls[0][1])
+
+    def test_an_unlisted_job_that_answers_is_open(self):
+        (status, job), _ = self.check([Response(200, V2)], '584D288213')
+        self.assertEqual((status, job['title'], job['postedAt']), ('open', 'Accounts Payable', '2026-10-28'))
+
+    def test_a_job_workable_does_not_know_is_closed(self):
+        (status, job), _ = self.check([Response(404, text='Job not found')], 'ABCDEF1234')
+        self.assertEqual((status, job['company'], job['companySlug']), ('closed', 'Biffa Waste Services', 'biffa'))
+
+    def test_an_old_job_number(self):
+        found = Response(301, headers={'location': 'https://apply.workable.com/biffa/j/584D288213'})
+        (status, job), calls = self.check([found, Response(200, V2)], '6230970')
+        self.assertEqual((status, job['id']), ('open', '584D288213'))
+        self.assertIn('/biffa/jobs/6230970', calls[0][1])
+        gone = Response(302, headers={'location': 'https://apply.workable.com/biffa/?not_found=true'})
+        self.assertEqual(self.check([gone], '6230970')[0], ('closed', None))
+
+    def test_a_link_with_no_account(self):
+        moved = Response(301, headers={'location': '/biffa/j/584D288213'})
+        (status, job), calls = self.check([moved, Response(200, WIDGET), Response(200, V2)], '584D288213', {'everyone': True})
+        self.assertEqual((status, job['companySlug'], job['company'], job['companyWebsite']),
+                         ('open', 'biffa', 'Biffa Waste Services', 'https://www.biffa.co.uk/'))
+        oops = Response(302, headers={'location': '/oops'})
+        (status, job), _ = self.check([oops], '584D288213', {'everyone': True})
+        self.assertEqual((status, job['company']), ('closed', None))
+
+    def test_a_job_board_link(self):
+        data = {'id': 'b50514a8', 'title': 'Senior Back-End Software Engineer', 'state': 'published',
+                'company': {'title': 'Bask Health', 'website': 'http://bask.health'}, 'created': '2024-12-13T23:06:09.000Z',
+                'locations': ['TELECOMMUTE', 'New York, New York, United States'], 'workplace': 'remote',
+                'location': {'city': 'New York', 'subregion': 'New York', 'countryName': 'United States'},
+                'employmentType': 'Full-time', 'description': '<p>Build</p>', 'requirementsSection': '', 'benefitsSection': None,
+                'url': 'https://jobs.workable.com/view/omtQvzG25ZmkM1dS9dWiDj/remote-senior'}
+        (status, job), _ = self.check([Response(200, data)], 'omtQvzG25ZmkM1dS9dWiDj', {'everyone': True})
+        self.assertEqual((status, job['company'], job['companySlug'], job['location'], job['workType'], job['postedAt']),
+                         ('open', 'Bask Health', None, 'New York, New York, United States', 'remote', '2024-12-13T23:06:09.000Z'))
+        # the job board shows no pay
+        self.assertEqual((job.get('salary'), job['places'][0]['country']), (None, 'United States'))
+        nobody = {'company': None, 'companySlug': None, 'companyWebsite': None}
+        self.assertEqual(self.check([Response(410, text='Gone')], 'omtQvzG25ZmkM1dS9dWiDj', {'everyone': True})[0], ('closed', nobody))
+        self.assertEqual(self.check([Response(404, text='Job not found')], 'omtQvzG25ZmkM1dS9dWiDj', {'everyone': True})[0],
+                         ('not found', nobody))
+
+
+if __name__ == '__main__':
+    unittest.main()

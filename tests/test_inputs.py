@@ -76,6 +76,16 @@ class SearchTerms(unittest.TestCase):
         cfg = parse({'searchTerms': ['https://jobs.ashbyhq.com/openai', 'researcher']})
         self.assertEqual((cfg.companies, cfg.search_terms), (['openai'], ['researcher']))
 
+    def test_a_link_naming_no_company_in_the_search_box_is_skipped_with_a_reason(self):
+        cfg = parse({'searchTerms': ['https://jobs.ashbyhq.com/', 'researcher']})
+        self.assertEqual(cfg.search_terms, ['researcher'])
+        self.assertIn('is a Ashby link with no company in it', cfg.skipped[0][1])
+
+    def test_a_search_link_in_the_search_box_reads_its_words_and_place(self):
+        cfg = parse({'searchTerms': ['https://jobs.ashbyhq.com/?query=data+engineer&location=Germany']})
+        self.assertEqual((cfg.search_terms, cfg.locations), (['data engineer'], ['Germany']))
+        self.assertIn('as a search for data engineer in Germany', cfg.notes[0])
+
     def test_job_link_in_the_search_box_is_checked(self):
         cfg = parse({'searchTerms': [JOB]})
         self.assertEqual(cfg.job_urls[0][:2], ('ramp', '34413f8d-26bf-4bbc-8ade-eb309a0e2245'))

@@ -196,6 +196,22 @@ class Links(unittest.TestCase):
                 return await super().lookup(http, session, job_id)
         run = check(Odd({'odd': [[job('1')]], 'acme': [[job('2')]]}), ['x/odd/1', 'x/acme/2'])
         self.assertEqual(([i for i, _ in run.delivery.pushed], run.links['couldNotCheck']), (['2'], 1))
+class Status(unittest.TestCase):
+    def test_a_platform_that_read_part_of_what_it_lists_makes_the_run_partial(self):
+        run = search(Fake({'a': [[job('1')]]}, incomplete=True), {})
+        self.assertEqual((run.status(), run.delivery.rows), ('partial', 1))
+        self.assertEqual(search(Fake({'a': [[job('1')]]}), {}).status(), 'done')
+        self.assertEqual(search(Fake({'a': 'down'}), {}).status(), 'failed')
+
+
+class FailedDetails(unittest.TestCase):
+    def test_details_that_fail_do_not_fail_a_run_that_read_its_boards(self):
+        class NoDetails(Fake):
+            async def details(self, http, session, job):
+                raise BoardError('HTTP 429')
+        run = search(NoDetails({'a': [[job('1'), job('2', 'Analyst'), job('3', 'Cook')]]}), {'includeDetails': True})
+        self.assertEqual((run.delivery.rows, len(run.board_errors), run.ran()), (3, 3, True))
+        self.assertEqual(run.output('done')['status'], 'done')
 
 
 class Paging(unittest.TestCase):
@@ -370,6 +386,153 @@ class Places(unittest.TestCase):
         site = [[job('1', title='Engineer', where='2 Locations'), job('2', title='Analyst', where='2 Locations'), job('3', where='Paris')]]
         run = search(Vague({'a': site}), {'searchTerms': ['engineer'], 'location': ['Germany']})
         self.assertEqual(([i for i, _ in run.delivery.pushed], Vague.opened), (['1'], 1))
+
+
+
+class Feed(unittest.TestCase):
+    """A platform with one feed of every company's jobs reads the feed when no company is named."""
+    class Rows(Delivered):
+        def __init__(self):
+            super().__init__()
+            self.saved = []
+
+        async def push(self, rows, event):
+            self.saved += rows
+            return await super().push(rows, event)
+
+    class WithFeed(Fake):
+        def search_all(self, boards, cfg):
+            self.settings = cfg
+            return [Board('*', 'the Fake feed')]
+
+    def feed_search(self, raw):
+        jobs = [dict(job('1'), company='Acme', companySlug='acme', companyWebsite='https://acme.example'),
+                dict(job('2'), company='Beta', companySlug=None, companyWebsite=None)]
+        platform = self.WithFeed({'*': [jobs], 'acme': [[job('a1', 'Analyst')]], 'beta': [[job('b1', 'Cook')]]})
+
+        @asynccontextmanager
+        async def no_client(actor, connections=64):
+            yield None
+        boards = [Board('acme', 'Acme'), Board('beta', 'Beta')]
+        cfg = parse_input(raw, platform, engine.name_index(platform, boards))
+        run = engine.Run(platform, cfg, boards, None, self.Rows())
+        with patch.object(engine, 'client', no_client), patch.object(engine, 'safe_status', _quiet), \
+                patch.object(engine, 'seconds_left_in_run', lambda: None):
+            asyncio.run(run.search())
+        return platform, run
+
+    def test_only_the_feed_is_read_and_each_job_keeps_its_company(self):
+        platform, run = self.feed_search({})
+        self.assertEqual({r[0] for r in platform.read}, {'*'})
+        rows = {r['jobId']: r for r in run.delivery.saved}
+        self.assertEqual(sorted(rows), ['1', '2'])              # one title at one place, two companies: two jobs
+        self.assertEqual((rows['1']['company'], rows['1']['companySlug'], rows['1']['companyWebsite']),
+                         ('Acme', 'acme', 'https://acme.example'))
+        self.assertEqual((rows['2']['company'], rows['2']['companySlug']), ('Beta', None))
+        self.assertEqual(len(run.companies_matched), 2)
+        self.assertIn('on the Fake feed', run.message())
+
+    def test_a_note_the_platform_adds_while_reading_is_in_the_message(self):
+        class Noting(self.WithFeed):
+            async def pages(self, http, session, term, days):
+                self.settings.notes.append('The feed was late, so the biggest boards were read.')
+                async for page in super().pages(http, session, term, days):
+                    yield page
+        platform = Noting({'*': [[job('1')]]})
+
+        @asynccontextmanager
+        async def no_client(actor, connections=64):
+            yield None
+        run = engine.Run(platform, parse_input({'location': ['remote']}, platform), [Board('acme', 'Acme')], None, self.Rows())
+        with patch.object(engine, 'client', no_client), patch.object(engine, 'safe_status', _quiet), \
+                patch.object(engine, 'seconds_left_in_run', lambda: None):
+            asyncio.run(run.search())
+        message = run.message()
+        self.assertIn('The feed was late, so the biggest boards were read.', message)
+        self.assertNotIn('Read "remote" in location', message)      # notes about the input stay in OUTPUT only
+
+    def test_some_of_the_boards_are_boards_not_a_feed(self):
+        class Biggest(Fake):
+            def search_all(self, boards, cfg):
+                return boards[:1]
+        platform = Biggest({'acme': [[job('a1', 'Analyst')]], 'beta': [[job('b1', 'Cook')]]})
+
+        @asynccontextmanager
+        async def no_client(actor, connections=64):
+            yield None
+        run = engine.Run(platform, parse_input({}, platform), [Board('acme', 'Acme'), Board('beta', 'Beta')], None, self.Rows())
+        with patch.object(engine, 'client', no_client), patch.object(engine, 'safe_status', _quiet), \
+                patch.object(engine, 'seconds_left_in_run', lambda: None):
+            asyncio.run(run.search())
+        self.assertEqual(({r[0] for r in platform.read}, run.feed), ({'acme'}, None))
+        self.assertIn('on 1 Fake board', run.message())
+
+    def test_a_named_company_reads_its_own_board(self):
+        platform, run = self.feed_search({'companies': ['acme']})
+        self.assertEqual({r[0] for r in platform.read}, {'acme'})
+        self.assertEqual([r['jobId'] for r in run.delivery.saved], ['a1'])
+        self.assertIsNone(run.feed)
+        self.assertEqual(platform.settings.companies, ['acme'])      # the platform sees the settings on every search
+
+
+class Links(unittest.TestCase):
+    def test_a_closed_job_can_name_its_company(self):
+        class Linker(Fake):
+            def read_link(self, text):
+                return ('*', text.rsplit('/', 1)[1]) if text.startswith('https://x/') else None
+
+            async def open(self, http, board):
+                return {}
+
+            async def lookup(self, http, session, job_id):
+                if job_id == 'gone':
+                    return 'closed', {'company': 'Acme', 'companySlug': 'acme', 'companyWebsite': 'https://acme.example'}
+                return 'closed', None
+
+        platform = Linker({})
+        saved = []
+
+        class Rows(Delivered):
+            async def push(self, rows, event):
+                saved.extend(rows)
+                return await super().push(rows, event)
+
+        @asynccontextmanager
+        async def no_client(actor, connections=64):
+            yield None
+        cfg = parse_input({'jobUrls': ['https://x/gone', 'https://x/other']}, platform)
+        run = engine.Run(platform, cfg, [], None, Rows())
+        with patch.object(engine, 'client', no_client), patch.object(engine, 'safe_status', _quiet):
+            asyncio.run(run.check_links())
+        rows = {r['jobId']: r for r in saved}
+        self.assertEqual((rows['gone']['company'], rows['gone']['companySlug'], rows['gone']['status']), ('Acme', 'acme', 'closed'))
+        self.assertEqual((rows['other']['company'], rows['other']['companySlug']), ('*', '*'))
+
+
+    def test_one_job_pasted_in_two_link_forms_is_one_row(self):
+        class Linker(Fake):
+            def read_link(self, text):
+                key, job_id = text.removeprefix('https://x/').split('/')
+                return key, job_id
+
+            async def open(self, http, board):
+                return {}
+
+            async def lookup(self, http, session, job_id):
+                return 'open', {'id': job_id, 'title': 'Engineer', 'jobUrl': f'https://x/j/{job_id}'}
+
+        platform = Linker({})
+        delivered = Delivered()
+
+        @asynccontextmanager
+        async def no_client(actor, connections=64):
+            yield None
+        cfg = parse_input({'jobUrls': ['https://x/acme/A1', 'https://x/*/A1', 'https://x/acme/B2']}, platform)
+        run = engine.Run(platform, cfg, [], None, delivered)
+        with patch.object(engine, 'client', no_client), patch.object(engine, 'safe_status', _quiet):
+            asyncio.run(run.check_links())
+        self.assertEqual([i for i, _ in delivered.pushed], ['A1', 'B2'])
+        self.assertEqual(run.links['open'], 3)
 
 
 if __name__ == '__main__':
