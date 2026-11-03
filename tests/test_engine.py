@@ -321,6 +321,66 @@ class TimeLimit(unittest.TestCase):
         self.assertIn('time limit', run.message())
 
 
+class CutRuns(unittest.TestCase):
+    def test_a_cut_details_phase_still_delivers_the_listings_descriptions(self):
+        # live review 2026-11-03: a time-limited includeDetails run delivered rows without their descriptions
+        class Listed(Fake):
+            async def details(self, http, session, job):
+                await asyncio.sleep(5)       # the per-job call the time limit cancels
+                return job
+
+        @asynccontextmanager
+        async def no_client(actor, connections=64):
+            yield None
+
+        def left():
+            return 1000 if run.phase != 'details' else engine.RUN_SAFETY_MARGIN_S
+        platform = Listed({'a': [[{**job('1'), 'description': 'Full text from the list'}]]})
+        run = engine.Run(platform, parse_input({'includeDetails': True}, platform), [Board('a', 'a')], None, Delivered())
+        with patch.object(engine, 'client', no_client), patch.object(engine, 'safe_status', _quiet), \
+                patch.object(engine, 'seconds_left_in_run', left):
+            asyncio.run(run.search())
+        self.assertEqual([e for _, e in run.delivery.pushed], [engine.DETAILS_EVENT])
+        self.assertEqual(run.stop, 'time')
+
+    def test_boards_cancelled_at_the_time_limit_are_not_counted_as_read(self):
+        # live review 2026-11-03: cancelled boards counted as read, so a down platform reported success
+        class Slow(Fake):
+            async def pages(self, http, session, term, days):
+                if session == 'slow':
+                    await asyncio.sleep(5)
+                async for page in super().pages(http, session, term, days):
+                    yield page
+
+        @asynccontextmanager
+        async def no_client(actor, connections=64):
+            yield None
+        platform = Slow({'fast': [[job('1')]], 'slow': [[job('2')]]})
+        run = engine.Run(platform, parse_input({}, platform), [Board('fast', 'fast'), Board('slow', 'slow')], None,
+                         Delivered())
+        with patch.object(engine, 'client', no_client), patch.object(engine, 'safe_status', _quiet), \
+                patch.object(engine, 'seconds_left_in_run', lambda: engine.RUN_SAFETY_MARGIN_S + 0.3):
+            asyncio.run(run.search())
+        self.assertEqual((run.boards_read, run.ran(), run.stop), (1, True, 'time'))
+
+    def test_a_platform_that_never_answers_fails_instead_of_reporting_success(self):
+        # live review 2026-11-03: every board cancelled at the time limit must not read as a done run with no match
+        class Slow(Fake):
+            async def pages(self, http, session, term, days):
+                await asyncio.sleep(5)
+                yield []
+
+        @asynccontextmanager
+        async def no_client(actor, connections=64):
+            yield None
+        platform = Slow({'a': [[job('1')]], 'b': [[job('2')]]})
+        run = engine.Run(platform, parse_input({}, platform), [Board('a', 'a'), Board('b', 'b')], None, Delivered())
+        with patch.object(engine, 'client', no_client), patch.object(engine, 'safe_status', _quiet), \
+                patch.object(engine, 'seconds_left_in_run', lambda: engine.RUN_SAFETY_MARGIN_S + 0.3):
+            asyncio.run(run.search())
+        self.assertEqual((run.boards_read, run.ran(), run.status()), (0, False, 'failed'))
+
+
 class Enough(unittest.TestCase):
     def test_a_run_stops_once_today_fills_the_list(self):
         sites = {f'c{i}': [[job(f'{i}-{n}', f'Job {i} {n}') for n in range(5)]] for i in range(9)}

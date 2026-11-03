@@ -278,7 +278,7 @@ class Run:
                     if nothing_can_beat_this():
                         self.enough = True
                         return
-                    hit = False
+                    hit, read = False, True
                     try:
                         session = await platform.open(http, board)
                         if session is None:
@@ -308,12 +308,16 @@ class Run:
                                     break
                     except BoardMissing:
                         self.boards_missing.append(board.key)
+                    except asyncio.CancelledError:
+                        read = False       # given up at the time limit: not read, so a run where nothing answered fails
+                        raise
                     except Exception as exc:  # noqa: BLE001  a BoardError, or a record the platform did not expect
                         self.board_error(board.key, exc)
                         self.boards_failed += 1
                     finally:
-                        self.boards_read += 1
-                        self.boards_matched += 1 if hit else 0
+                        if read:
+                            self.boards_read += 1
+                            self.boards_matched += 1 if hit else 0
 
             self.phase = 'boards'
             await self.run_all([one(b) for b in targets])
@@ -343,13 +347,16 @@ class Run:
     async def read_details(self, http, chosen: list, texts: dict, sessions: dict) -> None:
         platform = self.platform
         self.details_wanted = len(chosen)
+        # the listing's own descriptions are already in hand: restore them before the time-limited calls, so a run that
+        # reaches its time limit still delivers them (the live review of 2026-11-03 found a cut run delivered none)
+        for _, _, board, job in chosen:
+            blob = texts.pop((board.key, job['id']), None)
+            if blob:
+                job['description'], job['descriptionHtml'] = json.loads(zlib.decompress(blob))
         sem = asyncio.Semaphore(platform.concurrency)
 
         async def one(item: tuple) -> None:
             _, _, board, job = item
-            blob = texts.pop((board.key, job['id']), None)
-            if blob:
-                job['description'], job['descriptionHtml'] = json.loads(zlib.decompress(blob))
             async with sem:
                 if self.out_of_time():
                     return
