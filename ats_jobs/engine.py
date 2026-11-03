@@ -10,8 +10,9 @@ place, work type, job type and posting date, and delivers the newest jobs first.
   in memory (a heap). A platform that pages newest first stops as soon as a board can no longer make the cut.
 - Job links mode (jobUrls): each link is looked up live: open, closed, or not found.
 - Charging: one event per delivered row, "job" for a row without details and for a closed or not-found link,
-  "job-details" for a row with details. The SDK delivers only the rows the spending limit can pay for. No start
-  fee. No input stops a run: unreadable fields fall back to their defaults with a note.
+  "job-details" for a row with details. The SDK delivers only the rows the spending limit can pay for. The engine
+  charges no start fee; a pricing with Apify's apify-actor-start event has it charged by Apify before the run. No input
+  stops a run: unreadable fields fall back to their defaults with a note.
 """
 import asyncio
 import heapq
@@ -31,6 +32,7 @@ from .rows import Filters, dedupe_key, job_row, link_row, parse_time
 
 LINK_EVENT = 'job'                 # these two must equal the event keys of the pricing in .actor/store.json
 DETAILS_EVENT = 'job-details'
+START_EVENT = 'apify-actor-start'  # Apify's own run start event, charged before the run when the pricing defines it
 RUN_SAFETY_MARGIN_S = 30           # stop reading boards this close to the run's time limit and deliver
 PROGRESS_EVERY_S = 5
 PUSH_CHUNK = 500
@@ -516,8 +518,10 @@ async def main(platform_key: str) -> None:
         await run.write_output(final=False)
         first_event = DETAILS_EVENT if cfg.include_details and not cfg.job_urls else LINK_EVENT
         if not delivery.can_pay(first_event):
+            # Apify charges a start event, when the pricing has one, before the run begins
+            started = delivery.ppe and START_EVENT in delivery.cm.get_pricing_info().per_event_prices
             message = ('The maximum cost of this run is too low for one job, so nothing was searched and nothing '
-                       'was charged. Raise the maximum cost per run and start again.')
+                       f'{"else " if started else ""}was charged. Raise the maximum cost per run and start again.')
             await Actor.set_value('OUTPUT', {'status': 'done', 'message': message, 'jobsSaved': 0})
             await safe_status(message)
             return
