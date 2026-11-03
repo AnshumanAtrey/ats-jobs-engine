@@ -19,8 +19,12 @@ jobs posted today soonest.
 On 2026-11-02: 8,083 accounts in nine crawls of Common Crawl, 4,792 companies in the three quarters of the feed that
 arrived, 6,007 more accounts from the Wayback sample and freehire's rows (--accounts). Of the first 1,620 candidates in
 order, 1,020 answered: 67% of Common Crawl's answered and 31% were hiring, 60% and 6% of the others. Workable then
-banned the address (see PACE), so the file holds the 1,107 accounts that answered and 991 accounts mapped by their job
-codes, not yet checked; the next run checks every one.
+banned the address (see PACE). On 2026-11-03 the 991 accounts the file then carried by Common Crawl's votes alone and
+134 accounts a scratch driver had marked gone without asking were checked from another address with this script's own
+rule (1,144 calls at PACE, none refused): 5 answered 404 and were dropped, 98 of the 134 answered (46 hiring, 864
+jobs) and came back, and 6 feed companies moved to the account that lists their jobs (Elevate from elevate-47 to
+elevate-7, Company from talent3600, a 404, to t63). The file holds 2,196 accounts, every one of which answered on its
+career page; the next full run checks every candidate (about 3 hours).
 
 Run: python3 scripts/refresh_workable.py [account ...] [--accounts <file>] [--feed <saved copy of the feed, .xml or
 .xml.gz>]   (needs httpx; writes the file, prints a summary; about 3 hours). From a slow line the feed download is
