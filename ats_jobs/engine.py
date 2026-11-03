@@ -391,7 +391,7 @@ class Run:
             self.phase = 'links'
             await self.run_all([one(key, ids) for key, ids in by_board.values()])
 
-        rows = []
+        rows, opened = [], set()
         for key, job_id, url in cfg.job_urls:
             status, job = found.get((key, job_id), ('error', None))
             if status == 'error':
@@ -400,8 +400,11 @@ class Run:
             self.links['notFound' if status == 'not found' else status] += 1
             board = self.board(key)
             if status == 'open':
-                rows.append((self.row(board, job, cfg.include_details),
-                             DETAILS_EVENT if cfg.include_details else LINK_EVENT))
+                row = self.row(board, job, cfg.include_details)
+                if (row['jobId'], row['jobUrl']) in opened:      # the same job pasted in two link forms: one row
+                    continue
+                opened.add((row['jobId'], row['jobUrl']))
+                rows.append((row, DETAILS_EVENT if cfg.include_details else LINK_EVENT))
             else:
                 who = company(board) if job is None else {      # a lookup can name the company of a job that is gone
                     'name': job.get('company'), 'slug': job.get('companySlug'), 'website': job.get('companyWebsite')}

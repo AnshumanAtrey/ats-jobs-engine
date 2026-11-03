@@ -338,5 +338,31 @@ class Links(unittest.TestCase):
         self.assertEqual((rows['other']['company'], rows['other']['companySlug']), ('*', '*'))
 
 
+    def test_one_job_pasted_in_two_link_forms_is_one_row(self):
+        class Linker(Fake):
+            def read_link(self, text):
+                key, job_id = text.removeprefix('https://x/').split('/')
+                return key, job_id
+
+            async def open(self, http, board):
+                return {}
+
+            async def lookup(self, http, session, job_id):
+                return 'open', {'id': job_id, 'title': 'Engineer', 'jobUrl': f'https://x/j/{job_id}'}
+
+        platform = Linker({})
+        delivered = Delivered()
+
+        @asynccontextmanager
+        async def no_client(actor, connections=64):
+            yield None
+        cfg = parse_input({'jobUrls': ['https://x/acme/A1', 'https://x/*/A1', 'https://x/acme/B2']}, platform)
+        run = engine.Run(platform, cfg, [], None, delivered)
+        with patch.object(engine, 'client', no_client), patch.object(engine, 'safe_status', _quiet):
+            asyncio.run(run.check_links())
+        self.assertEqual([i for i, _ in delivered.pushed], ['A1', 'B2'])
+        self.assertEqual(run.links['open'], 3)
+
+
 if __name__ == '__main__':
     unittest.main()
