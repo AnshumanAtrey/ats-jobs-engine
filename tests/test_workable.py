@@ -508,8 +508,9 @@ class EveryCompany(unittest.TestCase):
 
     def test_the_whole_feed(self):
         chunks = [FEED_XML[i:i + 200] for i in range(0, len(FEED_XML), 200)]
-        pages, opened, _ = self.collect([(200, chunks)], {'searchTerms': ['engineer', 'driver']})
+        pages, opened, p = self.collect([(200, chunks)], {'searchTerms': ['engineer', 'driver']})
         self.assertEqual((pages, opened), ([['F44ED9E40A', '0908074E5D']], 1))
+        self.assertFalse(p.incomplete)
 
     def test_a_compressed_feed(self):
         packed = gzip.compress(FEED_XML)
@@ -560,8 +561,9 @@ class EveryCompany(unittest.TestCase):
     def test_a_career_page_holding_none_of_its_feed_jobs_leaves_them_in(self):
         # the company's name pointed to another account (a generic name such as Elevate): its feed jobs stay
         broken = httpx.RemoteProtocolError('cut')
-        pages, _, _ = self.collect([(200, [self.TWO_CUT, broken])], fallback={'biffa': self.BIFFA_PAGE})
+        pages, _, p = self.collect([(200, [self.TWO_CUT, broken])], fallback={'biffa': self.BIFFA_PAGE})
         self.assertEqual(pages, [['8A29959BE6', 'F44ED9E40A', 'AAAAAAAAAA']])
+        self.assertTrue(p.incomplete)               # the run's OUTPUT says partial
 
     def test_the_companies_with_the_most_matching_jobs_in_the_cut_part_come_first(self):
         known = {'zz': Board('zz', 'ZZ Co'), 'biffa': BIFFA}            # zz is the bigger company on our list

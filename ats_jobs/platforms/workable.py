@@ -774,6 +774,7 @@ class Workable(Platform):
         jobs = list(found.values()) + [job for job in partial if job['id'] not in found
                                        and job.get('companySlug') not in same]
         pages = f'{len(read):,} compan{"y" if len(read) == 1 else "ies"}'
+        self.incomplete = True              # the run's OUTPUT says partial: the newest jobs of most companies are missing
         if not cut:
             note = (f"Workable's jobs feed could not be read ({reason}), so these jobs come from the career pages of "
                     f"the {pages} biggest on our list of {len(known):,}. Other companies' jobs are not in this run.")
