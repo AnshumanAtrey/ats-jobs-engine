@@ -779,10 +779,10 @@ class Workable(Platform):
             note = (f"Workable's jobs feed could not be read ({reason}), so these jobs come from the career pages of "
                     f"the {pages} biggest on our list of {len(known):,}. Other companies' jobs are not in this run.")
         elif read:
+            which = f'{pages} with the most matching jobs' if counts else f'{len(read):,} biggest ' + pages.split(' ')[1]
             note = (f"Workable's jobs feed was cut after its listings of {cut}, so the jobs listed since then come "
-                    f'only from the career pages of the {pages} '
-                    f'{"with the most matching jobs" if counts else "biggest"} (of {len(known):,} on our list). The '
-                    'newest jobs of other companies are not in this run.')
+                    f'only from the career pages of the {which} (of {len(known):,} on our list). The newest jobs of '
+                    'other companies are not in this run.')
         else:
             note = (f"Workable's jobs feed was cut after its listings of {cut} and no career page answered, so these "
                     'are the jobs listed before then. Newer jobs are not in this run.')

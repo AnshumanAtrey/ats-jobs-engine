@@ -565,6 +565,11 @@ class EveryCompany(unittest.TestCase):
         self.assertEqual(pages, [['8A29959BE6', 'F44ED9E40A', 'AAAAAAAAAA']])
         self.assertTrue(p.incomplete)               # the run's OUTPUT says partial
 
+    def test_with_no_match_in_the_cut_part_the_biggest_pages_are_read_and_named_so(self):
+        broken = httpx.RemoteProtocolError('cut')
+        _, _, p = self.collect([(200, [self.CUT, broken])], {'searchTerms': ['chef']}, fallback={'biffa': self.BIFFA_PAGE})
+        self.assertIn('come only from the career pages of the 1 biggest company (of 3 on our list)', p.cfg.notes[-1])
+
     def test_the_companies_with_the_most_matching_jobs_in_the_cut_part_come_first(self):
         known = {'zz': Board('zz', 'ZZ Co'), 'biffa': BIFFA}            # zz is the bigger company on our list
         broken = httpx.RemoteProtocolError('cut')
