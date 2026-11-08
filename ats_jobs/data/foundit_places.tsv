@@ -1,0 +1,6013 @@
+# foundit places, updated 2026-11-08: every name on the location lists of foundit's nine sites.
+# Columns: name, country code, kind (CITY or COUNTRY), the sites whose list holds it (their X-Source-Country).
+# Rebuilt by scripts/refresh_foundit.py; 6,010 places (5,949 city, 61 country).
+Abu Dhabi	AE	CITY	SA
+Adh Dhayd	AE	CITY	SA
+Ajman	AE	CITY	SA
+Al Ain	AE	CITY	SA
+Al Fujayrah	AE	CITY	SA
+Ar Ruways	AE	CITY	SA
+Dibba Al Fujairah	AE	CITY	SA
+Dibba Al Hisn	AE	CITY	SA
+Dubai	AE	CITY	SA
+Fujairah	AE	CITY	SA
+Khawr Fakkan	AE	CITY	SA
+Other - United Arab Emirates	AE	CITY	SA
+Ras Al Khaimah	AE	CITY	SA
+Sharjah	AE	CITY	SA
+Umm Al Qaiwain	AE	CITY	SA
+Umm Al Qaywayn	AE	CITY	SA
+United Arab Emirates	AE	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Afghanistan	AF	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Austria	AT	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Australia	AU	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Bangladesh	BD	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Belgium	BE	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Bulgaria	BG	COUNTRY	SG
+Bahrain	BH	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Dar Kulaib	BH	CITY	SA
+Hamad Town	BH	CITY	SA
+Isa Town	BH	CITY	SA
+Jidhafs	BH	CITY	SA
+Manama	BH	CITY	SA
+Muharraq	BH	CITY	SA
+Other - Bahrain	BH	CITY	SA
+Riffa	BH	CITY	SA
+Sitra	BH	CITY	SA
+Brunei	BN	COUNTRY	SG,PH,MY,ID,HK,TH,VN
+Botswana	BW	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Canada	CA	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Switzerland	CH	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Anhui	CN	CITY	SG,PH,MY,ID,HK,TH,VN
+Beijing	CN	CITY	SG,PH,MY,ID,HK,TH,VN
+Chongqing	CN	CITY	SG,PH,MY,ID,HK,TH,VN
+Fujian	CN	CITY	SG,PH,MY,ID,HK,TH,VN
+Gansu	CN	CITY	SG,PH,MY,ID,HK,TH,VN
+Guangdong	CN	CITY	SG,PH,MY,ID,HK,TH,VN
+Guangxi	CN	CITY	SG,PH,MY,ID,HK,TH,VN
+Guizhou	CN	CITY	SG,PH,MY,ID,HK,TH,VN
+Hainan	CN	CITY	SG,PH,MY,ID,HK,TH,VN
+Hebei	CN	CITY	SG,PH,MY,ID,HK,TH,VN
+Heilongjiang	CN	CITY	SG,PH,MY,ID,HK,TH,VN
+Henan	CN	CITY	SG,PH,MY,ID,HK,TH,VN
+Hubei	CN	CITY	SG,PH,MY,ID,HK,TH,VN
+Hunan	CN	CITY	SG,PH,MY,ID,HK,TH,VN
+Inner Mongolia	CN	CITY	SG,PH,MY,ID,HK,TH,VN
+Jiangsu	CN	CITY	SG,PH,MY,ID,HK,TH,VN
+Jiangxi	CN	CITY	SG,PH,MY,ID,HK,TH,VN
+Jilin	CN	CITY	SG,PH,MY,ID,HK,TH,VN
+Liaoning	CN	CITY	SG,PH,MY,ID,HK,TH,VN
+Nanjing	CN	CITY	SG,PH,MY,ID,HK,TH,VN
+Ningxia	CN	CITY	SG,PH,MY,ID,HK,TH,VN
+Other - China	CN	CITY	SG,PH,MY,ID,HK,TH,VN
+Qinghai	CN	CITY	SG,PH,MY,ID,HK,TH,VN
+Shaanxi	CN	CITY	SG,PH,MY,ID,HK,TH,VN
+Shandong	CN	CITY	SG,PH,MY,ID,HK,TH,VN
+Shanghai	CN	CITY	SG,PH,MY,ID,HK,TH,VN
+Shanxi	CN	CITY	SG,PH,MY,ID,HK,TH,VN
+Sichuan	CN	CITY	SG,PH,MY,ID,HK,TH,VN
+Tianjin	CN	CITY	SG,PH,MY,ID,HK,TH,VN
+Tibet	CN	CITY	SG,PH,MY,ID,HK,TH,VN
+Xinjiang	CN	CITY	SG,PH,MY,ID,HK,TH,VN
+Yunnan	CN	CITY	SG,PH,MY,ID,HK,TH,VN
+Zhejiang	CN	CITY	SG,PH,MY,ID,HK,TH,VN
+Germany	DE	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Alexandria	EG	CITY	SA
+Asyut	EG	CITY	SA
+Cairo	EG	CITY	SA
+Damietta	EG	CITY	SA
+Egypt	EG	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Hurghada	EG	CITY	SA
+Ismailia	EG	CITY	SA
+Luxor	EG	CITY	SA
+Other - Egypt	EG	CITY	SA
+Port Said	EG	CITY	SA
+Sharm el Sheikh	EG	CITY	SA
+Suez	EG	CITY	SA
+Spain	ES	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+France	FR	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+United Kingdom (UK)	GB	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Aberdeen	HK	CITY	PH,MY,ID,HK,TH,VN
+China	HK	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Hong Kong	HK	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Kowloon	HK	CITY	SG,PH,MY,ID,HK,TH,VN
+Abepura	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Aceh Singkil Regency	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Adiwerna	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Amahai	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Ambarawa	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Amlapura	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Amuntai	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Arjawinangun	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Astanajapura	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Atambua City	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Babat	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Baekrajan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Baki	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Balaipungut	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Balapulang	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Bali	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Balikpapan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Balung	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Bambanglipuro	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Banda Aceh	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Bandar	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Bandung	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Bangil	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Bangkalan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Banjaran	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Banjarmasin	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Banten	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Bantul	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Banyumas	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Banyuwangi Regency	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Barabai	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Batang	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Batu	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Baturaden	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Baturaja	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Bekasi	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Belawan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Bengkulu	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Berastagi	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Besuki	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Bima	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Binjai	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Bireuen Regency	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Bitung	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Blitar	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Blora	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Bogor	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Bojonegoro	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Bondowoso Regency	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Bontang	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Boyolali	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Boyolangu	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Buaran	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Buduran	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Bukittinggi	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Bulukumba Regency	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Caringin	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Ceper	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Cepu	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Ciamis	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Ciampea	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Cibinong	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Cicurug	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Cikampek	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Cikarang	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Cikupa	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Cileungsir	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Cileunyi	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Cimahi	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Ciputat	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Ciranjang-Hilir	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Cirebon	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Citeureup	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+City Of Balikpapan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Colomadu	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Comal	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Curug	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Curup	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Dampit	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Delanggu	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Deli Tua	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Demak	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Denpasar	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Depok City	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Diwek	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Dompu Regency	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Driyorejo	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Dukuhturi	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Dumai	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Flores	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Galesong	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Gambiran Satu	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Gampengrejo	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Gamping Lor	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Gatak	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Gebog	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Gedangan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Genteng	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Godean	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Gombong	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Gondanglegi Kulon	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Gorontalo	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Gresik	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Grogol Petamburan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Indonesia	ID	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Indramayu	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Irian Jaya Barat	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+jakarta Raya	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Jambi	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Jaten	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Jatibarang	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Jatiroto	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Jatiwangi	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Jawa Barat	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Jawa Tengah	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Jawa Timur	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Jayapura	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Jekulo	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Jember	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Jogonalan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Jombang Regency	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Juwana	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kabanjahe	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kalianget	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kalimantan Barat	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kalimantan Selatan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kalimantan Tengah	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kalimantan Timur	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kamal	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Karangampel	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Karanganom	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Karangsembung	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kartasura	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kasihan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Katabu	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kawalu	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kebomas	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kebonarun	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kediri	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kedungwaru	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kedungwuni	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kefamenanu	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kencong	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kendari	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kepanjen	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kepulauan Bangka Belitung	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kepulauan Riau	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kertosono	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Ketanggungan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kijang Kota	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kisaran	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Klangenan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Klaten	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kota Ambon	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kotabumi	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kresek	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Krian	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kroya	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kuala Tungkal	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kualakapuas	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kudus	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kuningan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kupang	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kuta	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Kutoarjo	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Labuan Bajo	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Labuhan Deli	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Lahat Regency	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Lamongan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Lampung	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Langsa	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Lasem	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Lawang	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Lebaksiu	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Lembang	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Lhokseumawe	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Loa Janan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Lubuklinggau	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Lumajang	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Luwuk	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Madiun	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Magelang	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Majalengka	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Majenang	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Majene	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Makassar	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Malang	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Maluku	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Maluku Utara	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Manado	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Manggar	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Manismata	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Manokwari	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Margahayukencana	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Margasari	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Martapura	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Mataram City	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Maumere	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Medan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Melati	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Mendaha	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Mentok	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Mertoyudan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Metro	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Meulaboh	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Mlonggo	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Mojoagung	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Mojokerto	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Mranggen	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Muncar	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Muntilan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Nabire	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Negara	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Ngawi	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Ngemplak	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Ngoro	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Ngunut	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Nusa Tenggara Barat	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Nusa Tenggara Timur	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Other - Indonesia	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Paciran	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Padalarang	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Padang	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Padangsidempuan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Pageralam	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Pakisaji	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Palangkaraya	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Palembang	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Palimanan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Palopo	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Palu City	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Pamanukan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Pamekasan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Pameungpeuk	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Pamulang	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Panarukan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Pandaan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Pandak	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Pandeglang Regency	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Pangkal Pinang	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Pangkalan Brandan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Pangkalan Bun	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Panji	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Papua	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Pare, Kediri	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Parepare	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Pariaman	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Parung	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Pasar Kemis	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Paseh	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Pasuruan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Pati Regency	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Patokan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Payakumbuh	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Pecangaan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Pekalongan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Pekanbaru	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Pelabuhanratu	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Pemalang Regency	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Pemangkat	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Pematangsiantar	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Perbaungan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Percut	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Petarukan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Plumbon	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Polewali	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Ponorogo Regency	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Pontianak	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Poso	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Prabumulih	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Prambanan Temple	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Praya District	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Prigen	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Probolinggo	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Pundong	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Purbalingga	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Purwakarta	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Purwodadi	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Purwokerto	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Rajapolah	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Randudongkal	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Rangkasbitung	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Rantauprapat	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Rantepao	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Raya River	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Rembangan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Rengasdengklok	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Reuleuet	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Riau	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Ruteng	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Sabang	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Salatiga	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Samarinda	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Sampang	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Sampit	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Sawangan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Selogiri	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Semarang	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Semarapura	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Sengkang	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Sepatan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Serang	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Seririt	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Serpong	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Sewon	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Sibolga	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Sidareja	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Sidoarjo	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Sigli	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Sijunjung	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Simpang	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Singaparna	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Singaraja	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Singkawang	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Singojuruh	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Singosari	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Sinjai	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Situbondo Regency	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Slawi	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Sleman	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Soe	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Sofifi	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Sokaraja	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Soko	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Solok	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Soreang	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Sorong	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+South Tangerang	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Sragen	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Srandakan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Srono	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Stabat	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Sukabumi	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Sulawesi Barat	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Sulawesi Selatan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Sulawesi Tengah	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Sulawesi Tenggara	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Sulawesi Utara	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Sumatera Barat	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Sumatera Selatan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Sumatera Utara	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Sumbawa Besar	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Sumber Pucung	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Sumedang Utara	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Sumenep	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Sungai Liat	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Sungai Penuh	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Sunggal	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Surabaya	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Surakarta	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Tabanan Regency	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Tangerang	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Tanggulangin	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Tanjung Agung	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Tanjung Balai	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Tanjung Pandan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Tanjung Tiram	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Tanjungpinang	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Tarakan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Tarub	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Tasikmalaya	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Tayu	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Tebing Tinggi City	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Tegal	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Teluk Nibung	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Teluknaga	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Terbanggi Besar	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Tomohon	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Tondano	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Tongging	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Trenggalek	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Trucuk	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Tual	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Tuban	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Tulangan Utara	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Tulungagung	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Ubud	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Ungaran	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Waingapu City	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Wanaraja	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Wangon	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Watampone	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Wedi	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Welahan	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Weleri	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Weru	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Wiradesa	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Wongsorejo	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Wonopringgo	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Wonosari	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Wonosobo Regency	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Yogyakarta	ID	CITY	SG,PH,MY,ID,HK,TH,VN
+Ireland	IE	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Aakera	IN	CITY	IN
+Abhayapuri	IN	CITY	IN
+Abohar	IN	CITY	IN
+Abu Road	IN	CITY	IN
+Abupur	IN	CITY	IN
+Achalganj	IN	CITY	IN
+Achalpur	IN	CITY	IN
+Achhabal	IN	CITY	IN
+Achhalda	IN	CITY	IN
+Achhnera	IN	CITY	IN
+Adampur	IN	CITY	IN
+Adari	IN	CITY	IN
+Addanki	IN	CITY	IN
+Adilabad	IN	CITY	IN
+Adirampattinam	IN	CITY	IN
+Adoni	IN	CITY	IN
+Adra	IN	CITY	IN
+Afzalgarh	IN	CITY	IN
+Afzalpur	IN	CITY	IN
+Agar	IN	CITY	IN
+Agartala	IN	CITY	IN
+Agarwal Mandi	IN	CITY	IN
+Agra	IN	CITY	IN
+Ahiyapur	IN	CITY	IN
+Ahmadnagar	IN	CITY	IN
+Ahmadpur	IN	CITY	IN
+Ahmedabad	IN	CITY	IN
+Ahmedgarh	IN	CITY	IN
+Ahmednagar	IN	CITY	IN
+Ahore	IN	CITY	IN
+Ahrauli Shekh	IN	CITY	IN
+Ahraura	IN	CITY	IN
+Ailam	IN	CITY	IN
+Air Force Area	IN	CITY	IN
+Airoli	IN	CITY	IN
+Aishmuquam	IN	CITY	IN
+Aistala	IN	CITY	IN
+Aizawl	IN	CITY	IN
+Ajeetgarh	IN	CITY	IN
+Ajhuwa	IN	CITY	IN
+Ajitpur	IN	CITY	IN
+Ajmer	IN	CITY	IN
+Ajnala	IN	CITY	IN
+Ajodhya	IN	CITY	IN
+Ajra	IN	CITY	IN
+Akalgarh	IN	CITY	IN
+Akaltara	IN	CITY	IN
+Akbarpur	IN	CITY	IN
+Akedadoongar	IN	CITY	IN
+Akhnoor	IN	CITY	IN
+Akividu	IN	CITY	IN
+Akkalkot	IN	CITY	IN
+Akkarampalle	IN	CITY	IN
+Aklera	IN	CITY	IN
+Akoda	IN	CITY	IN
+Akola	IN	CITY	IN
+Akot	IN	CITY	IN
+Alambagh	IN	CITY	IN
+Aland	IN	CITY	IN
+Alandi	IN	CITY	IN
+Alandur	IN	CITY	IN
+Alangayam	IN	CITY	IN
+Alangulam	IN	CITY	IN
+Alappuzha / Alleppey	IN	CITY	IN
+Alawalpur	IN	CITY	IN
+Alhaipur	IN	CITY	IN
+Alhoran	IN	CITY	IN
+Alibag	IN	CITY	IN
+Aliganj	IN	CITY	IN
+Aligarh	IN	CITY	IN
+Alipur	IN	CITY	IN
+Alipurduar	IN	CITY	IN
+Alirajpur	IN	CITY	IN
+Allahabad / Prayagraj	IN	CITY	IN
+Allahganj	IN	CITY	IN
+Allapur	IN	CITY	IN
+Alleppey	IN	CITY	IN
+Alluri Sitarama Raju	IN	CITY	IN
+Almaspur	IN	CITY	IN
+Almora	IN	CITY	IN
+Alnavar	IN	CITY	IN
+Alot	IN	CITY	IN
+Aluva	IN	CITY	IN
+Alwar	IN	CITY	IN
+Amadalavalasa	IN	CITY	IN
+Amalapuram	IN	CITY	IN
+Amalhara	IN	CITY	IN
+Amalner	IN	CITY	IN
+Amalsad	IN	CITY	IN
+Amanpur	IN	CITY	IN
+Amara Khaira Chowk	IN	CITY	IN
+Amaravati, Andhra Pradesh	IN	CITY	IN
+Amargarh	IN	CITY	IN
+Amarpatan	IN	CITY	IN
+Amarpur	IN	CITY	IN
+Ambad	IN	CITY	IN
+Ambah	IN	CITY	IN
+Ambajogai	IN	CITY	IN
+Ambala	IN	CITY	IN
+Ambasamudram	IN	CITY	IN
+Ambassa	IN	CITY	IN
+Ambattur	IN	CITY	IN
+Ambedkar Nagar	IN	CITY	IN
+Ambehta	IN	CITY	IN
+Ambernath	IN	CITY	IN
+Ambhua	IN	CITY	IN
+Ambikapur	IN	CITY	IN
+Ambur	IN	CITY	IN
+Amehra Adipur	IN	CITY	IN
+Amet	IN	CITY	IN
+Amethi	IN	CITY	IN
+Amethi Jadid	IN	CITY	IN
+Amila	IN	CITY	IN
+Amilo	IN	CITY	IN
+Aminagar Sarai	IN	CITY	IN
+Aminagar Urf Bhurbaral	IN	CITY	IN
+Amla	IN	CITY	IN
+Amlagora	IN	CITY	IN
+Amlai	IN	CITY	IN
+Amloh	IN	CITY	IN
+Amod	IN	CITY	IN
+Amraudha	IN	CITY	IN
+Amravati	IN	CITY	IN
+Amreli	IN	CITY	IN
+Amritsar	IN	CITY	IN
+Amroha	IN	CITY	IN
+Amroli	IN	CITY	IN
+Amta	IN	CITY	IN
+Anaimalai	IN	CITY	IN
+Anakapalle	IN	CITY	IN
+Anakapalli	IN	CITY	IN
+Anand	IN	CITY	IN
+Anandpur Sahib	IN	CITY	IN
+Anantapur	IN	CITY	IN
+Anantnag	IN	CITY	IN
+Anekal	IN	CITY	IN
+Angamaly	IN	CITY	IN
+Angul	IN	CITY	IN
+Anini	IN	CITY	IN
+Anjad	IN	CITY	IN
+Anjangaon	IN	CITY	IN
+Anjar	IN	CITY	IN
+Anjaw	IN	CITY	IN
+Ankleshwar	IN	CITY	IN
+Ankurhati	IN	CITY	IN
+Annamaya	IN	CITY	IN
+Annigeri	IN	CITY	IN
+Annur	IN	CITY	IN
+Anpara	IN	CITY	IN
+Anta	IN	CITY	IN
+Antarjaal	IN	CITY	IN
+Anthiyur	IN	CITY	IN
+Antu	IN	CITY	IN
+Anupgarh	IN	CITY	IN
+Anuppur	IN	CITY	IN
+Anupshahr	IN	CITY	IN
+Anurudhpur Purab Patti	IN	CITY	IN
+Anwari	IN	CITY	IN
+Aonla	IN	CITY	IN
+Apra	IN	CITY	IN
+Arail Uparhar	IN	CITY	IN
+Arakkonam	IN	CITY	IN
+Arambagh	IN	CITY	IN
+Arang	IN	CITY	IN
+Arangaon	IN	CITY	IN
+Arani	IN	CITY	IN
+Aranthangi	IN	CITY	IN
+Araria	IN	CITY	IN
+Aravalli	IN	CITY	IN
+Arcot	IN	CITY	IN
+Areraj	IN	CITY	IN
+Ariyalur	IN	CITY	IN
+Arkalgud	IN	CITY	IN
+Arki	IN	CITY	IN
+Armapur Estate	IN	CITY	IN
+Arnia	IN	CITY	IN
+Aron	IN	CITY	IN
+Aroor	IN	CITY	IN
+Arrah	IN	CITY	IN
+Arsikere	IN	CITY	IN
+Artoni	IN	CITY	IN
+Arumuganeri	IN	CITY	IN
+Aruppukkottai	IN	CITY	IN
+Arvi	IN	CITY	IN
+Arwal	IN	CITY	IN
+Arwani	IN	CITY	IN
+Asan Khurd	IN	CITY	IN
+Asansol	IN	CITY	IN
+Asarganj	IN	CITY	IN
+Ashapur	IN	CITY	IN
+Ashmuji Khalsa	IN	CITY	IN
+Ashoknagar	IN	CITY	IN
+Ashrafpur Jalal	IN	CITY	IN
+Ashrafpur Kichhauchha	IN	CITY	IN
+Ashta	IN	CITY	IN
+Asifabad	IN	CITY	IN
+Asika	IN	CITY	IN
+Asind	IN	CITY	IN
+Assandh	IN	CITY	IN
+Atari	IN	CITY	IN
+Atarra	IN	CITY	IN
+Ateli	IN	CITY	IN
+Athagarh	IN	CITY	IN
+Athni	IN	CITY	IN
+Atrauli	IN	CITY	IN
+Atraulia	IN	CITY	IN
+Atru	IN	CITY	IN
+Atsu	IN	CITY	IN
+Attili	IN	CITY	IN
+Attingal	IN	CITY	IN
+Attur	IN	CITY	IN
+Aur	IN	CITY	IN
+Aurad	IN	CITY	IN
+Auraiya	IN	CITY	IN
+Aurangabad	IN	CITY	IN
+Auras	IN	CITY	IN
+Ausa	IN	CITY	IN
+Avadi	IN	CITY	IN
+Avanigadda	IN	CITY	IN
+Avinashi	IN	CITY	IN
+Awagarh	IN	CITY	IN
+Awantipora	IN	CITY	IN
+Ayakudi	IN	CITY	IN
+Ayodhya	IN	CITY	IN
+Azamgarh	IN	CITY	IN
+Azara	IN	CITY	IN
+Azizpur	IN	CITY	IN
+Baba Bakala	IN	CITY	IN
+Babai	IN	CITY	IN
+Babarpur Ajitmal	IN	CITY	IN
+Baberu	IN	CITY	IN
+Babina	IN	CITY	IN
+Babiyal	IN	CITY	IN
+Babnan Bazar	IN	CITY	IN
+Babra	IN	CITY	IN
+Babrala	IN	CITY	IN
+Babugarh	IN	CITY	IN
+Bachhraon	IN	CITY	IN
+Bachhrawan	IN	CITY	IN
+Bad	IN	CITY	IN
+Bada Barabil	IN	CITY	IN
+Badami	IN	CITY	IN
+Badami Bagh	IN	CITY	IN
+Baddi	IN	CITY	IN
+Baddowal	IN	CITY	IN
+Badgam	IN	CITY	IN
+Badh Malak	IN	CITY	IN
+Badhi Majra	IN	CITY	IN
+Badhni Kalan	IN	CITY	IN
+Badlapur	IN	CITY	IN
+Badlya	IN	CITY	IN
+Badnawar	IN	CITY	IN
+Badrinathpuri	IN	CITY	IN
+Badshahpur	IN	CITY	IN
+Baduria	IN	CITY	IN
+Badvel	IN	CITY	IN
+Bagaha	IN	CITY	IN
+Bagalkot	IN	CITY	IN
+Bagalkote	IN	CITY	IN
+Bagar	IN	CITY	IN
+Bagasara	IN	CITY	IN
+Bagdogra	IN	CITY	IN
+Bagepalli	IN	CITY	IN
+Bageshwar	IN	CITY	IN
+Bagha Purana	IN	CITY	IN
+Baghola	IN	CITY	IN
+Baghpat	IN	CITY	IN
+Bagrana	IN	CITY	IN
+Bagru	IN	CITY	IN
+Bagula	IN	CITY	IN
+Bah	IN	CITY	IN
+Bahadarabad	IN	CITY	IN
+Bahadurganj	IN	CITY	IN
+Bahadurgarh	IN	CITY	IN
+Bahadurpur	IN	CITY	IN
+Bahalimpura	IN	CITY	IN
+Baheri	IN	CITY	IN
+Bahjoi	IN	CITY	IN
+Bahraich	IN	CITY	IN
+Bahula	IN	CITY	IN
+Bahuwa	IN	CITY	IN
+Baidyabati	IN	CITY	IN
+Baihar	IN	CITY	IN
+Bailhongal	IN	CITY	IN
+Bairgania	IN	CITY	IN
+Bajna	IN	CITY	IN
+Bakalpur Mathura	IN	CITY	IN
+Bakani	IN	CITY	IN
+Bakewar	IN	CITY	IN
+Bakhira Urf Baghnagar	IN	CITY	IN
+Bakhri	IN	CITY	IN
+Bakhtiarpur	IN	CITY	IN
+Bakhtiyarpur	IN	CITY	IN
+Bakloh Cantonment	IN	CITY	IN
+Baksa	IN	CITY	IN
+Baksar, Uttar Pradesh	IN	CITY	IN
+Bakshi Ka Talab	IN	CITY	IN
+Balachaur	IN	CITY	IN
+Balaghat	IN	CITY	IN
+Balangir	IN	CITY	IN
+Balapur	IN	CITY	IN
+Balarampur	IN	CITY	IN
+Balasore	IN	CITY	IN
+Baldeo	IN	CITY	IN
+Balia	IN	CITY	IN
+Baliadanga	IN	CITY	IN
+Balianta	IN	CITY	IN
+Baliapur	IN	CITY	IN
+Balirampur	IN	CITY	IN
+Ballari	IN	CITY	IN
+Ballarpur	IN	CITY	IN
+Ballia	IN	CITY	IN
+Balliguda	IN	CITY	IN
+Bally	IN	CITY	IN
+Balod	IN	CITY	IN
+Baloda Bazar	IN	CITY	IN
+Balongi	IN	CITY	IN
+Balotra	IN	CITY	IN
+Balrampur	IN	CITY	IN
+Balrampur Ramanujganj	IN	CITY	IN
+Balugaon	IN	CITY	IN
+Balurghat	IN	CITY	IN
+Banapur	IN	CITY	IN
+Banaskantha	IN	CITY	IN
+Banat	IN	CITY	IN
+Banbasa	IN	CITY	IN
+Banda	IN	CITY	IN
+Bandikui	IN	CITY	IN
+Bandipura	IN	CITY	IN
+Bandiya	IN	CITY	IN
+Banga	IN	CITY	IN
+Banganapalle	IN	CITY	IN
+Bangaon	IN	CITY	IN
+Bangarapet	IN	CITY	IN
+Bangarmau	IN	CITY	IN
+Bangherimahabatpur	IN	CITY	IN
+Banguwan Kalan	IN	CITY	IN
+Banihal	IN	CITY	IN
+Banjar	IN	CITY	IN
+Banjarepur	IN	CITY	IN
+Banjetia	IN	CITY	IN
+Banka	IN	CITY	IN
+Banki	IN	CITY	IN
+Bankimnagar	IN	CITY	IN
+Bankra	IN	CITY	IN
+Bankura	IN	CITY	IN
+Banmankhi	IN	CITY	IN
+Bannur	IN	CITY	IN
+Bansberia	IN	CITY	IN
+Bansdih	IN	CITY	IN
+Bansgaon	IN	CITY	IN
+Bansi	IN	CITY	IN
+Banskho	IN	CITY	IN
+Banswada	IN	CITY	IN
+Banswara	IN	CITY	IN
+Banthla	IN	CITY	IN
+Bantva	IN	CITY	IN
+Bantval	IN	CITY	IN
+Banur	IN	CITY	IN
+Bapatla	IN	CITY	IN
+Bara	IN	CITY	IN
+Barabanki	IN	CITY	IN
+Baragaon	IN	CITY	IN
+Barahatir Jagdishpur	IN	CITY	IN
+Barahiya	IN	CITY	IN
+Baral	IN	CITY	IN
+Baramati	IN	CITY	IN
+Baramulla	IN	CITY	IN
+Baran	IN	CITY	IN
+Baranagar	IN	CITY	IN
+Barara	IN	CITY	IN
+Barasat	IN	CITY	IN
+Barauli	IN	CITY	IN
+Barauni	IN	CITY	IN
+Baraut	IN	CITY	IN
+Barbigha	IN	CITY	IN
+Barbil	IN	CITY	IN
+Barddhaman	IN	CITY	IN
+Bardez	IN	CITY	IN
+Bardoli	IN	CITY	IN
+Bareilly	IN	CITY	IN
+Barel	IN	CITY	IN
+Bareta	IN	CITY	IN
+Bargadi Magath	IN	CITY	IN
+Bargarh	IN	CITY	IN
+Bargi	IN	CITY	IN
+Bargo	IN	CITY	IN
+Barh	IN	CITY	IN
+Barha	IN	CITY	IN
+Barhalganj	IN	CITY	IN
+Barhani	IN	CITY	IN
+Barhi	IN	CITY	IN
+Bari	IN	CITY	IN
+Bari Brahamana	IN	CITY	IN
+Bari Sadri	IN	CITY	IN
+Baripada	IN	CITY	IN
+Bariwala	IN	CITY	IN
+Barjala	IN	CITY	IN
+Barjora	IN	CITY	IN
+Barkakana	IN	CITY	IN
+Barkhera	IN	CITY	IN
+Barki Saria	IN	CITY	IN
+Barkot	IN	CITY	IN
+Barkuhi	IN	CITY	IN
+Barmer	IN	CITY	IN
+Barnala	IN	CITY	IN
+Baroun	IN	CITY	IN
+Barpali	IN	CITY	IN
+Barpeta	IN	CITY	IN
+Barpeta Road	IN	CITY	IN
+Barrackpore	IN	CITY	IN
+Barsana	IN	CITY	IN
+Barshi	IN	CITY	IN
+Barua Sagar	IN	CITY	IN
+Baruipur	IN	CITY	IN
+Barwala	IN	CITY	IN
+Barwani	IN	CITY	IN
+Barwar	IN	CITY	IN
+Barwara Mazra	IN	CITY	IN
+Baryar	IN	CITY	IN
+Basantpur Saitli	IN	CITY	IN
+Basavakalyan	IN	CITY	IN
+Basavana Bagevadi	IN	CITY	IN
+Bashohli	IN	CITY	IN
+Basirhat	IN	CITY	IN
+Basmat	IN	CITY	IN
+Basni	IN	CITY	IN
+Basoda	IN	CITY	IN
+Bassi	IN	CITY	IN
+Bassi Pathana	IN	CITY	IN
+Basta	IN	CITY	IN
+Bastar	IN	CITY	IN
+Basti	IN	CITY	IN
+Basudebpur	IN	CITY	IN
+Basugaon	IN	CITY	IN
+Baswa	IN	CITY	IN
+Baswar	IN	CITY	IN
+Batala	IN	CITY	IN
+Bathinda	IN	CITY	IN
+Batlagundu, Vathalagundu	IN	CITY	IN
+Batote	IN	CITY	IN
+Bauda	IN	CITY	IN
+Baudhgarh	IN	CITY	IN
+Bawal	IN	CITY	IN
+Bawana	IN	CITY	IN
+Bawani Khera	IN	CITY	IN
+Bay	IN	CITY	IN
+Bayad	IN	CITY	IN
+Bayana	IN	CITY	IN
+Bayyanpur	IN	CITY	IN
+Bazpur	IN	CITY	IN
+Beawar	IN	CITY	IN
+Bedla	IN	CITY	IN
+Beed	IN	CITY	IN
+Beelna	IN	CITY	IN
+Beerwah	IN	CITY	IN
+Begamganj	IN	CITY	IN
+Begowal	IN	CITY	IN
+Begumabad Budhana	IN	CITY	IN
+Begun	IN	CITY	IN
+Begusarai	IN	CITY	IN
+Behat	IN	CITY	IN
+Behea	IN	CITY	IN
+Behlana	IN	CITY	IN
+Behrampur	IN	CITY	IN
+Behror	IN	CITY	IN
+Behsuma	IN	CITY	IN
+Bela Pratapgarh	IN	CITY	IN
+Beldanga	IN	CITY	IN
+Belgaum	IN	CITY	IN
+Bellampalli	IN	CITY	IN
+Bellary	IN	CITY	IN
+Belonia	IN	CITY	IN
+Belsand	IN	CITY	IN
+Belthara	IN	CITY	IN
+Belthara Road	IN	CITY	IN
+Belur	IN	CITY	IN
+Bemetara	IN	CITY	IN
+Bengaluru / Bangalore	IN	CITY	IN
+Beniganj	IN	CITY	IN
+Benipur	IN	CITY	IN
+Beohari	IN	CITY	IN
+Berandari Bagaria	IN	CITY	IN
+Berasia	IN	CITY	IN
+Berhampore	IN	CITY	IN
+Berhampur	IN	CITY	IN
+Beri Khas	IN	CITY	IN
+Beriyawali	IN	CITY	IN
+Beswan	IN	CITY	IN
+Betamcherla	IN	CITY	IN
+Bettiah	IN	CITY	IN
+Betul	IN	CITY	IN
+Bewar	IN	CITY	IN
+Beypore	IN	CITY	IN
+Bhabua	IN	CITY	IN
+Bhachau	IN	CITY	IN
+Bhadarsa	IN	CITY	IN
+Bhadauni	IN	CITY	IN
+Bhadaur	IN	CITY	IN
+Bhaderwah	IN	CITY	IN
+Bhadgaon	IN	CITY	IN
+Bhadohi	IN	CITY	IN
+Bhadra	IN	CITY	IN
+Bhadrachalam	IN	CITY	IN
+Bhadradri Kothagudem	IN	CITY	IN
+Bhadrak	IN	CITY	IN
+Bhadravati	IN	CITY	IN
+Bhadreswar	IN	CITY	IN
+Bhadson	IN	CITY	IN
+Bhagalpur	IN	CITY	IN
+Bhagdawada	IN	CITY	IN
+Bhagipur	IN	CITY	IN
+Bhagirathpur	IN	CITY	IN
+Bhagta Bhai Ka	IN	CITY	IN
+Bhagwanpur	IN	CITY	IN
+Bhagwanpur Bujurg	IN	CITY	IN
+Bhagwantnagar	IN	CITY	IN
+Bhainsa	IN	CITY	IN
+Bhainsdehi	IN	CITY	IN
+Bhakali	IN	CITY	IN
+Bhalariya	IN	CITY	IN
+Bhalki	IN	CITY	IN
+Bhalwal	IN	CITY	IN
+Bhamian Kalan	IN	CITY	IN
+Bhandara	IN	CITY	IN
+Bhander	IN	CITY	IN
+Bhanjanagar	IN	CITY	IN
+Bhankharpur	IN	CITY	IN
+Bhanpura	IN	CITY	IN
+Bhanvad	IN	CITY	IN
+Bhanwari	IN	CITY	IN
+Bharatganj	IN	CITY	IN
+Bharatpur	IN	CITY	IN
+Bhardua	IN	CITY	IN
+Bhargain	IN	CITY	IN
+Bharthana	IN	CITY	IN
+Bharuch	IN	CITY	IN
+Bharuhana	IN	CITY	IN
+Bharwari	IN	CITY	IN
+Bhasaipaikar	IN	CITY	IN
+Bhatapara	IN	CITY	IN
+Bhatinda	IN	CITY	IN
+Bhatkal	IN	CITY	IN
+Bhatni Bazar	IN	CITY	IN
+Bhatpar Rani	IN	CITY	IN
+Bhatpara	IN	CITY	IN
+Bhattian	IN	CITY	IN
+Bhattiprolu	IN	CITY	IN
+Bhavani	IN	CITY	IN
+Bhavnagar	IN	CITY	IN
+Bhawan Bahadur Nagar	IN	CITY	IN
+Bhawani Mandi	IN	CITY	IN
+Bhawanigarh	IN	CITY	IN
+Bhawanipatna	IN	CITY	IN
+Bhayandar	IN	CITY	IN
+Bhayavadar	IN	CITY	IN
+Bheemili	IN	CITY	IN
+Bheemunipatnam	IN	CITY	IN
+Bhikangaon	IN	CITY	IN
+Bhikhi	IN	CITY	IN
+Bhikhiwind	IN	CITY	IN
+Bhilai	IN	CITY	IN
+Bhilaigarh	IN	CITY	IN
+Bhiloda	IN	CITY	IN
+Bhilwara	IN	CITY	IN
+Bhim	IN	CITY	IN
+Bhimavaram	IN	CITY	IN
+Bhimtal	IN	CITY	IN
+Bhind	IN	CITY	IN
+Bhinder	IN	CITY	IN
+Bhinga	IN	CITY	IN
+Bhinmal	IN	CITY	IN
+Bhisiana	IN	CITY	IN
+Bhitarwar	IN	CITY	IN
+Bhiwadi	IN	CITY	IN
+Bhiwandi	IN	CITY	IN
+Bhiwani	IN	CITY	IN
+Bhogaon	IN	CITY	IN
+Bhogpur	IN	CITY	IN
+Bhojpur	IN	CITY	IN
+Bhojpur Dharampur	IN	CITY	IN
+Bhokarhedi	IN	CITY	IN
+Bholav	IN	CITY	IN
+Bhondsi	IN	CITY	IN
+Bhongaon	IN	CITY	IN
+Bhongir	IN	CITY	IN
+Bhoogar	IN	CITY	IN
+Bhopal	IN	CITY	IN
+Bhor	IN	CITY	IN
+Bhota	IN	CITY	IN
+Bhowali	IN	CITY	IN
+Bhuban	IN	CITY	IN
+Bhubaneswar	IN	CITY	IN
+Bhucho Mandi	IN	CITY	IN
+Bhuidhara	IN	CITY	IN
+Bhuj	IN	CITY	IN
+Bhulath	IN	CITY	IN
+Bhulepur	IN	CITY	IN
+Bhum	IN	CITY	IN
+Bhuntar	IN	CITY	IN
+Bhuragaon	IN	CITY	IN
+Bhuran	IN	CITY	IN
+Bhusaval	IN	CITY	IN
+Bhusawal	IN	CITY	IN
+Bhusawar	IN	CITY	IN
+Bhuvanagiri	IN	CITY	IN
+Bhuwana	IN	CITY	IN
+Biaora	IN	CITY	IN
+Bicholim	IN	CITY	IN
+Bichri	IN	CITY	IN
+Bidar	IN	CITY	IN
+Bidasar	IN	CITY	IN
+Bidhannagar	IN	CITY	IN
+Bidhuna	IN	CITY	IN
+Bighapur	IN	CITY	IN
+Bihar Sharif	IN	CITY	IN
+Bihariganj	IN	CITY	IN
+Bihat	IN	CITY	IN
+Bihka Urf Pura Mufti	IN	CITY	IN
+Bihta	IN	CITY	IN
+Bijainagar	IN	CITY	IN
+Bijapur	IN	CITY	IN
+Bijawar	IN	CITY	IN
+Bijbehara	IN	CITY	IN
+Bijnor	IN	CITY	IN
+Bijolia	IN	CITY	IN
+Bijpur	IN	CITY	IN
+Bikaner	IN	CITY	IN
+Bikapur	IN	CITY	IN
+Bikram	IN	CITY	IN
+Bikramganj	IN	CITY	IN
+Bilara	IN	CITY	IN
+Bilari	IN	CITY	IN
+Bilariyaganj	IN	CITY	IN
+Bilasipara	IN	CITY	IN
+Bilaspur, Chhattisgarh	IN	CITY	IN
+Bilaspur, Haryana	IN	CITY	IN
+Bilaspur, Himachal Pradesh	IN	CITY	IN
+Bilaspur, Madhya Pradesh	IN	CITY	IN
+Bilaspur, Uttar Pradesh	IN	CITY	IN
+Bilgi	IN	CITY	IN
+Bilgram	IN	CITY	IN
+Bilhaur	IN	CITY	IN
+Bilimora	IN	CITY	IN
+Billawar	IN	CITY	IN
+Bilram	IN	CITY	IN
+Bilsanda	IN	CITY	IN
+Bilsi	IN	CITY	IN
+Bina	IN	CITY	IN
+Bindki	IN	CITY	IN
+Binka	IN	CITY	IN
+Bir Ghaghar	IN	CITY	IN
+Bira	IN	CITY	IN
+Birbhanpur	IN	CITY	IN
+Birjapur	IN	CITY	IN
+Birmitrapur	IN	CITY	IN
+Birpara	IN	CITY	IN
+Birpur	IN	CITY	IN
+Birsinghpur	IN	CITY	IN
+Birur	IN	CITY	IN
+Bisalpur	IN	CITY	IN
+Bisanda Buzurg	IN	CITY	IN
+Bisauli	IN	CITY	IN
+Bishna	IN	CITY	IN
+Bishnupur	IN	CITY	IN
+Bishunipur	IN	CITY	IN
+Bisokhar	IN	CITY	IN
+Bisrampur	IN	CITY	IN
+Bissau	IN	CITY	IN
+Biswan	IN	CITY	IN
+Biswanath Charali	IN	CITY	IN
+Bithoor	IN	CITY	IN
+Bobbili	IN	CITY	IN
+Bodh Gaya	IN	CITY	IN
+Bodhan	IN	CITY	IN
+Bodinayakanur	IN	CITY	IN
+Boh	IN	CITY	IN
+Boisar	IN	CITY	IN
+Bokajan	IN	CITY	IN
+Bokaro	IN	CITY	IN
+Bokaro Steel City	IN	CITY	IN
+Boleng	IN	CITY	IN
+Bolpur	IN	CITY	IN
+Bomdila	IN	CITY	IN
+Bongaigaon	IN	CITY	IN
+Bopal	IN	CITY	IN
+Boraj Kazipura	IN	CITY	IN
+Boriavi	IN	CITY	IN
+Borigumma	IN	CITY	IN
+Borivali	IN	CITY	IN
+Borsad	IN	CITY	IN
+Botad	IN	CITY	IN
+Boudh / Baudhgarh	IN	CITY	IN
+Brahmabarada	IN	CITY	IN
+Brahmapur	IN	CITY	IN
+Brajarajnagar	IN	CITY	IN
+Budaun	IN	CITY	IN
+Budgam	IN	CITY	IN
+Budge Budge	IN	CITY	IN
+Budha Theh	IN	CITY	IN
+Budhana	IN	CITY	IN
+Budhgaon	IN	CITY	IN
+Budhlada	IN	CITY	IN
+Budhni	IN	CITY	IN
+Budhpura	IN	CITY	IN
+Bugrasi	IN	CITY	IN
+Bulandshahr	IN	CITY	IN
+Buldana	IN	CITY	IN
+Bundi	IN	CITY	IN
+Bundu	IN	CITY	IN
+Bungal	IN	CITY	IN
+Burdwan	IN	CITY	IN
+Burhanpur	IN	CITY	IN
+Burhar	IN	CITY	IN
+Buria	IN	CITY	IN
+Burla	IN	CITY	IN
+Buxar	IN	CITY	IN
+Byadgi	IN	CITY	IN
+Byasanagar	IN	CITY	IN
+Byndoor / Baindur	IN	CITY	IN
+Cachar	IN	CITY	IN
+Calangute	IN	CITY	IN
+Cannanore	IN	CITY	IN
+Canning	IN	CITY	IN
+Central Hope Town	IN	CITY	IN
+Chachaura / Binaganj	IN	CITY	IN
+Chachoki	IN	CITY	IN
+Chadura	IN	CITY	IN
+Chaibasa	IN	CITY	IN
+Chail	IN	CITY	IN
+Chainpur	IN	CITY	IN
+Chak Babura Alimabad	IN	CITY	IN
+Chak Imam Ali	IN	CITY	IN
+Chak Kalu	IN	CITY	IN
+Chak Kanthalia	IN	CITY	IN
+Chak Ratnu	IN	CITY	IN
+Chak Sikari	IN	CITY	IN
+Chakan	IN	CITY	IN
+Chakapara	IN	CITY	IN
+Chakdaha	IN	CITY	IN
+Chakeri	IN	CITY	IN
+Chakia	IN	CITY	IN
+Chaklasi	IN	CITY	IN
+Chakmano Urf Dargah	IN	CITY	IN
+Chakradharpur	IN	CITY	IN
+Chakrata	IN	CITY	IN
+Chaksu	IN	CITY	IN
+Chakulia	IN	CITY	IN
+Chalakudy	IN	CITY	IN
+Chalala	IN	CITY	IN
+Chalisgaon	IN	CITY	IN
+Challakere	IN	CITY	IN
+Challapalle	IN	CITY	IN
+Chaltia	IN	CITY	IN
+Chamarajanagar	IN	CITY	IN
+Chamba	IN	CITY	IN
+Chamkaur Sahib	IN	CITY	IN
+Chamoli	IN	CITY	IN
+Chamoli Gopeshwar	IN	CITY	IN
+Champa	IN	CITY	IN
+Champawat	IN	CITY	IN
+Champdani	IN	CITY	IN
+Champhai	IN	CITY	IN
+Chanar	IN	CITY	IN
+Chanasma	IN	CITY	IN
+Chandameta-Butaria	IN	CITY	IN
+Chandannagar	IN	CITY	IN
+Chandauli	IN	CITY	IN
+Chandausi	IN	CITY	IN
+Chandel	IN	CITY	IN
+Chanderi	IN	CITY	IN
+Chandi Mandir	IN	CITY	IN
+Chandia	IN	CITY	IN
+Chandigarh	IN	CITY	IN
+Chandla	IN	CITY	IN
+Chandor	IN	CITY	IN
+Chandpur	IN	CITY	IN
+Chandpur Champagachhi	IN	CITY	IN
+Chandrakona	IN	CITY	IN
+Chandrapur	IN	CITY	IN
+Chandur	IN	CITY	IN
+Chandurbazar	IN	CITY	IN
+Chanduria	IN	CITY	IN
+Changanassery	IN	CITY	IN
+Changlang	IN	CITY	IN
+Channagiri	IN	CITY	IN
+Channapatna	IN	CITY	IN
+Channarayapatna	IN	CITY	IN
+Chanpatia	IN	CITY	IN
+Chapar	IN	CITY	IN
+Chapra	IN	CITY	IN
+Charaideo	IN	CITY	IN
+Charar-i-Sharief	IN	CITY	IN
+Charkhari	IN	CITY	IN
+Charkhi Dadri	IN	CITY	IN
+Charthawal	IN	CITY	IN
+Chas	IN	CITY	IN
+Chatra	IN	CITY	IN
+Chatrapur	IN	CITY	IN
+Chatta Baria	IN	CITY	IN
+Chaumuhan	IN	CITY	IN
+Chaupal	IN	CITY	IN
+Chaurhat	IN	CITY	IN
+Chavakkad	IN	CITY	IN
+Chawand	IN	CITY	IN
+Chechat	IN	CITY	IN
+Cheeka	IN	CITY	IN
+Cheema	IN	CITY	IN
+Cheepurupalli	IN	CITY	IN
+Chemmumiahpet	IN	CITY	IN
+Chenani	IN	CITY	IN
+Chenari	IN	CITY	IN
+Chendhare	IN	CITY	IN
+Chengalpattu	IN	CITY	IN
+Chengam	IN	CITY	IN
+Chengannur	IN	CITY	IN
+Chennai	IN	CITY	IN
+Chennimalai	IN	CITY	IN
+Cherthala	IN	CITY	IN
+Chetpet	IN	CITY	IN
+Chettipalayam	IN	CITY	IN
+Cheyyar	IN	CITY	IN
+Chhabra	IN	CITY	IN
+Chhachhrauli	IN	CITY	IN
+Chhapar	IN	CITY	IN
+Chhapra	IN	CITY	IN
+Chhapraula	IN	CITY	IN
+Chhaprauli	IN	CITY	IN
+Chharra	IN	CITY	IN
+Chharra Rafatpur	IN	CITY	IN
+Chhata	IN	CITY	IN
+Chhatapur	IN	CITY	IN
+Chhatari	IN	CITY	IN
+Chhatarpur	IN	CITY	IN
+Chhatha	IN	CITY	IN
+Chhibramau	IN	CITY	IN
+Chhindwara	IN	CITY	IN
+Chhipa Barod	IN	CITY	IN
+Chhiri	IN	CITY	IN
+Chhitauni	IN	CITY	IN
+Chhitpur	IN	CITY	IN
+Chhota Udepur	IN	CITY	IN
+Chhoti Sadri	IN	CITY	IN
+Chhutmalpur	IN	CITY	IN
+Chicholi	IN	CITY	IN
+Chidambaram	IN	CITY	IN
+Chiendipada	IN	CITY	IN
+Chikhli	IN	CITY	IN
+Chikkaballapur	IN	CITY	IN
+Chikmagalur	IN	CITY	IN
+Chiknayakanhalli	IN	CITY	IN
+Chikodi	IN	CITY	IN
+Chilakaluripet	IN	CITY	IN
+Chilkana Sultanpur	IN	CITY	IN
+Chimur	IN	CITY	IN
+Chinchani	IN	CITY	IN
+Chincholi	IN	CITY	IN
+Chinna Chowk	IN	CITY	IN
+Chinnamanur	IN	CITY	IN
+Chinnasalem	IN	CITY	IN
+Chinsurah	IN	CITY	IN
+Chintamani	IN	CITY	IN
+Chipiyana Buzurg	IN	CITY	IN
+Chiplun	IN	CITY	IN
+Chirala	IN	CITY	IN
+Chirang	IN	CITY	IN
+Chirawa	IN	CITY	IN
+Chirgaon	IN	CITY	IN
+Chirimiri	IN	CITY	IN
+Chitapur	IN	CITY	IN
+Chitbaragaon	IN	CITY	IN
+Chitkul	IN	CITY	IN
+Chitradurga	IN	CITY	IN
+Chitrakoot Dham	IN	CITY	IN
+Chittaranjan	IN	CITY	IN
+Chittattukara	IN	CITY	IN
+Chittaurgarh	IN	CITY	IN
+Chittoor	IN	CITY	IN
+Chittur-Thathamangalam	IN	CITY	IN
+Chobepur	IN	CITY	IN
+Chodavaram	IN	CITY	IN
+Chogawan	IN	CITY	IN
+Chohal	IN	CITY	IN
+Chomon	IN	CITY	IN
+Chomu	IN	CITY	IN
+Chopan	IN	CITY	IN
+Chopda	IN	CITY	IN
+Chotila	IN	CITY	IN
+Choto Haibor	IN	CITY	IN
+Chuari Khas	IN	CITY	IN
+Chuglamsar	IN	CITY	IN
+Chumukeidma	IN	CITY	IN
+Chunar	IN	CITY	IN
+Churachandpur	IN	CITY	IN
+Churhat	IN	CITY	IN
+Churk	IN	CITY	IN
+Churu	IN	CITY	IN
+Clement Town	IN	CITY	IN
+Cochin / Kochi / Ernakulam	IN	CITY	IN
+Coimbatore	IN	CITY	IN
+Colachel	IN	CITY	IN
+Colgong	IN	CITY	IN
+Colonelganj	IN	CITY	IN
+Contai	IN	CITY	IN
+Cooch Behar	IN	CITY	IN
+Cuddalore	IN	CITY	IN
+Cumbum	IN	CITY	IN
+Cuncolim	IN	CITY	IN
+Cuttack	IN	CITY	IN
+Dabgram	IN	CITY	IN
+Dabhoi	IN	CITY	IN
+Daboh	IN	CITY	IN
+Dabra	IN	CITY	IN
+Dadri	IN	CITY	IN
+Dafarpur	IN	CITY	IN
+Dagshai Cantonment	IN	CITY	IN
+Dahanu	IN	CITY	IN
+Dahegam	IN	CITY	IN
+Dahej	IN	CITY	IN
+Dahilamau	IN	CITY	IN
+Dahod	IN	CITY	IN
+Dakor	IN	CITY	IN
+Dakshin Dinajpur	IN	CITY	IN
+Dakshina Kannada	IN	CITY	IN
+Dalhousie	IN	CITY	IN
+Dalhousie Cantonment	IN	CITY	IN
+Dalkhola	IN	CITY	IN
+Dalli-Rajhara	IN	CITY	IN
+Dalmau	IN	CITY	IN
+Dalsinghsarai	IN	CITY	IN
+Daltonganj	IN	CITY	IN
+Daman	IN	CITY	IN
+Damnagar	IN	CITY	IN
+Damodarpur	IN	CITY	IN
+Damoh	IN	CITY	IN
+Danapur	IN	CITY	IN
+Dandeli	IN	CITY	IN
+Dang	IN	CITY	IN
+Dankaur	IN	CITY	IN
+Dankuni	IN	CITY	IN
+Danta	IN	CITY	IN
+Dantewada	IN	CITY	IN
+Daper	IN	CITY	IN
+Daporijo	IN	CITY	IN
+Dara Pora	IN	CITY	IN
+Darbhanga	IN	CITY	IN
+Daria	IN	CITY	IN
+Dariyabad	IN	CITY	IN
+Dariyapur	IN	CITY	IN
+Darjeeling	IN	CITY	IN
+Darjiling	IN	CITY	IN
+Darrang	IN	CITY	IN
+Darwha	IN	CITY	IN
+Daryapur	IN	CITY	IN
+Dasna	IN	CITY	IN
+Dasnapur	IN	CITY	IN
+Dasuya	IN	CITY	IN
+Dataganj	IN	CITY	IN
+Datia	IN	CITY	IN
+Dattapur Dhamangaon	IN	CITY	IN
+Daudnagar	IN	CITY	IN
+Daulatpur	IN	CITY	IN
+Daund	IN	CITY	IN
+Daurala	IN	CITY	IN
+Dausa	IN	CITY	IN
+Davanagere	IN	CITY	IN
+Dayalbagh	IN	CITY	IN
+Debagarh	IN	CITY	IN
+Debra	IN	CITY	IN
+Deeg	IN	CITY	IN
+Deesa	IN	CITY	IN
+Degloor	IN	CITY	IN
+Dehradun	IN	CITY	IN
+Dehri	IN	CITY	IN
+Dehtora	IN	CITY	IN
+Delhi	IN	CITY	IN
+Delwara	IN	CITY	IN
+Denkanikottai	IN	CITY	IN
+Deoband	IN	CITY	IN
+Deogarh	IN	CITY	IN
+Deoghar	IN	CITY	IN
+Deolali Pravara	IN	CITY	IN
+Deoli	IN	CITY	IN
+Deomali	IN	CITY	IN
+Deoranian	IN	CITY	IN
+Deoretha	IN	CITY	IN
+Deori	IN	CITY	IN
+Deoria	IN	CITY	IN
+Deosaini	IN	CITY	IN
+Depalpur	IN	CITY	IN
+Dera Baba Nanak	IN	CITY	IN
+Dera Bassi	IN	CITY	IN
+Dera Gopipur	IN	CITY	IN
+Derapur	IN	CITY	IN
+Desaiganj	IN	CITY	IN
+Deshnoke	IN	CITY	IN
+Desoola	IN	CITY	IN
+Deulgaon Raja	IN	CITY	IN
+Deulpur	IN	CITY	IN
+Devakottai	IN	CITY	IN
+Devanahalli	IN	CITY	IN
+Devaprayag	IN	CITY	IN
+Devarakonda	IN	CITY	IN
+Devgadh Baria	IN	CITY	IN
+Devi Nagar	IN	CITY	IN
+Devlali	IN	CITY	IN
+Devsar	IN	CITY	IN
+Dewa	IN	CITY	IN
+Dewas	IN	CITY	IN
+Dhaka	IN	CITY	IN
+Dhaki	IN	CITY	IN
+Dhakoli	IN	CITY	IN
+Dhakuakhana	IN	CITY	IN
+Dhakuria	IN	CITY	IN
+Dhalai	IN	CITY	IN
+Dhaluwala	IN	CITY	IN
+Dhamnod	IN	CITY	IN
+Dhampur	IN	CITY	IN
+Dhampur Husainpur	IN	CITY	IN
+Dhamtari	IN	CITY	IN
+Dhamua	IN	CITY	IN
+Dhanaula	IN	CITY	IN
+Dhanauli	IN	CITY	IN
+Dhanaura	IN	CITY	IN
+Dhanbad	IN	CITY	IN
+Dhande Kalan	IN	CITY	IN
+Dhandera	IN	CITY	IN
+Dhandhuka	IN	CITY	IN
+Dhanera	IN	CITY	IN
+Dhanipur	IN	CITY	IN
+Dhanuha	IN	CITY	IN
+Dhar	IN	CITY	IN
+Dharamkot	IN	CITY	IN
+Dharampur	IN	CITY	IN
+Dharamsala	IN	CITY	IN
+Dharangaon	IN	CITY	IN
+Dharapuram	IN	CITY	IN
+Dharchula	IN	CITY	IN
+Dhari	IN	CITY	IN
+Dhariwal	IN	CITY	IN
+Dhariyawad	IN	CITY	IN
+Dharmabad	IN	CITY	IN
+Dharmadom	IN	CITY	IN
+Dharmanagar	IN	CITY	IN
+Dharmapuri	IN	CITY	IN
+Dharmavaram	IN	CITY	IN
+Dharmsala	IN	CITY	IN
+Dharni	IN	CITY	IN
+Dharuhera	IN	CITY	IN
+Dharur	IN	CITY	IN
+Dharwad	IN	CITY	IN
+Dhasa Vishi	IN	CITY	IN
+Dhaulpur	IN	CITY	IN
+Dhaura Tanda	IN	CITY	IN
+Dhaurahra	IN	CITY	IN
+Dhaurra Mafi	IN	CITY	IN
+Dhekiajuli	IN	CITY	IN
+Dhemaji	IN	CITY	IN
+Dhenkanal	IN	CITY	IN
+Dhilwan	IN	CITY	IN
+Dhina	IN	CITY	IN
+Dhing	IN	CITY	IN
+Dholka	IN	CITY	IN
+Dholpur	IN	CITY	IN
+Dhone	IN	CITY	IN
+Dhoraji	IN	CITY	IN
+Dhorimana	IN	CITY	IN
+Dhrangadhra	IN	CITY	IN
+Dhrol	IN	CITY	IN
+Dhubri	IN	CITY	IN
+Dhulagari	IN	CITY	IN
+Dhule	IN	CITY	IN
+Dhule / Dhulia	IN	CITY	IN
+Dhulian	IN	CITY	IN
+Dhupguri	IN	CITY	IN
+Dhuri	IN	CITY	IN
+Diamond Harbour	IN	CITY	IN
+Dibai	IN	CITY	IN
+Dibang Valley	IN	CITY	IN
+Dibiyapur	IN	CITY	IN
+Dibrugarh	IN	CITY	IN
+Didihat	IN	CITY	IN
+Didwana	IN	CITY	IN
+Digboi	IN	CITY	IN
+Digdoh	IN	CITY	IN
+Dighwara	IN	CITY	IN
+Digras	IN	CITY	IN
+Dihi Kalas	IN	CITY	IN
+Dildar Nagar	IN	CITY	IN
+Dima Hasao	IN	CITY	IN
+Dimapur	IN	CITY	IN
+Dinanagar	IN	CITY	IN
+Dinapur Cantonment	IN	CITY	IN
+Dinapur Nizamat	IN	CITY	IN
+Dindaspur	IN	CITY	IN
+Dindigul	IN	CITY	IN
+Dindori	IN	CITY	IN
+Dineshpur	IN	CITY	IN
+Dinhata	IN	CITY	IN
+Diphu	IN	CITY	IN
+Dirang	IN	CITY	IN
+Dirba	IN	CITY	IN
+Dispur	IN	CITY	IN
+Diu	IN	CITY	IN
+Diwakari	IN	CITY	IN
+Dod Ballapur	IN	CITY	IN
+Doda	IN	CITY	IN
+Dogadda	IN	CITY	IN
+Doghat	IN	CITY	IN
+Dohad	IN	CITY	IN
+Dohrighat	IN	CITY	IN
+Doiwala	IN	CITY	IN
+Domariyaganj	IN	CITY	IN
+Dombivli	IN	CITY	IN
+Domchanch	IN	CITY	IN
+Dondaicha	IN	CITY	IN
+Dongargarh	IN	CITY	IN
+Doom Dooma	IN	CITY	IN
+Doraha	IN	CITY	IN
+Dornakal	IN	CITY	IN
+Dostpur	IN	CITY	IN
+Drug Mulla	IN	CITY	IN
+Dubrajpur	IN	CITY	IN
+Dudhani	IN	CITY	IN
+Dudhi	IN	CITY	IN
+Dugda	IN	CITY	IN
+Dukli	IN	CITY	IN
+Dulhipur	IN	CITY	IN
+Dum Dum	IN	CITY	IN
+Dumari Urf Damodarpur Shahjahan	IN	CITY	IN
+Dumka	IN	CITY	IN
+Dumra	IN	CITY	IN
+Dumraon	IN	CITY	IN
+Dungariya Chhapara	IN	CITY	IN
+Dungarpur	IN	CITY	IN
+Durg	IN	CITY	IN
+Durgapur	IN	CITY	IN
+Duru Verinag	IN	CITY	IN
+Dwarahat	IN	CITY	IN
+Dwarka	IN	CITY	IN
+East Garo Hills	IN	CITY	IN
+East Godavari	IN	CITY	IN
+East Jaintia Hills	IN	CITY	IN
+East Kameng	IN	CITY	IN
+East Khasi Hills	IN	CITY	IN
+East Singhbhum	IN	CITY	IN
+Egra	IN	CITY	IN
+Ekangarsarai	IN	CITY	IN
+Ekdil	IN	CITY	IN
+Elamanchili	IN	CITY	IN
+Ellenabad	IN	CITY	IN
+Eluru	IN	CITY	IN
+Emmiganur	IN	CITY	IN
+Emri	IN	CITY	IN
+Erandol	IN	CITY	IN
+Erattupetta	IN	CITY	IN
+Erich	IN	CITY	IN
+Erode	IN	CITY	IN
+Etah	IN	CITY	IN
+Etawah	IN	CITY	IN
+Etmadpur	IN	CITY	IN
+Faizabad	IN	CITY	IN
+Faizabad Cantt	IN	CITY	IN
+Faizganj	IN	CITY	IN
+Faizpur	IN	CITY	IN
+Falakata	IN	CITY	IN
+Falna	IN	CITY	IN
+Falta	IN	CITY	IN
+Farah	IN	CITY	IN
+Farakhpur	IN	CITY	IN
+Farakka	IN	CITY	IN
+Faridabad	IN	CITY	IN
+Faridkot	IN	CITY	IN
+Faridnagar	IN	CITY	IN
+Faridpur	IN	CITY	IN
+Fariha	IN	CITY	IN
+Farrukhabad	IN	CITY	IN
+Farrukhnagar	IN	CITY	IN
+Fateh Nangal	IN	CITY	IN
+Fatehabad	IN	CITY	IN
+Fatehganj Pashchimi	IN	CITY	IN
+Fatehganj Purvi	IN	CITY	IN
+Fatehgarh	IN	CITY	IN
+Fatehgarh Churian	IN	CITY	IN
+Fatehgarh Sahib	IN	CITY	IN
+Fatehnagar	IN	CITY	IN
+Fatehpur	IN	CITY	IN
+Fatehpur Chaorasi	IN	CITY	IN
+Fatehpur Sikri	IN	CITY	IN
+Fatwah	IN	CITY	IN
+Fazalpur	IN	CITY	IN
+Fazi Nagar	IN	CITY	IN
+Fazilka	IN	CITY	IN
+Feroke	IN	CITY	IN
+Ferozepur	IN	CITY	IN
+Ferozepur Cantt	IN	CITY	IN
+Ferozepur Jhirka	IN	CITY	IN
+Firozabad	IN	CITY	IN
+Firozpur	IN	CITY	IN
+Firozpur Jhirka	IN	CITY	IN
+Forbesganj	IN	CITY	IN
+Frisal	IN	CITY	IN
+Fulkumari	IN	CITY	IN
+Gabhana	IN	CITY	IN
+Gadag	IN	CITY	IN
+Gadarpur	IN	CITY	IN
+Gadarwara	IN	CITY	IN
+Gadchiroli	IN	CITY	IN
+Gaddi Annaram	IN	CITY	IN
+Gaddoo Pur	IN	CITY	IN
+Gadhada	IN	CITY	IN
+Gadhi	IN	CITY	IN
+Gadhinglaj	IN	CITY	IN
+Gadigachha	IN	CITY	IN
+Gadwal	IN	CITY	IN
+Gagalhedi Must	IN	CITY	IN
+Gagret	IN	CITY	IN
+Gairkata	IN	CITY	IN
+Gajapati	IN	CITY	IN
+Gajendragarh	IN	CITY	IN
+Gajraula	IN	CITY	IN
+Gajsinghpur	IN	CITY	IN
+Gajuwaka	IN	CITY	IN
+Galiakot	IN	CITY	IN
+Ganaur	IN	CITY	IN
+Ganderbal	IN	CITY	IN
+Gandevi	IN	CITY	IN
+Gandhidham	IN	CITY	IN
+Gandhigram	IN	CITY	IN
+Gandhinagar	IN	CITY	IN
+Gangaghat	IN	CITY	IN
+Gangakhed	IN	CITY	IN
+Ganganagar	IN	CITY	IN
+Gangapur	IN	CITY	IN
+Gangarampur	IN	CITY	IN
+Gangawati	IN	CITY	IN
+Gangiri	IN	CITY	IN
+Gangoh	IN	CITY	IN
+Gangolli	IN	CITY	IN
+Gangotri	IN	CITY	IN
+Gangtok	IN	CITY	IN
+Gangwa	IN	CITY	IN
+Ganj Dundwara	IN	CITY	IN
+Ganj Muradabad	IN	CITY	IN
+Ganjam	IN	CITY	IN
+Gannavaram	IN	CITY	IN
+Ganwaria Tulsipur	IN	CITY	IN
+Garauri	IN	CITY	IN
+Garautha	IN	CITY	IN
+Garh Mukteshwar	IN	CITY	IN
+Garhakota	IN	CITY	IN
+Garhdiwala	IN	CITY	IN
+Garhi	IN	CITY	IN
+Garhi Harsaru	IN	CITY	IN
+Garhi Pukhta	IN	CITY	IN
+Garhi Tamana	IN	CITY	IN
+Garhshankar	IN	CITY	IN
+Garhwa	IN	CITY	IN
+Gariaband	IN	CITY	IN
+Gariadhar	IN	CITY	IN
+Gariyaband	IN	CITY	IN
+Garoth	IN	CITY	IN
+Garui	IN	CITY	IN
+Garulia	IN	CITY	IN
+Gaura	IN	CITY	IN
+Gaura Barhaj	IN	CITY	IN
+Gaura Kala	IN	CITY	IN
+Gaurela-Pendra-Marwahi	IN	CITY	IN
+Gauri Bazar	IN	CITY	IN
+Gauribidanur	IN	CITY	IN
+Gauripur	IN	CITY	IN
+Gausganj	IN	CITY	IN
+Gawan	IN	CITY	IN
+Gaya	IN	CITY	IN
+Gayeshpur	IN	CITY	IN
+Gazole	IN	CITY	IN
+Georai	IN	CITY	IN
+Gerimari Chapori	IN	CITY	IN
+Geyzing	IN	CITY	IN
+Ghagga	IN	CITY	IN
+Ghanauli	IN	CITY	IN
+Ghanaur	IN	CITY	IN
+Gharaunda	IN	CITY	IN
+Ghatal	IN	CITY	IN
+Ghatal Mahaniawas	IN	CITY	IN
+Ghatampur	IN	CITY	IN
+Ghatanji	IN	CITY	IN
+Ghatkesar	IN	CITY	IN
+Ghatshila	IN	CITY	IN
+Ghaziabad	IN	CITY	IN
+Ghazipur	IN	CITY	IN
+Ghiraur	IN	CITY	IN
+Ghoghardiha	IN	CITY	IN
+Ghomanhasan	IN	CITY	IN
+Ghorawal	IN	CITY	IN
+Ghosi	IN	CITY	IN
+Ghosia Bazar	IN	CITY	IN
+Ghoti Budruk	IN	CITY	IN
+Ghughuli	IN	CITY	IN
+Ghugus	IN	CITY	IN
+Ghumarwin	IN	CITY	IN
+Ghuni	IN	CITY	IN
+Ghuwara	IN	CITY	IN
+Giddalur	IN	CITY	IN
+Giddarbaha	IN	CITY	IN
+Gidderbaha	IN	CITY	IN
+Gill	IN	CITY	IN
+Gingee	IN	CITY	IN
+Gir	IN	CITY	IN
+Gird Baragaon	IN	CITY	IN
+Gird Gonda	IN	CITY	IN
+Giridih	IN	CITY	IN
+Goa	IN	CITY	IN
+Goalpara	IN	CITY	IN
+Gobardanga	IN	CITY	IN
+Gobichettipalayam	IN	CITY	IN
+Gobindpur	IN	CITY	IN
+Gochar	IN	CITY	IN
+Godda	IN	CITY	IN
+Godhra	IN	CITY	IN
+Godoli	IN	CITY	IN
+Gogawan	IN	CITY	IN
+Gogri Jamalpur	IN	CITY	IN
+Gogunda	IN	CITY	IN
+Goh	IN	CITY	IN
+Gohad	IN	CITY	IN
+Gohana	IN	CITY	IN
+Gohand	IN	CITY	IN
+Gohpur	IN	CITY	IN
+Gokak	IN	CITY	IN
+Gokarna	IN	CITY	IN
+Gokul	IN	CITY	IN
+Gola Bazar	IN	CITY	IN
+Gola Gokaran Nath	IN	CITY	IN
+Gola Gokarannath	IN	CITY	IN
+Golaghat	IN	CITY	IN
+Gomati	IN	CITY	IN
+Gomoh	IN	CITY	IN
+Gonda	IN	CITY	IN
+Gondal	IN	CITY	IN
+Gondia	IN	CITY	IN
+Goniana	IN	CITY	IN
+Gopalganj	IN	CITY	IN
+Gopamau	IN	CITY	IN
+Gopiganj	IN	CITY	IN
+Gorah Salathian	IN	CITY	IN
+Gorakhpur	IN	CITY	IN
+Goraya	IN	CITY	IN
+Goredi Chancha	IN	CITY	IN
+Gormi	IN	CITY	IN
+Gosaba	IN	CITY	IN
+Gosainganj	IN	CITY	IN
+Got	IN	CITY	IN
+Gotan	IN	CITY	IN
+Gotegaon	IN	CITY	IN
+Gothra	IN	CITY	IN
+Gouharganj	IN	CITY	IN
+Govardhan	IN	CITY	IN
+Govindgarh	IN	CITY	IN
+Goyali	IN	CITY	IN
+Greater Noida	IN	CITY	IN
+Gubbi	IN	CITY	IN
+Gudalur	IN	CITY	IN
+Gudivada	IN	CITY	IN
+Gudiyatham	IN	CITY	IN
+Gudur	IN	CITY	IN
+Guduvanchery	IN	CITY	IN
+Guhala	IN	CITY	IN
+Gulabpura	IN	CITY	IN
+Gulaothi	IN	CITY	IN
+Gularia Bhindara	IN	CITY	IN
+Gulariya	IN	CITY	IN
+Gulbarga	IN	CITY	IN
+Guledagudda	IN	CITY	IN
+Gulmarg	IN	CITY	IN
+Gumaniwala	IN	CITY	IN
+Gumia	IN	CITY	IN
+Gumla	IN	CITY	IN
+Gummidipoondi	IN	CITY	IN
+Guna	IN	CITY	IN
+Gundlupet	IN	CITY	IN
+Gunnaur	IN	CITY	IN
+Guntakal	IN	CITY	IN
+Guntakal Junction	IN	CITY	IN
+Guntur	IN	CITY	IN
+Gunupur	IN	CITY	IN
+Gurdaspur	IN	CITY	IN
+Gurgaon / Gurugram	IN	CITY	IN
+Gurh	IN	CITY	IN
+Gurmatkal	IN	CITY	IN
+Gursahaiganj	IN	CITY	IN
+Gursarai	IN	CITY	IN
+Guru Har Sahai	IN	CITY	IN
+Gurugram	IN	CITY	IN
+Guruvayur	IN	CITY	IN
+Guskhara	IN	CITY	IN
+Gutlong Gaon	IN	CITY	IN
+Guwahati	IN	CITY	IN
+Gwalior	IN	CITY	IN
+Gyanpur	IN	CITY	IN
+Habibpur	IN	CITY	IN
+Habra	IN	CITY	IN
+Hadgaon	IN	CITY	IN
+Hafiz Ganj	IN	CITY	IN
+Hafizpur	IN	CITY	IN
+Haflong	IN	CITY	IN
+Haidargarh	IN	CITY	IN
+Hailakandi	IN	CITY	IN
+Hailey Mandi	IN	CITY	IN
+Hajan	IN	CITY	IN
+Hajipur	IN	CITY	IN
+Hajo	IN	CITY	IN
+Haldaur	IN	CITY	IN
+Haldia	IN	CITY	IN
+Haldwani	IN	CITY	IN
+Halisahar	IN	CITY	IN
+Haliyal	IN	CITY	IN
+Hallaur	IN	CITY	IN
+Halol	IN	CITY	IN
+Haludpukhur	IN	CITY	IN
+Halvad	IN	CITY	IN
+Halwara	IN	CITY	IN
+Hamirgarh	IN	CITY	IN
+Hamirpur	IN	CITY	IN
+Hanamkonda	IN	CITY	IN
+Handia	IN	CITY	IN
+Handiaya	IN	CITY	IN
+Handwara	IN	CITY	IN
+Hangal	IN	CITY	IN
+Hansi	IN	CITY	IN
+Hanumana	IN	CITY	IN
+Hanumangarh	IN	CITY	IN
+Haora	IN	CITY	IN
+Hapur	IN	CITY	IN
+Haqiqatpur	IN	CITY	IN
+Harapanahalli	IN	CITY	IN
+Harda	IN	CITY	IN
+Hardoi	IN	CITY	IN
+Harduaganj	IN	CITY	IN
+Hargaon	IN	CITY	IN
+Hariana	IN	CITY	IN
+Haridwar	IN	CITY	IN
+Harihar	IN	CITY	IN
+Hariharpur	IN	CITY	IN
+Harij	IN	CITY	IN
+Haringhata	IN	CITY	IN
+Haripur Kalan	IN	CITY	IN
+Hariyawan	IN	CITY	IN
+Harnaut	IN	CITY	IN
+Harpalpur	IN	CITY	IN
+Harraiya	IN	CITY	IN
+Harur	IN	CITY	IN
+Hasangarh	IN	CITY	IN
+Hasanpur	IN	CITY	IN
+Hasayan	IN	CITY	IN
+Hasimara	IN	CITY	IN
+Haspura	IN	CITY	IN
+Hassan	IN	CITY	IN
+Hastinapur	IN	CITY	IN
+Hat Saraiya	IN	CITY	IN
+Hata	IN	CITY	IN
+Hathgaon	IN	CITY	IN
+Hathin	IN	CITY	IN
+Hathras	IN	CITY	IN
+Hathras Dehat	IN	CITY	IN
+Hathua	IN	CITY	IN
+Hatpipliya	IN	CITY	IN
+Hatta	IN	CITY	IN
+Hatwas	IN	CITY	IN
+Haveri	IN	CITY	IN
+Hazaribag	IN	CITY	IN
+Herbertpur	IN	CITY	IN
+Hilsa	IN	CITY	IN
+Himatnagar	IN	CITY	IN
+Hindaun	IN	CITY	IN
+Hindoria	IN	CITY	IN
+Hindupur	IN	CITY	IN
+Hinganghat	IN	CITY	IN
+Hingoli	IN	CITY	IN
+Hinjilicut	IN	CITY	IN
+Hirakud	IN	CITY	IN
+Hiranagar	IN	CITY	IN
+Hirekerur	IN	CITY	IN
+Hiriyur	IN	CITY	IN
+Hisar	IN	CITY	IN
+Hisua	IN	CITY	IN
+HMT Pinjore	IN	CITY	IN
+Hnahthial	IN	CITY	IN
+Hodal	IN	CITY	IN
+Hojai	IN	CITY	IN
+Holalkere	IN	CITY	IN
+Hole Narsipur	IN	CITY	IN
+Homnabad	IN	CITY	IN
+Honavar	IN	CITY	IN
+Honnali	IN	CITY	IN
+Hooghly	IN	CITY	IN
+Hosdurga	IN	CITY	IN
+Hoshangabad	IN	CITY	IN
+Hoshiarpur	IN	CITY	IN
+Hoskote	IN	CITY	IN
+Hospet	IN	CITY	IN
+Hosur	IN	CITY	IN
+Howli	IN	CITY	IN
+Howrah	IN	CITY	IN
+Hubli	IN	CITY	IN
+Hukeri	IN	CITY	IN
+Huliyar	IN	CITY	IN
+Hungund	IN	CITY	IN
+Hunsur	IN	CITY	IN
+Husainabad	IN	CITY	IN
+Hussainpur	IN	CITY	IN
+Huvina Hadagali	IN	CITY	IN
+Hyderabad / Secunderabad, Telangana	IN	CITY	IN
+Ibrahimpur	IN	CITY	IN
+Ichalkaranji	IN	CITY	IN
+Ichchapuram	IN	CITY	IN
+Ichgam	IN	CITY	IN
+Ichhawar	IN	CITY	IN
+Idappadi	IN	CITY	IN
+Idar	IN	CITY	IN
+Idukki	IN	CITY	IN
+Iffco Census Village	IN	CITY	IN
+Igatpuri	IN	CITY	IN
+Iglas	IN	CITY	IN
+Ikauna	IN	CITY	IN
+Ilkal	IN	CITY	IN
+Iltifatganj Bazar	IN	CITY	IN
+Imphal	IN	CITY	IN
+Indapur	IN	CITY	IN
+Indergarh, Madhya Pradesh	IN	CITY	IN
+Indergarh, Rajasthan	IN	CITY	IN
+Indi	IN	CITY	IN
+India	IN	COUNTRY	SA,SG,PH,MY,ID,HK,TH,VN
+Indora	IN	CITY	IN
+Indore	IN	CITY	IN
+Indri	IN	CITY	IN
+Injambakkam	IN	CITY	IN
+Iringal	IN	CITY	IN
+Irinjalakuda	IN	CITY	IN
+Irugur	IN	CITY	IN
+Isagarh	IN	CITY	IN
+Isapur Banger	IN	CITY	IN
+Islamnagar	IN	CITY	IN
+Islampur	IN	CITY	IN
+Islampur, Bihar	IN	CITY	IN
+Ismailabad	IN	CITY	IN
+Itanagar	IN	CITY	IN
+Itarsi	IN	CITY	IN
+Itaunja	IN	CITY	IN
+Itwa	IN	CITY	IN
+Jabalpur	IN	CITY	IN
+Jadugora	IN	CITY	IN
+Jafarabad	IN	CITY	IN
+Jagadhri	IN	CITY	IN
+Jagalur	IN	CITY	IN
+Jagatsinghapur	IN	CITY	IN
+Jagatsinghpur	IN	CITY	IN
+Jagdalpur	IN	CITY	IN
+Jagdamba Confectionery	IN	CITY	IN
+Jagdishpur	IN	CITY	IN
+Jaggaiahpet	IN	CITY	IN
+Jagiroad	IN	CITY	IN
+Jagjeetpur	IN	CITY	IN
+Jagner	IN	CITY	IN
+Jagraon	IN	CITY	IN
+Jagtial	IN	CITY	IN
+Jahanabad	IN	CITY	IN
+Jahangirabad	IN	CITY	IN
+Jahangirpur	IN	CITY	IN
+Jahazpur	IN	CITY	IN
+Jaigaon	IN	CITY	IN
+Jainagar	IN	CITY	IN
+Jaipur	IN	CITY	IN
+Jairampur	IN	CITY	IN
+Jais	IN	CITY	IN
+Jaisalmer	IN	CITY	IN
+Jaitaran	IN	CITY	IN
+Jaithara	IN	CITY	IN
+Jaito	IN	CITY	IN
+Jaitpur	IN	CITY	IN
+Jajpur	IN	CITY	IN
+Jakhaon	IN	CITY	IN
+Jalal Patti	IN	CITY	IN
+Jalalabad	IN	CITY	IN
+Jalali	IN	CITY	IN
+Jalalpur	IN	CITY	IN
+Jalalpur Dehat	IN	CITY	IN
+Jalandhar	IN	CITY	IN
+Jalandhar Cantt	IN	CITY	IN
+Jalaun	IN	CITY	IN
+Jalesar	IN	CITY	IN
+Jaleshwar	IN	CITY	IN
+Jalgaon	IN	CITY	IN
+Jalgaon Jamod	IN	CITY	IN
+Jalna	IN	CITY	IN
+Jalor	IN	CITY	IN
+Jalpaiguri	IN	CITY	IN
+Jamai	IN	CITY	IN
+Jamalpur	IN	CITY	IN
+Jambusar	IN	CITY	IN
+Jamkhandi	IN	CITY	IN
+Jammalamadugu	IN	CITY	IN
+Jammu	IN	CITY	IN
+Jamnagar	IN	CITY	IN
+Jamner	IN	CITY	IN
+Jamshedpur	IN	CITY	IN
+Jamshila	IN	CITY	IN
+Jamtara	IN	CITY	IN
+Jamuhan	IN	CITY	IN
+Jamui	IN	CITY	IN
+Jamuria	IN	CITY	IN
+Janakpur Road	IN	CITY	IN
+Jandiala	IN	CITY	IN
+Jandli	IN	CITY	IN
+Jangaon	IN	CITY	IN
+Jangipur	IN	CITY	IN
+Janjgir	IN	CITY	IN
+Janki Nagar	IN	CITY	IN
+Janpur	IN	CITY	IN
+Jansath	IN	CITY	IN
+Jaora	IN	CITY	IN
+Jarwal	IN	CITY	IN
+Jasdan	IN	CITY	IN
+Jashpur Nagar	IN	CITY	IN
+Jasidih	IN	CITY	IN
+Jaspur	IN	CITY	IN
+Jasra	IN	CITY	IN
+Jasrana	IN	CITY	IN
+Jaswantnagar	IN	CITY	IN
+Jatani	IN	CITY	IN
+Jatara	IN	CITY	IN
+Jattari	IN	CITY	IN
+Jaunpur	IN	CITY	IN
+Jawad	IN	CITY	IN
+Jawalamukhi	IN	CITY	IN
+Jayamkondacholapuram	IN	CITY	IN
+Jayapatna	IN	CITY	IN
+Jayashankar Bhupalpally	IN	CITY	IN
+Jaynagar	IN	CITY	IN
+Jaynagar Mazilpur	IN	CITY	IN
+Jaysingpur	IN	CITY	IN
+Jehanabad	IN	CITY	IN
+Jetpur	IN	CITY	IN
+Jevargi	IN	CITY	IN
+Jewar	IN	CITY	IN
+Jeypore	IN	CITY	IN
+Jhabrera	IN	CITY	IN
+Jhabua	IN	CITY	IN
+Jhagadia	IN	CITY	IN
+Jhagarwas	IN	CITY	IN
+Jhajha	IN	CITY	IN
+Jhajjar	IN	CITY	IN
+Jhakal Mandi	IN	CITY	IN
+Jhakhri	IN	CITY	IN
+Jhalawar	IN	CITY	IN
+Jhalda	IN	CITY	IN
+Jhalrapatan	IN	CITY	IN
+Jhalu	IN	CITY	IN
+Jhanjharpur	IN	CITY	IN
+Jhansi	IN	CITY	IN
+Jhargram	IN	CITY	IN
+Jharia	IN	CITY	IN
+Jharsuguda	IN	CITY	IN
+Jhinjhak	IN	CITY	IN
+Jhinjhana	IN	CITY	IN
+Jhumri Telaiya	IN	CITY	IN
+Jhunjhunu	IN	CITY	IN
+Jhusi	IN	CITY	IN
+Jhusi Kohna	IN	CITY	IN
+Jind	IN	CITY	IN
+Jintur	IN	CITY	IN
+Jiran	IN	CITY	IN
+Jiribam	IN	CITY	IN
+Jiwangarh	IN	CITY	IN
+Jiyanpur	IN	CITY	IN
+Jobat	IN	CITY	IN
+Jobner	IN	CITY	IN
+Joda	IN	CITY	IN
+Jodhan	IN	CITY	IN
+Jodhpur	IN	CITY	IN
+Jodiya	IN	CITY	IN
+Jogbani	IN	CITY	IN
+Jogindarnagar	IN	CITY	IN
+Jogulamba Gadwal	IN	CITY	IN
+Jolarpet	IN	CITY	IN
+Jonk	IN	CITY	IN
+Jorapokhar	IN	CITY	IN
+Jorethang	IN	CITY	IN
+Jorhat	IN	CITY	IN
+Joshimath	IN	CITY	IN
+Jourian	IN	CITY	IN
+Jowai	IN	CITY	IN
+Joya	IN	CITY	IN
+Jubbal	IN	CITY	IN
+Jugauli	IN	CITY	IN
+Jugial	IN	CITY	IN
+Jugsalai	IN	CITY	IN
+Julana	IN	CITY	IN
+Junagadh	IN	CITY	IN
+Junagarh	IN	CITY	IN
+Junnar	IN	CITY	IN
+Jutogh Cantonment	IN	CITY	IN
+Jyoti Khuria	IN	CITY	IN
+Kabirdham	IN	CITY	IN
+Kabrai	IN	CITY	IN
+Kabri	IN	CITY	IN
+Kachhauna Patseni	IN	CITY	IN
+Kachhla	IN	CITY	IN
+Kachhwa	IN	CITY	IN
+Kachnar	IN	CITY	IN
+Kachrauli	IN	CITY	IN
+Kadaiya	IN	CITY	IN
+Kadapa	IN	CITY	IN
+Kadaura	IN	CITY	IN
+Kadayanallur	IN	CITY	IN
+Kadi	IN	CITY	IN
+Kadipikonda	IN	CITY	IN
+Kadipur	IN	CITY	IN
+Kadiri	IN	CITY	IN
+Kadod	IN	CITY	IN
+Kadodara	IN	CITY	IN
+Kadur	IN	CITY	IN
+Kagal	IN	CITY	IN
+Kagaznagar	IN	CITY	IN
+Kaikaluru	IN	CITY	IN
+Kailaras	IN	CITY	IN
+Kailashahar	IN	CITY	IN
+Kailashpur	IN	CITY	IN
+Kaimganj	IN	CITY	IN
+Kaimur	IN	CITY	IN
+Kairana	IN	CITY	IN
+Kaithal	IN	CITY	IN
+Kakar Majra	IN	CITY	IN
+Kakari	IN	CITY	IN
+Kakarmata	IN	CITY	IN
+Kakching	IN	CITY	IN
+Kakgaina	IN	CITY	IN
+Kakinada	IN	CITY	IN
+Kakod	IN	CITY	IN
+Kakori	IN	CITY	IN
+Kakrala	IN	CITY	IN
+Kalaburagi	IN	CITY	IN
+Kaladhungi	IN	CITY	IN
+Kalahandi	IN	CITY	IN
+Kalaigaon	IN	CITY	IN
+Kalakkad	IN	CITY	IN
+Kalamassery	IN	CITY	IN
+Kalamb	IN	CITY	IN
+Kalameshwar	IN	CITY	IN
+Kalamnuri	IN	CITY	IN
+Kalanaur	IN	CITY	IN
+Kalanwali	IN	CITY	IN
+Kalavad	IN	CITY	IN
+Kalayat	IN	CITY	IN
+Kalghatgi	IN	CITY	IN
+Kalimpong	IN	CITY	IN
+Kalinagar	IN	CITY	IN
+Kaliyaganj	IN	CITY	IN
+Kalka	IN	CITY	IN
+Kallakurichi	IN	CITY	IN
+Kalli Pashchim	IN	CITY	IN
+Kallidaikurchi	IN	CITY	IN
+Kallipur	IN	CITY	IN
+Kalna	IN	CITY	IN
+Kalol	IN	CITY	IN
+Kalpetta	IN	CITY	IN
+Kalpi	IN	CITY	IN
+Kalugumalai	IN	CITY	IN
+Kalwan	IN	CITY	IN
+Kalwari	IN	CITY	IN
+Kalyan	IN	CITY	IN
+Kalyandurg	IN	CITY	IN
+Kalyani	IN	CITY	IN
+Kamakhyanagar	IN	CITY	IN
+Kamalganj	IN	CITY	IN
+Kaman	IN	CITY	IN
+Kamareddy	IN	CITY	IN
+Kamarhati	IN	CITY	IN
+Kamjong	IN	CITY	IN
+Kamle	IN	CITY	IN
+Kampli	IN	CITY	IN
+Kamptee	IN	CITY	IN
+Kamrup	IN	CITY	IN
+Kanakapura	IN	CITY	IN
+Kanchal Gosain	IN	CITY	IN
+Kanchanpur	IN	CITY	IN
+Kanchipuram	IN	CITY	IN
+Kanchrapara	IN	CITY	IN
+Kandhamal	IN	CITY	IN
+Kandharpur	IN	CITY	IN
+Kandhla	IN	CITY	IN
+Kandi	IN	CITY	IN
+Kandla	IN	CITY	IN
+Kandra	IN	CITY	IN
+Kandukur	IN	CITY	IN
+Kandwa	IN	CITY	IN
+Kangeyam	IN	CITY	IN
+Kangpokpi	IN	CITY	IN
+Kangra	IN	CITY	IN
+Kanhangad	IN	CITY	IN
+Kanigiri	IN	CITY	IN
+Kanina	IN	CITY	IN
+Kankavli	IN	CITY	IN
+Kanke	IN	CITY	IN
+Kanker	IN	CITY	IN
+Kannad	IN	CITY	IN
+Kannauj	IN	CITY	IN
+Kanniyakumari	IN	CITY	IN
+Kannod	IN	CITY	IN
+Kannur	IN	CITY	IN
+Kanore	IN	CITY	IN
+Kanota	IN	CITY	IN
+Kanpur	IN	CITY	IN
+Kansad	IN	CITY	IN
+Kansepur	IN	CITY	IN
+Kantabanji	IN	CITY	IN
+Kanth	IN	CITY	IN
+Kanti	IN	CITY	IN
+Kanuru	IN	CITY	IN
+Kanwat	IN	CITY	IN
+Kanyakumari	IN	CITY	IN
+Kapadvanj	IN	CITY	IN
+Kapali	IN	CITY	IN
+Kapasan	IN	CITY	IN
+Kapren	IN	CITY	IN
+Kaptanganj	IN	CITY	IN
+Kapurthala	IN	CITY	IN
+Karad	IN	CITY	IN
+Karaikal	IN	CITY	IN
+Karaikkudi	IN	CITY	IN
+Karaikudi	IN	CITY	IN
+Karamadai	IN	CITY	IN
+Karamsad	IN	CITY	IN
+Karanja	IN	CITY	IN
+Karanpur	IN	CITY	IN
+Karari	IN	CITY	IN
+Karauli	IN	CITY	IN
+Karbi Anglong	IN	CITY	IN
+Kardhan	IN	CITY	IN
+Kareli	IN	CITY	IN
+Karera	IN	CITY	IN
+Kargil	IN	CITY	IN
+Karhal	IN	CITY	IN
+Karimganj	IN	CITY	IN
+Karimnagar	IN	CITY	IN
+Karjat	IN	CITY	IN
+Karkala	IN	CITY	IN
+Karmala	IN	CITY	IN
+Karmeta	IN	CITY	IN
+Karnal	IN	CITY	IN
+Karnaprayag	IN	CITY	IN
+Karnawal	IN	CITY	IN
+Kartarpur	IN	CITY	IN
+Karur	IN	CITY	IN
+Karwar	IN	CITY	IN
+Karwi Mafi	IN	CITY	IN
+Kasargod / Kasaragod	IN	CITY	IN
+Kasauli Cantonment	IN	CITY	IN
+Kasba	IN	CITY	IN
+Kasba Bonli	IN	CITY	IN
+Kasba Khanpur	IN	CITY	IN
+Kasba Sultanpur	IN	CITY	IN
+Kasganj	IN	CITY	IN
+Kashipur	IN	CITY	IN
+Kashirampur	IN	CITY	IN
+Kasiya	IN	CITY	IN
+Kasrawad	IN	CITY	IN
+Kataiya	IN	CITY	IN
+Kataka	IN	CITY	IN
+Katangi	IN	CITY	IN
+Katghar Lalganj	IN	CITY	IN
+Katghora	IN	CITY	IN
+Kathanian	IN	CITY	IN
+Kathaura	IN	CITY	IN
+Kathera	IN	CITY	IN
+Kathor	IN	CITY	IN
+Kathua	IN	CITY	IN
+Katihar	IN	CITY	IN
+Katni	IN	CITY	IN
+Katol	IN	CITY	IN
+Katpadi	IN	CITY	IN
+Katra	IN	CITY	IN
+Katra Medniganj	IN	CITY	IN
+Katras	IN	CITY	IN
+Katri Piper Khera	IN	CITY	IN
+Kattanam	IN	CITY	IN
+Kattivakkam	IN	CITY	IN
+Kattur	IN	CITY	IN
+Kattuvilai	IN	CITY	IN
+Katwa	IN	CITY	IN
+Kaulakha	IN	CITY	IN
+Kauriaganj	IN	CITY	IN
+Kaushambi / Kosambi	IN	CITY	IN
+Kavali	IN	CITY	IN
+Kavaratti	IN	CITY	IN
+Kawai	IN	CITY	IN
+Kawardha	IN	CITY	IN
+Kayalpattinam	IN	CITY	IN
+Kayamkulam	IN	CITY	IN
+Kedarnath	IN	CITY	IN
+Keelakarai	IN	CITY	IN
+Kekri	IN	CITY	IN
+Kela Khera	IN	CITY	IN
+Kelwa	IN	CITY	IN
+Kemri	IN	CITY	IN
+Kenda	IN	CITY	IN
+Kendrapara	IN	CITY	IN
+Keonjhar	IN	CITY	IN
+Kerakat	IN	CITY	IN
+Keranga	IN	CITY	IN
+Kerur	IN	CITY	IN
+Kesariya	IN	CITY	IN
+Kesharipur	IN	CITY	IN
+Keshod	IN	CITY	IN
+Keshoraipatan	IN	CITY	IN
+Kesinga	IN	CITY	IN
+Kesrisinghpur	IN	CITY	IN
+Kethun	IN	CITY	IN
+Kewalpur	IN	CITY	IN
+Khachrod	IN	CITY	IN
+Khadakwasla Dam	IN	CITY	IN
+Khadda	IN	CITY	IN
+Khadki	IN	CITY	IN
+Khaga	IN	CITY	IN
+Khagaria	IN	CITY	IN
+Khagaul	IN	CITY	IN
+Khailar	IN	CITY	IN
+Khair	IN	CITY	IN
+Khairabad	IN	CITY	IN
+Khairagarh	IN	CITY	IN
+Khairthal	IN	CITY	IN
+Khajuraho	IN	CITY	IN
+Khalari	IN	CITY	IN
+Khalilabad	IN	CITY	IN
+Khamanon	IN	CITY	IN
+Khamaria	IN	CITY	IN
+Khambhalia	IN	CITY	IN
+Khambhat	IN	CITY	IN
+Khambra	IN	CITY	IN
+Khamgaon	IN	CITY	IN
+Khammam	IN	CITY	IN
+Khanapur	IN	CITY	IN
+Khanapuram Haveli	IN	CITY	IN
+Khanauri	IN	CITY	IN
+Khandauli	IN	CITY	IN
+Khandela	IN	CITY	IN
+Khandwa	IN	CITY	IN
+Khanjarpur	IN	CITY	IN
+Khanna	IN	CITY	IN
+Khanpur, Rajasthan	IN	CITY	IN
+Khanpur, Uttar Pradesh	IN	CITY	IN
+Khansahib	IN	CITY	IN
+Khanupur	IN	CITY	IN
+Khapa	IN	CITY	IN
+Khapat	IN	CITY	IN
+Kharagpur	IN	CITY	IN
+Kharak mafi	IN	CITY	IN
+Kharar	IN	CITY	IN
+Khardah	IN	CITY	IN
+Kharela	IN	CITY	IN
+Khargone	IN	CITY	IN
+Khargupur	IN	CITY	IN
+Khariya	IN	CITY	IN
+Kharkhoda	IN	CITY	IN
+Kharsia	IN	CITY	IN
+Kharupatia	IN	CITY	IN
+Khatauli	IN	CITY	IN
+Khategaon	IN	CITY	IN
+Khatima	IN	CITY	IN
+Khatra	IN	CITY	IN
+Khatyari	IN	CITY	IN
+Khawzawl	IN	CITY	IN
+Kheda	IN	CITY	IN
+Khedbrahma	IN	CITY	IN
+Khekada	IN	CITY	IN
+Khem Karan	IN	CITY	IN
+Kheragarh	IN	CITY	IN
+Kheralu	IN	CITY	IN
+Kheri	IN	CITY	IN
+Kherli	IN	CITY	IN
+Kherli Hafizpur	IN	CITY	IN
+Kherliganj	IN	CITY	IN
+Kherwara Chhaoni	IN	CITY	IN
+Kheta Sarai	IN	CITY	IN
+Khetia	IN	CITY	IN
+Khetri	IN	CITY	IN
+Khilchian	IN	CITY	IN
+Khilchipur	IN	CITY	IN
+Khirkiya	IN	CITY	IN
+Khojn Pur	IN	CITY	IN
+Khonmoh	IN	CITY	IN
+Khopoli	IN	CITY	IN
+Khora	IN	CITY	IN
+Khordha	IN	CITY	IN
+Khore	IN	CITY	IN
+Khori Kalan	IN	CITY	IN
+Khothran	IN	CITY	IN
+Khowai	IN	CITY	IN
+Khrew	IN	CITY	IN
+Khuda Alisher	IN	CITY	IN
+Khudaganj	IN	CITY	IN
+Khuldabad	IN	CITY	IN
+Khunti	IN	CITY	IN
+Khurai	IN	CITY	IN
+Khurja	IN	CITY	IN
+Khusrupur	IN	CITY	IN
+Khutar	IN	CITY	IN
+Kichha	IN	CITY	IN
+Kim	IN	CITY	IN
+Kinnaur	IN	CITY	IN
+Kinwat	IN	CITY	IN
+Kiphire	IN	CITY	IN
+Kiraoli	IN	CITY	IN
+Kiratpur	IN	CITY	IN
+Kirtinagar	IN	CITY	IN
+Kishanganj	IN	CITY	IN
+Kishangarh	IN	CITY	IN
+Kishangarh Renwal	IN	CITY	IN
+Kishni	IN	CITY	IN
+Kishtwar	IN	CITY	IN
+Kishunpur	IN	CITY	IN
+Kithaur	IN	CITY	IN
+Koath	IN	CITY	IN
+Koch Bihar	IN	CITY	IN
+Kodad	IN	CITY	IN
+Kodagu / Coorg	IN	CITY	IN
+Kodaikanal	IN	CITY	IN
+Kodarma	IN	CITY	IN
+Kodinar	IN	CITY	IN
+Kodoli	IN	CITY	IN
+Kodungallur	IN	CITY	IN
+Kohima	IN	CITY	IN
+Koilwar	IN	CITY	IN
+Koiripur	IN	CITY	IN
+Koker Nag	IN	CITY	IN
+Kokrajhar	IN	CITY	IN
+Kolar	IN	CITY	IN
+Kolar Gold Fields (KGF)	IN	CITY	IN
+Kolaras	IN	CITY	IN
+Kolasib	IN	CITY	IN
+Kolayat	IN	CITY	IN
+Kolhapur	IN	CITY	IN
+Kolkata	IN	CITY	IN
+Kollam	IN	CITY	IN
+Kollegal	IN	CITY	IN
+Koloriang	IN	CITY	IN
+Kolvi	IN	CITY	IN
+Konark	IN	CITY	IN
+Konaseema	IN	CITY	IN
+Konch	IN	CITY	IN
+Kondagaon	IN	CITY	IN
+Kondapalle	IN	CITY	IN
+Konnagar	IN	CITY	IN
+Konnur	IN	CITY	IN
+Koothanallur	IN	CITY	IN
+Kopaganj	IN	CITY	IN
+Kopargaon	IN	CITY	IN
+Koppal	IN	CITY	IN
+Kora Jahanabad	IN	CITY	IN
+Koraon	IN	CITY	IN
+Koraput	IN	CITY	IN
+Koratla	IN	CITY	IN
+Korba	IN	CITY	IN
+Koregaon	IN	CITY	IN
+Korianwali	IN	CITY	IN
+Koriya	IN	CITY	IN
+Korwa	IN	CITY	IN
+Kosamba	IN	CITY	IN
+Kosi Kalan	IN	CITY	IN
+Kosigi	IN	CITY	IN
+Kosumb	IN	CITY	IN
+Kot	IN	CITY	IN
+Kot Fatta	IN	CITY	IN
+Kot Ise Khan	IN	CITY	IN
+Kot Kapura	IN	CITY	IN
+Kota	IN	CITY	IN
+Kotagiri	IN	CITY	IN
+Kotdwara	IN	CITY	IN
+Kotgarh	IN	CITY	IN
+Kothagudem	IN	CITY	IN
+Kothamangalam	IN	CITY	IN
+Kotkapura	IN	CITY	IN
+Kotkhai	IN	CITY	IN
+Kotla Nihang	IN	CITY	IN
+Kotma	IN	CITY	IN
+Kotputli	IN	CITY	IN
+Kotra	IN	CITY	IN
+Kottayam	IN	CITY	IN
+Kotturu	IN	CITY	IN
+Kotulpur	IN	CITY	IN
+Kotwa	IN	CITY	IN
+Kotwali	IN	CITY	IN
+Kovilpatti	IN	CITY	IN
+Kovur	IN	CITY	IN
+Kovvur	IN	CITY	IN
+Koyilandy	IN	CITY	IN
+Koynanagar	IN	CITY	IN
+Kozhikode / Calicut	IN	CITY	IN
+Kra Daadi	IN	CITY	IN
+Kral Pora	IN	CITY	IN
+Krishna	IN	CITY	IN
+Krishnagiri	IN	CITY	IN
+Krishnanagar	IN	CITY	IN
+Krishnarajpet	IN	CITY	IN
+Kshetrigao	IN	CITY	IN
+Kuchaman	IN	CITY	IN
+Kuchaman City	IN	CITY	IN
+Kuchera	IN	CITY	IN
+Kud	IN	CITY	IN
+Kuda	IN	CITY	IN
+Kudachi	IN	CITY	IN
+Kudi Bhagtasni	IN	CITY	IN
+Kudligi	IN	CITY	IN
+Kuju	IN	CITY	IN
+Kukatpally	IN	CITY	IN
+Kukra	IN	CITY	IN
+Kukshi	IN	CITY	IN
+Kulgam	IN	CITY	IN
+Kulithalai	IN	CITY	IN
+Kullu / Manali	IN	CITY	IN
+Kulpahar	IN	CITY	IN
+Kulti	IN	CITY	IN
+Kumbakonam	IN	CITY	IN
+Kumbhkot	IN	CITY	IN
+Kumbhraj	IN	CITY	IN
+Kumhari	IN	CITY	IN
+Kumher	IN	CITY	IN
+Kumta	IN	CITY	IN
+Kumuram Bheem Asifabad	IN	CITY	IN
+Kunda	IN	CITY	IN
+Kundam	IN	CITY	IN
+Kundapura	IN	CITY	IN
+Kundarki	IN	CITY	IN
+Kundgol	IN	CITY	IN
+Kundli	IN	CITY	IN
+Kunigal	IN	CITY	IN
+Kunnamangalam	IN	CITY	IN
+Kunnamkulam	IN	CITY	IN
+Kunwar Gaon	IN	CITY	IN
+Kunzer	IN	CITY	IN
+Kuppam	IN	CITY	IN
+Kupwara	IN	CITY	IN
+Kurali	IN	CITY	IN
+Kurara	IN	CITY	IN
+Kurawali	IN	CITY	IN
+Kurduvadi	IN	CITY	IN
+Kurinjipadi	IN	CITY	IN
+Kurnool	IN	CITY	IN
+Kursath	IN	CITY	IN
+Kurseong	IN	CITY	IN
+Kurthi Jafarpur	IN	CITY	IN
+Kurthoul	IN	CITY	IN
+Kurukshetra	IN	CITY	IN
+Kurundwad	IN	CITY	IN
+Kurung Kumey	IN	CITY	IN
+Kurwai	IN	CITY	IN
+Kushalgarh	IN	CITY	IN
+Kushinagar	IN	CITY	IN
+Kushtagi	IN	CITY	IN
+Kusmara	IN	CITY	IN
+Kutch	IN	CITY	IN
+Kuthiathodu	IN	CITY	IN
+Kutiyana	IN	CITY	IN
+Kuzhithurai	IN	CITY	IN
+Kyathampalle	IN	CITY	IN
+Kymore	IN	CITY	IN
+Lachhiman Patti	IN	CITY	IN
+Ladakh	IN	CITY	IN
+Ladnun	IN	CITY	IN
+Ladrawan	IN	CITY	IN
+Ladwa	IN	CITY	IN
+Lahar	IN	CITY	IN
+Laharpur	IN	CITY	IN
+Lahartara	IN	CITY	IN
+Lahaul and Spiti	IN	CITY	IN
+Lahsari	IN	CITY	IN
+Lakhanpur	IN	CITY	IN
+Lakheri	IN	CITY	IN
+Lakhimpur	IN	CITY	IN
+Lakhisarai	IN	CITY	IN
+Lakhna	IN	CITY	IN
+Lakhnadon	IN	CITY	IN
+Laksar	IN	CITY	IN
+Lakshmeshwar	IN	CITY	IN
+Lal Bahadur Nagar	IN	CITY	IN
+Lal Gopalganj Nindaura	IN	CITY	IN
+Lalganj	IN	CITY	IN
+Lalgola	IN	CITY	IN
+Lalgudi	IN	CITY	IN
+Lalhapur	IN	CITY	IN
+Lalitpur	IN	CITY	IN
+Lalkuan	IN	CITY	IN
+Lalpur	IN	CITY	IN
+Lalru	IN	CITY	IN
+Lalsot	IN	CITY	IN
+Landaur	IN	CITY	IN
+Landhaura	IN	CITY	IN
+Lanka	IN	CITY	IN
+Lansdowne	IN	CITY	IN
+Lar	IN	CITY	IN
+Laruara	IN	CITY	IN
+Latehar	IN	CITY	IN
+Lateri	IN	CITY	IN
+Lathi	IN	CITY	IN
+Latur	IN	CITY	IN
+Lawar	IN	CITY	IN
+Lawar NP	IN	CITY	IN
+Lawngtlai	IN	CITY	IN
+Laxmangarh	IN	CITY	IN
+Ledhupur	IN	CITY	IN
+Ledwa Mahua	IN	CITY	IN
+Leh	IN	CITY	IN
+Lehragaga	IN	CITY	IN
+Lepa Rada	IN	CITY	IN
+Lidhorakhas	IN	CITY	IN
+Lilong	IN	CITY	IN
+Limbdi	IN	CITY	IN
+Lingsugur	IN	CITY	IN
+Lochapada	IN	CITY	IN
+Lodhika	IN	CITY	IN
+Lohaghat	IN	CITY	IN
+Lohardaga	IN	CITY	IN
+Loharu	IN	CITY	IN
+Lohian Khas	IN	CITY	IN
+Lohit	IN	CITY	IN
+Lohta	IN	CITY	IN
+Lonar	IN	CITY	IN
+Lonavla	IN	CITY	IN
+Longding	IN	CITY	IN
+Longleng	IN	CITY	IN
+Longowal	IN	CITY	IN
+Loni	IN	CITY	IN
+Losal	IN	CITY	IN
+Lower Dibang Valley	IN	CITY	IN
+Lower Siang	IN	CITY	IN
+Lower Subansiri	IN	CITY	IN
+Loyabad	IN	CITY	IN
+Lucknow	IN	CITY	IN
+Ludhiana	IN	CITY	IN
+Lumding Railway Colony	IN	CITY	IN
+Lunawada	IN	CITY	IN
+Lunglei	IN	CITY	IN
+Macherla	IN	CITY	IN
+Machhiwara	IN	CITY	IN
+Machhlishahr	IN	CITY	IN
+Machilipatnam	IN	CITY	IN
+Madambakkam	IN	CITY	IN
+Madanapalle	IN	CITY	IN
+Maddur	IN	CITY	IN
+Madha	IN	CITY	IN
+Madhepura	IN	CITY	IN
+Madhoganj	IN	CITY	IN
+Madhogarh	IN	CITY	IN
+Madhuban	IN	CITY	IN
+Madhubani	IN	CITY	IN
+Madhugiri	IN	CITY	IN
+Madhupur	IN	CITY	IN
+Madhyamgram	IN	CITY	IN
+Madikeri	IN	CITY	IN
+Madipakkam	IN	CITY	IN
+Madiya	IN	CITY	IN
+Madukkarai	IN	CITY	IN
+Madukkur	IN	CITY	IN
+Madurai	IN	CITY	IN
+Maduranthakam	IN	CITY	IN
+Magadi	IN	CITY	IN
+Magam	IN	CITY	IN
+Maghar	IN	CITY	IN
+Mahaban	IN	CITY	IN
+Mahabubabad	IN	CITY	IN
+Mahad	IN	CITY	IN
+Mahalingpur	IN	CITY	IN
+Maham	IN	CITY	IN
+Maharajganj	IN	CITY	IN
+Mahasamund	IN	CITY	IN
+Mahbubnagar	IN	CITY	IN
+Mahe	IN	CITY	IN
+Mahemdavad	IN	CITY	IN
+Mahendragarh	IN	CITY	IN
+Mahesana	IN	CITY	IN
+Maheshpur	IN	CITY	IN
+Maheshtala	IN	CITY	IN
+Maheshwar	IN	CITY	IN
+Mahewa Patti Pashchim Uparhar	IN	CITY	IN
+Mahiari	IN	CITY	IN
+Mahilpur	IN	CITY	IN
+Mahimapur	IN	CITY	IN
+Mahisagar	IN	CITY	IN
+Mahishadal	IN	CITY	IN
+Mahmudabad	IN	CITY	IN
+Mahmudpur Taluka Madpur Su	IN	CITY	IN
+Mahnar Bazar	IN	CITY	IN
+Mahoba	IN	CITY	IN
+Maholi	IN	CITY	IN
+Maholiya	IN	CITY	IN
+Mahona	IN	CITY	IN
+Mahroni	IN	CITY	IN
+Mahua Dabra Haripura	IN	CITY	IN
+Mahuakhera Ganj	IN	CITY	IN
+Mahudha	IN	CITY	IN
+Mahukalan	IN	CITY	IN
+Mahul Khas Or Mahul	IN	CITY	IN
+Mahuva	IN	CITY	IN
+Mahwa	IN	CITY	IN
+Maigal Ganj	IN	CITY	IN
+Maihar	IN	CITY	IN
+Maijhauli Khetal	IN	CITY	IN
+Mailani	IN	CITY	IN
+Maina Maujpur	IN	CITY	IN
+Mainaguri	IN	CITY	IN
+Mainpuri	IN	CITY	IN
+Mairang	IN	CITY	IN
+Mairang / Eastern West Khasi Hills	IN	CITY	IN
+Mairwa	IN	CITY	IN
+Majalgaon	IN	CITY	IN
+Majhara Pipar Ehatmali	IN	CITY	IN
+Majhauli Raj	IN	CITY	IN
+Majhgawa	IN	CITY	IN
+Majitha	IN	CITY	IN
+Majra	IN	CITY	IN
+Majuli	IN	CITY	IN
+Makhdumpur	IN	CITY	IN
+Makhu	IN	CITY	IN
+Makkhanpur	IN	CITY	IN
+Makrana	IN	CITY	IN
+Maksi	IN	CITY	IN
+Makum	IN	CITY	IN
+Malacca / Car Nicobar	IN	CITY	IN
+Malanjkhand	IN	CITY	IN
+Malappuram	IN	CITY	IN
+Malavalli	IN	CITY	IN
+Malda	IN	CITY	IN
+Malegaon	IN	CITY	IN
+Malerkotla	IN	CITY	IN
+Malhara	IN	CITY	IN
+Malhipur	IN	CITY	IN
+Malihabad	IN	CITY	IN
+Malikpur	IN	CITY	IN
+Malkajgiri Mandal	IN	CITY	IN
+Malkangiri	IN	CITY	IN
+Malkapur	IN	CITY	IN
+Mallanwala Khas	IN	CITY	IN
+Mallasamudram	IN	CITY	IN
+Mallawan	IN	CITY	IN
+Malout	IN	CITY	IN
+Malpe	IN	CITY	IN
+Malpura	IN	CITY	IN
+Malsisar	IN	CITY	IN
+Malur	IN	CITY	IN
+Malvan	IN	CITY	IN
+Mamit	IN	CITY	IN
+Mamun	IN	CITY	IN
+Manamadurai	IN	CITY	IN
+Manapparai	IN	CITY	IN
+Manasa	IN	CITY	IN
+Manavadar	IN	CITY	IN
+Manawar	IN	CITY	IN
+Mancherial	IN	CITY	IN
+Mandalgarh	IN	CITY	IN
+Mandamarri	IN	CITY	IN
+Mandapam	IN	CITY	IN
+Mandapeta	IN	CITY	IN
+Mandawa	IN	CITY	IN
+Mandawar	IN	CITY	IN
+Mandi	IN	CITY	IN
+Mandi Dabwali	IN	CITY	IN
+Mandi Gobindgarh	IN	CITY	IN
+Mandideep	IN	CITY	IN
+Mandla	IN	CITY	IN
+Mandleshwar	IN	CITY	IN
+Mandsaur	IN	CITY	IN
+Mandu	IN	CITY	IN
+Mandvi	IN	CITY	IN
+Mandya	IN	CITY	IN
+Manendragarh	IN	CITY	IN
+Maner	IN	CITY	IN
+Manesar	IN	CITY	IN
+Manethi	IN	CITY	IN
+Mangalagiri	IN	CITY	IN
+Mangaldoi	IN	CITY	IN
+Mangalore	IN	CITY	IN
+Mangan	IN	CITY	IN
+Manglaur	IN	CITY	IN
+Mango	IN	CITY	IN
+Mangrol	IN	CITY	IN
+Mangrulpir	IN	CITY	IN
+Maniar	IN	CITY	IN
+Manihari	IN	CITY	IN
+Manikchak	IN	CITY	IN
+Manikpur	IN	CITY	IN
+Maniyar	IN	CITY	IN
+Manjeri	IN	CITY	IN
+Manjhanpur	IN	CITY	IN
+Manjoor Garhi	IN	CITY	IN
+Mankachar	IN	CITY	IN
+Mankapur	IN	CITY	IN
+Mankuva	IN	CITY	IN
+Manmad	IN	CITY	IN
+Mannargudi	IN	CITY	IN
+Mannarkkad	IN	CITY	IN
+Manohar Thana	IN	CITY	IN
+Manoharpur	IN	CITY	IN
+Mansa	IN	CITY	IN
+Mansurchak	IN	CITY	IN
+Manthani	IN	CITY	IN
+Manu	IN	CITY	IN
+Manuguru	IN	CITY	IN
+Manvi	IN	CITY	IN
+Manwal	IN	CITY	IN
+Manwath	IN	CITY	IN
+Mapusa	IN	CITY	IN
+Marakkanam	IN	CITY	IN
+Maralia	IN	CITY	IN
+Marehra	IN	CITY	IN
+Margao	IN	CITY	IN
+Margherita	IN	CITY	IN
+Marhaura	IN	CITY	IN
+Marhi	IN	CITY	IN
+Mariahu	IN	CITY	IN
+Mariani	IN	CITY	IN
+Marigaon	IN	CITY	IN
+Markapur	IN	CITY	IN
+Maruadih	IN	CITY	IN
+Marwar Junction	IN	CITY	IN
+Masaurhi	IN	CITY	IN
+Maswasi	IN	CITY	IN
+Matabari	IN	CITY	IN
+Mataundh	IN	CITY	IN
+Mathabhanga	IN	CITY	IN
+Mathura	IN	CITY	IN
+Mathurapur	IN	CITY	IN
+Mattan	IN	CITY	IN
+Mattannur	IN	CITY	IN
+Mau	IN	CITY	IN
+Mau Aima	IN	CITY	IN
+Maudaha	IN	CITY	IN
+Mauganj	IN	CITY	IN
+Mauli Jagran	IN	CITY	IN
+Maunath Bhanjan	IN	CITY	IN
+Maur	IN	CITY	IN
+Mauranipur	IN	CITY	IN
+Maurawan	IN	CITY	IN
+Mavelikkara	IN	CITY	IN
+Mavli	IN	CITY	IN
+Mavoor	IN	CITY	IN
+Mawana	IN	CITY	IN
+Mawlai	IN	CITY	IN
+Mayabunder	IN	CITY	IN
+Mayang Imphal	IN	CITY	IN
+Mayiladuthurai	IN	CITY	IN
+Mayyer	IN	CITY	IN
+Medak	IN	CITY	IN
+Medchal-Malkajgiri	IN	CITY	IN
+Medinipur	IN	CITY	IN
+Meerut	IN	CITY	IN
+Meghnagar	IN	CITY	IN
+Mehatpur Basdehra	IN	CITY	IN
+Mehkar	IN	CITY	IN
+Mehmood Pora	IN	CITY	IN
+Mehna	IN	CITY	IN
+Mehnagar	IN	CITY	IN
+Mehsana	IN	CITY	IN
+Mehsi	IN	CITY	IN
+Mehuwala Mafi	IN	CITY	IN
+Melur	IN	CITY	IN
+Memari	IN	CITY	IN
+Mendarda	IN	CITY	IN
+Mendu	IN	CITY	IN
+Menhdawal	IN	CITY	IN
+Meramandali	IN	CITY	IN
+Merta	IN	CITY	IN
+Mettupalayam	IN	CITY	IN
+Mettur	IN	CITY	IN
+Mhaswad	IN	CITY	IN
+Mhow	IN	CITY	IN
+Miao	IN	CITY	IN
+Middha	IN	CITY	IN
+Mihona	IN	CITY	IN
+Milak	IN	CITY	IN
+Minjur	IN	CITY	IN
+Miranpur	IN	CITY	IN
+Mirganj	IN	CITY	IN
+Mirpur	IN	CITY	IN
+Miryalaguda	IN	CITY	IN
+Mirzapur	IN	CITY	IN
+Misrikh	IN	CITY	IN
+Modak	IN	CITY	IN
+Modasa	IN	CITY	IN
+Modinagar	IN	CITY	IN
+Moga	IN	CITY	IN
+Mohali	IN	CITY	IN
+Mohammadabad	IN	CITY	IN
+Mohammadi	IN	CITY	IN
+Mohan	IN	CITY	IN
+Mohana	IN	CITY	IN
+Mohanpur	IN	CITY	IN
+Mohiuddinpur	IN	CITY	IN
+Mohla Manpur	IN	CITY	IN
+Moirang	IN	CITY	IN
+Mokameh	IN	CITY	IN
+Mokokchung	IN	CITY	IN
+Mon	IN	CITY	IN
+Monoharpur	IN	CITY	IN
+Moonak	IN	CITY	IN
+Moradabad	IN	CITY	IN
+Morar	IN	CITY	IN
+Morbi	IN	CITY	IN
+Moreh	IN	CITY	IN
+Morena	IN	CITY	IN
+Morigaon	IN	CITY	IN
+Morinda	IN	CITY	IN
+Mormugao	IN	CITY	IN
+Morshi	IN	CITY	IN
+Morvi	IN	CITY	IN
+Motihari	IN	CITY	IN
+Motipur	IN	CITY	IN
+Mount Abu	IN	CITY	IN
+Mubarakpur	IN	CITY	IN
+Mudbidri	IN	CITY	IN
+Muddebihal	IN	CITY	IN
+Mudgal	IN	CITY	IN
+Mudhal	IN	CITY	IN
+Mudhol	IN	CITY	IN
+Mudkhed	IN	CITY	IN
+Mudki	IN	CITY	IN
+Mughalsarai	IN	CITY	IN
+Mughalsarai Railway Settlement	IN	CITY	IN
+Muhammadabad	IN	CITY	IN
+Mukerian	IN	CITY	IN
+Mukhani	IN	CITY	IN
+Mukrampur Khema	IN	CITY	IN
+Muktsar	IN	CITY	IN
+Mukundgarh	IN	CITY	IN
+Mul	IN	CITY	IN
+Mulbagal	IN	CITY	IN
+Mulgund	IN	CITY	IN
+Mulki	IN	CITY	IN
+Mullanpur Dakha	IN	CITY	IN
+Mullanpur Garibdass	IN	CITY	IN
+Multai	IN	CITY	IN
+Mulugu	IN	CITY	IN
+Mumbai	IN	CITY	IN
+Mumbai City	IN	CITY	IN
+Mundargi	IN	CITY	IN
+Mundera Bazar	IN	CITY	IN
+Mundgod	IN	CITY	IN
+Mundia	IN	CITY	IN
+Mundra	IN	CITY	IN
+Mundwa	IN	CITY	IN
+Mungaoli	IN	CITY	IN
+Mungeli	IN	CITY	IN
+Munger	IN	CITY	IN
+Muni Ki Reti	IN	CITY	IN
+Munnar	IN	CITY	IN
+Muradgram pur pursi Muradnagar	IN	CITY	IN
+Muradnagar	IN	CITY	IN
+Murbad	IN	CITY	IN
+Murdeshwar	IN	CITY	IN
+Murliganj	IN	CITY	IN
+Mursan	IN	CITY	IN
+Murshidabad	IN	CITY	IN
+Murtizapur	IN	CITY	IN
+Murwara	IN	CITY	IN
+Musabani	IN	CITY	IN
+Musafirkhana	IN	CITY	IN
+Musiri	IN	CITY	IN
+Mussoorie	IN	CITY	IN
+Muthupet	IN	CITY	IN
+Muvattupuzha	IN	CITY	IN
+Muzaffarnagar	IN	CITY	IN
+Muzaffarpur	IN	CITY	IN
+Muzhappilangad	IN	CITY	IN
+Mysore	IN	CITY	IN
+N T Rama Rao	IN	CITY	IN
+Nabadwip	IN	CITY	IN
+Nabagram	IN	CITY	IN
+Nabha	IN	CITY	IN
+Nabinagar	IN	CITY	IN
+Nadapuram	IN	CITY	IN
+Nadaun	IN	CITY	IN
+Nadbai	IN	CITY	IN
+Nadia	IN	CITY	IN
+Nadiad	IN	CITY	IN
+Nadigaon	IN	CITY	IN
+Naduvannur	IN	CITY	IN
+Nagal Chaudhry	IN	CITY	IN
+Nagala Imarti	IN	CITY	IN
+Nagam	IN	CITY	IN
+Nagamangala	IN	CITY	IN
+Nagaon	IN	CITY	IN
+Nagapattinam	IN	CITY	IN
+Nagar	IN	CITY	IN
+Nagari	IN	CITY	IN
+Nagarkurnool	IN	CITY	IN
+Nagaur	IN	CITY	IN
+Nagda	IN	CITY	IN
+Nagercoil	IN	CITY	IN
+Nagina	IN	CITY	IN
+Naginimora	IN	CITY	IN
+Nagla	IN	CITY	IN
+Nagod	IN	CITY	IN
+Nagpur	IN	CITY	IN
+Nagram	IN	CITY	IN
+Nagrota Bagwan	IN	CITY	IN
+Nahan	IN	CITY	IN
+Naharkatia	IN	CITY	IN
+Naharlagun	IN	CITY	IN
+Nahira	IN	CITY	IN
+Nai Bazar_Uttar Pradesh	IN	CITY	IN
+Naidupeta	IN	CITY	IN
+Naihati	IN	CITY	IN
+Naila	IN	CITY	IN
+Naina Devi	IN	CITY	IN
+Nainana Jat	IN	CITY	IN
+Nainana-Brahman	IN	CITY	IN
+Naini	IN	CITY	IN
+Nainital	IN	CITY	IN
+Nainpur	IN	CITY	IN
+Nainwa	IN	CITY	IN
+Naipalapur	IN	CITY	IN
+Najibabad	IN	CITY	IN
+Naka Majiari	IN	CITY	IN
+Nakodar	IN	CITY	IN
+Nakur	IN	CITY	IN
+Nalagarh	IN	CITY	IN
+Nalanda	IN	CITY	IN
+Nalbari	IN	CITY	IN
+Naldurg	IN	CITY	IN
+Nalgonda	IN	CITY	IN
+Nalhati	IN	CITY	IN
+Namagiripettai	IN	CITY	IN
+Namakkal	IN	CITY	IN
+Nambiyur	IN	CITY	IN
+Nambol	IN	CITY	IN
+Namchi	IN	CITY	IN
+Namrup	IN	CITY	IN
+Namsai	IN	CITY	IN
+Nanauta	IN	CITY	IN
+Nanded	IN	CITY	IN
+Nandelav	IN	CITY	IN
+Nandgaon	IN	CITY	IN
+Nandhivaram	IN	CITY	IN
+Nandigama	IN	CITY	IN
+Nandikotkur	IN	CITY	IN
+Nandprayag	IN	CITY	IN
+Nandri	IN	CITY	IN
+Nandura	IN	CITY	IN
+Nandurbar	IN	CITY	IN
+Nandyal	IN	CITY	IN
+Nangal	IN	CITY	IN
+Nangal Township	IN	CITY	IN
+Nangli	IN	CITY	IN
+Nangloi Jat	IN	CITY	IN
+Nanhera	IN	CITY	IN
+Nanjangud	IN	CITY	IN
+Nanpara	IN	CITY	IN
+Napasar	IN	CITY	IN
+Naraina Vihar	IN	CITY	IN
+Naraingarh	IN	CITY	IN
+Naraini	IN	CITY	IN
+Narasannapeta	IN	CITY	IN
+Narasapur	IN	CITY	IN
+Narasaraopet	IN	CITY	IN
+Narauli	IN	CITY	IN
+Naraura	IN	CITY	IN
+Naravarikuppam	IN	CITY	IN
+Narayanapur	IN	CITY	IN
+Narayangarh	IN	CITY	IN
+Narayanpet	IN	CITY	IN
+Narayanpur	IN	CITY	IN
+Naregal	IN	CITY	IN
+Narendra Nagar	IN	CITY	IN
+Nargund	IN	CITY	IN
+Narkanda	IN	CITY	IN
+Narkatiaganj	IN	CITY	IN
+Narmada	IN	CITY	IN
+Narnaul	IN	CITY	IN
+Narnaund	IN	CITY	IN
+Narot Mehra	IN	CITY	IN
+Narsapur	IN	CITY	IN
+Narsimhapur	IN	CITY	IN
+Narsinghgarh	IN	CITY	IN
+Narsinghpur	IN	CITY	IN
+Narsipatnam	IN	CITY	IN
+Narwana	IN	CITY	IN
+Narwar	IN	CITY	IN
+Nashik	IN	CITY	IN
+Nasik	IN	CITY	IN
+Nasirabad	IN	CITY	IN
+Naspur	IN	CITY	IN
+Nasriganj	IN	CITY	IN
+Nasrullaganj	IN	CITY	IN
+Natham	IN	CITY	IN
+Nathdwara	IN	CITY	IN
+Natthanpur	IN	CITY	IN
+Natthuwa Wala	IN	CITY	IN
+Naubatpur	IN	CITY	IN
+Naugachhia	IN	CITY	IN
+Naugarh	IN	CITY	IN
+Naugawan Sadat	IN	CITY	IN
+Nautanwa	IN	CITY	IN
+Navalgund	IN	CITY	IN
+Navi Mumbai	IN	CITY	IN
+Navsari	IN	CITY	IN
+Nawa	IN	CITY	IN
+Nawabganj	IN	CITY	IN
+Nawada	IN	CITY	IN
+Nawalgarh	IN	CITY	IN
+Nawanshahr	IN	CITY	IN
+Naxalbari	IN	CITY	IN
+Nayabazar	IN	CITY	IN
+Nayagaon	IN	CITY	IN
+Nayagarh	IN	CITY	IN
+Nazira	IN	CITY	IN
+Nedumangad	IN	CITY	IN
+Neelankarai	IN	CITY	IN
+Neelpur	IN	CITY	IN
+Neem Ka Thana	IN	CITY	IN
+Neemrana	IN	CITY	IN
+Neemuch	IN	CITY	IN
+Nehon	IN	CITY	IN
+Nelamangala	IN	CITY	IN
+Nellikuppam	IN	CITY	IN
+Nellore	IN	CITY	IN
+Neoria Husainpur	IN	CITY	IN
+Nepanagar	IN	CITY	IN
+Neral	IN	CITY	IN
+Nethaur	IN	CITY	IN
+Nevasa	IN	CITY	IN
+Newa Talai	IN	CITY	IN
+Neyveli	IN	CITY	IN
+Neyyattinkara	IN	CITY	IN
+Nichlaul	IN	CITY	IN
+Nicobar	IN	CITY	IN
+Nidadavole	IN	CITY	IN
+Nidholi Kalan	IN	CITY	IN
+Nigdi	IN	CITY	IN
+Nihal Garh Chak Jangla	IN	CITY	IN
+Nihalpur Simbal	IN	CITY	IN
+Nilagiri	IN	CITY	IN
+Nilakottai	IN	CITY	IN
+Nilanga	IN	CITY	IN
+Nileshwar	IN	CITY	IN
+Nilgiris	IN	CITY	IN
+Nilokheri	IN	CITY	IN
+Nimaaj	IN	CITY	IN
+Nimapada	IN	CITY	IN
+Nimbahera	IN	CITY	IN
+Nipani	IN	CITY	IN
+Nirmal	IN	CITY	IN
+Nirmali	IN	CITY	IN
+Nissing	IN	CITY	IN
+Niuland	IN	CITY	IN
+Nivi	IN	CITY	IN
+Niwai	IN	CITY	IN
+Niwari	IN	CITY	IN
+Nizamabad	IN	CITY	IN
+Noamundi	IN	CITY	IN
+Nohar	IN	CITY	IN
+Nohsa	IN	CITY	IN
+Noida	IN	CITY	IN
+Nokha	IN	CITY	IN
+Noklak	IN	CITY	IN
+Noney	IN	CITY	IN
+Nongmynsong	IN	CITY	IN
+Nongstoin	IN	CITY	IN
+Nooan	IN	CITY	IN
+Noorpur	IN	CITY	IN
+North 24 Parganas	IN	CITY	IN
+North and Middle Andaman	IN	CITY	IN
+North Garo Hills	IN	CITY	IN
+North Guwahati	IN	CITY	IN
+North Lakhimpur	IN	CITY	IN
+Northern Rly. Colony	IN	CITY	IN
+Nowangabra	IN	CITY	IN
+Nowrangpur / Nabarangpur	IN	CITY	IN
+Nowshehra	IN	CITY	IN
+Nuapada	IN	CITY	IN
+Nuh	IN	CITY	IN
+Nurmahal	IN	CITY	IN
+Nurpur	IN	CITY	IN
+Nuzvid	IN	CITY	IN
+Nyotini	IN	CITY	IN
+Obaidullaganj	IN	CITY	IN
+Obaree	IN	CITY	IN
+Obra	IN	CITY	IN
+Oel Dhakwa	IN	CITY	IN
+Okha	IN	CITY	IN
+Old Harsud	IN	CITY	IN
+Ongole	IN	CITY	IN
+Ooty	IN	CITY	IN
+Orai	IN	CITY	IN
+Oran	IN	CITY	IN
+Osmanabad	IN	CITY	IN
+Other India	IN	CITY	IN
+Ottappalam	IN	CITY	IN
+Ozar	IN	CITY	IN
+Pachora	IN	CITY	IN
+Pachperwa	IN	CITY	IN
+Padampur	IN	CITY	IN
+Padampur Sukhro	IN	CITY	IN
+Padarathpur	IN	CITY	IN
+Padli gujjar	IN	CITY	IN
+Padmanabhapuram	IN	CITY	IN
+Padra	IN	CITY	IN
+Padrauna	IN	CITY	IN
+Padri	IN	CITY	IN
+Padum	IN	CITY	IN
+Pahalgam	IN	CITY	IN
+Paharpur	IN	CITY	IN
+Pahasu	IN	CITY	IN
+Paintepur	IN	CITY	IN
+Pairamatihana	IN	CITY	IN
+Paithan	IN	CITY	IN
+Pakala	IN	CITY	IN
+Pakaur	IN	CITY	IN
+Pakke Kessang	IN	CITY	IN
+Pakridayal	IN	CITY	IN
+Pakriya Naugwan Mustqil	IN	CITY	IN
+Pakur	IN	CITY	IN
+Pakwara	IN	CITY	IN
+Pakyong	IN	CITY	IN
+Palakkad	IN	CITY	IN
+Palakkodu	IN	CITY	IN
+Palakollu	IN	CITY	IN
+Palakonda	IN	CITY	IN
+Palamaner	IN	CITY	IN
+Palampur	IN	CITY	IN
+Palamu	IN	CITY	IN
+Palani	IN	CITY	IN
+Palanpur	IN	CITY	IN
+Palasa	IN	CITY	IN
+Palasbari	IN	CITY	IN
+Palera	IN	CITY	IN
+Palghar	IN	CITY	IN
+Palghat	IN	CITY	IN
+Palhani	IN	CITY	IN
+Pali	IN	CITY	IN
+Pali Khera	IN	CITY	IN
+Palia Kalan	IN	CITY	IN
+Palitana	IN	CITY	IN
+Palladam	IN	CITY	IN
+Pallapatti	IN	CITY	IN
+Pallavaram	IN	CITY	IN
+Pallikonda	IN	CITY	IN
+Pallipattu	IN	CITY	IN
+Palnadu	IN	CITY	IN
+Palpur	IN	CITY	IN
+Palwal	IN	CITY	IN
+Palwancha	IN	CITY	IN
+Pampora	IN	CITY	IN
+Panagar	IN	CITY	IN
+Panamattam	IN	CITY	IN
+Panchkula	IN	CITY	IN
+Panchla	IN	CITY	IN
+Panchmahal	IN	CITY	IN
+Pandharpur	IN	CITY	IN
+Pandhurna	IN	CITY	IN
+Pandua	IN	CITY	IN
+Panihati	IN	CITY	IN
+Panipat	IN	CITY	IN
+Panjim / Panaji	IN	CITY	IN
+Pankhedi	IN	CITY	IN
+Panna	IN	CITY	IN
+Panposh	IN	CITY	IN
+Panruti	IN	CITY	IN
+Pansemal	IN	CITY	IN
+Panskura	IN	CITY	IN
+Panvel	IN	CITY	IN
+Paonta Sahib	IN	CITY	IN
+Papanasam	IN	CITY	IN
+Pappinisseri	IN	CITY	IN
+Papum Pare	IN	CITY	IN
+Para	IN	CITY	IN
+Paradeep / Paradip	IN	CITY	IN
+Paralakhemundi	IN	CITY	IN
+Paramakudi	IN	CITY	IN
+Parasi	IN	CITY	IN
+Parasia	IN	CITY	IN
+Paratwada	IN	CITY	IN
+Paravur	IN	CITY	IN
+Parbatsar	IN	CITY	IN
+Parbhani	IN	CITY	IN
+Pardi	IN	CITY	IN
+Parev	IN	CITY	IN
+Paria	IN	CITY	IN
+Parichha	IN	CITY	IN
+Parikshitgarh	IN	CITY	IN
+Pariyapuram	IN	CITY	IN
+Parli Vaijnath	IN	CITY	IN
+Parmanandpur	IN	CITY	IN
+Parola	IN	CITY	IN
+Parole	IN	CITY	IN
+Parsadepur	IN	CITY	IN
+Parsona	IN	CITY	IN
+Partap Singhwala	IN	CITY	IN
+Partapur	IN	CITY	IN
+Partur	IN	CITY	IN
+Parvathipuram	IN	CITY	IN
+Parwanoo	IN	CITY	IN
+Pasan	IN	CITY	IN
+Paschim Medinipur	IN	CITY	IN
+Pasighat	IN	CITY	IN
+Patadi	IN	CITY	IN
+Patan - Gujarat	IN	CITY	IN
+Patan, Madhya Pradesh	IN	CITY	IN
+Patancheruvu	IN	CITY	IN
+Pataudi	IN	CITY	IN
+Pathalgaon	IN	CITY	IN
+Pathanamthitta	IN	CITY	IN
+Pathankot	IN	CITY	IN
+Pathardi	IN	CITY	IN
+Pathardih	IN	CITY	IN
+Patharia	IN	CITY	IN
+Patholi	IN	CITY	IN
+Pathri	IN	CITY	IN
+Pathsala	IN	CITY	IN
+Patiala	IN	CITY	IN
+Patiyali	IN	CITY	IN
+Patla	IN	CITY	IN
+Patna	IN	CITY	IN
+Patnagarh	IN	CITY	IN
+Patran	IN	CITY	IN
+Pattamundai	IN	CITY	IN
+Pattan	IN	CITY	IN
+Patti	IN	CITY	IN
+Pattukkottai	IN	CITY	IN
+Patur	IN	CITY	IN
+Pauni	IN	CITY	IN
+Pauri	IN	CITY	IN
+Pavagada	IN	CITY	IN
+Pavi Sadakpur	IN	CITY	IN
+Payal	IN	CITY	IN
+Payradanga	IN	CITY	IN
+Payyannur	IN	CITY	IN
+Pedana	IN	CITY	IN
+Peddapalli	IN	CITY	IN
+Peddapuram	IN	CITY	IN
+Peerzadiguda	IN	CITY	IN
+Pehowa	IN	CITY	IN
+Pen	IN	CITY	IN
+Pennadam	IN	CITY	IN
+Pennagaram	IN	CITY	IN
+Penugonda	IN	CITY	IN
+Penukonda	IN	CITY	IN
+Peppeganj	IN	CITY	IN
+Perambalur	IN	CITY	IN
+Peravurani	IN	CITY	IN
+Periyakulam	IN	CITY	IN
+Periyanaickenpalayam	IN	CITY	IN
+Pernambut	IN	CITY	IN
+Perumbavoor	IN	CITY	IN
+Perundurai	IN	CITY	IN
+Perungudi	IN	CITY	IN
+Petlad	IN	CITY	IN
+Phagwara	IN	CITY	IN
+Phagwara Sharki	IN	CITY	IN
+Phalauda	IN	CITY	IN
+Phalodi	IN	CITY	IN
+Phaltan	IN	CITY	IN
+Phaphund	IN	CITY	IN
+Pharenda	IN	CITY	IN
+Phek	IN	CITY	IN
+Pherzawl	IN	CITY	IN
+Phillaur	IN	CITY	IN
+Phirangipuram	IN	CITY	IN
+Phulabani	IN	CITY	IN
+Phulera	IN	CITY	IN
+Phulpur	IN	CITY	IN
+Phulwari Sharif	IN	CITY	IN
+Phuphkalan	IN	CITY	IN
+Phusro	IN	CITY	IN
+Piala	IN	CITY	IN
+Pihani	IN	CITY	IN
+Pilakhna	IN	CITY	IN
+Pilani	IN	CITY	IN
+Pilibanga	IN	CITY	IN
+Pilibhit	IN	CITY	IN
+Pilkhuwa	IN	CITY	IN
+Pimpri	IN	CITY	IN
+Pinahat	IN	CITY	IN
+Pindwara	IN	CITY	IN
+Pingwan	IN	CITY	IN
+Pinjore	IN	CITY	IN
+Pipalsana Chaudhari	IN	CITY	IN
+Pipar	IN	CITY	IN
+Pipar City	IN	CITY	IN
+Pipara Dand	IN	CITY	IN
+Pipili	IN	CITY	IN
+Pipraich	IN	CITY	IN
+Piprayli Bujurg	IN	CITY	IN
+Pipri	IN	CITY	IN
+Piran Kaliyar	IN	CITY	IN
+Piravom	IN	CITY	IN
+Pirawa	IN	CITY	IN
+Piriyapatna	IN	CITY	IN
+Piro	IN	CITY	IN
+Pithampur	IN	CITY	IN
+Pithapuram	IN	CITY	IN
+Pithoragarh	IN	CITY	IN
+Pokaran	IN	CITY	IN
+Polasara	IN	CITY	IN
+Polavaram	IN	CITY	IN
+Pollachi	IN	CITY	IN
+Polur	IN	CITY	IN
+Ponda	IN	CITY	IN
+Pondicherry	IN	CITY	IN
+Ponnani	IN	CITY	IN
+Ponneri	IN	CITY	IN
+Ponnur	IN	CITY	IN
+Poonamallee, Poovirundhavalli	IN	CITY	IN
+Porbandar	IN	CITY	IN
+Porsa	IN	CITY	IN
+Port Blair	IN	CITY	IN
+Porur	IN	CITY	IN
+Powai	IN	CITY	IN
+Powayan	IN	CITY	IN
+Prakasam	IN	CITY	IN
+Pratapgarh, Rajasthan	IN	CITY	IN
+Pratapgarh, Uttar Pradesh	IN	CITY	IN
+Pratitnagar	IN	CITY	IN
+Premchak Urf Baheri	IN	CITY	IN
+Proddatur	IN	CITY	IN
+Puducherry	IN	CITY	IN
+Pudukkottai	IN	CITY	IN
+Pujali	IN	CITY	IN
+Pukhrayan	IN	CITY	IN
+Pulgaon	IN	CITY	IN
+Puliampatti	IN	CITY	IN
+Pulivendla	IN	CITY	IN
+Puliyangudi	IN	CITY	IN
+Pulwama	IN	CITY	IN
+Punahana	IN	CITY	IN
+Punalur	IN	CITY	IN
+Punasa	IN	CITY	IN
+Punch	IN	CITY	IN
+Pundri	IN	CITY	IN
+Pune	IN	CITY	IN
+Punganur	IN	CITY	IN
+Pupri	IN	CITY	IN
+Pura Pandey	IN	CITY	IN
+Puraini	IN	CITY	IN
+Purana Daroorh	IN	CITY	IN
+Puranpur	IN	CITY	IN
+Purba Bardhaman	IN	CITY	IN
+Purba Medinipur	IN	CITY	IN
+Purbi Kargahia	IN	CITY	IN
+Purdil Nagar	IN	CITY	IN
+Pure Tiwari	IN	CITY	IN
+Puri	IN	CITY	IN
+Purna	IN	CITY	IN
+Purnia	IN	CITY	IN
+Purquazi	IN	CITY	IN
+Purulia	IN	CITY	IN
+Puruliya	IN	CITY	IN
+Purwa	IN	CITY	IN
+Pusad	IN	CITY	IN
+Pushkar	IN	CITY	IN
+Puthur	IN	CITY	IN
+Puttur	IN	CITY	IN
+Pynthorumkhrah	IN	CITY	IN
+Qadian	IN	CITY	IN
+Qazi Gund	IN	CITY	IN
+Quarsi	IN	CITY	IN
+Quilon	IN	CITY	IN
+Quimoh	IN	CITY	IN
+Quthbullapur	IN	CITY	IN
+R.S. Pora	IN	CITY	IN
+Rabkavi Rampur Banhatti	IN	CITY	IN
+Radaur	IN	CITY	IN
+Radha Kund	IN	CITY	IN
+Radhanpur	IN	CITY	IN
+Raebareli	IN	CITY	IN
+Rafiganj	IN	CITY	IN
+Raghogarh - Vijaypur	IN	CITY	IN
+Raghunathganj	IN	CITY	IN
+Raghunathpur	IN	CITY	IN
+Rahatgarh	IN	CITY	IN
+Rahimatpur	IN	CITY	IN
+Rahon	IN	CITY	IN
+Rahuri	IN	CITY	IN
+Raichur	IN	CITY	IN
+Raiganj	IN	CITY	IN
+Raigarh	IN	CITY	IN
+Raikot	IN	CITY	IN
+Rail	IN	CITY	IN
+Railway Settlement Roza	IN	CITY	IN
+Raipur	IN	CITY	IN
+Raipur Rasulpur	IN	CITY	IN
+Rairangpur	IN	CITY	IN
+Raisen	IN	CITY	IN
+Raisinghnagar	IN	CITY	IN
+Raja ka Rampur	IN	CITY	IN
+Raja Sansi	IN	CITY	IN
+Rajahmundry	IN	CITY	IN
+Rajakhedi	IN	CITY	IN
+Rajakhera	IN	CITY	IN
+Rajaldesar	IN	CITY	IN
+Rajam	IN	CITY	IN
+Rajamahendravaram	IN	CITY	IN
+Rajampet	IN	CITY	IN
+Rajanna Sircilla	IN	CITY	IN
+Rajapalayam	IN	CITY	IN
+Rajauli	IN	CITY	IN
+Rajgangpur	IN	CITY	IN
+Rajgarh	IN	CITY	IN
+Rajgir	IN	CITY	IN
+Rajgurunagar	IN	CITY	IN
+Rajkot	IN	CITY	IN
+Rajmahal	IN	CITY	IN
+Rajnandgaon	IN	CITY	IN
+Rajopatti Urf Kota Bazar	IN	CITY	IN
+Rajouri	IN	CITY	IN
+Rajpipla	IN	CITY	IN
+Rajpur	IN	CITY	IN
+Rajpur Khadar	IN	CITY	IN
+Rajpura	IN	CITY	IN
+Rajsamand	IN	CITY	IN
+Rajula	IN	CITY	IN
+Rajura	IN	CITY	IN
+Rakh Gadi Garh	IN	CITY	IN
+Rakri	IN	CITY	IN
+Ram Nagar	IN	CITY	IN
+Ramachandrapuram	IN	CITY	IN
+Ramagundam	IN	CITY	IN
+Raman	IN	CITY	IN
+Ramanagara	IN	CITY	IN
+Ramanathapuram	IN	CITY	IN
+Ramapuram	IN	CITY	IN
+Ramban	IN	CITY	IN
+Ramdas	IN	CITY	IN
+Ramdaspur Urf Nagal	IN	CITY	IN
+Rameswaram	IN	CITY	IN
+Ramganj Mandi	IN	CITY	IN
+Ramgarh	IN	CITY	IN
+Ramgarh Panjoopur	IN	CITY	IN
+Ramgundam	IN	CITY	IN
+Ramjibanpur	IN	CITY	IN
+Ramkola	IN	CITY	IN
+Ramnagar	IN	CITY	IN
+Ramnagar, Bihar	IN	CITY	IN
+Rampachodavaram	IN	CITY	IN
+Rampur	IN	CITY	IN
+Rampura	IN	CITY	IN
+Rampura Phul	IN	CITY	IN
+Ramtek	IN	CITY	IN
+Ranaghat	IN	CITY	IN
+Ranavav	IN	CITY	IN
+Ranchi	IN	CITY	IN
+Ranchi Bangar	IN	CITY	IN
+Ranebennur	IN	CITY	IN
+Rangapara	IN	CITY	IN
+Rangareddy	IN	CITY	IN
+Rangia	IN	CITY	IN
+Rani	IN	CITY	IN
+Rania	IN	CITY	IN
+Ranibennur	IN	CITY	IN
+Raniganj	IN	CITY	IN
+Ranikhet	IN	CITY	IN
+Ranipet	IN	CITY	IN
+Ranipur	IN	CITY	IN
+Raniyan	IN	CITY	IN
+Rapar	IN	CITY	IN
+Rasayani	IN	CITY	IN
+Rashidpur Garhi	IN	CITY	IN
+Rasipuram	IN	CITY	IN
+Rasra	IN	CITY	IN
+Rasulabad	IN	CITY	IN
+Ratangarh	IN	CITY	IN
+Ratannagar	IN	CITY	IN
+Ratanpur	IN	CITY	IN
+Ratanpura	IN	CITY	IN
+Rath	IN	CITY	IN
+Rathian	IN	CITY	IN
+Ratia	IN	CITY	IN
+Ratlam	IN	CITY	IN
+Ratnagiri	IN	CITY	IN
+Ratu	IN	CITY	IN
+Raval	IN	CITY	IN
+Raver	IN	CITY	IN
+Rawali Mahdood	IN	CITY	IN
+Rawalsar	IN	CITY	IN
+Rawatbhata	IN	CITY	IN
+Rawatsar	IN	CITY	IN
+Raxaul	IN	CITY	IN
+Raya	IN	CITY	IN
+Rayachoti	IN	CITY	IN
+Rayadurgam	IN	CITY	IN
+Rayagada / Raygada	IN	CITY	IN
+Raybag	IN	CITY	IN
+Rayya	IN	CITY	IN
+Reasi	IN	CITY	IN
+Redhakhol	IN	CITY	IN
+Reengus	IN	CITY	IN
+Rehambal	IN	CITY	IN
+Rehli	IN	CITY	IN
+Rehti	IN	CITY	IN
+Remuna	IN	CITY	IN
+Renigunta	IN	CITY	IN
+Renukoot	IN	CITY	IN
+Reodar	IN	CITY	IN
+Reoti	IN	CITY	IN
+Repalle	IN	CITY	IN
+Rerma	IN	CITY	IN
+Resubelpara	IN	CITY	IN
+Revelganj	IN	CITY	IN
+Rewa	IN	CITY	IN
+Rewari	IN	CITY	IN
+Rhenock	IN	CITY	IN
+Ri Bhoi	IN	CITY	IN
+Richha	IN	CITY	IN
+Rishabhdev	IN	CITY	IN
+Rishikesh	IN	CITY	IN
+Rishra	IN	CITY	IN
+Risia Bazaar	IN	CITY	IN
+Risod	IN	CITY	IN
+Rithora	IN	CITY	IN
+Robertsganj	IN	CITY	IN
+Robertsonpet	IN	CITY	IN
+Rodayan	IN	CITY	IN
+Roha	IN	CITY	IN
+Rohru	IN	CITY	IN
+Rohta	IN	CITY	IN
+Rohtak	IN	CITY	IN
+Rohtas	IN	CITY	IN
+Roing	IN	CITY	IN
+Ron	IN	CITY	IN
+Roorkee	IN	CITY	IN
+Ropar	IN	CITY	IN
+Rori	IN	CITY	IN
+Rosera	IN	CITY	IN
+Rourkela	IN	CITY	IN
+Rudauli	IN	CITY	IN
+Rudraprayag	IN	CITY	IN
+Rudrapur	IN	CITY	IN
+Runji Gautampura	IN	CITY	IN
+Runkata	IN	CITY	IN
+Rupnagar	IN	CITY	IN
+Rura	IN	CITY	IN
+Rurki Kasba	IN	CITY	IN
+Rustamnagar Sahaspur	IN	CITY	IN
+S.A.S. Nagar	IN	CITY	IN
+Sabalgarh	IN	CITY	IN
+Sabarkantha	IN	CITY	IN
+Sabathu Cantonment	IN	CITY	IN
+Sabour	IN	CITY	IN
+Sadabad	IN	CITY	IN
+Sadalgi	IN	CITY	IN
+Sadashivpet	IN	CITY	IN
+Sadat	IN	CITY	IN
+Sadatmasaura	IN	CITY	IN
+Sadaura	IN	CITY	IN
+Sadri	IN	CITY	IN
+Sadruddin Nagar	IN	CITY	IN
+Sadul Shahar	IN	CITY	IN
+Sadulpur	IN	CITY	IN
+Safa Pora	IN	CITY	IN
+Safidon	IN	CITY	IN
+Safipur	IN	CITY	IN
+Sagalee	IN	CITY	IN
+Sagar	IN	CITY	IN
+Sagara	IN	CITY	IN
+Sagwara	IN	CITY	IN
+Saha	IN	CITY	IN
+Saha Urf Pipalgaon	IN	CITY	IN
+Saharanpur	IN	CITY	IN
+Saharsa	IN	CITY	IN
+Sahaspur	IN	CITY	IN
+Sahaswan	IN	CITY	IN
+Sahatwar	IN	CITY	IN
+Sahawar	IN	CITY	IN
+Sahebganj	IN	CITY	IN
+Sahibganj	IN	CITY	IN
+Sahibzada Ajit Singh Nagar	IN	CITY	IN
+Sahjanwa	IN	CITY	IN
+Sahnewal	IN	CITY	IN
+Sahpau	IN	CITY	IN
+Saidhari	IN	CITY	IN
+Saidpur	IN	CITY	IN
+Saidpur Khajuria	IN	CITY	IN
+Saidpura	IN	CITY	IN
+Saiha	IN	CITY	IN
+Saijni Nankar	IN	CITY	IN
+Saint Thomas Mount	IN	CITY	IN
+Sainthal	IN	CITY	IN
+Sainthia	IN	CITY	IN
+Saitual	IN	CITY	IN
+Saiyadraja	IN	CITY	IN
+Sakaldiha	IN	CITY	IN
+Sakhanu	IN	CITY	IN
+Sakit	IN	CITY	IN
+Sakleshpur	IN	CITY	IN
+Sakti	IN	CITY	IN
+Salamba	IN	CITY	IN
+Salarpur Khadar	IN	CITY	IN
+Salaya	IN	CITY	IN
+Salem	IN	CITY	IN
+Salepur	IN	CITY	IN
+Saloh	IN	CITY	IN
+Salon	IN	CITY	IN
+Salumbar	IN	CITY	IN
+Salur	IN	CITY	IN
+Samalkha	IN	CITY	IN
+Samalkot	IN	CITY	IN
+Samana	IN	CITY	IN
+Samastipur	IN	CITY	IN
+Samba	IN	CITY	IN
+Sambalpur	IN	CITY	IN
+Sambhal	IN	CITY	IN
+Sambhar	IN	CITY	IN
+Samdari	IN	CITY	IN
+Samdhan	IN	CITY	IN
+Sampla	IN	CITY	IN
+Samrala	IN	CITY	IN
+Samthar	IN	CITY	IN
+Samurou	IN	CITY	IN
+Sanand	IN	CITY	IN
+Sanaur	IN	CITY	IN
+Sanawad	IN	CITY	IN
+Sanchore	IN	CITY	IN
+Sancoale	IN	CITY	IN
+Sandi	IN	CITY	IN
+Sandila	IN	CITY	IN
+Sandur	IN	CITY	IN
+Sangamner	IN	CITY	IN
+Sangareddy	IN	CITY	IN
+Sangaria	IN	CITY	IN
+Sangat	IN	CITY	IN
+Sangla	IN	CITY	IN
+Sangli	IN	CITY	IN
+Sangod	IN	CITY	IN
+Sangola	IN	CITY	IN
+Sangrur	IN	CITY	IN
+Sankeshwar	IN	CITY	IN
+Sankrail	IN	CITY	IN
+Sansarpur	IN	CITY	IN
+Sant Kabir Nagar	IN	CITY	IN
+Santipur	IN	CITY	IN
+Santokhgarh	IN	CITY	IN
+Saoner	IN	CITY	IN
+Sapotra	IN	CITY	IN
+Sarai Abdulmalik	IN	CITY	IN
+Sarai Aquil	IN	CITY	IN
+Sarai Lahur Urf Lahurpur	IN	CITY	IN
+Sarai Mir	IN	CITY	IN
+Sarai-Khas	IN	CITY	IN
+Saraipali	IN	CITY	IN
+Saraiya	IN	CITY	IN
+Saram	IN	CITY	IN
+Saran	IN	CITY	IN
+Sarangarh	IN	CITY	IN
+Sarangpur	IN	CITY	IN
+Saraswati Nagar / Mustafabad	IN	CITY	IN
+Saray Mohana	IN	CITY	IN
+Sardargarh	IN	CITY	IN
+Sardarshahar	IN	CITY	IN
+Sardhana	IN	CITY	IN
+Sardulgarh	IN	CITY	IN
+Sarha	IN	CITY	IN
+Sarila	IN	CITY	IN
+Sarimpur	IN	CITY	IN
+Sarkaghat	IN	CITY	IN
+Sarkhej	IN	CITY	IN
+Sarmathura	IN	CITY	IN
+Sarsaul	IN	CITY	IN
+Sarsawa	IN	CITY	IN
+Sarsawan	IN	CITY	IN
+Sarsod	IN	CITY	IN
+Sarthebari	IN	CITY	IN
+Sarwar	IN	CITY	IN
+Sarwat	IN	CITY	IN
+Sasaram	IN	CITY	IN
+Sasauli	IN	CITY	IN
+Sasni	IN	CITY	IN
+Sasvad	IN	CITY	IN
+Satakha	IN	CITY	IN
+Satalkheri	IN	CITY	IN
+Satana	IN	CITY	IN
+Satara	IN	CITY	IN
+Satgawan	IN	CITY	IN
+Satghara	IN	CITY	IN
+Sathamba	IN	CITY	IN
+Sathankulam	IN	CITY	IN
+Sathupalli	IN	CITY	IN
+Sathy	IN	CITY	IN
+Sathyamangalam	IN	CITY	IN
+Satiyava	IN	CITY	IN
+Satlapur	IN	CITY	IN
+Satna	IN	CITY	IN
+Satpokhari	IN	CITY	IN
+Satrikh	IN	CITY	IN
+Satrod Kalan	IN	CITY	IN
+Sattenapalle	IN	CITY	IN
+Sattur	IN	CITY	IN
+Satwas	IN	CITY	IN
+Satyewala	IN	CITY	IN
+Saurikh	IN	CITY	IN
+Sausar	IN	CITY	IN
+Savadatti Yallamma	IN	CITY	IN
+Savanur	IN	CITY	IN
+Savar kundla	IN	CITY	IN
+Savarkundla	IN	CITY	IN
+Savda	IN	CITY	IN
+Savgadh	IN	CITY	IN
+Savner	IN	CITY	IN
+Sawa	IN	CITY	IN
+Sawai Madhopur	IN	CITY	IN
+Sawantwadi	IN	CITY	IN
+Sayla	IN	CITY	IN
+Sedam	IN	CITY	IN
+Seer Hamdan	IN	CITY	IN
+Sehore	IN	CITY	IN
+Selu	IN	CITY	IN
+Semari	IN	CITY	IN
+Senapati	IN	CITY	IN
+Sendhwa	IN	CITY	IN
+Seohara	IN	CITY	IN
+Seondha	IN	CITY	IN
+Seoni	IN	CITY	IN
+Seoni Malwa	IN	CITY	IN
+Sepahijala	IN	CITY	IN
+Seppa	IN	CITY	IN
+Seraikela Kharsawan	IN	CITY	IN
+Serchhip	IN	CITY	IN
+Serilingampalle	IN	CITY	IN
+Sewarhi	IN	CITY	IN
+Shafipur	IN	CITY	IN
+Shahabad	IN	CITY	IN
+Shahabuddinpur	IN	CITY	IN
+Shahada, Shahade	IN	CITY	IN
+Shahapur	IN	CITY	IN
+Shahbad	IN	CITY	IN
+Shahdol	IN	CITY	IN
+Shaheed Bhagat Singh Nagar	IN	CITY	IN
+Shahganj	IN	CITY	IN
+Shahi	IN	CITY	IN
+Shahjahanpur	IN	CITY	IN
+Shahjahanpur Cantt	IN	CITY	IN
+Shahjangi	IN	CITY	IN
+Shahkot	IN	CITY	IN
+Shahpura	IN	CITY	IN
+Shajapur	IN	CITY	IN
+Shaktigarh	IN	CITY	IN
+Shaktinagar	IN	CITY	IN
+Shamator	IN	CITY	IN
+Shamchaurasi	IN	CITY	IN
+Shamgarh	IN	CITY	IN
+Shamli	IN	CITY	IN
+Shamsabad	IN	CITY	IN
+Shamshabad	IN	CITY	IN
+Shamshi	IN	CITY	IN
+Shangus	IN	CITY	IN
+Shankargarh	IN	CITY	IN
+Shantipur	IN	CITY	IN
+Shegaon	IN	CITY	IN
+Sheikhpura	IN	CITY	IN
+Sheoganj	IN	CITY	IN
+Sheohar	IN	CITY	IN
+Sheopur	IN	CITY	IN
+Shergarh	IN	CITY	IN
+Sherghati	IN	CITY	IN
+Sherkot	IN	CITY	IN
+Shi Yomi	IN	CITY	IN
+Shiggaon	IN	CITY	IN
+Shikar	IN	CITY	IN
+Shikaripur	IN	CITY	IN
+Shikarpur	IN	CITY	IN
+Shikohabad	IN	CITY	IN
+Shillong	IN	CITY	IN
+Shimla	IN	CITY	IN
+Shimoga	IN	CITY	IN
+Shirdi	IN	CITY	IN
+Shirhatti	IN	CITY	IN
+Shirpur	IN	CITY	IN
+Shirur	IN	CITY	IN
+Shishgarh	IN	CITY	IN
+Shivaji Nagar	IN	CITY	IN
+Shivamogga	IN	CITY	IN
+Shivarajpur	IN	CITY	IN
+Shivdas Pur	IN	CITY	IN
+Shivli	IN	CITY	IN
+Shivpuri	IN	CITY	IN
+Shohratgarh	IN	CITY	IN
+Sholapur	IN	CITY	IN
+Sholinghur	IN	CITY	IN
+Shopian	IN	CITY	IN
+Shoranur	IN	CITY	IN
+Shorapur	IN	CITY	IN
+Shravasti	IN	CITY	IN
+Shri Dungargarh	IN	CITY	IN
+Shrigonda	IN	CITY	IN
+Shrirampur	IN	CITY	IN
+Shrirangapattana	IN	CITY	IN
+Shrivardhan	IN	CITY	IN
+Shujalpur	IN	CITY	IN
+Shyamnagar	IN	CITY	IN
+Siddhpur	IN	CITY	IN
+Siddipet	IN	CITY	IN
+Sidhauli	IN	CITY	IN
+Sidhaur	IN	CITY	IN
+Sidhi	IN	CITY	IN
+Sidhpura	IN	CITY	IN
+Sidlaghatta	IN	CITY	IN
+Sihor	IN	CITY	IN
+Sihora	IN	CITY	IN
+Sijua	IN	CITY	IN
+Sikandarabad	IN	CITY	IN
+Sikandarpur	IN	CITY	IN
+Sikandra	IN	CITY	IN
+Sikandra Rao	IN	CITY	IN
+Sikandrabad	IN	CITY	IN
+Sikar	IN	CITY	IN
+Sikka	IN	CITY	IN
+Sikri Kalan	IN	CITY	IN
+Silao	IN	CITY	IN
+Silapathar	IN	CITY	IN
+Silchar	IN	CITY	IN
+Siliguri	IN	CITY	IN
+Sillod	IN	CITY	IN
+Silvassa	IN	CITY	IN
+Simalwara	IN	CITY	IN
+Simdega	IN	CITY	IN
+Simlapal	IN	CITY	IN
+Sindagi	IN	CITY	IN
+Sindgi	IN	CITY	IN
+Sindhawali	IN	CITY	IN
+Sindhnur	IN	CITY	IN
+Sindhudurg	IN	CITY	IN
+Singahi Bhiraura	IN	CITY	IN
+Singanallur	IN	CITY	IN
+Singapur	IN	CITY	IN
+Singarayakonda	IN	CITY	IN
+Singhana	IN	CITY	IN
+Singhesar Asthan	IN	CITY	IN
+Singrauli	IN	CITY	IN
+Singtam	IN	CITY	IN
+Singur	IN	CITY	IN
+Sinnar	IN	CITY	IN
+Sir Gobardhan	IN	CITY	IN
+Sira	IN	CITY	IN
+Sirathu	IN	CITY	IN
+Sirauli	IN	CITY	IN
+Sircilla	IN	CITY	IN
+Sirdala	IN	CITY	IN
+Sirhind Fatehgarh	IN	CITY	IN
+Sirkali	IN	CITY	IN
+Sirmaur	IN	CITY	IN
+Sirohi	IN	CITY	IN
+Sironj	IN	CITY	IN
+Sirsa	IN	CITY	IN
+Sirsaganj	IN	CITY	IN
+Sirsi	IN	CITY	IN
+Siruguppa	IN	CITY	IN
+Sirumugai	IN	CITY	IN
+Sisauli	IN	CITY	IN
+Siswa Bazar	IN	CITY	IN
+Sitalkuchi	IN	CITY	IN
+Sitamarhi	IN	CITY	IN
+Sitapur	IN	CITY	IN
+Sitarganj	IN	CITY	IN
+Siuliban	IN	CITY	IN
+Sivaganga	IN	CITY	IN
+Sivagiri	IN	CITY	IN
+Sivakasi	IN	CITY	IN
+Sivasagar	IN	CITY	IN
+Siwal Khas	IN	CITY	IN
+Siwan	IN	CITY	IN
+Siwana	IN	CITY	IN
+Siwani	IN	CITY	IN
+Siyana	IN	CITY	IN
+Sofi Pind	IN	CITY	IN
+Sohagpur	IN	CITY	IN
+Sohana	IN	CITY	IN
+Sohna	IN	CITY	IN
+Sojat	IN	CITY	IN
+Sojat Road	IN	CITY	IN
+Sojitra	IN	CITY	IN
+Solan	IN	CITY	IN
+Solapur	IN	CITY	IN
+Someshwar	IN	CITY	IN
+Sompeta	IN	CITY	IN
+Somwarpet	IN	CITY	IN
+Sonamukhi	IN	CITY	IN
+Sonari	IN	CITY	IN
+Sonepur	IN	CITY	IN
+Songadh	IN	CITY	IN
+Sonipat / Sonepat	IN	CITY	IN
+Sonitpur	IN	CITY	IN
+Sonkatch	IN	CITY	IN
+Sonkh	IN	CITY	IN
+Sool Koot	IN	CITY	IN
+Sopore	IN	CITY	IN
+Soraon	IN	CITY	IN
+Soreng	IN	CITY	IN
+Soro	IN	CITY	IN
+Soron	IN	CITY	IN
+South 24 Parganas	IN	CITY	IN
+South Salmara-Mankachar	IN	CITY	IN
+South West Garo Hills	IN	CITY	IN
+South West Khasi Hills	IN	CITY	IN
+Soyat Kalan	IN	CITY	IN
+Soygaon	IN	CITY	IN
+Spituk	IN	CITY	IN
+Sri Balaji	IN	CITY	IN
+Sri Dungargarh	IN	CITY	IN
+Sri Hargobindpur	IN	CITY	IN
+Sri Madhopur	IN	CITY	IN
+Sri Muktsar Sahib	IN	CITY	IN
+Sri Sathya Sai	IN	CITY	IN
+Srikakulam	IN	CITY	IN
+Srikalahasti	IN	CITY	IN
+Srinagar	IN	CITY	IN
+Srinivaspur	IN	CITY	IN
+Sriperumbudur	IN	CITY	IN
+Sriramnagar	IN	CITY	IN
+Srirampur	IN	CITY	IN
+Srirangam	IN	CITY	IN
+Srisailam	IN	CITY	IN
+Srivaikuntam	IN	CITY	IN
+Srivilliputhur	IN	CITY	IN
+Suar	IN	CITY	IN
+Subarnapur / Sonepur	IN	CITY	IN
+Subeha	IN	CITY	IN
+Sugauli	IN	CITY	IN
+Sujangarh	IN	CITY	IN
+Sujanpur	IN	CITY	IN
+Sujawalpur	IN	CITY	IN
+Suket	IN	CITY	IN
+Sukma	IN	CITY	IN
+Sullurupeta	IN	CITY	IN
+Sultanganj	IN	CITY	IN
+Sultanpur	IN	CITY	IN
+Sulur	IN	CITY	IN
+Sulya	IN	CITY	IN
+Sumbal	IN	CITY	IN
+Sumerganj Mandi	IN	CITY	IN
+Sumerpur	IN	CITY	IN
+Sunam	IN	CITY	IN
+Sunari Kalan	IN	CITY	IN
+Sundargarh	IN	CITY	IN
+Sundarnagar	IN	CITY	IN
+Sunderbani	IN	CITY	IN
+Sunehra	IN	CITY	IN
+Sunel	IN	CITY	IN
+Supaul	IN	CITY	IN
+Surada	IN	CITY	IN
+Surajgarh	IN	CITY	IN
+Surajpur	IN	CITY	IN
+Surandai	IN	CITY	IN
+Surankote	IN	CITY	IN
+Surat	IN	CITY	IN
+Suratgarh	IN	CITY	IN
+Surendranagar	IN	CITY	IN
+Surguja	IN	CITY	IN
+Suri, Birbhum	IN	CITY	IN
+Suriyawa	IN	CITY	IN
+Suryapet	IN	CITY	IN
+Susner	IN	CITY	IN
+Susuwahi	IN	CITY	IN
+Suthana Barsola	IN	CITY	IN
+Suti	IN	CITY	IN
+Suwasara	IN	CITY	IN
+Suzabad	IN	CITY	IN
+Swamibagh	IN	CITY	IN
+Tadepalle	IN	CITY	IN
+Tadepallegudem	IN	CITY	IN
+Tadpatri	IN	CITY	IN
+Taherpur	IN	CITY	IN
+Tajpur	IN	CITY	IN
+Takhatgarh	IN	CITY	IN
+Takhatpur	IN	CITY	IN
+Taki	IN	CITY	IN
+Tal	IN	CITY	IN
+Talai	IN	CITY	IN
+Talaja	IN	CITY	IN
+Talbehat	IN	CITY	IN
+Talcher	IN	CITY	IN
+Taldi	IN	CITY	IN
+Talegaon Dabhade	IN	CITY	IN
+Taleigao	IN	CITY	IN
+Talera	IN	CITY	IN
+Talgram	IN	CITY	IN
+Talikota	IN	CITY	IN
+Taliparamba	IN	CITY	IN
+Talkhapur Dumra	IN	CITY	IN
+Taloda	IN	CITY	IN
+Talwandi Bhai	IN	CITY	IN
+Talwandi Sabo	IN	CITY	IN
+Talwara	IN	CITY	IN
+Tambaur-cum-Ahmadabad	IN	CITY	IN
+Tamenglong	IN	CITY	IN
+Tamluk	IN	CITY	IN
+Tamulpur	IN	CITY	IN
+Tanakpur	IN	CITY	IN
+Tanda	IN	CITY	IN
+Tandur	IN	CITY	IN
+Tangdhar	IN	CITY	IN
+Tanuku	IN	CITY	IN
+Taoru	IN	CITY	IN
+Tapa	IN	CITY	IN
+Tapi	IN	CITY	IN
+Tapukara	IN	CITY	IN
+Tarakeswar	IN	CITY	IN
+Tarana	IN	CITY	IN
+Taranagar	IN	CITY	IN
+Taraori	IN	CITY	IN
+Tarapur	IN	CITY	IN
+Tarikere	IN	CITY	IN
+Tarn Taran	IN	CITY	IN
+Tarsali	IN	CITY	IN
+Tasgaon	IN	CITY	IN
+Tatarpur Lallu	IN	CITY	IN
+Tawang	IN	CITY	IN
+Teegalapahad	IN	CITY	IN
+Teghra	IN	CITY	IN
+Tehatta	IN	CITY	IN
+Tehri	IN	CITY	IN
+Tekari	IN	CITY	IN
+Tekkalakote	IN	CITY	IN
+Tekkali	IN	CITY	IN
+Teleni Para	IN	CITY	IN
+Telhara	IN	CITY	IN
+Teliamura	IN	CITY	IN
+Telkap	IN	CITY	IN
+Telo	IN	CITY	IN
+Tenali	IN	CITY	IN
+Tengnoupal	IN	CITY	IN
+Tenkasi	IN	CITY	IN
+Teonthar	IN	CITY	IN
+Terdal	IN	CITY	IN
+Tezpur	IN	CITY	IN
+Tezu	IN	CITY	IN
+Thakurdwara	IN	CITY	IN
+Thakurganj	IN	CITY	IN
+Thalassery	IN	CITY	IN
+Thana Bhawan	IN	CITY	IN
+Thanamandi	IN	CITY	IN
+Thandalam	IN	CITY	IN
+Thane	IN	CITY	IN
+Thanesar	IN	CITY	IN
+Thanjavur	IN	CITY	IN
+Tharad	IN	CITY	IN
+Tharali	IN	CITY	IN
+Tharamangalam	IN	CITY	IN
+Tharangambadi	IN	CITY	IN
+Tharial	IN	CITY	IN
+Tharike	IN	CITY	IN
+Thasra	IN	CITY	IN
+Theni	IN	CITY	IN
+Theog	IN	CITY	IN
+Thiriya Nizawat Khan	IN	CITY	IN
+Thiruchendur	IN	CITY	IN
+Thiruparankundram	IN	CITY	IN
+Thiruthangal	IN	CITY	IN
+Thiruvallur	IN	CITY	IN
+Thiruvananthapuram / Trivandrum	IN	CITY	IN
+Thiruvarur	IN	CITY	IN
+Thisayanvilai	IN	CITY	IN
+Thodupuzha	IN	CITY	IN
+Thondi	IN	CITY	IN
+Thongju	IN	CITY	IN
+Thoothukudi	IN	CITY	IN
+Thoubal	IN	CITY	IN
+Thrissur	IN	CITY	IN
+Thuraiyur	IN	CITY	IN
+Tibri	IN	CITY	IN
+Tijara	IN	CITY	IN
+Tikait Nagar	IN	CITY	IN
+Tikamgarh	IN	CITY	IN
+Tikri	IN	CITY	IN
+Tilda-Neora	IN	CITY	IN
+Tilhar	IN	CITY	IN
+Tilpat	IN	CITY	IN
+Tilthi	IN	CITY	IN
+Tindivanam	IN	CITY	IN
+Tindwari	IN	CITY	IN
+Tinsukia	IN	CITY	IN
+Tiorkhali	IN	CITY	IN
+Tiptur	IN	CITY	IN
+Tira Sujanpur	IN	CITY	IN
+Tirap	IN	CITY	IN
+Tirthahalli	IN	CITY	IN
+Tiruchengode	IN	CITY	IN
+Tiruchirappalli	IN	CITY	IN
+Tirukkoyilur	IN	CITY	IN
+Tirumala	IN	CITY	IN
+Tirunelveli	IN	CITY	IN
+Tirupati	IN	CITY	IN
+Tirupattur / Tirupathur	IN	CITY	IN
+Tiruppur	IN	CITY	IN
+Tiruppuvanam	IN	CITY	IN
+Tirur	IN	CITY	IN
+Tiruttani, Thiruthanigai, Thiruthani	IN	CITY	IN
+Tiruvalla	IN	CITY	IN
+Tiruvallur	IN	CITY	IN
+Tiruvannamalai	IN	CITY	IN
+Tiruvottiyur	IN	CITY	IN
+Tirwaganj	IN	CITY	IN
+Titagarh	IN	CITY	IN
+Titlagarh	IN	CITY	IN
+Titron	IN	CITY	IN
+Todabhim	IN	CITY	IN
+Todaraisingh	IN	CITY	IN
+Tohana	IN	CITY	IN
+Tola Baliadih	IN	CITY	IN
+Tola Chain	IN	CITY	IN
+Tola Mansaraut	IN	CITY	IN
+Tondi Fatehpur	IN	CITY	IN
+Tonk	IN	CITY	IN
+Tosham	IN	CITY	IN
+Tral	IN	CITY	IN
+Trehgam	IN	CITY	IN
+Trichy	IN	CITY	IN
+Tseminyu	IN	CITY	IN
+Tuensang	IN	CITY	IN
+Tufanganj	IN	CITY	IN
+Tuli	IN	CITY	IN
+Tuljapur	IN	CITY	IN
+Tulsipur	IN	CITY	IN
+Tumakuru	IN	CITY	IN
+Tumkur	IN	CITY	IN
+Tumsar	IN	CITY	IN
+Tundhul	IN	CITY	IN
+Tundla	IN	CITY	IN
+Tundla Kham	IN	CITY	IN
+Tundla Rly. Colony	IN	CITY	IN
+Tuni	IN	CITY	IN
+Tura	IN	CITY	IN
+Turkayamjal	IN	CITY	IN
+Tuticorin	IN	CITY	IN
+Tzudikong	IN	CITY	IN
+Uchana	IN	CITY	IN
+Udaipur	IN	CITY	IN
+Udaipura	IN	CITY	IN
+Udaipurwati	IN	CITY	IN
+Udalguri	IN	CITY	IN
+Udangudi	IN	CITY	IN
+Udgir	IN	CITY	IN
+Udham Singh Nagar	IN	CITY	IN
+Udhampur	IN	CITY	IN
+Udpura	IN	CITY	IN
+Udumalaipettai, Udumalpet	IN	CITY	IN
+Udupi	IN	CITY	IN
+Ugra Kheri	IN	CITY	IN
+Ugu	IN	CITY	IN
+Ujhani	IN	CITY	IN
+Ujjain	IN	CITY	IN
+Ukhrul	IN	CITY	IN
+Uklanamandi	IN	CITY	IN
+Ulhasnagar	IN	CITY	IN
+Ullal	IN	CITY	IN
+Uluberia	IN	CITY	IN
+Umaraha	IN	CITY	IN
+Umarga	IN	CITY	IN
+Umargam / Umbergaon	IN	CITY	IN
+Umari	IN	CITY	IN
+Umaria	IN	CITY	IN
+Umarkhed	IN	CITY	IN
+Umerkote	IN	CITY	IN
+Umred	IN	CITY	IN
+Umreth	IN	CITY	IN
+Umri Kalan	IN	CITY	IN
+Umru Khurd	IN	CITY	IN
+Una	IN	CITY	IN
+Unakoti	IN	CITY	IN
+Uncha Siwana	IN	CITY	IN
+Unchahar	IN	CITY	IN
+Unhel	IN	CITY	IN
+Uniara	IN	CITY	IN
+Unjha	IN	CITY	IN
+Unnao	IN	CITY	IN
+Upleta	IN	CITY	IN
+Uppal	IN	CITY	IN
+Upper Subansiri	IN	CITY	IN
+Uran	IN	CITY	IN
+Uravakonda	IN	CITY	IN
+Uri	IN	CITY	IN
+Urmar Tanda	IN	CITY	IN
+Usawan	IN	CITY	IN
+Usehat	IN	CITY	IN
+Usilampatti	IN	CITY	IN
+Uska Bazar	IN	CITY	IN
+Uthiramerur	IN	CITY	IN
+Utraula	IN	CITY	IN
+Uttar Champamura	IN	CITY	IN
+Uttar Dinajpur	IN	CITY	IN
+Uttara Kannada	IN	CITY	IN
+Uttarkashi	IN	CITY	IN
+Uttarlai	IN	CITY	IN
+Vada	IN	CITY	IN
+Vadakara	IN	CITY	IN
+Vadakku Vallioor	IN	CITY	IN
+Vadamadurai	IN	CITY	IN
+Vadlapudi	IN	CITY	IN
+Vadnagar	IN	CITY	IN
+Vadodara	IN	CITY	IN
+Vaijapur	IN	CITY	IN
+Vaikom	IN	CITY	IN
+Vaishali	IN	CITY	IN
+Vallabh Vidyanagar	IN	CITY	IN
+Vallabhipur	IN	CITY	IN
+Valparai	IN	CITY	IN
+Valsad	IN	CITY	IN
+Vanasthali	IN	CITY	IN
+Vandavasi	IN	CITY	IN
+Vaniyambadi	IN	CITY	IN
+Vapi	IN	CITY	IN
+Varanasi	IN	CITY	IN
+Varanasi Cantonment	IN	CITY	IN
+Varangaon	IN	CITY	IN
+Varkala	IN	CITY	IN
+Vartej	IN	CITY	IN
+Vasa, Wasa	IN	CITY	IN
+Vasco Da Gama	IN	CITY	IN
+Vashi	IN	CITY	IN
+Vasind	IN	CITY	IN
+Vasudevanallur	IN	CITY	IN
+Vatakara / Vadakara	IN	CITY	IN
+Vayalar	IN	CITY	IN
+Vedaranyam	IN	CITY	IN
+Veeravanallur	IN	CITY	IN
+Veerbhadra	IN	CITY	IN
+Vejalpur	IN	CITY	IN
+Vellore	IN	CITY	IN
+Velur	IN	CITY	IN
+Vemulawada	IN	CITY	IN
+Venkatagiri	IN	CITY	IN
+Vepagunta	IN	CITY	IN
+Veraval	IN	CITY	IN
+Vetapalem	IN	CITY	IN
+Vettaikaranpudur	IN	CITY	IN
+Vidisha	IN	CITY	IN
+Vidyavihar	IN	CITY	IN
+Vijapur	IN	CITY	IN
+Vijay Pur	IN	CITY	IN
+Vijayanagara	IN	CITY	IN
+Vijayapura	IN	CITY	IN
+Vijayawada	IN	CITY	IN
+Vijaygarh	IN	CITY	IN
+Vikarabad	IN	CITY	IN
+Vikasnagar	IN	CITY	IN
+Vikramasingapuram	IN	CITY	IN
+Vilemar Kundi	IN	CITY	IN
+Villupuram	IN	CITY	IN
+Vinukonda	IN	CITY	IN
+Virajpet	IN	CITY	IN
+Viramgam	IN	CITY	IN
+Virar	IN	CITY	IN
+Viratnagar	IN	CITY	IN
+Virudhachalam	IN	CITY	IN
+Virudhunagar	IN	CITY	IN
+Visakhapatnam	IN	CITY	IN
+Visavadar	IN	CITY	IN
+Visharatganj	IN	CITY	IN
+Visnagar	IN	CITY	IN
+Vita	IN	CITY	IN
+Vizianagaram	IN	CITY	IN
+Vodlemol Cacora	IN	CITY	IN
+Vrindavan	IN	CITY	IN
+Vuyyuru	IN	CITY	IN
+Vyara	IN	CITY	IN
+Wadi	IN	CITY	IN
+Wai	IN	CITY	IN
+Wail	IN	CITY	IN
+Walajapet	IN	CITY	IN
+Walidpur	IN	CITY	IN
+Wanaparthy	IN	CITY	IN
+Wani	IN	CITY	IN
+Wankaner	IN	CITY	IN
+Warangal	IN	CITY	IN
+Waraseoni	IN	CITY	IN
+Wardha	IN	CITY	IN
+Warhapur	IN	CITY	IN
+Warisaliganj	IN	CITY	IN
+Warora	IN	CITY	IN
+Warud	IN	CITY	IN
+Washim	IN	CITY	IN
+Watra Gam	IN	CITY	IN
+Wayanad	IN	CITY	IN
+Wazirganj	IN	CITY	IN
+Weir	IN	CITY	IN
+Wellington	IN	CITY	IN
+West Godavari	IN	CITY	IN
+West Jaintia Hills	IN	CITY	IN
+West Kameng	IN	CITY	IN
+West Karbi Anglong	IN	CITY	IN
+West Khasi Hills	IN	CITY	IN
+West Singhbhum	IN	CITY	IN
+Wokha	IN	CITY	IN
+Yadadri Bhuvanagiri	IN	CITY	IN
+Yadgir	IN	CITY	IN
+Yadgiri	IN	CITY	IN
+Yamunanagar	IN	CITY	IN
+Yanam	IN	CITY	IN
+Yari Pora	IN	CITY	IN
+Yavatmal	IN	CITY	IN
+Yawal	IN	CITY	IN
+Yelahanka	IN	CITY	IN
+Yellandu	IN	CITY	IN
+Yellapur	IN	CITY	IN
+Yemmiganur	IN	CITY	IN
+Yeola	IN	CITY	IN
+Yerraguntla	IN	CITY	IN
+Yingkiong	IN	CITY	IN
+Yol Cantonment	IN	CITY	IN
+Zahirabad	IN	CITY	IN
+Zaidpur	IN	CITY	IN
+Zamania	IN	CITY	IN
+Zira	IN	CITY	IN
+Zirakpur	IN	CITY	IN
+Zunheboto	IN	CITY	IN
+Abu Ghraib	IQ	CITY	SA
+Ad Diwaniyah	IQ	CITY	SA
+Ad Dujayl	IQ	CITY	SA
+Afak	IQ	CITY	SA
+Akre	IQ	CITY	SA
+Al Basrah Al Qadimah	IQ	CITY	SA
+Al Fallujah	IQ	CITY	SA
+Al Faw	IQ	CITY	SA
+Al Fuhud	IQ	CITY	SA
+Al Hartha	IQ	CITY	SA
+Al Hay	IQ	CITY	SA
+Al Hindiyah	IQ	CITY	SA
+Al Mawsil Al Jadidah	IQ	CITY	SA
+Al Mishikhab	IQ	CITY	SA
+Al Nagaf	IQ	CITY	SA
+Ali Al Gharbi	IQ	CITY	SA
+Amarah	IQ	CITY	SA
+Anat Al Qadimah	IQ	CITY	SA
+AS Suwayrah	IQ	CITY	SA
+Ash Shinafiyah	IQ	CITY	SA
+Az Zubayr	IQ	CITY	SA
+Aziziyah	IQ	CITY	SA
+Baghdad	IQ	CITY	SA
+Baiji	IQ	CITY	SA
+Bakhdida	IQ	CITY	SA
+Balad	IQ	CITY	SA
+Baqubah	IQ	CITY	SA
+Basra	IQ	CITY	SA
+Basrah	IQ	CITY	SA
+Chamchamal	IQ	CITY	SA
+Duhok	IQ	CITY	SA
+Erbil	IQ	CITY	SA
+Gammas	IQ	CITY	SA
+Haditha	IQ	CITY	SA
+Halabjah	IQ	CITY	SA
+Hillah	IQ	CITY	SA
+Hit	IQ	CITY	SA
+Imam Qasim	IQ	CITY	SA
+Iraq	IQ	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Karbala	IQ	CITY	SA
+Khalis	IQ	CITY	SA
+Kifri	IQ	CITY	SA
+Kirkuk	IQ	CITY	SA
+Koysinjaq	IQ	CITY	SA
+Kufa	IQ	CITY	SA
+Kut	IQ	CITY	SA
+Mandali	IQ	CITY	SA
+Miqdadiyah	IQ	CITY	SA
+Mosul	IQ	CITY	SA
+Musayib	IQ	CITY	SA
+Najaf	IQ	CITY	SA
+Nasiriyah	IQ	CITY	SA
+Other - Iraq	IQ	CITY	SA
+Penjwen	IQ	CITY	SA
+Ramadi	IQ	CITY	SA
+Rawa	IQ	CITY	SA
+Rawanduz	IQ	CITY	SA
+Rumaythah	IQ	CITY	SA
+Rutba	IQ	CITY	SA
+Saddat Al Hindiyah	IQ	CITY	SA
+Samarra	IQ	CITY	SA
+Samawah	IQ	CITY	SA
+Shamiyah	IQ	CITY	SA
+Shatrah	IQ	CITY	SA
+Sinah	IQ	CITY	SA
+Sinjar	IQ	CITY	SA
+Sulaymaniyah	IQ	CITY	SA
+Tall Kayf	IQ	CITY	SA
+Tikrit	IQ	CITY	SA
+Tozkhurmato	IQ	CITY	SA
+Umm QaSr	IQ	CITY	SA
+Zakho	IQ	CITY	SA
+Italy	IT	COUNTRY	SA
+Ajloun	JO	CITY	SA
+Amman	JO	CITY	SA
+Aqaba	JO	CITY	SA
+Irbid	JO	CITY	SA
+Jerash	JO	CITY	SA
+Jordan	JO	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Karak	JO	CITY	SA
+Maan	JO	CITY	SA
+Madaba	JO	CITY	SA
+Mafraq	JO	CITY	SA
+Other - Jordan	JO	CITY	SA
+Salt	JO	CITY	SA
+Tafila	JO	CITY	SA
+Zarqa	JO	CITY	SA
+Aichi	JP	CITY	SA,SG,PH,MY,ID,HK,TH,VN
+Hiroshima	JP	CITY	SA,SG,PH,MY,ID,HK,TH,VN
+Ishikawa	JP	CITY	SA,SG,PH,MY,ID,HK,TH,VN
+Japan	JP	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Kanagawa	JP	CITY	SA,SG,PH,MY,ID,HK,TH,VN
+Kyoto	JP	CITY	SA,SG,PH,MY,ID,HK,TH,VN
+Miyagi	JP	CITY	SA,SG,PH,MY,ID,HK,TH,VN
+Osaka	JP	CITY	SA,SG,PH,MY,ID,HK,TH,VN
+Other - Japan	JP	CITY	SA,SG,PH,MY,ID,HK,TH,VN
+Tokushima	JP	CITY	SA,SG,PH,MY,ID,HK,TH,VN
+Tokyo	JP	CITY	SA,SG,PH,MY,ID,HK,TH,VN
+Wakayama	JP	CITY	SA,SG,PH,MY,ID,HK,TH,VN
+Cambodia	KH	COUNTRY	SG,PH,MY,ID,HK,TH,VN
+Other - South Korea	KR	CITY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+South Korea	KR	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Al Ahmadi	KW	CITY	SA
+Al Farawaniyah	KW	CITY	SA
+Al Farwaniyah	KW	CITY	SA
+Al Jahra	KW	CITY	SA
+Al Kuwait	KW	CITY	SA
+Al Zour Mina Saud	KW	CITY	SA
+Ar Rabiyah	KW	CITY	SA
+Bayan	KW	CITY	SA
+Dasma	KW	CITY	SA
+Fahaheel	KW	CITY	SA
+Fintas	KW	CITY	SA
+Hawali	KW	CITY	SA
+Hawally	KW	CITY	SA
+Janub As Surrah	KW	CITY	SA
+Joint Operations Wafra	KW	CITY	SA
+Kuwait	KW	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Kuwait City	KW	CITY	SA
+Mahboula	KW	CITY	SA
+Mangaf	KW	CITY	SA
+Other - Kuwait	KW	CITY	SA
+Riqqah District	KW	CITY	SA
+Rumaithiya	KW	CITY	SA
+Sabah Al Salem	KW	CITY	SA
+Salmiya	KW	CITY	SA
+Salwa	KW	CITY	SA
+Beirut	LB	CITY	SA
+Bekaa	LB	CITY	SA
+Lebanon	LB	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Other - Lebanon	LB	CITY	SA
+Saidon	LB	CITY	SA
+Tripoli	LB	CITY	SA
+Sri Lanka	LK	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Myanmar / Burma	MM	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Macau	MO	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Malta	MT	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Mauritius	MU	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Maldives	MV	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Mexico	MX	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Alor Gajah	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Alor Setar	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Bagan Serai	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Bahau	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Bakri	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Banting	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Batu Arang	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Batu Berendam	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Batu Gajah	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Batu Pahat	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Beaufort	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Bedong	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Bentong Town	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Bestari Jaya	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Bidor	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Bintulu	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Bukit Mertajam	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Bukit Rambai	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Butterworth	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Cukai	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Cyberjaya	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Donggongon	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+George Town	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Gua Musang	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Gurun	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Ipoh	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Jenjarom	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Jerantut	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Jitra	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Johor	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Johor Bahru	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kampar	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kampong Baharu Balakong	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kampong Dungun	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kampong Masjid Tanah	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kampung Ayer Keroh	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kampung Ayer Molek	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kampung Baharu Nilai	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kampung Baru Subang	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kampung Bukit Baharu	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kampung Pasir Gudang Baru	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kampung Simpang Renggam	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kampung Sungai Ara	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kampung Tanjung Karang	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kangar	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kapit	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kedah	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kelantan	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Keningau	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kepala Batas	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kerteh	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kinarut	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Klang	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Klebang Besar	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kluang	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kota Bharu	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kota Kinabalu	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kota Tinggi	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kuah	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kuala Kangsar	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kuala Kedah	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kuala Lipis	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kuala Lumpur	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kuala Pilah	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kuala Selangor	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kuala Terengganu	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kuang	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kuantan	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kuching	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kudat	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kulai	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Kulim	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Labis	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Labuan	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Ladang Seri Kundang	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Lahad Datu	MY	CITY	SG,MY,ID,HK,VN
+Limbang	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Lumut	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Malaysia	MY	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Marang	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Melaka	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Mentakab	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Mersing	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Miri	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Muar	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Negeri Sembilan	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Nibong Tebal	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Other - Malaysia	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Padang Matsirat	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Pahang	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Paka	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Pantai Cenang	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Pantai Remis	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Papar	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Parit Buntar	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Parit Raja	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Pasir Mas	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Pekan Nenas	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Penang	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Perai	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Perak	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Peringat	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Perlis	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Permatang Kuching	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Petaling Jaya	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Pontian Kechil	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Port Dickson	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Putatan	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Putra Heights	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Putrajaya	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Ranau	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Raub	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Rawang	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Sabah	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Sabak Bernam	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Sandakan	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Sarawak	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Sarikei	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Segamat	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Selangor	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Semenyih	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Semporna	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Senai	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Sepang	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Seremban	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Serendah	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Shah Alam	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Sibu	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Simpang Ampat	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Skudai	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Sri Aman	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Subang Jaya	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Sungai Besar	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Sungai Petani	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Sungai Udang	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Taiping	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Tampin	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Tanah Merah	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Tangkak	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Tanjung Sepat	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Tanjung Tokong	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Tapah Road	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Tasek Gelugor	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Tawau	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Teluk Intan	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Temerloh	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Terengganu	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Ulu Tiram	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Victoria	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Yong Peng	MY	CITY	SG,PH,MY,ID,HK,TH,VN
+Namibia	NA	COUNTRY	SA
+Netherlands	NL	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Nepal	NP	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+New Zealand	NZ	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Adam	OM	CITY	SA
+Al Buraimi	OM	CITY	SA
+Al Khaburah	OM	CITY	SA
+Al Liwa	OM	CITY	SA
+As Suwayq	OM	CITY	SA
+Badiyah	OM	CITY	SA
+Bahla	OM	CITY	SA
+Barka	OM	CITY	SA
+Bawshar	OM	CITY	SA
+Bidbid	OM	CITY	SA
+Ibra	OM	CITY	SA
+Ibri	OM	CITY	SA
+Izki	OM	CITY	SA
+Khasab	OM	CITY	SA
+Muscat	OM	CITY	SA
+Nizwa	OM	CITY	SA
+Oman	OM	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Other - Oman	OM	CITY	SA
+Rustaq	OM	CITY	SA
+Saham	OM	CITY	SA
+Salalah	OM	CITY	SA
+Seeb	OM	CITY	SA
+ShinaS	OM	CITY	SA
+Sohar	OM	CITY	SA
+Sufalat Samail	OM	CITY	SA
+Sur	OM	CITY	SA
+Yanqul	OM	CITY	SA
+Zufar	OM	CITY	SA
+Abucay	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Abuyog	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Agoo	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Alabel	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Alaminos	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Aliaga	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Alicia	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Amadeo	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Angat	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Angeles City	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Angono	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Antipolo	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Apalit	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Aparri	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Apas	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Arayat	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Aringay	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Armm	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Atimonan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Aurora	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Baao	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Babo-Pangulo	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bacolod City	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bacoor	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Baggabag B	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bago City	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bagong Pagasa	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Baguio	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bais	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Balagtas	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Balamban	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Balanga	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Balayan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Baliuag	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bambang	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Banaybanay	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Banga	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bansalan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bantayan Island	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Baras	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Batac City	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Batangas	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bato	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bauan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bauang	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bayambang	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bayawan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Baybay	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bayombong	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bayugan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bicol Region	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bignay Uno Fuel Station	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Binalbagan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Binangonan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Binmaley	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Binondo	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bislig	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bocaue	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bogo	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bongabon	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bongao	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Borongan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Boroon	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Botolan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Budta	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Buenavista	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bugo	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Buhi	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bulacan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bulan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bulaon	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Buluan, Maguindanao	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bunawan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Burgos	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bustos	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Butuan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+C.A.R	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Cabadbaran	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Cabagan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Cabanatuan City	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Cabayangan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Cabiao	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Cadiz	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Cagayan De Oro	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Cagayan Valley	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Cainta	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Calabanga	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Calaca	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Calamba	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Calapan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Calasiao	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Calatagan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Calauag	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Calauan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Calbayog City	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Caloocan City	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Calumpang	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Calumpit	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Camiling	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Candaba	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Candelaria	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Canlaon	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Capas	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Caraga	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Carcar	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Cardona	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Carigara	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Carmona	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Castillejos	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Catanauan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Catarman	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Catbalogan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Cavite City	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Cebu City	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Central Luzon	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Central Mindanao	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Central Visayas	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+City Of Iriga	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Compostela	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Concepcion	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Consolacion	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Cordova	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Cotabato	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Cuenca	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Daet	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Danao	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Dapitan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Dasmarinas	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Davao	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Del Pilar	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Diadi	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Digos	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Dinalupihan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Dipolog	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Dologon	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Domalandan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Don Carlos	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Dumaguete	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Eastern Visayas	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Escalante	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Fort Magsaysay Airfield	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Gapan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+General Mamerto Natividad	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+General Santos	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+General Tinio	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+General Trias	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Gerona	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Glan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Goa / Barangay Salog	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Guiguinto	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Guihulngan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Guimba	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Gumaca	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Guyong	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Hagonoy	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Hermosa	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Himamaylan City	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Hinigaran	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Iba	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ilagan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Iligan City	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ilocos Region	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Iloilo	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Imus	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Indang	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ipil	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Irosin	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Isabela	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Isabela City	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Island Garden City Of Samal	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Isulan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Itogon	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Jaen	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Jagna	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Jalajala	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Jasaan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Jolo	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Jose Panganiban	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Kabacan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Kabankalan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Kalibo	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Kawit	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Kidapawan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Koronadal	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+La Carlota	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+La Castellana	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+La Paz	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+La Trinidad	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Labo	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Laguilayan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Lala	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Laoag	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Laoang	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Lapu-Lapu City	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Laur	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Legazpi City	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Libertad	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Libon	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Liliw	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Liloan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Limay	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Lingayen	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Lipa	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Loboc	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Loma De Gato	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Lopez	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Los Banos	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Lubao	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Lucban	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Lucena	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Lumban	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Lupon	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Maao	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Maasin	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Mabalacat City	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Magalang	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Maganoy	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Magarao	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Mahayag	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Makati City	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Malabanban Norte	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Malanday	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Malapatan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Malaybalay	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Malilipot	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Malingao	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Malita	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Malolos	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Malungon	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Maluso	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Malvar	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Mamatid	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Mamburao	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Manaoag	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Manapla	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Manay	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Mandaluyong City	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Mandaue City	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Mangaldan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Manibaug Pasig	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Manila	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Manila Bay	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Mankayan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Manolo Fortich	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Mansalay	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Mansilingan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Mantampay	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Maragondon	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Maramag	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Marawi City	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Marikina City	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Marilao	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Mariveles	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Masantol	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Masbate City	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Masinloc	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Mati	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Mauban	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Mendez (Mendez-Nunez)	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Mercedes	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Metro Manila / NCR	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Mexico / Masiku	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Meycauayan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Midsayap	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Minglanilla	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Molave	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Monkayo	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Morong	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Muntinlupa City	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Murcia	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Muricay	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Nabua	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Nabunturan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Naga	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Nagcarlan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Naic	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Narra	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Nasugbu	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+New Corella	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Northern Mindanao	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Norzagaray	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Noveleta	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Obando	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Olongapo	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Orani	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Orion	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ormoc	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Oroquieta	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Other - Philippines	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ozamiz City	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Pacol	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Paete	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Pagadian	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Pagalungan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Pagbilao	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Palayan City	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Palo	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Panabo	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Panalanoy	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Pandacaqui	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Pandan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Pandi	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Pangil	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Paniqui	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Pantubig	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Paombong	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Paraiso	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Paranaque City	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Parang	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Pasay City	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Pasig City	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Passi	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Patuto	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Penaranda	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Philippines	PH	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Pila	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Pilar	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Pililla	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Pinamalayan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Pinamungajan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Pio V. Corpuz	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Plaridel	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Poblacion	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Polangui	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Polomolok	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Porac	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Port Area	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Puerto Princesa	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Pulilan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Pulong Santa Cruz	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Pulupandan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Quezon City	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Quiapo	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ramon	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ramos	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Recodo	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Rizal	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Rodriguez	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Romblon	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Roxas	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Roxas City	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Sablayan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Sagay	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Sampaloc	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+San Antonio	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+San Fernando	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+San Francisco	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+San Ildefonso	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+San Jose	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+San Jose Del Monte	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+San Juan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+San Leonardo	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+San Luis	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+San Marcelino	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+San Mariano	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+San Mateo	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+San Miguel	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+San Narciso	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+San Nicolas	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+San Pablo	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+San Pascual	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+San Pedro	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+San Simon	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+San Vicente	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Santa Ana	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Santa Barbara	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Santa Catalina	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Santa Cruz	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Santa Maria	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Santa Rosa	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Santiago	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Santo Tomas	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Santol	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Saravia	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Sariaya	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Sasmuan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Science City Of Munoz	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Sibulan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Silang	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Sipalay	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Sitangkai	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Solano	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Sorsogon	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Southern Mindanao	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Southern Tagalog	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Su-Ay	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Subic	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Surallah	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Surigao	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Taal	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Tabaco	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Tabuk	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Tacurong	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Tagas	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Tagbilaran City	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Tagoloan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Tagudin	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Taguig	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Tagum	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Talacogon	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Talavera	PH	CITY	SG,PH,ID,HK,TH,VN
+Talisay	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Taloc	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Tanauan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Tanay	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Tandag	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Tangub	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Tanjay	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Tanza	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Tarlac City	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Tayabas	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Taytay	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Telabastagan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Teresa	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ternate	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Tiwi	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Toledo	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Trento	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Tuguegarao City	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Tupi	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Urdaneta	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Valencia	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Valenzuela City	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Veruela	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Victorias	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Vigan	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Virac	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Wao	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Western Mindanao	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Western Visayas	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Zamboanga	PH	CITY	SG,PH,MY,ID,HK,TH,VN
+Pakistan	PK	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Al Khor	QA	CITY	SA
+Al Rayyan Municipality	QA	CITY	SA
+Al Wakrah	QA	CITY	SA
+Doha	QA	CITY	SA
+Other - Qatar	QA	CITY	SA
+Qatar	QA	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Umm Salal Muhammed	QA	CITY	SA
+Abha	SA	CITY	SA
+Abu Areesh	SA	CITY	SA
+Abu Arish	SA	CITY	SA
+Ad Dilam	SA	CITY	SA
+Afif	SA	CITY	SA
+Al Bahah	SA	CITY	SA
+Al Battaliyah	SA	CITY	SA
+Al Bukayriyah	SA	CITY	SA
+Al Duwadimi	SA	CITY	SA
+Al Hofuf	SA	CITY	SA
+Al Jumum	SA	CITY	SA
+Al Khobar	SA	CITY	SA
+Al Madina Al Munawarah	SA	CITY	SA
+Al Mithnab	SA	CITY	SA
+Al Mubarraz	SA	CITY	SA
+Al Munaizilah	SA	CITY	SA
+Al Namas	SA	CITY	SA
+Al Qaisumah	SA	CITY	SA
+Al Qatif	SA	CITY	SA
+Al Qurayyat	SA	CITY	SA
+Al Wajh	SA	CITY	SA
+Alahsa	SA	CITY	SA
+Albaha	SA	CITY	SA
+Alkharj	SA	CITY	SA
+Alqasim	SA	CITY	SA
+Alqunfithah	SA	CITY	SA
+Altaif	SA	CITY	SA
+AlUla	SA	CITY	SA
+Ar Rass	SA	CITY	SA
+Arar	SA	CITY	SA
+As Sulayyil	SA	CITY	SA
+Aseer	SA	CITY	SA
+Ash Shafa	SA	CITY	SA
+AT Taraf	SA	CITY	SA
+Az Zulfi	SA	CITY	SA
+Badr Hunayn	SA	CITY	SA
+Bisha	SA	CITY	SA
+Buqayq	SA	CITY	SA
+Buraidah	SA	CITY	SA
+Buraydah	SA	CITY	SA
+Dammam	SA	CITY	SA
+Dhahran	SA	CITY	SA
+Duba	SA	CITY	SA
+Eastern Province	SA	CITY	SA
+Haeil	SA	CITY	SA
+Hafr Albaten	SA	CITY	SA
+Hail	SA	CITY	SA
+Hofof	SA	CITY	SA
+Jazan	SA	CITY	SA
+Jeddah	SA	CITY	SA
+Jizan	SA	CITY	SA
+Jouf	SA	CITY	SA
+Jubail	SA	CITY	SA
+Jubail / Al Jubail	SA	CITY	SA
+Khafji	SA	CITY	SA
+Khamis Mushait	SA	CITY	SA
+Khobar	SA	CITY	SA
+Makkah Al Mukarramah	SA	CITY	SA
+Mecca	SA	CITY	SA
+Medina	SA	CITY	SA
+Najran	SA	CITY	SA
+Onaizah	SA	CITY	SA
+Other - Saudi Arabia	SA	CITY	SA
+Qaseem	SA	CITY	SA
+Qatif	SA	CITY	SA
+Rabigh	SA	CITY	SA
+Rahimah	SA	CITY	SA
+Riyadh	SA	CITY	SA
+Sabia	SA	CITY	SA
+Sabya	SA	CITY	SA
+Safwa	SA	CITY	SA
+Saihat	SA	CITY	SA
+Sakaka	SA	CITY	SA
+Samtah	SA	CITY	SA
+Saudi Arabia	SA	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+SulTanah	SA	CITY	SA
+Tabouk	SA	CITY	SA
+Taif	SA	CITY	SA
+Tarout Island	SA	CITY	SA
+Tubarjal	SA	CITY	SA
+Turabah	SA	CITY	SA
+Turayf	SA	CITY	SA
+Umm Lajj	SA	CITY	SA
+Unayzah	SA	CITY	SA
+Yanbu	SA	CITY	SA
+Seychelles	SC	COUNTRY	SA
+Sweden	SE	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Adam Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Admiralty / Kranji	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Airline Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Airport Boulevard	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Airport Cargo	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Airport Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Albert Street	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Alexandra Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Aljunied Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Amber	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Anchorvale	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Anderson Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Andrew Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Ang Mo Kio	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Anson	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Arab Street	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Ardmore Park	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Balestier	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Barker Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Battery Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Beach Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Bedok North	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Bedok Reservoir	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Bedok South	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Bencoolen Street	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Bendemeer	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Benoi Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Bishan	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Boon Lay	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Braddell Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Bras Basah	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Bright Hill	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Brooke Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Bugis	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Bukit Batok	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Bukit Merah	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Bukit Purmei	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Bukit Timah Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Cairnhill	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Casuarina	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Cecil Street	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Cedar Avenue	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Ceylon Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Chai Chee Lane	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Changi Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Changi South	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Changi Village	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Chin Swee Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Choa Chu Kang	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Circuit Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+City Hall	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Clarke Quay	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Clemenceau Avenue	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Clementi	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Clementi Park	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Coleman Street	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Commonwealth	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Compassvale	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Corporation Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Corporation Walk	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Crawford Lane	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Cross Street	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Cuppage	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Cuscaden Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Dairy Farm	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Dakota Crescent	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Defu Lane	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Delta Avenue	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Dover	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Draycott Drive	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Duke Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Dunearn	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Dunearn Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Dunman Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+East Coast	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Eastwood	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Edgedale Plains	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Elias	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Emerald Hill	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Essex Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Eu Tong Sen Street	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Eunos	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Expo Drive	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Farrer Park	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Farrer Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Fidelio Street	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Frankel Avenue	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Genting Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Geylang	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Geylang Bahru	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Ghim Moh	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Gloucester Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Golden Mile	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Goodman Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Grange Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Guillemard Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Harbourfront	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Havelock Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Henderson Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+High Street	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Hill Street	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Hillcrest Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Hillview	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Holland	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Hong Leong Garden	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Hougang	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+International Business Park	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Jalan Ahmad Ibrahim	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Jalan Ampas	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Jalan Anak Bukit	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Jalan Besar	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Jalan Boon Lay	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Jalan Bukit Merah	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Jalan Buroh	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Jalan Eunos	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Jalan Jurong Kechil	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Jalan Leban	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Jalan Lempeng	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Jalan Pemimpin	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Jalan Rajah	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Jalan Sultan	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Jervois Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Joo Chiat	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Joo Koon Circle	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Joo Seng	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Jurong East	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Jurong West	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Kaki Bukit	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Kallang	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Kallang Way	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Kampong Java	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Kampong Kapor	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Katong	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Keppel	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Kew Drive	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Kheam Hock	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Killiney Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Kim Seng	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Kim Tian Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Kim Yam Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+King Albert Park	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+King George's	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+King's Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Kitchener	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Koon Seng Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Kovan	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Lavender Street	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Leng Kee Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Liang Seah Street	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Lim Chu Kang	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Linden Drive	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Little India	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Lock Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Lok Yang Way	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Lor Geylang	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Lornie Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Lorong Ah Soo	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Lorong Chuan	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Loyang Avenue / Loyang Drive	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Macpherson	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Malcolm Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Margaret Drive	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Margate Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Marina	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Marine Drive	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Marine Parade	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Marine Terrace	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Marine Vista	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Maritime Square	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Martia Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Martin Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Marymount Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Mattar Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Maxwell	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Middle Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Mohamed Sultan	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Moulmein Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Mount Sophia	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Mount Vernon	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Mountbatten	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+New Bridge	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+New Bridge Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+New Upper Changi	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Newton Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+North Bridge	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+North Buona Vista	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Novena	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Old Airport Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Ophir	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Orchard Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Outram Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Oxford Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Oxley Rise	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Palm Avenue	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Pandan Cresent	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Pandan Valley	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Parry Avenue	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Pasir Panjang	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Pasir Ris	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Paya Lebar	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Peck Hay Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Penang Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Penjuru Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Pioneer	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Ponggol	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Ponggol 17 Avenue	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Ponggol 24 Avenue	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Potong Pasir	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Prince Edward Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Prinsep Street	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Queen Street	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Queensway	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Raffles Link / Raffles Place	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Rangoon Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Redhill	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Republic Boulevard	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+River Valley	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Rivervale	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Robinson	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Rochor	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Science Park	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Scotts Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Selegie Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Seletar	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Sembawang	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Sengkang	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Sennett Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Serangoon	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Serangoon Avenue	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Serangoon Central / Garden	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Serangoon Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Seraya Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Shenton Way	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Short Street	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Siglap Link / Siglap View	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Simei	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Sims Avenue / Sims Drive	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Sin Ming	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Singapore	SG	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Sixth Avenue	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+South Bridge Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+South Buona Vista	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+St Michael’s	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+St. Andrew's Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Stevens Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Still Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Syed Alwi	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Tai Seng	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Tampines	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Tampines Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Tanglin Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Tanjong Katong Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Tanjong Pagar	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Tanjong Rhu	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Tannery	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Teban Gardens	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Telok Ayer	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Telok Blangah	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Telok Kurau Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Temasek Avenue	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Temasek Boulevard	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Tengah	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Thomson	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Tiong Bahru	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Toa Payoh	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Toa Payoh Rise	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Toh Guan	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Toh Tuck	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Toh Yi Drive	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Towner	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Tras Street	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Tuas	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Tyrwhitt Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Ubi	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Ulu Pandan	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Upper Aljunied Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Upper Bukit Timah	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Upper Changi North	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Upper Changi Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Upper Cross Street	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Upper East Coast	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Upper Pickering Street	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Upper Serangoon	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Upper Thomson	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Victoria Lane	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Victoria Street	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Waterloo Street	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Watten Estate	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+West Coast	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Whitley Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Wilkie Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Woodlands	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Xilin Avenue	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Yio Chu Kang	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Yishun	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Yuan Ching Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Yung Loh Road	SG	CITY	SG,PH,MY,ID,HK,TH,VN
+Amnat Charoen	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Aranyaprathet	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ayuthaya	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ban Bang Kadi Pathum Thani	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ban Bueng	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ban Chang	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ban Dung	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ban Huai Thalaeng	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ban Khlong Bang Sao Thong	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ban Lam Luk Ka	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ban Mai	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ban Mo	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ban Na	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ban Na San	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ban Phaeo	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ban Phai	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ban Pong	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ban Rangsit	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ban Ratsada	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ban Tak	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ban Talat Nua	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ban Talat Yai	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bang Ban	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bang Bo District	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bang Bua Thong	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bang Krathum	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bang Kruai	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bang Lamung	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bang Len	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bang Mun Nak	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bang Pa-in	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bang Pakong	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bang Phae	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bang Racham	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bang Rakam	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bang Saphan	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bangkok Area	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Betong	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bo Phloi	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Bua Yai	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Buri Ram	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Cha-Am	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Chachengsao	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Chachoengsao	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Chai Badan	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Chaiyaphum	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Chanthaburi	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Chiang Mai	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Chiang Rai	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Chok Chai	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Chom Bueng	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Chon Buri	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Chon Daen	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Chonburi	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Chum Phae	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Chumphon	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Damnoen Saduak	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Dan Khun Thot	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Den Chai	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Det Udom	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Dok Khamtai	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Hang Dong	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Hat Yai	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Hua Hin	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Huai Yot	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Kabin Buri	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Kaeng Khoi	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Kaeng Khro	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Kalasin	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Kamalasai	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Kamphaeng Phet	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Kanchanaburi	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Kantharalak	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Kaset Sombun	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Kaset Wisai	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Kathu	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Khanu Woralaksaburi	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Khao Wong	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Khao Yai National Park	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Khlong Luang	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Khon Kaen	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Klaeng	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ko Samui	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Krabi	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Krathum Baen	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Kuchinarai	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Kui Buri	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Kut Chap	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Laem Sing	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Lampang	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Lamphun	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Lampoon	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Lang Suan	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Lat Yao District	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Lom Sak	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Lopburi	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Mae Chan	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Mae Ramat	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Mae Sai	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Mae Sot	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Maha Sarakham	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Mueang Loei Land	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Mukdahan	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Na Klang	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Nakhon Luang	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Nakhon Nayok	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Nakhon Pathom	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Nakhon Phanom	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Nakhon Ratchasima	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Nakhon Sawan	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Nakhon Si Thammarat	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Nakornnayok	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Nakornpratom	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Nakornratchasima	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Nam Som	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Nan	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Nang Rong	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Narathiwat	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Non Sung	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Nong Bua Lamphu	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Nong Khae	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Nong Khai	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Nong Kung Si	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Nong Phai	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Nong Wua So	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Nonthaburi	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Other - Thailand	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Pa Sang	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Pak Kret	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Pak Phanang	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Pathum Thani	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Pattani	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Pattaya City	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Petchaburi	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Phak Hai	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Phan Thong	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Phanat Nikhom	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Phanom Sarakham	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Phatthalung	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Phayao	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Phetchabun	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Phetchaburi	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Phibun Mangsahan	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Phichit	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Phitsanulok	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Phon Charoen	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Photharam	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Phra Nakhon Si Ayutthaya	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Phra Phutthabat	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Phra Pradaeng	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Phrae	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Phu Khiao	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Phu Kradueng	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Phuket	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Phunphin District	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Prachin Buri	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Prachinburi	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Prachuap Khiri Khan	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Prakhon Chai	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Pran Buri	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ra-Ngae	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Rajchaburi	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ranong	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ranot	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ratchaburi	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Rayong	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Roi Et	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ron Phibun	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Sa Kaeo	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Sadao	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Sakon Nakhon	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Sam Phran	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Sam Roi Yot	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Samut Prakan	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Samut Sakhon	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Samut Songkhram	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Samutsakorn	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Samutsongkam	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+San Kamphaeng	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+San Pa Tong	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Saraburi	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Sattahip	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Satun	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Sawang Daen Din	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Sawankhalok	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Seka	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Si Racha	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Si Sa Ket	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Si Satchanalai	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Sikhio District	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Sing Buri	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Songkhla	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Su-Ngai Kolok	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Suphan Buri	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Surat Thani	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Surin	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Tak Bai	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Taphan Hin	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Tha Chai	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Tha Mai	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Tha Maka	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Tha Muang	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Tha Ruea	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Tha Yang	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Thailand	TH	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Thani	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Thap Khlo	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Thap Than	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Thoen	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Thung Song	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Trang	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Trat	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Ubon Ratchathani	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Udon Thani	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Uthai Thani	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Uttaradit	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Wang Nam Yen	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Wang Noi	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Wang Saphung	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Warin Chamrap	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Wichian Buri	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Wichit	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Wiset Chaichan	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Yala	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Yaring	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Yasothon	TH	CITY	SG,PH,MY,ID,HK,TH,VN
+Timor-Leste	TL	COUNTRY	SG,PH,MY,ID,HK,TH,VN
+Turkmenistan	TM	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Changhua	TW	CITY	SG,PH,MY,ID,HK,TH,VN
+Chiayi	TW	CITY	SG,PH,MY,ID,HK,TH,VN
+Guantian	TW	CITY	SG,PH,MY,ID,HK,TH,VN
+Hsinchu	TW	CITY	SG,PH,MY,ID,HK,TH,VN
+Hwalian	TW	CITY	SG,PH,MY,ID,HK,TH,VN
+Kaoshiung	TW	CITY	SG,PH,MY,ID,HK,TH,VN
+Keelung	TW	CITY	SG,PH,MY,ID,HK,TH,VN
+Meoli	TW	CITY	SG,PH,MY,ID,HK,TH,VN
+Nanto	TW	CITY	SG,PH,MY,ID,HK,TH,VN
+Other - Taiwan	TW	CITY	SG,PH,MY,ID,HK,TH,VN
+Pingdung	TW	CITY	SG,PH,MY,ID,HK,TH,VN
+Taichung	TW	CITY	SG,PH,MY,ID,HK,TH,VN
+Tainan	TW	CITY	SG,PH,MY,ID,HK,TH,VN
+Taipei City	TW	CITY	SG,PH,MY,ID,HK,TH,VN
+Taipei County	TW	CITY	SG,PH,MY,ID,HK,TH,VN
+Taiwan	TW	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Taoyuan	TW	CITY	SG,PH,MY,ID,HK,TH,VN
+Yeelan	TW	CITY	SG,PH,MY,ID,HK,TH,VN
+Yuelin	TW	CITY	SG,PH,MY,ID,HK,TH,VN
+Yuenlin	TW	CITY	SG,PH,MY,ID,HK,TH,VN
+Tanzania	TZ	COUNTRY	SA,SG,PH,MY,ID,HK,TH,VN
+United States of America (USA)	US	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Uzbekistan	UZ	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+An Giang	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Ba Ria-Vung Tau	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Bac Can	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Bac Giang	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Bac Kan	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Bac Lieu	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Bac Ninh	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Bao Loc	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Ben Tre	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Bien Hoa	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Bim Son	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Binh Dinh	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Binh Duong	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Binh Phuoc	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Binh Thuan	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Buon Ma Thuot	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Ca Mau	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Cam Pha Thanh Phocam Pha	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Cam Ranh	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Can Gio	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Can Giuoc	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Can Tho	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Cao Bang	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Cao Lanh	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Cat Ba	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Cho Dok	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Cu Chi Tunnel	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Da Nang	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Dac Lac	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Dalat	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Dien Bien Phu	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Dinh Van	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Dong Ha	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Dong Nai	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Dong Thap	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Dong Xoai	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Gia Lai	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Ha Dong	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Ha Giang	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Ha Long	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Ha Nam	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Ha Noi	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Ha Tay	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Ha Tien	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Ha Tinh	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Hai Duong	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Haiphong	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Hanoi	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Ho Chi Minh	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Hoa Binh	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Hoi An	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Hue	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Hung Yen	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Khanh Hoa	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Kien Giang	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Kon Tum	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Kwang Binh	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+La Gi	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Lai Chau	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Lam Dong	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Lang Son	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Lao Cai	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Long An	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Long Xuyen	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Mong Cai	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+My Tho	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Nam Dinh	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Nghe An	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Nha Trang	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Ninh Binh	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Ninh Thuan	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Other - Vietnam	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Phan Rang-Thap Cham	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Phan Thiet	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Phu Khuong	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Phu Ly	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Phu Tho	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Phu Yen	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Pleiku	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Quang Binh	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Quang Nam	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Quang Ngai	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Quang Ninh	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Quang Tri	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Qui Nhon	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Rach Gia	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Sa Pa	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Sadek	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Soc Trang	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Son La	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Son Tay	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Song Cau	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Tam Ky	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Tan An	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Tay Ninh	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Thai Binh	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Thai Nguyen	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Thanh Hoa	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Thanh Pho Nam Dinh	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Thanh Pho Thai Binh	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Thanh Pho Thai Nguyen	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Thanh Pho Tuyen Quang	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Thua Thien-Hue	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+ThuDau Mot	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Tien Giang	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Tra Vinh	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Tuy Hoa	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Tuyen Quang	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Uong Bi	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Vi Thanh	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Viet Tri	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Vietnam	VN	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Vinh Long	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Vinh Phuc	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Vinh Yen	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+VUng Tau	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Yen Bai	VN	CITY	SG,PH,MY,ID,HK,TH,VN
+Yemen	YE	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+South Africa	ZA	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
+Zimbabwe	ZW	COUNTRY	IN,SA,SG,PH,MY,ID,HK,TH,VN
