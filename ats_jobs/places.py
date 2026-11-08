@@ -122,6 +122,22 @@ FILLER = REMOTE | {'fully', 'full', '100', 'work', 'working', 'from', 'only', 'f
                    'regions', 'open', 'to'}
 
 
+# Indian cities and states by every name in use. Job sites write the new one (Naukri: Bengaluru, Gurugram, Kolkata), and
+# people type either. Delhi NCR is the capital region: Delhi and the cities around it (Delhi alone stays Delhi).
+_SAME_PLACE = (
+    ('bengaluru', 'bangalore'), ('mumbai', 'bombay'), ('chennai', 'madras'), ('kolkata', 'calcutta'),
+    ('gurugram', 'gurgaon'), ('pune', 'poona'), ('thiruvananthapuram', 'trivandrum'), ('kochi', 'cochin'),
+    ('mysuru', 'mysore'), ('mangaluru', 'mangalore'), ('vadodara', 'baroda'), ('visakhapatnam', 'vizag'),
+    ('puducherry', 'pondicherry'), ('belagavi', 'belgaum'), ('hubballi', 'hubli'), ('kozhikode', 'calicut'),
+    ('prayagraj', 'allahabad'), ('varanasi', 'benares', 'banaras'), ('tiruchirappalli', 'trichy'),
+    ('kalaburagi', 'gulbarga'), ('shivamogga', 'shimoga'), ('thoothukudi', 'tuticorin'), ('panaji', 'panjim'),
+    ('odisha', 'orissa'), ('tamil nadu', 'tamilnadu'), ('uttarakhand', 'uttaranchal'),
+)
+_CAPITAL_REGION = ('delhi', 'new delhi', 'noida', 'greater noida', 'gurugram', 'gurgaon', 'ghaziabad', 'faridabad')
+OTHER_NAMES = {name: tuple(n for n in names if n != name) for names in _SAME_PLACE for name in names}
+OTHER_NAMES.update({name: _CAPITAL_REGION for name in ('ncr', 'delhi ncr', 'national capital region')})
+
+
 def tokens(text: str | None) -> list[str]:
     return key(text).split()
 

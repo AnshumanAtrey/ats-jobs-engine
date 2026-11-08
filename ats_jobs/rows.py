@@ -23,9 +23,10 @@ posted for an overlapping region ("EMEA" finds "Greece (Remote)" and "Remote - E
 matches jobs marked worldwide, global or anywhere, and jobs whose location is just "Remote" with no
 country in their address. Jobs marked worldwide match every country and region too. A city, or anything
 else, matches by its words inside a location; a US, Canadian, Australian or Indian state typed as its code (TX,
-ON, NSW) also matches its name. Country codes come from the structured place a platform stores
-(where codes such as US or GB are allowed) and from full country names inside the location text (where a
-two-letter part such as CA is a state, not Canada, so only names count).
+ON, NSW) also matches its name, an Indian city or state typed by its old or new name (Bangalore, Bengaluru)
+matches both, and Delhi NCR matches every city of the capital region. Country codes come from the structured
+place a platform stores (where codes such as US or GB are allowed) and from full country names inside the location
+text (where a two-letter part such as CA is a state, not Canada, so only names count).
 """
 import re
 import unicodedata
@@ -180,7 +181,7 @@ class Place:
         self.text = text
         self.words = ' '.join(words(text))
         self.kind, self.countries = classify_place(text)
-        self.also = state_names(text) if self.kind == 'text' else ()
+        self.also = state_names(text) + places.OTHER_NAMES.get(self.words, ()) if self.kind == 'text' else ()
 
     def covers(self, region: frozenset[str]) -> bool:
         """A job posted for a region is for this place when the region lies inside it ("Europe" for EMEA)
