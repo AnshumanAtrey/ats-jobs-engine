@@ -37,6 +37,11 @@ class Platform:
         every search) suit it. The jobs of such a place carry their own company, companySlug and companyWebsite."""
         return boards
 
+    def read_input(self, raw: dict, cfg) -> None:
+        """The platform's own input fields, once the shared ones are read: their settings go to cfg.extra, how they
+        were read to cfg.notes and cfg.skipped. It may also widen the shared settings it knows better (a place's other
+        name). No input stops a run here either."""
+
     def copy_key(self, job: dict) -> tuple:
         """What makes two jobs of one company one job, kept once (the newest): the title at its place. A platform whose
         listings repeat a title at a place for other stores, teams or pay adds those, so distinct jobs stay."""

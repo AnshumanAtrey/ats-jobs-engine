@@ -543,6 +543,7 @@ class Run:
                 'postedWithinDays': cfg.posted_within_days, 'maxJobs': cfg.max_jobs,
                 'includeDetails': cfg.include_details, 'searchDescriptions': cfg.search_descriptions,
                 'companies': cfg.companies,
+                **cfg.extra,                       # the platform's own settings (Platform.read_input)
             },
             'companyList': {'boards': len(self.boards), 'updated': self.updated},
             'traffic': {'calls': STATS['calls'], 'averageSeconds': round(STATS['seconds'] / (STATS['calls'] or 1), 2),
@@ -577,7 +578,7 @@ async def main(platform_key: str) -> None:
             f' workType={cfg.work_types or "any"} employmentType={cfg.job_types or "any"}'
             f' postedWithinDays={cfg.posted_within_days or "any"} maxJobs={cfg.max_jobs if cfg.max_jobs is not None else "all"}'
             f' details={cfg.include_details} searchDescriptions={cfg.search_descriptions}'
-            f' companies={len(cfg.companies) or f"all {len(boards):,}"} payPerEvent={delivery.ppe}')
+            f' companies={len(cfg.companies) or (f"all {len(boards):,}" if boards else "all")} payPerEvent={delivery.ppe}')
         for note in cfg.notes:
             Actor.log.warning(note)
         for text, why in cfg.skipped:

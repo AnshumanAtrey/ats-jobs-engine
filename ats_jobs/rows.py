@@ -389,6 +389,7 @@ def job_row(platform: str, company: dict, job: dict, checked_at: str, details: b
         'jobId': job.get('id'),
         'checkedAt': checked_at,
     }
+    row.update(job.get('extra') or {})     # a platform's own fields (Cutshort's skills and experience), on every row
     if details:
         first = (entries(job) or [{}])[0]
         country = first.get('country')

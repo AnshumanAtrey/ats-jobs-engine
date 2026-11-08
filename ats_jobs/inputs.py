@@ -65,6 +65,7 @@ class Config:
     job_urls: list[tuple[str, str, str]] = field(default_factory=list)   # (board key, job id, as typed)
     notes: list[str] = field(default_factory=list)
     skipped: list[tuple[str, str]] = field(default_factory=list)
+    extra: dict = field(default_factory=dict)                 # a platform's own settings (Platform.read_input)
 
 
 def _items(value) -> list[str]:
@@ -427,4 +428,5 @@ def parse_input(raw: dict | None, platform, company_names: dict[str, list[str]] 
                          'Run again without job links to search.')
     if cfg.search_descriptions and not cfg.search_terms:
         cfg.search_descriptions = False
+    platform.read_input(raw, cfg)
     return cfg
