@@ -499,6 +499,39 @@ class Summary(unittest.TestCase):
         self.assertEqual(run.status(), 'partial')
 
 
+class NothingFound(unittest.TestCase):
+    """A search that finds nothing says which filter stood between the user and the jobs with their words, and how
+    the input was read (2026-11-08: a Deel run said only "Try fewer words" when "Remote" had made it remote-only)."""
+
+    def test_the_one_filter_that_left_jobs_out_is_named_with_its_fix(self):
+        site = {'a': [[job('1', 'Engineer', posted=5), job('2', 'Engineer II', posted=9), job('3', 'Cook')]]}
+        run = search(Fake(site), {'searchTerms': ['engineer'], 'postedWithin': '24 hours'})
+        self.assertEqual(run.delivery.rows, 0)
+        self.assertIn('2 jobs had your words but not your other filters: the posting date alone left out 2. '
+                      'To see them, pick a longer period.', run.message())
+        self.assertEqual(run.output('done')['nearMisses'],
+                         {'jobs': 2, 'leftOutByOneFilterOnly': {'postedWithin': 2},
+                          'firstFilterMissed': {'postedWithin': 2}})
+
+    def test_jobs_that_miss_two_filters_ask_to_loosen_several(self):
+        run = search(Fake({'a': [[job('1', 'Engineer', posted=5, where='Paris')]]}),
+                     {'searchTerms': ['engineer'], 'postedWithin': '24 hours', 'location': ['Berlin']})
+        self.assertIn('1 job had your words but not your other filters: each missed more than one of them',
+                      run.message())
+
+    def test_no_title_with_the_words_says_so(self):
+        run = search(Fake({'a': [[job('1', 'Cook')]]}), {'searchTerms': ['engineer']})
+        self.assertIn('No job title had your words: try fewer or other words, or search descriptions too.',
+                      run.message())
+
+    def test_the_input_notes_are_in_the_message_when_nothing_matched(self):
+        run = search(Fake({'a': [[job('1', 'Engineer', where='Berlin')]]}), {'location': ['Remote']})
+        message = run.message()
+        self.assertIn('The work type filter left out the most jobs read: 1 of 1. To see more, clear Work type and '
+                      'any "Remote" typed in location.', message)
+        self.assertIn('Read "Remote" in location as the remote work type.', message)
+
+
 class Places(unittest.TestCase):
     def test_a_job_that_names_no_place_is_opened_for_a_place_filter(self):
         class Vague(Fake):
@@ -565,7 +598,7 @@ class Feed(unittest.TestCase):
                 self.settings.notes.append('The feed was late, so the biggest boards were read.')
                 async for page in super().pages(http, session, term, days):
                     yield page
-        platform = Noting({'*': [[job('1')]]})
+        platform = Noting({'*': [[dict(job('1'), workType='remote')]]})
 
         @asynccontextmanager
         async def no_client(actor, connections=64):
@@ -575,8 +608,9 @@ class Feed(unittest.TestCase):
                 patch.object(engine, 'seconds_left_in_run', lambda: None):
             asyncio.run(run.search())
         message = run.message()
+        self.assertIn('Found and saved 1 matching job', message)
         self.assertIn('The feed was late, so the biggest boards were read.', message)
-        self.assertNotIn('Read "remote" in location', message)      # notes about the input stay in OUTPUT only
+        self.assertNotIn('Read "remote" in location', message)   # with rows, notes about the input stay in OUTPUT only
 
     def test_some_of_the_boards_are_boards_not_a_feed(self):
         class Biggest(Fake):

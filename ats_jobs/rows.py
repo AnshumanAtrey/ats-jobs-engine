@@ -176,8 +176,9 @@ def state_names(text: str) -> tuple[str, ...]:
 
 
 class Place:
-    def __init__(self, text: str):
+    def __init__(self, text: str, remote_only: bool = False):
         self.text = text
+        self.remote_only = remote_only        # typed as remote jobs there: "Remote EMEA" next to other places
         self.words = ' '.join(words(text))
         self.kind, self.countries = classify_place(text)
         self.also = state_names(text) if self.kind == 'text' else ()
@@ -293,7 +294,8 @@ class Filters:
     def __init__(self, cfg):
         self.terms = terms(cfg.search_terms)
         self.excludes = terms(cfg.exclude_terms)
-        self.places = [Place(p) for p in cfg.locations]
+        remote = {p.lower() for p in getattr(cfg, 'remote_places', None) or []}
+        self.places = [Place(p, p.lower() in remote) for p in cfg.locations]
         self.work_types = set(cfg.work_types)
         self.job_types = set(cfg.job_types)
         self.within_days = cfg.posted_within_days
@@ -325,29 +327,42 @@ class Filters:
     def passes(self, job: dict, now: datetime, server_match: bool = False) -> bool:
         """A full job. server_match: the platform's own search found it, so with descriptions searched a
         term that is not in the title is taken as found in the description the platform read."""
+        return self.misses(job, now, server_match) == ()
+
+    def misses(self, job: dict, now: datetime, server_match: bool = False, every: bool = False) -> tuple[str, ...] | None:
+        """The filters a full job fails, by their input names: employmentType, workType, location, postedWithin; ()
+        when it passes; None when its words do not match (or an excluded word does), so it is no near miss. The
+        first failure ends the check unless every is set: then each filter is checked, so a run that found nothing
+        can say which one filter stood between the user and the jobs that had their words."""
         if server_match and self.search_descriptions:
             if any(t.in_title(index(job.get('title'))) for t in self.excludes):
-                return False
+                return None
         elif not self.title_ok(job.get('title'), job.get('description')):
-            return False
+            return None
+        failed: list[str] = []
         if self.job_types and job_type(job) not in self.job_types:
-            return False
-        if self.work_types and work_type(job) not in self.work_types:
-            return False
+            failed.append('employmentType')
+            if not every:
+                return tuple(failed)
+        kind = work_type(job) if self.work_types or any(p.remote_only for p in self.places) else None
+        if self.work_types and kind not in self.work_types:
+            failed.append('workType')
+            if not every:
+                return tuple(failed)
         if self.places:
             area = job_area(job)
-            if not any(p.matches(area) for p in self.places):
-                return False
+            if not any(p.matches(area) and (not p.remote_only or kind == 'remote') for p in self.places):
+                failed.append('location')
+                if not every:
+                    return tuple(failed)
         if self.within_days is not None:
             posted = parse_time(job.get('postedAt'))
-            if posted is None:
-                return False
-            age = (now - posted).total_seconds()
-            if job.get('dateOnly'):
+            age = (now - posted).total_seconds() if posted else None
+            if age is not None and job.get('dateOnly'):
                 age -= 86400           # only the day is known: a job dated yesterday can be under 24 hours old
-            if age > self.within_days * 86400:
-                return False
-        return True
+            if age is None or age > self.within_days * 86400:
+                failed.append('postedWithin')
+        return tuple(failed)
 
 
 def parse_time(value: str | None) -> datetime | None:

@@ -59,6 +59,17 @@ def names(links: list | None, key: str) -> str | None:
     return ', '.join(n for n in ((link.get(key) or {}).get('name') for link in links or []) if n) or None
 
 
+def chart_label(records: list[dict]) -> str | None:
+    """The department name a board's org chart puts on every job, when its teams differ: a label, not a department.
+    Deel's own board gave all 249 jobs "Org Department" while their teams named 78 units (2026-11-08); in one user's
+    100 rows, 56 departments were such labels ("Department", "Functional Structure", "Division", "Areas"). A name
+    every job of a board shares tells nothing the team does not, so the rows leave it out. A board of one job, or
+    of one team, keeps its department."""
+    departments = {names((r.get('job') or {}).get('jobDepartments'), 'department') for r in records}
+    teams = {names((r.get('job') or {}).get('jobTeams'), 'team') for r in records} - {None}
+    return next(iter(departments)) if len(records) > 1 and len(departments) == 1 and len(teams) > 1 else None
+
+
 def job_type(links: list | None) -> str | None:
     for link in links or []:
         kind = JOB_TYPE_ALIASES.get(' '.join(((link.get('employmentType') or {}).get('name') or '').lower().split()))
@@ -136,6 +147,7 @@ class Deel(Platform):
         pay = (data.get('currentCompensation') or {}) if record.get('isCompensationVisible') else {}
         low, high, currency = pay.get('minAmount'), pay.get('maxAmount'), pay.get('currencyIsoCode')
         html = record.get('richtextDescription') or None
+        department = names(data.get('jobDepartments'), 'department')
         return {
             'id': record.get('id'),
             'company': session['name'],
@@ -145,7 +157,7 @@ class Deel(Platform):
             'places': places,
             'workType': WORK_TYPE.get(data.get('workArrangementEnum')),
             'employmentType': job_type(data.get('jobEmploymentTypes')),
-            'department': names(data.get('jobDepartments'), 'department'),
+            'department': None if department == session.get('chart_label') else department,
             'team': names(data.get('jobTeams'), 'team'),
             'salary': pay_text(low, high, currency),
             'salaryMin': low,
@@ -162,6 +174,7 @@ class Deel(Platform):
         records = answer(await send(http, 'GET', POSTINGS.format(org=session['org'], board=session['board'])))
         if not isinstance(records, list):
             raise BoardError('the job list was not a list')
+        session['chart_label'] = chart_label(records)
         return records
 
     async def pages(self, http, session, term, days):

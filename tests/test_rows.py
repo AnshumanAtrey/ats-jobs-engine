@@ -149,6 +149,34 @@ class Filtering(unittest.TestCase):
         self.assertTrue(filters(postedWithin='24 hours').passes(yesterday, NOW))
         self.assertFalse(filters(postedWithin='24 hours').passes(older, NOW))
 
+    def test_remote_next_to_places_adds_remote_jobs_and_keeps_the_places_open(self):
+        def at(name, country=None, kind=None):
+            return job(location=name, otherLocations=[], places=[{'name': name, 'country': country}], workType=kind)
+        mixed = filters(location=['Barcelona', 'Spain', 'Europe', 'Remote'])
+        self.assertTrue(mixed.passes(at('Barcelona, Spain', 'Spain', 'onsite'), NOW))      # lost before 2026-11-08
+        self.assertTrue(mixed.passes(at('Leeds, United Kingdom', 'United Kingdom'), NOW))  # Europe, no work type
+        self.assertTrue(mixed.passes(at('Remote', None, 'remote'), NOW))                  # open to anyone
+        self.assertFalse(mixed.passes(at('Remote - US', 'United States', 'remote'), NOW))  # remote for the US only
+        alone = filters(location=['Remote'])
+        self.assertTrue(alone.passes(at('Remote - US', 'United States', 'remote'), NOW))   # alone: every remote job
+        self.assertFalse(alone.passes(at('Barcelona, Spain', 'Spain', 'onsite'), NOW))
+
+    def test_a_remote_place_next_to_a_plain_place_is_remote_only_there(self):
+        def at(name, country, kind):
+            return job(location=name, otherLocations=[], places=[{'name': name, 'country': country}], workType=kind)
+        chosen = filters(location=['Barcelona', 'Remote EMEA'])
+        self.assertTrue(chosen.passes(at('Barcelona, Spain', 'Spain', 'onsite'), NOW))
+        self.assertTrue(chosen.passes(at('Paris, France', 'France', 'remote'), NOW))
+        self.assertFalse(chosen.passes(at('Paris, France', 'France', 'onsite'), NOW))
+
+    def test_misses_names_every_filter_a_job_with_the_words_failed(self):
+        chosen = filters(searchTerms=['security engineer'], location=['Germany'], workType=['remote'],
+                         postedWithin='24 hours')
+        self.assertEqual(chosen.misses(job(), NOW), ('workType',))
+        self.assertEqual(chosen.misses(job(), NOW, every=True), ('workType', 'location', 'postedWithin'))
+        self.assertIsNone(chosen.misses(job(title='Designer'), NOW))          # no words: not a near miss
+        self.assertEqual(filters(searchTerms=['security engineer']).misses(job(), NOW), ())
+
     def test_first_pass_keeps_jobs_that_can_match(self):
         short = {'title': 'Security Engineer', 'location': 'New York', 'employmentType': 'full-time'}
         self.assertTrue(filters(searchTerms=['security'], workType=['remote']).maybe(short))

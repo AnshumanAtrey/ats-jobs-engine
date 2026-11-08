@@ -211,6 +211,21 @@ class Reading(unittest.TestCase):
         self.assertEqual((len(pages), [j['id'] for j in pages[0]], len(calls)), (1, [JOB_ID, 'two'], 1))
         self.assertIn('/organizations/org-1/job_boards/board-1/job_postings', calls[0])
 
+    def test_a_department_every_job_shares_while_teams_differ_is_left_out(self):
+        # Deel's own board, 2026-11-08: "Org Department" on all 249 jobs, 78 different teams
+        def record(job_id, department, team):
+            return {**RECORD, 'id': job_id, 'job': {**RECORD['job'], 'jobDepartments': [{'department': {'name': department}}],
+                                                    'jobTeams': [{'team': {'name': team}}]}}
+        pages, _ = self.collect([Response(200, [record('1', 'Org Department', 'Payroll'),
+                                                record('2', 'Org Department', 'Product Design')])])
+        self.assertEqual([(j['department'], j['team']) for j in pages[0]],
+                         [(None, 'Payroll'), (None, 'Product Design')])
+        for answer in ([record('1', 'Sales', 'EMEA'), record('2', 'Engineering', 'Backend')],   # departments differ
+                       [record('1', 'Sales', 'EMEA'), record('2', 'Sales', 'EMEA')],            # one team
+                       [record('1', 'Sales', 'EMEA')]):                                         # one job
+            pages, _ = self.collect([Response(200, answer)])
+            self.assertTrue(all(j['department'] for j in pages[0]), answer)
+
     def test_an_answer_that_is_no_list_is_an_error(self):
         for bad in (Response(200, {'errors': []}), Response(200), Response(500)):
             with self.assertRaises(BoardError):

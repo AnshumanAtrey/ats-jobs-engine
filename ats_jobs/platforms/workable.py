@@ -418,7 +418,8 @@ class Workable(Platform):
         them before any answered, open() reads the feed instead."""
         self.cfg = cfg
         if any(places.world_query(places.tokens(p)) for p in cfg.locations):
-            cfg.notes.append('Workable gives every job a country, so no job is marked worldwide: type Remote in '
+            cfg.notes.append('Workable gives every job a country, so no job is marked worldwide or open everywhere: '
+                             'set Work type to Remote, or type only Remote in '
                              'location to get remote jobs.')
         if cfg.search_terms or cfg.locations or cfg.work_types or cfg.job_types:
             return [EVERYONE]

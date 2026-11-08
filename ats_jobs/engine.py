@@ -21,6 +21,7 @@ import json
 import math
 import time
 import zlib
+from collections import Counter
 from datetime import datetime, timedelta, timezone
 
 from apify import Actor
@@ -42,6 +43,11 @@ STOP_REASONS = {
     'time': 'the run was about to reach its time limit, so the boards read so far were used. '
             'Raise the run timeout to read every board.',
 }
+# a search that finds nothing names the filter that stood in the way (rows.Filters.misses) and how to loosen it
+FILTER_NAMES = {'employmentType': 'job type', 'workType': 'work type', 'location': 'location',
+                'postedWithin': 'posting date'}
+FILTER_FIXES = {'employmentType': 'clear Job type', 'workType': 'clear Work type and any "Remote" typed in location',
+                'location': 'add a wider place, such as a region or Worldwide', 'postedWithin': 'pick a longer period'}
 
 
 async def safe_status(message: str) -> None:
@@ -125,6 +131,9 @@ class Run:
         self.boards_failed = self.details_failed = 0     # boards whose list, and jobs whose details, could not be read
         self.jobs_listed = self.matching = self.duplicates = 0
         self.older_copies = 0              # jobs held twice: a newer copy came after the older was kept
+        self.near_misses = 0               # jobs with the words (or any job, with no words) that missed a filter
+        self.missed_first: Counter = Counter()   # the first filter each near miss failed
+        self.missed_only: Counter = Counter()    # near misses one filter alone left out, with words typed
         self.companies_matched: set[str] = set()
         self.boards_missing: list[str] = []
         self.board_errors: list[dict] = []
@@ -242,7 +251,15 @@ class Run:
             hit = False
             self.jobs_listed += len(jobs)
             for job in jobs:
-                if not job.get('id') or not filters.passes(job, now, server_match):
+                if not job.get('id'):
+                    continue
+                missed = filters.misses(job, now, server_match, every=bool(filters.terms))
+                if missed:
+                    self.near_misses += 1
+                    self.missed_first[missed[0]] += 1
+                    if len(missed) == 1:
+                        self.missed_only[missed[0]] += 1
+                if missed != ():
                     continue
                 hit = True
                 posted = parse_time(job.get('postedAt')) or OLDEST
@@ -469,6 +486,26 @@ class Run:
             return f'Checking {plural(len(self.cfg.job_urls), "job link")} on {self.platform.name}.'
         return f'Reading {plural(len(self.cfg.companies) or len(self.boards), self.where)}.'
 
+    def near_miss_hint(self) -> str:
+        """Why a search found nothing, from the near misses: the jobs that had the words, the filter that alone left
+        them out, and how to loosen it. Without words, the filter that left out the most jobs."""
+        cfg = self.cfg
+        if not self.near_misses:
+            if cfg.search_terms:
+                wider = '' if cfg.search_descriptions else ', or search descriptions too'
+                return f' No job title had your words: try fewer or other words{wider}.'
+            return ''
+        if not cfg.search_terms:
+            top, n = self.missed_first.most_common(1)[0]
+            return (f' The {FILTER_NAMES[top]} filter left out the most jobs read: {n:,} of {self.near_misses:,}. To '
+                    f'see more, {FILTER_FIXES[top]}.')
+        text = f' {plural(self.near_misses, "job")} had your words but not your other filters'
+        only = self.missed_only.most_common()
+        if not only:
+            return text + ': each missed more than one of them, so loosen several.'
+        alone = ', '.join(f'the {FILTER_NAMES[k]} alone left out {n:,}' for k, n in only)
+        return f'{text}: {alone}. To see them, {FILTER_FIXES[only[0][0]]}.'
+
     def message(self) -> str:
         cfg, seconds, name = self.cfg, round(time.monotonic() - self.started), self.platform.name
         if self.mode == 'check':
@@ -498,7 +535,9 @@ class Run:
             elif not self.answered():
                 text = f'Nothing was read in {seconds} s.'
             else:
-                text = f'No open job matched on {where} in {seconds} s. Try fewer words, another place or a longer period.'
+                text = f'No open job matched on {where} in {seconds} s.{self.near_miss_hint()}'
+                for note in cfg.notes[:self.input_notes]:     # how the input was read can be why nothing matched
+                    text += f' {note}'
             if self.boards_failed:
                 text += f' {plural(self.boards_failed, self.where)} could not be read: boardsWithErrors in OUTPUT says why.'
             if self.details_failed:
@@ -532,6 +571,8 @@ class Run:
             'companiesWithMatches': len(self.companies_matched) if search else None,
             'jobsRead': self.jobs_listed if search else None,
             'duplicatesLeftOut': self.duplicates,
+            'nearMisses': {'jobs': self.near_misses, 'leftOutByOneFilterOnly': dict(self.missed_only),
+                           'firstFilterMissed': dict(self.missed_first)} if search else None,
             'links': self.links if not search else None,
             'boardsNotFound': self.boards_missing[:100] if (cfg.companies or not search) else [],
             'boardsWithErrors': self.board_errors[:100],
@@ -539,6 +580,7 @@ class Run:
             'skipped': [{'input': text, 'reason': why} for text, why in cfg.skipped],
             'settings': {
                 'searchTerms': cfg.search_terms, 'excludeTerms': cfg.exclude_terms, 'location': cfg.locations,
+                'remoteOnlyIn': cfg.remote_places,
                 'workType': cfg.work_types, 'employmentType': cfg.job_types,
                 'postedWithinDays': cfg.posted_within_days, 'maxJobs': cfg.max_jobs,
                 'includeDetails': cfg.include_details, 'searchDescriptions': cfg.search_descriptions,

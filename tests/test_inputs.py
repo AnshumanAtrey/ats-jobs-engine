@@ -120,6 +120,27 @@ class Places(unittest.TestCase):
         cfg = parse({'location': 'Remote 100%'})
         self.assertEqual((cfg.locations, cfg.work_types), ([], ['remote']))
 
+    def test_remote_next_to_places_is_one_more_choice_not_a_filter_on_all(self):
+        # a Deel user's real input (run UxZ0dOfitMrBnt6TF, 2026-11-03): remote-only found none of the 4 jobs there
+        cfg = parse({'location': ['Barcelona', 'Spain', 'EMEA', 'Europe', 'Remote']})
+        self.assertEqual((cfg.locations, cfg.work_types, cfg.remote_places),
+                         (['Barcelona', 'Spain', 'EMEA', 'Europe', 'Remote worldwide'], [], []))
+        self.assertTrue(any('remote jobs open everywhere' in n and 'set Work type to Remote' in n for n in cfg.notes),
+                        cfg.notes)
+
+    def test_remote_with_a_place_next_to_other_places_is_remote_there_only(self):
+        cfg = parse({'location': ['Barcelona', 'Remote EMEA']})
+        self.assertEqual((cfg.locations, cfg.work_types, cfg.remote_places), (['Barcelona', 'EMEA'], [], ['EMEA']))
+        cfg = parse({'location': ['Spain', 'Remote, Spain']})           # Spain asked plainly keeps every work type
+        self.assertEqual((cfg.locations, cfg.work_types, cfg.remote_places), (['Spain'], [], []))
+
+    def test_every_entry_remote_still_moves_remote_to_the_work_type(self):
+        cfg = parse({'location': ['Remote', 'Remote EMEA']})
+        self.assertEqual((cfg.locations, cfg.work_types, cfg.remote_places), (['EMEA'], ['remote'], []))
+        cfg = parse({'location': ['London', 'Hybrid', 'Remote']})       # another work type typed: all move
+        self.assertEqual((cfg.locations, sorted(cfg.work_types), cfg.remote_places),
+                         (['London'], ['hybrid', 'remote'], []))
+
     def test_a_place_with_no_letters_is_skipped_with_a_reason(self):
         cfg = parse({'location': ['!!!', 'Berlin', '-']})
         self.assertEqual(cfg.locations, ['Berlin'])
