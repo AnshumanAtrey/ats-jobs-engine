@@ -212,6 +212,21 @@ class Pages(unittest.TestCase):
         self.assertEqual((read['date'], read['experience'], read['function'], read['website'], read['employmentType']),
                          ('2026-10-19', (2, 4), ['Software Engineering', 'Data Engineering / DWH / ETL'],
                           'https://www.disneycareers.com/en', 'FULL_TIME'))
+        self.assertEqual((read['title'], read['company'], read['locations']),
+                         ('Senior Data Engineer', 'The Walt Disney Company', ['Bangalore']))
+
+    def test_a_page_repeating_its_block_per_city_reads_the_jobs_own(self):
+        other = PAGE.replace('"datePosted": "2026-10-19"', '"datePosted": "2026-01-01", "identifier": {"value": "job-9-x"}')
+        mine = PAGE.replace('"datePosted": "2026-10-19"', '"datePosted": "2026-10-19", "identifier": {"value": "job-447415-x"}')
+        html = mine.split('</head>')[0] + other.split('</head>')[0].split('<head>')[1] + '</head>' + mine.split('</head>')[1]
+        self.assertEqual(read_page(html, 447415)['date'], '2026-10-19')
+
+    def test_a_pages_skill_tags_and_places(self):
+        html = ('<span class="location-span"><img src="x.svg" alt="">Bangalore, Chennai</span>'
+                '<ul id="job-skills-description" class="tags"><li id="expand-skills-description">[[ more ]]</li>'
+                '<li>Python</li><li>SQL &amp; NoSQL</li></ul>')
+        read = read_page(html)
+        self.assertEqual((read['locations'], read['skills']), (['Bangalore', 'Chennai'], ['Python', 'SQL & NoSQL']))
 
     def test_a_closed_jobs_page_has_no_date(self):
         self.assertNotIn('date', read_page('<span class="experience">4-7 Years</span>'))
@@ -280,18 +295,26 @@ class Dates(unittest.TestCase):
 
 
 class Walk(unittest.TestCase):
-    def run_walk(self, answers: dict, raw: dict, top: int, need, cutoff=None, search_s=None):
+    def run_walk(self, answers: dict, raw: dict, top: int, need, cutoff=None, search_s=None, pages_ok=True):
         p = platform(raw)
 
         async def answer(http, job_id):
-            if answers.get(job_id) == 'refused':
+            if p.paces['detail'].refused or answers.get(job_id) == 'refused':
+                p.paces['detail'].refused = 'limit'
                 raise Refused('limit')
             return copy.deepcopy(answers.get(job_id))
+
+        async def page(job_id):
+            if not pages_ok:
+                p.page_trouble = 'refused'
+                return None
+            return {'date': days(0), 'title': f'Engineer {job_id}', 'company': 'Acme', 'locations': ['Pune'],
+                    'skills': ['Python'], 'experience': (2, 4), 'function': ['Software Engineering', 'Backend']}
 
         async def fill_dates(ids):
             for i in ids:
                 p.dates[i] = days(0) if i > 950 else days(30)
-        p.answer, p.fill_dates = answer, fill_dates
+        p.answer, p.page, p.fill_dates = answer, page, fill_dates
         found = {}
         stop = asyncio.run(p.walk(None, top, need, cutoff, search_s, found))
         return stop, found
@@ -318,9 +341,16 @@ class Walk(unittest.TestCase):
         stop, found = self.run_walk(self.answers(), {'searchTerms': ['nothing like this']}, 1000, 100, search_s=30)
         self.assertEqual(stop[0], 'slow')
 
-    def test_a_refusal_ends_the_walk(self):
+    def test_a_refused_answer_is_read_from_its_page(self):
         answers = {**self.answers(), 990: 'refused'}
-        self.assertEqual(self.run_walk(answers, {}, 1000, 100)[0][0], 'refused')
+        stop, found = self.run_walk(answers, {}, 1000, 30)
+        self.assertEqual(stop[0], 'enough')
+        self.assertEqual((found[990]['title'], found[990]['extra']['experienceMin'], found[990]['company']),
+                         ('Engineer 990', 2, 'Acme'))
+
+    def test_answers_and_pages_both_refused_end_the_walk(self):
+        answers = {**self.answers(), 990: 'refused'}
+        self.assertEqual(self.run_walk(answers, {}, 1000, 100, pages_ok=False)[0][0], 'refused')
 
     def test_the_newest_id_is_found_past_a_gap(self):
         p = Instahyre()
@@ -328,7 +358,10 @@ class Walk(unittest.TestCase):
 
         async def answer(http, job_id):
             return {'id': job_id} if job_id in live else None
-        p.answer = answer
+
+        async def offline(url):
+            raise AssertionError('a unit test read a live page')
+        p.answer, p.browser_get = answer, offline
         self.assertEqual(asyncio.run(p.newest_id(None, 4000)), 5000)
 
 

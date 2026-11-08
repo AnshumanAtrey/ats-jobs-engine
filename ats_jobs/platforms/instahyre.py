@@ -92,6 +92,9 @@ PAGE_EXPERIENCE = re.compile(r'class="experience">(?:\s*<img[^>]*>)?\s*([^<]*?)\
 PAGE_FUNCTION = re.compile(r'Function:\s*</span>(.*?)</p>', re.S)
 PAGE_SPAN = re.compile(r'<span>\s*([^<]*?)\s*</span>')
 EMPLOYER_ID = re.compile(r"employerId\s*=\s*'?(\d+)")
+PAGE_PLACES = re.compile(r'class="location-span">(?:\s*<img[^>]*>)?\s*([^<]*?)\s*<')
+PAGE_SKILLS = re.compile(r'id="job-skills-description"(.*?)</ul>', re.S)
+PAGE_SKILL = re.compile(r'<li>([^<]+)</li>')
 YEARS_TEXT = re.compile(r'(\d+)\s*(?:-\s*(\d+))?\s*\+?\s*years?', re.I)
 SIZE_WORDS = {'small': 'small', 'startup': 'small', 'startups': 'small', 'medium': 'medium', 'mid': 'medium',
               'midsize': 'medium', 'mid-size': 'medium', 'large': 'large', 'big': 'large', 'enterprise': 'large'}
@@ -146,21 +149,29 @@ def stipend(info: dict | None) -> dict:
             'salaryPeriod': 'month'}
 
 
-def read_page(html: str) -> dict:
-    """A job page -> {date, descriptionHtml, employmentType, website, experience (low, high), function [category,
-    function, ...]}. The date, description, type and website come from its JobPosting markup; the experience ("2-4
-    Years") and the function ("Software Engineering -> Data Engineering") from the page's own labelled spans."""
+def read_page(html: str, job_id: int | None = None) -> dict:
+    """A job page -> {date, title, company, logo, website, descriptionHtml, employmentType, experience (low, high),
+    function [category, function, ...], locations, skills}. The JobPosting markup gives the date, title, company,
+    description and type (a page can repeat the job's block once per city; the block naming the job is used); the
+    page's own labelled parts give the experience ("2-4 Years"), function, places as shown and skill tags."""
     out: dict = {}
+    postings = []
     for block in LD_JSON.findall(html):
         try:
             data = json.loads(block)
         except ValueError:
             continue
         if isinstance(data, dict) and data.get('@type') == 'JobPosting':
-            out.update({'date': (data.get('datePosted') or '')[:10] or None,
-                        'descriptionHtml': data.get('description') or None,
-                        'employmentType': data.get('employmentType'),
-                        'website': (data.get('hiringOrganization') or {}).get('sameAs') or None})
+            postings.append(data)
+    named = [d for d in postings if str((d.get('identifier') or {}).get('value') or '').startswith(f'job-{job_id}-')]
+    posting = (named or postings or [None])[0]
+    if posting:
+        company = posting.get('hiringOrganization') or {}
+        out.update({'date': (posting.get('datePosted') or '')[:10] or None,
+                    'title': ' '.join((posting.get('title') or '').split()) or None,
+                    'company': (company.get('name') or '').strip() or None, 'logo': company.get('logo') or None,
+                    'descriptionHtml': posting.get('description') or None,
+                    'employmentType': posting.get('employmentType'), 'website': company.get('sameAs') or None})
     found = PAGE_EXPERIENCE.search(html)
     span = YEARS_TEXT.search(found.group(1)) if found else None
     if span:
@@ -169,6 +180,12 @@ def read_page(html: str) -> dict:
     found = PAGE_FUNCTION.search(html)
     if found:
         out['function'] = [htmllib.unescape(s) for s in PAGE_SPAN.findall(found.group(1)) if s and s != '&rarr;']
+    found = PAGE_PLACES.search(html)
+    if found:
+        out['locations'] = [c.strip() for c in htmllib.unescape(found.group(1)).split(',') if c.strip()]
+    found = PAGE_SKILLS.search(html)
+    if found:
+        out['skills'] = [htmllib.unescape(s).strip() for s in PAGE_SKILL.findall(found.group(1)) if s.strip()]
     return out
 
 
@@ -723,21 +740,38 @@ class Instahyre(Platform):
 
     # ---------- the walk ----------
 
+    async def exists(self, http, job_id: int) -> bool:
+        """Whether a job has this id, published or not: its answer, or its page once Instahyre refuses the answers."""
+        try:
+            return await self.answer(http, job_id) is not None
+        except Refused:
+            got = await self.browser_get(PAGE.format(id=job_id))
+            return got is not None and got[0] != 404
+
+    async def open_job(self, http, job_id: int) -> dict | None:
+        """An open job's answer; its page standing in once Instahyre refuses the answers. None: no open job there."""
+        try:
+            info = await self.answer(http, job_id)
+            return info if info and info.get('is_active') else None
+        except Refused:
+            read = await self.page(job_id)
+            return self.page_answer(job_id, read) if read and read.get('date') else None
+
     async def newest_id(self, http, hint: int) -> int:
         """The highest job id: up from one known to exist in growing steps to an id with no job, then halving the gap.
         Four ids past the top are tried too, in case a job just below it was deleted."""
         low, step = hint, TOP_STEP
-        while await self.answer(http, low + step) is not None:
+        while await self.exists(http, low + step):
             low, step = low + step, step * 2
         high = low + step
         while high - low > 1:
             middle = (low + high) // 2
-            if await self.answer(http, middle) is not None:
+            if await self.exists(http, middle):
                 low = middle
             else:
                 high = middle
         for ahead in range(high + 1, high + 5):
-            if await self.answer(http, ahead) is not None:
+            if await self.exists(http, ahead):
                 return await self.newest_id(http, ahead)
         return low
 
@@ -749,11 +783,10 @@ class Instahyre(Platform):
         tried, would be)."""
         for job_id in range(top, max(top - PENDING_STEP * PENDING_TRIES, 0), -PENDING_STEP):
             try:
-                info = await self.answer(http, job_id)
+                if await self.open_job(http, job_id):
+                    return min(top, job_id + PENDING_STEP - 1)
             except BoardError:
                 return top
-            if info and info.get('is_active'):
-                return min(top, job_id + PENDING_STEP - 1)
         return top
 
     async def walk(self, http, top: int, need: int | None, cutoff: str | None, search_s: float | None,
@@ -771,12 +804,11 @@ class Instahyre(Platform):
             wanted = need - len(found) if need is not None else WALK_BATCH
             size = WALK_BATCH if cutoff and need is None else min(WALK_BATCH, max(5, int(wanted / max(rate, 0.2)) + 3))
             ids = list(range(current, max(current - size, 0), -1))
-            results = await asyncio.gather(*(self.answer(http, i) for i in ids), return_exceptions=True)
-            if any(isinstance(r, Refused) for r in results):
+            results = await asyncio.gather(*(self.open_job(http, i) for i in ids), return_exceptions=True)
+            if self.paces['detail'].refused and self.page_trouble:          # answers and pages both refused
                 return 'refused', current
             read += len(ids)
-            fresh = [self.job({'id': i}, r) for i, r in zip(ids, results)
-                     if isinstance(r, dict) and r.get('is_active')]
+            fresh = [self.job({'id': i}, r) for i, r in zip(ids, results) if isinstance(r, dict)]
             if cutoff:
                 await self.fill_dates([j['rank'] for j in fresh])
             for job in fresh:
@@ -818,7 +850,7 @@ class Instahyre(Platform):
         if status != 200 or not JOB_LINK.match(urlparse(url).path):
             self.read_pages[job_id] = None
             return None
-        read = read_page(text)
+        read = read_page(text, job_id)
         self.read_pages[job_id] = read
         if read.get('date'):
             self.dates[job_id] = read['date']
@@ -876,6 +908,13 @@ class Instahyre(Platform):
             return None
         known = self.companies().get(found.group(1))
         return known['name'] if known else ((await self.profile(http, found.group(1))) or {}).get('company_name')
+
+    def page_answer(self, job_id: int, read: dict) -> dict:
+        """A job's page alone -> an answer of the job's own shape, for a walk when Instahyre refuses the answers."""
+        record = {'id': job_id, 'title': read.get('title'), 'locations': ','.join(read.get('locations') or []),
+                  'keywords': read.get('skills') or [],
+                  'employer': {'company_name': read.get('company'), 'profile_image_src': read.get('logo')}}
+        return self.from_page(record, read)
 
     def from_page(self, record: dict, read: dict) -> dict:
         """A search record and a job's page -> an answer of the job's own shape, for when Instahyre refuses those: the
@@ -977,7 +1016,9 @@ class Instahyre(Platform):
             self.progress = 'Finding Instahyre\'s newest job.'
             top = await self.first_open(http, await self.newest_id(http, hint))
             stop, next_id = await self.walk(http, top, need, cutoff, pages_left * SEARCH_GAP if first else None, found)
-            if stop in ('slow', 'refused') and first is not None:
+            # a refused walk hands over only to a search that can finish (the empty form's is 385 pages behind a limit
+            # of about 250 an hour): otherwise the jobs found so far are delivered, marked partial
+            if first is not None and (stop == 'slow' or (stop == 'refused' and pages_left * SEARCH_GAP <= LONG_SEARCH_S)):
                 way = 'search'
             elif stop in ('time', 'cap', 'refused'):
                 self.incomplete = True
