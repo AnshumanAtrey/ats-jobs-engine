@@ -248,6 +248,25 @@ class Places(unittest.TestCase):
         self.assertEqual(place('Delhi / NCR')['region'], 'Delhi')
         self.assertEqual(place('Thiruvananthapuram')['region'], 'Kerala')        # Trivandrum on Naukri's list
 
+    def test_a_new_name_a_part_of_a_city_and_a_state_alone_get_their_state(self):
+        # Names Naukri's jobs printed on 2026-11-08 that its own list writes otherwise, or not at all.
+        for name, state in (('New Delhi(Okhla)', 'Delhi'), ('Mumbai Suburban', 'Maharashtra'), ('South Kolkata', 'West Bengal'),
+                            ('Bhubaneswar(Pahala)', 'Odisha'), ('Nashik', 'Maharashtra'), ('Tumakuru', 'Karnataka'),
+                            ('Chhatrapati Sambhajinagar', 'Maharashtra'), ('Dehradun', 'Uttarakhand')):
+            self.assertEqual(place(name)['region'], state, name)
+        self.assertEqual(place('Karnataka'), {'name': 'Karnataka', 'region': 'Karnataka', 'country': 'India'})
+        self.assertEqual(place('orissa')['region'], 'Odisha')
+        self.assertEqual(place('pan india'), {'name': 'pan india', 'country': 'India'})
+        self.assertNotIn('region', place('Hosur Road'))      # a road in Bengaluru, named after a town in Tamil Nadu
+
+    def test_a_state_search_keeps_a_city_the_list_writes_otherwise(self):
+        now = datetime(2026, 11, 8, tzinfo=timezone.utc)
+        for label, where in (('Ballari', 'Karnataka'), ('Mumbai Suburban(Goregaon)', 'Maharashtra'), ('New Delhi', 'Delhi'),
+                             ('Bhubaneswar', 'Orissa')):
+            job = Naukri().job({**SHOWN, 'placeholders': [{'type': 'location', 'label': label}]})
+            _, cfg = search({'location': [where]})
+            self.assertTrue(Filters(cfg).passes(job, now), (label, where))
+
     def test_a_country_a_city_abroad_and_remote(self):
         self.assertEqual(place('United States (USA)')['country'], 'United States')
         self.assertEqual(place('United Arab Emirates')['country'], 'United Arab Emirates')

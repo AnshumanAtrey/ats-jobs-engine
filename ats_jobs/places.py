@@ -124,6 +124,8 @@ FILLER = REMOTE | {'fully', 'full', '100', 'work', 'working', 'from', 'only', 'f
 
 # Indian cities and states by every name in use. Job sites write the new one (Naukri: Bengaluru, Gurugram, Kolkata), and
 # people type either. Delhi NCR is the capital region: Delhi and the cities around it (Delhi alone stays Delhi).
+# The second line holds names Naukri's jobs print while its own city list keeps the older one (Bhubaneshwar, Nasik,
+# Bellary, Tumkur, Aurangabad), seen on 3,981 Naukri jobs on 2026-11-08, and the official renames beside them.
 _SAME_PLACE = (
     ('bengaluru', 'bangalore'), ('mumbai', 'bombay'), ('chennai', 'madras'), ('kolkata', 'calcutta'),
     ('gurugram', 'gurgaon'), ('pune', 'poona'), ('thiruvananthapuram', 'trivandrum'), ('kochi', 'cochin'),
@@ -132,6 +134,11 @@ _SAME_PLACE = (
     ('prayagraj', 'allahabad'), ('varanasi', 'benares', 'banaras'), ('tiruchirappalli', 'trichy'),
     ('kalaburagi', 'gulbarga'), ('shivamogga', 'shimoga'), ('thoothukudi', 'tuticorin'), ('panaji', 'panjim'),
     ('odisha', 'orissa'), ('tamil nadu', 'tamilnadu'), ('uttarakhand', 'uttaranchal'),
+    ('bhubaneswar', 'bhubaneshwar'), ('nashik', 'nasik'), ('ballari', 'bellary'), ('davanagere', 'davangere'),
+    ('tumakuru', 'tumkur'), ('chhatrapati sambhajinagar', 'aurangabad'), ('bardhaman', 'burdwan'),
+    ('bargarh', 'baragarh'), ('yamuna nagar', 'yamunanagar'), ('morbi', 'morvi'), ('bhilai', 'bhillai'),
+    ('brahmapur', 'berhampur', 'behrampur'), ('vijayapura', 'bijapur'), ('hosapete', 'hospet'),
+    ('chikkamagaluru', 'chikmagalur'), ('ahilyanagar', 'ahmednagar'), ('dharashiv', 'osmanabad'),
 )
 _CAPITAL_REGION = ('delhi', 'new delhi', 'noida', 'greater noida', 'gurugram', 'gurgaon', 'ghaziabad', 'faridabad')
 OTHER_NAMES = {name: tuple(n for n in names if n != name) for names in _SAME_PLACE for name in names}

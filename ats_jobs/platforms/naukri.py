@@ -34,8 +34,12 @@ a German hosting company, as an address in a datacenter):
   before, India time), so each bucket holds at least its days.
 - A location is one text: "Hybrid - Hyderabad, Chennai, Bengaluru", "Remote", "Bengaluru(Hoskote)", "United States
   (USA), Singapore". Hybrid and Remote are the work type (wfhType 3 and 2; anything else is office work, 0). A city is
-  given its state from Naukri's own list of 5,810 Indian cities (data/naukri-cities.tsv, scripts/refresh_naukri.py);
-  a place that is neither on it nor a country names no country (Dubai, London), and Remote is remote in India.
+  given its state from Naukri's own list of 5,810 Indian cities (data/naukri-cities.tsv, scripts/refresh_naukri.py).
+  Jobs print names that list writes otherwise or lacks: today's names (Bhubaneswar, Nashik, Tumakuru; the list keeps
+  Bhubaneshwar, Nasik, Tumkur), New Delhi (the list has Delhi), Mumbai Suburban, South Kolkata, a state alone. Of
+  5,820 places on 3,981 jobs read on 2026-11-08, 318 matched no city on the list (New Delhi 78 times); read with the
+  old and new names, the words around a city's name and the states, 40 did: Dubai and other places abroad, and parts
+  of cities (Powai, Koramangala). Such a place names no country, and Remote and Pan India are in India.
 """
 import asyncio
 import base64
@@ -168,6 +172,12 @@ def answer(response) -> dict:
 
 # ---------- places ----------
 
+STATE_NOW = {'Uttaranchal': 'Uttarakhand'}       # Naukri's list still writes the state's name before 2007
+# Words around a city's name in a job's place: New Delhi is in Delhi, Mumbai Suburban in Mumbai's state.
+AROUND = frozenset(('new', 'old', 'greater', 'north', 'south', 'east', 'west', 'central', 'suburban', 'suburbs',
+                    'rural', 'urban', 'city', 'district'))
+
+
 @lru_cache(maxsize=1)
 def cities() -> dict[str, str]:
     """Naukri's Indian cities, by each of their names in words -> the state (data/naukri-cities.tsv)."""
@@ -176,17 +186,32 @@ def cities() -> dict[str, str]:
     for line in text.splitlines():
         if line and not line.startswith('#'):
             city, _, state = line.partition('\t')
-            found.setdefault(' '.join(words(city)), state.strip())
+            found.setdefault(' '.join(words(city)), STATE_NOW.get(state.strip(), state.strip()))
+    return found
+
+
+@lru_cache(maxsize=1)
+def states() -> dict[str, str]:
+    """The states and union territories of Naukri's list, by each of their names in words: 'orissa' -> 'Odisha'."""
+    found = {}
+    for state in sorted(set(cities().values())):
+        key = ' '.join(words(state))
+        for each in (key, *places.OTHER_NAMES.get(key, ())):
+            found.setdefault(each, state)
     return found
 
 
 def state_of(name: str) -> str | None:
-    """'Bengaluru', 'Gurugram' (Gurgaon on Naukri's list), 'Mumbai (All Areas)' -> the state, or None."""
+    """'Bengaluru', 'Gurugram' (Gurgaon on Naukri's list), 'Mumbai (All Areas)', 'New Delhi', 'Mumbai Suburban',
+    'South Kolkata', or a state itself ('Karnataka', 'orissa') -> the state, or None."""
     for part in (name, re.sub(r'\(.*?\)', ' ', name), *re.split(r'\s*/\s*', name)):
         key = ' '.join(words(part))
-        for each in (key, *places.OTHER_NAMES.get(key, ())):
+        bare = ' '.join(w for w in key.split() if w not in AROUND)
+        for each in (key, *places.OTHER_NAMES.get(key, ()), bare, *places.OTHER_NAMES.get(bare, ())):
             if each in cities():
                 return cities()[each]
+            if each in states():
+                return states()[each]
     return None
 
 
@@ -216,16 +241,19 @@ def split_places(text: str | None) -> tuple[str | None, list[str]]:
 
 
 def place(name: str) -> dict:
-    """One place of a job: its city (without the locality in brackets), state and country."""
+    """One place of a job: its city (without the locality in brackets), state and country. A state named alone
+    ('Karnataka') has no city, and Remote or a place across India ('pan india') only the country."""
     city = re.sub(r'\s*\(.*?\)\s*', ' ', name).strip() or name
     codes = job_places({'places': [{'name': name}]})[1]
     if codes:
         code = sorted(codes)[0]
         return {'name': name, 'country': country_name(code)}
-    state = state_of(name)
+    state, key = state_of(name), ' '.join(words(city))
+    if state and key in states() and key not in cities():
+        return {'name': name, 'region': state, 'country': 'India'}
     if state:
         return {'name': name, 'city': city, 'region': state, 'country': 'India'}
-    if places.entry_kind(places.tokens(name)) == 'remote':
+    if 'india' in key.split() or places.entry_kind(places.tokens(name)) == 'remote':
         return {'name': name, 'country': 'India'}
     return {'name': name, 'city': city}
 
