@@ -10,6 +10,9 @@ requires-python = ">=3.11"
 license = { text = "MIT" }
 dependencies = ["apify>=4.2,<5", "httpx==0.28.1", "pycountry==26.2.16"]
 
+[project.optional-dependencies]
+instahyre = ["curl_cffi==0.17.0"]   # Instahyre shows its job pages (the posting date) only to a browser's TLS
+
 [tool.setuptools.packages.find]
 include = ["ats_jobs*"]
 

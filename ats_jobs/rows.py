@@ -4,14 +4,17 @@ Matching and output rows, for every platform. Pure module: no Apify or network i
 A platform turns its own records into one job shape (a plain dict):
   id, company, title, location, otherLocations, places, workType, employmentType, department, team, salary, salaryMin,
   salaryMax, salaryCurrency, salaryPeriod, offersEquity, postedAt, expiresAt, dateOnly, jobUrl, applyUrl, reference,
-  description, descriptionHtml.
+  description, descriptionHtml, skills, rank, extra.
 places is every place the job names: {'name': text, 'city': ..., 'region': ..., 'country': name or code}.
 dateOnly says postedAt holds a day and no time. Missing keys read as unknown. company is for a platform that names the
 company itself, so a board that is not on our list still shows it. companySlug and companyWebsite are for a feed of
-every company's jobs (Platform.search_all): a job that has them replaces the board's.
+every company's jobs (Platform.search_all): a job that has them replaces the board's. skills are the skill tags a
+platform gives a job (Instahyre): a search term matches them as it matches a title. rank orders two jobs posted the same
+day (newest first, as a job id that grows with posting). extra holds a platform's own columns (Instahyre's experience
+range), added to the row as they are.
 
-Matching is by words, not by a list of job titles: a search term matches a title when every word of
-the term is in it. Words are cut at anything that is not a letter or digit (C++ and C# keep their
+Matching is by words, not by a list of job titles: a search term matches a title, or one of the job's skills, when
+every word of the term is in it. Words are cut at anything that is not a letter or digit (C++ and C# keep their
 sign), accents are dropped (developpeur finds Développeur, Zürich finds Zurich), an s plural is folded,
 and two neighbouring words also count joined, so frontend, front end and front-end match each other
 while java does not match JavaScript. Descriptions, when searched, must hold
@@ -299,11 +302,17 @@ class Filters:
         self.within_days = cfg.posted_within_days
         self.search_descriptions = cfg.search_descriptions
 
-    def title_ok(self, title: str | None, description: str | None = None) -> bool:
+    def skill_ok(self, skills: list | None) -> bool:
+        """A term is one of the job's skill tags: python finds a job tagged Python, machine learning one tagged
+        Machine Learning. Each tag is matched as a title is, so java still does not find JavaScript."""
+        return bool(skills) and any(t.in_title(index(skill)) for skill in skills if isinstance(skill, str)
+                                    for t in self.terms)
+
+    def title_ok(self, title: str | None, description: str | None = None, skills: list | None = None) -> bool:
         idx = index(title)
         if any(t.in_title(idx) for t in self.excludes):
             return False
-        if not self.terms or any(t.in_title(idx) for t in self.terms):
+        if not self.terms or any(t.in_title(idx) for t in self.terms) or self.skill_ok(skills):
             return True
         if self.search_descriptions and description:
             text, didx = folded_text(description)
@@ -315,7 +324,8 @@ class Filters:
         idx = index(job.get('title'))
         if any(t.in_title(idx) for t in self.excludes):
             return False
-        if self.terms and not self.search_descriptions and not any(t.in_title(idx) for t in self.terms):
+        if (self.terms and not self.search_descriptions and not any(t.in_title(idx) for t in self.terms)
+                and not self.skill_ok(job.get('skills'))):
             return False
         if self.job_types and job_type(job) not in self.job_types:
             return False
@@ -328,7 +338,7 @@ class Filters:
         if server_match and self.search_descriptions:
             if any(t.in_title(index(job.get('title'))) for t in self.excludes):
                 return False
-        elif not self.title_ok(job.get('title'), job.get('description')):
+        elif not self.title_ok(job.get('title'), job.get('description'), job.get('skills')):
             return False
         if self.job_types and job_type(job) not in self.job_types:
             return False
@@ -389,6 +399,7 @@ def job_row(platform: str, company: dict, job: dict, checked_at: str, details: b
         'jobId': job.get('id'),
         'checkedAt': checked_at,
     }
+    row.update(job.get('extra') or {})        # a platform's own columns: none on most platforms
     if details:
         first = (entries(job) or [{}])[0]
         country = first.get('country')

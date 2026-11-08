@@ -30,6 +30,13 @@ class Platform:
                                       # platform whose job list leaves descriptions out can ask for them and skip
                                       # the text that holds none of these words
     incomplete = False       # set during a run that read only part of what the platform lists (a feed cut short)
+    progress: str | None = None       # set by a platform that works a while before its first page: the status line
+
+    def read_inputs(self, raw: dict, notes: list[str]) -> dict:
+        """The fields this platform's actor adds to the shared form (experience years on Instahyre), read from the raw
+        input the way inputs.py reads the shared ones: nothing stops a run, and a value read another way gets a note.
+        The result is Config.extra."""
+        return {}
 
     def search_all(self, boards: list[Board], cfg) -> list[Board]:
         """What a search reads when no company is named: every board (or some of them), or one board that is not on
