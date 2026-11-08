@@ -181,6 +181,7 @@ class Run:
 
     def row(self, board: Board, job: dict, details: bool) -> dict:
         row = job_row(self.platform.key, company(board), job, self.checked_at, details)
+        row.update({k: job.get(k) for k in self.platform.extra})
         return {k: v for k, v in row.items() if k not in self.platform.never}
 
     def board_error(self, key: str, exc: Exception) -> None:
@@ -242,7 +243,7 @@ class Run:
             hit = False
             self.jobs_listed += len(jobs)
             for job in jobs:
-                if not job.get('id') or not filters.passes(job, now, server_match):
+                if not job.get('id') or not filters.passes(job, now, server_match) or not platform.fits(job):
                     continue
                 hit = True
                 posted = parse_time(job.get('postedAt')) or OLDEST
@@ -448,7 +449,7 @@ class Run:
             else:
                 who = company(board) if job is None else {      # a lookup can name the company of a job that is gone
                     'name': job.get('company'), 'slug': job.get('companySlug'), 'website': job.get('companyWebsite')}
-                row = link_row(platform.key, who, job_id, url, status, self.checked_at)
+                row = {**link_row(platform.key, who, job_id, url, status, self.checked_at), **dict.fromkeys(platform.extra)}
                 rows.append(({k: v for k, v in row.items() if k not in platform.never}, LINK_EVENT))
         await self.deliver_all(rows)
 
@@ -542,8 +543,7 @@ class Run:
                 'workType': cfg.work_types, 'employmentType': cfg.job_types,
                 'postedWithinDays': cfg.posted_within_days, 'maxJobs': cfg.max_jobs,
                 'includeDetails': cfg.include_details, 'searchDescriptions': cfg.search_descriptions,
-                'companies': cfg.companies,
-                **cfg.extra,                       # the platform's own settings (Platform.read_input)
+                'companies': cfg.companies, **self.platform.settings(),
             },
             'companyList': {'boards': len(self.boards), 'updated': self.updated},
             'traffic': {'calls': STATS['calls'], 'averageSeconds': round(STATS['seconds'] / (STATS['calls'] or 1), 2),

@@ -26,6 +26,7 @@ class Platform:
     ranked_search = False    # a word search comes back by relevance, so only a list with no word is newest first
     page_cap: int | None = None    # pages read per board and word, unless every match was asked for
     never: tuple = ()        # row fields this platform never publishes: left out of its rows
+    extra: tuple = ()        # job fields of this platform alone that its rows carry too (Hirist: years of experience)
     description_terms: tuple = ()     # set by the engine: the words of a run that searches descriptions, so a
                                       # platform whose job list leaves descriptions out can ask for them and skip
                                       # the text that holds none of these words
@@ -36,11 +37,6 @@ class Platform:
         the list and lists every company's jobs, when the platform has one and the settings (inputs.Config, given on
         every search) suit it. The jobs of such a place carry their own company, companySlug and companyWebsite."""
         return boards
-
-    def read_input(self, raw: dict, cfg) -> None:
-        """The platform's own input fields, once the shared ones are read: their settings go to cfg.extra, how they
-        were read to cfg.notes and cfg.skipped. It may also widen the shared settings it knows better (a place's other
-        name). No input stops a run here either."""
 
     def copy_key(self, job: dict) -> tuple:
         """What makes two jobs of one company one job, kept once (the newest): the title at its place. A platform whose
@@ -74,6 +70,22 @@ class Platform:
     def read_link(self, text: str) -> tuple[str | None, str | None] | None:
         """A link of this platform -> (board key, job id), either can be None. Anything else -> None."""
         raise NotImplementedError
+
+    def search_link(self, text: str) -> tuple[list[str], list[str]]:
+        """A search page link of this platform -> (words, places) it asks for besides ?query= and ?location= (a site
+        that puts the words in the path: /search/python-jobs)."""
+        return [], []
+
+    def read_input(self, raw: dict, cfg) -> None:
+        """Inputs of this platform alone, read from the raw input once the shared ones are in cfg (inputs.Config)."""
+
+    def fits(self, job: dict) -> bool:
+        """A filter of this platform alone, asked for every job the shared filters pass (Hirist: years of experience)."""
+        return True
+
+    def settings(self) -> dict:
+        """This platform's own settings of the run, for the OUTPUT record."""
+        return {}
 
     def guess_board(self, name: str) -> str | None:
         """A company typed that is not on our list -> the board key to try, or None."""

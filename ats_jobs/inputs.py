@@ -65,7 +65,6 @@ class Config:
     job_urls: list[tuple[str, str, str]] = field(default_factory=list)   # (board key, job id, as typed)
     notes: list[str] = field(default_factory=list)
     skipped: list[tuple[str, str]] = field(default_factory=list)
-    extra: dict = field(default_factory=dict)                 # a platform's own settings (Platform.read_input)
 
 
 def _items(value) -> list[str]:
@@ -179,6 +178,9 @@ def route_links(value, platform, notes: list[str],
             query = parse_qs(urlparse(text if IS_URL.match(text) else f'https://{text}').query)
             asked = [v.strip() for key in ('query', 'q', 'keywords') for v in query.get(key, []) if v.strip()]
             place = [v.strip() for v in query.get('location', []) if v.strip()]
+            more_words, more_places = platform.search_link(text)
+            asked += [w for w in more_words if w not in asked]
+            place += [p for p in more_places if p not in place]
             if asked or place:
                 words += asked
                 where += place

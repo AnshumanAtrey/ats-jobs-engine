@@ -13,14 +13,18 @@ them. No login and no key. Measured from this laptop on 2026-11-08.
   24-character ObjectId. A job that is gone answers 400 with job_deactivated or job_deleted (closed) or job_not_found.
 - GET https://cutshort.io/backend-api/webpage/company/<alias>?page=N: a company's page and its open jobs.
 - GET https://cutshort.io/sitemap_companies.xml: every company page (16,202), read only to find a company typed by name.
+- GET https://cutshort.io/backend-api/webpage/jobs/<listing>?page=N: a listing such as python-jobs, remote-python-jobs
+  or python-jobs-in-pune (sitemap_listings.xml names 21,036), 50 jobs a page in the sitemap's order, 8 pages at most.
+  A search by skill reads it to know which jobs to open, since an address does not name a job's skills.
 robots.txt disallows /profile/, /apply/, /view/j/ and ?free_text= search pages; none of them is read. The site's own
 search (/finddemojobsignals/q?free_text=) is one of them, ranks by relevance and sends about 1 MB a job.
 
-Dates: postedAt is when the job was first posted: the JobPosting markup's datePosted, also the time in its ObjectId and
-the order of the sitemap, so newest first holds exactly. The page shows "Posted <date>" from hiringIntentShownOn
-(lastPostedAt): when the job went live after review, minutes later for most, or when the company re-posted it. In the
-newest 400 jobs of three listings it was more than a day later for 1.8% to 4.5% (python, remote and sales jobs), most of
-them over 30 days; 3 of the 60 newest jobs went live 1 to 2 days after they were created.
+Dates: postedAt is the JobPosting markup's datePosted: when the job was posted, or reopened after it closed (then its
+ObjectId is older). Cutshort's own job lists show and sort by it (148 of 148 python jobs to the minute), and so does the
+sitemap: 7 reopened jobs sat at their reopening date, one created in April 2025 among the jobs of 2 Nov 2026. So newest
+first holds exactly. The job's own page shows "Posted <date>" from hiringIntentShownOn (lastActiveAt): the last time the
+company showed it is still hiring, which moves forward on active jobs: later than datePosted on 59% of the 2,000 newest
+jobs, by over a week on 35%.
 
 Remote: Cutshort marks a job remote only, remote friendly ("Remote, Coimbatore": remote or that office) or neither, and
 its own list of remote jobs holds only the first kind (50 of 50): workType remote, hybrid and onsite. A remote-only job
@@ -34,6 +38,7 @@ Pace: Cloudflare refuses an address for about 5 minutes (HTTP 429, error code 10
 apart; the first refusal is waited out once, with no call going out, and a second one stops the run's calls.
 """
 import asyncio
+import math
 import re
 import time
 from datetime import datetime, timedelta, timezone
@@ -43,7 +48,7 @@ import httpx
 
 from ..http import STATS, BoardError
 from ..inputs import EVERY, _items, parse_bool, parse_choices, parse_terms
-from ..rows import Filters, Place, Term, country_code, fold, index, parse_time, words
+from ..rows import Filters, Place, Term, index, parse_time, words
 from .base import Board, Platform
 from .cornerstone import text_of
 
@@ -57,12 +62,14 @@ JOBS_SITEMAP = SITE + '/sitemap_jobs.xml'
 COMPANIES_SITEMAP = SITE + '/sitemap_companies.xml'
 JOB_API = SITE + '/backend-api/webpage/job/{id}'
 COMPANY_API = SITE + '/backend-api/webpage/company/{alias}'
-JOB_LINK = SITE + '/job/{slug}'
+LISTINGS_SITEMAP = SITE + '/sitemap_listings.xml'
+LISTING_API = SITE + '/backend-api/webpage/jobs/{slug}'
 HOSTS = ('cutshort.io', 'www.cutshort.io')
 EVERYONE = Board('*', 'Cutshort')     # every job of every company (the sitemap); also the board of a job link
 NOBODY = {'company': None, 'companySlug': None, 'companyWebsite': None}   # a gone job whose company is unknown
 LOC = re.compile(r'<loc>\s*https?://(?:www\.)?cutshort\.io/job/([^<\s]+?)\s*</loc>')
 COMPANY_LOC = re.compile(r'<loc>\s*https?://(?:www\.)?cutshort\.io/company/([^<\s]+?)\s*</loc>')
+LISTING_LOC = re.compile(r'<loc>\s*https?://(?:www\.)?cutshort\.io/jobs/([^<\s?#]+?)\s*</loc>')
 SHORT_ID = re.compile(r'^[A-Za-z0-9]{8}$')
 OBJECT_ID = re.compile(r'^[0-9a-f]{24}$')
 ALIAS = re.compile(r'^\S+-[A-Za-z0-9]{8}$')         # a company page: egnyte-SClW7oZH
@@ -70,6 +77,7 @@ PACE = 0.125                  # seconds between two call starts: 8 a second, hal
 RETRY_S = (2, 5)              # waits before a 5xx or a broken connection is tried again
 REFUSAL_WAIT_CAP = 330        # the longest Retry-After waited out (Cloudflare's 1015 lasts about 5 minutes)
 PAGE = 50                     # jobs read and handed to the engine at a time
+LISTING_PAGES = 8             # a listing serves its newest 400 jobs, 50 a page; page 9 answers 400 jobs_not_found
 READ_BUDGET = 5000            # job pages read at most when a number of jobs is asked for: about 11 minutes at PACE
 WORK_TYPES = {'remote_only': 'remote', 'remote_okay': 'hybrid', 'remote_not_okay': 'onsite'}
 PERIODS = {'YEAR': 'year', 'MONTH': 'month', 'WEEK': 'week', 'DAY': 'day', 'HOUR': 'hour'}
@@ -159,7 +167,7 @@ def places_of(page: dict, posting: dict, currency: str | None) -> list[dict]:
 
 
 def job_from(data: dict) -> dict | None:
-    """The job page's answer -> one job in the shape of rows.py, Cutshort's own fields under extra."""
+    """The job page's answer -> one job in the shape of rows.py, with Cutshort's own fields (Cutshort.extra)."""
     page = data.get('pageData') if isinstance(data, dict) else None
     if not isinstance(page, dict) or not page.get('publicUrl'):
         return None
@@ -198,23 +206,16 @@ def job_from(data: dict) -> dict | None:
         'applyUrl': url,
         'description': text_of(html),
         'descriptionHtml': html,
-        'extra': {
-            'skills': [s for s in page.get('allSkills') or [] if isinstance(s, str)],
-            'experienceMin': low,
-            'experienceMax': high,
-            'salaryMin': paid['salaryMin'],
-            'salaryMax': paid['salaryMax'],
-            'salaryCurrency': paid['salaryCurrency'],
-            'salaryPeriod': paid['salaryPeriod'],
-            'remotePolicy': summary.get('remotePolicy') or None,
-            'companyType': company.get('type') if isinstance(company.get('type'), str) else None,
-            'companySize': company.get('size') if isinstance(company.get('size'), str) else None,
-            'companyStage': company.get('stage') if isinstance(company.get('stage'), str) else None,
-            'companyFounded': number(company.get('founded')),
-            'agency': (' '.join(str(poster.get('name') or '').split()) or None) if agency else None,
-            'offersEquity': equity,
-            'lastPostedAt': page.get('hiringIntentShownOn') or None,
-        },
+        'skills': [s for s in page.get('allSkills') or [] if isinstance(s, str)],
+        'experienceMin': low,
+        'experienceMax': high,
+        'remotePolicy': summary.get('remotePolicy') or None,
+        'companyType': company.get('type') if isinstance(company.get('type'), str) else None,
+        'companySize': company.get('size') if isinstance(company.get('size'), str) else None,
+        'companyStage': company.get('stage') if isinstance(company.get('stage'), str) else None,
+        'companyFounded': number(company.get('founded')),
+        'agency': (' '.join(str(poster.get('name') or '').split()) or None) if agency else None,
+        'lastActiveAt': page.get('hiringIntentShownOn') or None,
     }
 
 
@@ -261,6 +262,9 @@ class Cutshort(Platform):
     concurrency = 8               # pages of companies read at once and the size of the connection pool; PACE keeps the rate
     newest_first = True           # the sitemap lists jobs newest posted first, and a company's jobs are sorted so
     never = ('department', 'team', 'expiresAt', 'reference', 'region')
+    extra = ('skills', 'experienceMin', 'experienceMax', 'salaryMin', 'salaryMax', 'salaryCurrency', 'salaryPeriod',
+             'remotePolicy', 'companyType', 'companySize', 'companyStage', 'companyFounded', 'agency', 'offersEquity',
+             'lastActiveAt')   # on every row: one call reads each job whole, so a plain row has them at no cost
 
     def __init__(self):
         self.cfg = None
@@ -271,10 +275,14 @@ class Cutshort(Platform):
         self._stopped: str | None = None
         self._jobs: list[str] | None = None          # the sitemap's job addresses, newest first
         self._aliases: list[str] | None = None       # the company pages, for names typed in companies
+        self._listings: set[str] | None = None       # every listing page's name, for a search by skill
         self.read = 0                 # job pages read this run
         self.closed = 0               # jobs on the sitemap that closed before their page was read
         self.unreadable = 0           # job pages that did not answer, or answered in a shape not seen before
+        self.passed = 0               # jobs read that passed Cutshort's own filters
         self.oldest: str | None = None
+        self._said: dict[str, int] = {}   # topic -> its note's place in cfg.notes (say)
+        self._settings: dict = {}         # Cutshort's own settings of the run (read_input), for OUTPUT
 
     # ---------- what people type ----------
 
@@ -308,6 +316,7 @@ class Cutshort(Platform):
         self.cfg = cfg
         notes, skipped = cfg.notes, cfg.skipped
         skills: list[str] = []
+        listings: list[str] = []                    # pasted listing pages, read as they are
         stages = parse_choices(raw.get('companyStage'), 'companyStage', STAGES, STAGE_ALIASES, notes)
         types = parse_choices(raw.get('companyType'), 'companyType', TYPES, TYPE_ALIASES, notes)
 
@@ -321,6 +330,8 @@ class Cutshort(Platform):
             query = parse_qs(parsed.query)
             if len(parts) == 2 and parts[0] == 'jobs':
                 found = listing_parts(parts[1])
+                if found['skills']:
+                    listings.append(parts[1].lower())
             elif query.get('free_text'):
                 found = {'skills': [query['free_text'][0].strip()], 'places': [], 'remote': False, 'setting': None}
             else:
@@ -346,7 +357,7 @@ class Cutshort(Platform):
         for token in _items(raw.get('skills')):
             if not listing(token.strip()):
                 skills += parse_terms([token], 'skills', notes, skipped)
-        cfg.extra.update({
+        self._settings.update({
             'skills': list(dict.fromkeys(skills)),
             'experienceYears': self.read_years(raw.get('experienceYears'), notes),
             'minSalaryLakhs': self.read_lakhs(raw.get('minSalaryLakhs'), notes),
@@ -354,6 +365,8 @@ class Cutshort(Platform):
             'companyType': list(dict.fromkeys(types)) if len(set(types)) < len(TYPES) else [],
             'excludeAgencies': parse_bool(raw.get('excludeAgencies'), False),
         })
+        if listings:
+            self._settings['listings'] = list(dict.fromkeys(listings))
         for typed, other in CITY_NAMES:
             if any(' '.join(words(p)) == typed for p in cfg.locations) and \
                     other.lower() not in (p.lower() for p in cfg.locations):
@@ -479,6 +492,18 @@ class Cutshort(Platform):
         if self.cfg is not None and note not in self.cfg.notes:
             self.cfg.notes.append(note)
 
+    def say(self, topic: str, note: str) -> None:
+        """A note kept current while the run reads: one per topic, replaced in place, so it is right whenever the
+        engine stops reading (it can stop between two pages)."""
+        if self.cfg is None:
+            return
+        at = self._said.get(topic)
+        if at is None:
+            self._said[topic] = len(self.cfg.notes)
+            self.cfg.notes.append(note)
+        else:
+            self.cfg.notes[at] = note
+
     async def text(self, http, url: str) -> str:
         response = await self.call(http, url)
         if response.status_code != 200:
@@ -559,6 +584,102 @@ class Cutshort(Platform):
 
     # ---------- reading jobs ----------
 
+    async def listing_slugs(self, http) -> set[str]:
+        if self._listings is None:
+            self._listings = set(LISTING_LOC.findall(await self.text(http, LISTINGS_SITEMAP)))
+        return self._listings
+
+    def listing_for(self, skill: str, slugs: set[str]) -> str | None:
+        """A skill typed -> Cutshort's listing of it, the narrowest that the search allows: remote-python-jobs when only
+        remote jobs are asked for, python-jobs-in-pune for one town Cutshort lists, else python-jobs. A listing's name is
+        the skill's words joined by hyphens or run together (reactjs, nodejs), or followed by its short form
+        (machine-learning-ml); a pasted listing link is used as it is."""
+        cfg = self.cfg
+        mine = [s for s in (self._settings.get('listings') or []) if listing_parts(s)['skills'] == [skill]]
+        if mine:
+            return mine[0] if mine[0] in slugs else None
+        ws = words(re.sub(r'[+#]', ' ', skill))
+        if not ws:
+            return None
+        forms = list(dict.fromkeys(['-'.join(ws), ''.join(ws)]))
+        forms += sorted(s.removesuffix('-jobs') for s in slugs if any(
+            s.startswith(f + '-') and s.endswith('-jobs') and re.fullmatch(r'[a-z0-9]{1,4}', s[len(f) + 1:-5])
+            for f in forms[:1]))
+        towns = []
+        if len(cfg.locations) == 1:
+            typed = ' '.join(words(cfg.locations[0]))
+            towns = sorted({s.split('-jobs-in-', 1)[1] for s in slugs if '-jobs-in-' in s and typed and
+                            f' {typed} ' in f" {s.split('-jobs-in-', 1)[1].replace('-', ' ')} "})
+        tries = []
+        for form in forms:
+            if cfg.work_types == ['remote']:
+                tries.append(f'remote-{form}-jobs')
+            tries += [f'{form}-jobs-in-{town}' for town in towns[:1]]
+            tries.append(f'{form}-jobs')
+        return next((s for s in tries if s in slugs), None)
+
+    async def listing_ids(self, http, slug: str) -> tuple[list[str], bool]:
+        """A listing's jobs, newest first, as 8-character ids, and whether that is all of them (fewer than 8 pages).
+        Page 1 comes first; when it is full, pages 2 to 8 are asked for together, since a page Cloudflare does not hold
+        comes from Cutshort's server in 6 to 13 s (golang-jobs took 90 s read one page after another)."""
+        def read(response) -> list[dict] | None:
+            if response.status_code == 400:
+                return None                                       # jobs_not_found: past its last page
+            if response.status_code != 200:
+                raise BoardError(f'HTTP {response.status_code} from the listing {slug}')
+            try:
+                return ((response.json().get('data') or {}).get('pageData') or {}).get('jobs') or []
+            except (ValueError, AttributeError) as exc:
+                raise BoardError(f'the listing {slug} was not JSON') from exc
+
+        async def page(n: int):
+            return await self.call(http, LISTING_API.format(slug=slug), params={'page': n} if n > 1 else None)
+        first = read(await page(1))
+        pages = [first] if first is not None else []
+        if first is not None and len(first) >= PAGE:
+            pages += [read(r) for r in await asyncio.gather(*(page(n) for n in range(2, LISTING_PAGES + 1)))]
+        ids: list[str] = []
+        for jobs in pages:
+            if jobs is None:
+                return ids, True
+            ids += [i for i in (short_id(str(j.get('publicUrl') or '').rsplit('/job/', 1)[-1]) for j in jobs
+                                if isinstance(j, dict)) if i]
+            if len(jobs) < PAGE:
+                return ids, True
+        return ids, len(pages) < LISTING_PAGES
+
+    async def skill_addresses(self, http, addresses: list[str]) -> list[str] | None:
+        """A search by skills with no title words: the jobs worth opening, from Cutshort's listing of each skill. A job
+        is opened when a listing names it, when its title has a skill's words, or when some listing does not cover its
+        place in the sitemap: newer than the listing's newest job (Cloudflare can serve a listing hours old) or older
+        than its last page. None when a skill has no listing: then every job is opened."""
+        cfg = self.cfg
+        skills = self._settings.get('skills') or [] if cfg is not None else []
+        if not skills or cfg.search_terms or cfg.search_descriptions:
+            return None
+        slugs = await self.listing_slugs(http)
+        chosen = [self.listing_for(skill, slugs) for skill in skills]
+        if None in chosen:
+            return None
+        where = {short_id(a): i for i, a in enumerate(addresses)}
+        members: set[int] = set()
+        covered: list[tuple[int, int, bool]] = []
+        for slug in dict.fromkeys(chosen):
+            ids, complete = await self.listing_ids(http, slug)
+            spots = [where[i] for i in ids if i in where]
+            members.update(spots)
+            covered.append((min(spots), max(spots), complete) if spots else (len(addresses), -1, complete))
+        self.tell(f'Read the Cutshort listing{"s" if len(set(chosen)) > 1 else ""} {", ".join(dict.fromkeys(chosen))} '
+                  f'to find the jobs with {" or ".join(skills)}.')
+        titled = [t for t in (Term(re.sub(r'[+#]', ' ', s)) for s in skills) if t.tokens]
+
+        def wanted(i: int, address: str) -> bool:
+            if i in members or any(i < top or (i > bottom and not complete) for top, bottom, complete in covered):
+                return True
+            body = address.rsplit('-', 1)[0].replace('-', ' ')
+            return any(t.in_title(index(body)) for t in titled)
+        return [a for i, a in enumerate(addresses) if wanted(i, a)]
+
     def candidates(self, addresses: list[str]) -> list[str]:
         """The sitemap's addresses that can hold a match: with words searched in titles only, the addresses with every
         word of a term (signs such as ++ and # are not in addresses); with places that are towns, the addresses that
@@ -583,13 +704,16 @@ class Cutshort(Platform):
             kept.append(address)
         return kept
 
-    def site_ok(self, job: dict) -> bool:
+    def settings(self) -> dict:
+        return dict(self._settings)
+
+    def fits(self, job: dict) -> bool:
         """Cutshort's own filters: skills or roles, experience, pay, funding stage, company type, agencies."""
-        settings = (self.cfg.extra if self.cfg is not None else {}) or {}
-        extra = job.get('extra') or {}
+        settings = self._settings
+        extra = job
         wanted = [Term(s) for s in settings.get('skills') or []]
         wanted = [t for t in wanted if t.tokens]
-        if wanted and not any(t.in_title(index(job.get('title'))) or any(t.in_title(index(s)) for s in extra['skills'])
+        if wanted and not any(t.in_title(index(job.get('title'))) or any(t.in_title(index(s)) for s in extra.get('skills') or [])
                               for t in wanted):
             return False
         years = settings.get('experienceYears')
@@ -640,37 +764,51 @@ class Cutshort(Platform):
         return [j for j in found if j]
 
     async def scan(self, http, addresses: list[str], days: int | None):
-        """Job pages in the order given (newest first), PAGE at a time; yields the jobs that pass Cutshort's own
-        filters. It stops once maxJobs jobs that pass every filter are held (nothing older can make the cut), past
-        the period asked for, at READ_BUDGET pages, or when Cutshort refuses the address."""
+        """Job pages in the order given (newest first), a page at a time; yields every open job read, and the engine
+        asks fits() for Cutshort's own filters. It stops once maxJobs jobs that pass every filter are held (nothing older
+        can make the cut), past the period asked for, at READ_BUDGET pages, or when Cutshort refuses the address."""
         cfg = self.cfg
         filters = Filters(cfg) if cfg is not None else None
         now = datetime.now(timezone.utc)
         window = now - timedelta(days=days) if days else None
         held: set = set()
         budget = READ_BUDGET if cfg is None or cfg.max_jobs is not None else None
-        # a small run reads a small first page: 10 jobs need 10 job pages, not PAGE
-        first = min(PAGE, max(10, cfg.max_jobs)) if cfg is not None and cfg.max_jobs else PAGE
-        starts = [0, *range(first, len(addresses), PAGE)] if addresses else []
-        for start, end in zip(starts, [*starts[1:], len(addresses)]):
+        wanted = cfg.max_jobs if cfg is not None else None
+        start = 0
+        while start < len(addresses):
             if budget is not None and start >= budget:
                 self.incomplete = True
                 self.tell(f'This run read the newest {start:,} of the {len(addresses):,} Cutshort jobs that could '
                           f'match (back to {self.oldest_day()}), the most one run reads. Add a job title or another '
                           f'filter to search older ones.')
                 return
+            # the next page is what the matches still wanted take at the rate seen so far, with a quarter more: 100
+            # jobs read 100 to 110 job pages, not 150; with nothing known yet, or every match wanted, PAGE
+            size = PAGE
+            if wanted:
+                rate = len(held) / start if start and held else 1.0
+                size = min(PAGE, max(10, math.ceil((wanted - len(held)) / rate * 1.25)))
+            end = min(start + size, len(addresses))
             try:
                 jobs = await self.jobs_of(http, addresses[start:end])
             except Stopped:
                 self.incomplete = True
                 return
+            start = end
             if jobs:
                 self.oldest = jobs[-1].get('postedAt') or self.oldest
-            kept = [j for j in jobs if self.site_ok(j)]
-            if kept:
-                yield kept
+            fit = [j for j in jobs if self.fits(j)]   # the engine asks fits() too; counted here for the note and the stop
+            self.passed += len(fit)
+            if self.own_filters():
+                self.say('filters', f"Cutshort's own filters ({', '.join(self.own_filters())}) kept {self.passed:,} of "
+                                    f'the {self.read:,} jobs read, newest first back to {self.oldest_day()}.')
+            if self.unreadable:
+                self.say('unreadable', f'{self.unreadable:,} Cutshort job pages could not be read, so they were left '
+                                       f'out.')
+            if jobs:                                   # every job read, so the engine counts what was read
+                yield jobs
             if filters is not None and cfg.max_jobs:
-                for job in kept:
+                for job in fit:
                     if filters.passes(job, now):
                         held.add(((job.get('company') or '').casefold(), *self.copy_key(job)))
                 if len(held) >= cfg.max_jobs:
@@ -682,15 +820,28 @@ class Cutshort(Platform):
     def oldest_day(self) -> str:
         return (self.oldest or '')[:10] or 'the start'
 
+    def own_filters(self) -> list[str]:
+        """The names of Cutshort's own filters this run uses, as the form names them."""
+        settings = self._settings
+        names = {'skills': 'skills', 'experienceYears': 'experience', 'minSalaryLakhs': 'salary',
+                 'companyStage': 'funding stage', 'companyType': 'company type', 'excludeAgencies': 'no agency jobs'}
+        return [name for key, name in names.items() if settings.get(key) not in (None, [], False)]
+
     async def pages(self, http, session, term, days):
         if session.get('everyone'):
-            addresses = self.candidates(await self.sitemap(http))
+            everything = await self.sitemap(http)
+            try:
+                by_skill = await self.skill_addresses(http, everything)
+            except Stopped:
+                raise
+            except BoardError as exc:              # a listing that cannot be read: every job is opened instead
+                self.tell(f'A Cutshort listing could not be read ({exc}), so every job was read for the skills.')
+                by_skill = None
+            addresses = self.candidates(everything if by_skill is None else by_skill)
         else:   # a company: its jobs newest first by the time in their ObjectIds
             addresses = [a for _, a in sorted(session['jobs'], key=lambda j: j[0], reverse=True)]
         async for jobs in self.scan(http, addresses, days):
             yield jobs
-        if self.unreadable:
-            self.tell(f'{self.unreadable:,} Cutshort job pages could not be read, so they were left out.')
 
     async def lookup(self, http, session, job_id):
         status, data = await self.job_answer(http, job_id)

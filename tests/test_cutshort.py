@@ -141,24 +141,24 @@ class Answers(unittest.TestCase):
                          ('Bengaluru (Bangalore)', 'India', 'onsite', 'full-time'))
         self.assertEqual((job['salary'], job['salaryMin'], job['salaryMax'], job['salaryCurrency'], job['salaryPeriod']),
                          ('₹3L - ₹3L / yr', 300000, 300000, 'INR', 'year'))
-        self.assertEqual(job['postedAt'], '2026-11-06T06:58:22.892Z')          # first posted, not the page's date
-        extra = job['extra']
+        self.assertEqual(job['postedAt'], '2026-11-06T06:58:22.892Z')          # the markup's datePosted, as Cutshort's lists
+        extra = job
         self.assertEqual((extra['experienceMin'], extra['experienceMax'], extra['companyType'], extra['companyStage'],
                           extra['companySize'], extra['companyFounded'], extra['agency'], extra['remotePolicy']),
                          (0, 5, 'Services', 'Bootstrapped', '100-1000', 2018, None, None))
-        self.assertEqual(extra['lastPostedAt'], '2026-11-06T07:17:24.046Z')
+        self.assertEqual(extra['lastActiveAt'], '2026-11-06T07:17:24.046Z')
         self.assertEqual(job['companyWebsite'], 'https://portal.hellomentor.in')
 
     def test_remote_friendly_is_hybrid_at_the_office_it_names_and_hidden_pay_is_none(self):
         job = job_from(FRIENDLY)
-        self.assertEqual((job['workType'], job['location'], job['otherLocations'], job['extra']['remotePolicy']),
+        self.assertEqual((job['workType'], job['location'], job['otherLocations'], job['remotePolicy']),
                          ('hybrid', 'Coimbatore', [], 'Remote friendly'))
         self.assertEqual((job['salary'], job['salaryMin'], job['salaryCurrency']), (None, None, None))
-        self.assertIn('Retrieval Augmented Generation (RAG)', job['extra']['skills'])
+        self.assertIn('Retrieval Augmented Generation (RAG)', job['skills'])
 
     def test_an_agency_job_names_the_client_and_the_agency(self):
         job = job_from(AGENCY)
-        self.assertEqual((job['company'], job['companySlug'], job['extra']['agency']),
+        self.assertEqual((job['company'], job['companySlug'], job['agency']),
                          ('Milwaukee Tool', None, 'Inceptigon Solutions Pty Limited'))
 
     def test_remote_only_is_remote_in_india(self):
@@ -177,14 +177,22 @@ class Answers(unittest.TestCase):
         job = job_from(INTERN)
         self.assertEqual((job['employmentType'], job['salaryMin'], job['salaryMax'], job['salaryPeriod']),
                          ('intern', 12000, 18000, 'month'))
-        self.assertEqual((job['extra']['companyType'], job['extra']['companyStage']), (None, None))
+        self.assertEqual((job['companyType'], job['companyStage']), (None, None))
 
-    def test_esop_and_a_later_page_date(self):
+    def test_esop_and_a_later_active_date(self):
         job = job_from(ESOP)
         self.assertTrue(job['offersEquity'])
-        self.assertEqual((job['postedAt'], job['extra']['lastPostedAt']),
+        self.assertEqual((job['postedAt'], job['lastActiveAt']),
                          ('2026-11-05T19:48:30.813Z', '2026-11-06T23:09:31.801Z'))
         self.assertEqual(job['salary'], '₹30L - ₹65L / yr (ESOP available)')
+
+    def test_a_reopened_job_is_dated_by_its_reopening_as_cutshorts_lists_date_it(self):
+        data = json.loads(json.dumps(ONSITE))
+        data['pageData']['_id'] = '67eb9465b0d7390027ce5f50'                  # created on 2025-04-01
+        data['seoData']['jsonlds'][0]['datePosted'] = '2026-11-02T17:26:42.688Z'
+        self.assertEqual(job_from(data)['postedAt'], '2026-11-02T17:26:42.688Z')
+        del data['seoData']['jsonlds'][0]['datePosted']                       # no markup date: the ObjectId's time
+        self.assertEqual(job_from(data)['postedAt'], '2025-04-01T07:23:17+00:00')
 
     def test_upto_pay_has_no_lowest_amount(self):
         data = json.loads(json.dumps(ONSITE))
@@ -193,14 +201,17 @@ class Answers(unittest.TestCase):
         self.assertEqual((job['salary'], job['salaryMin'], job['salaryMax']), ('Upto ₹3L / yr', None, 300000))
 
     def test_a_row_carries_cutshorts_fields_and_leaves_out_what_it_never_has(self):
-        p = Cutshort()
-        row = job_row('cutshort', {'name': None}, job_from(ESOP), '2026-11-08T00:00:00+00:00', True)
-        row = {k: v for k, v in row.items() if k not in p.never}
+        p, cfg = platform_for({'includeDetails': True})
+        run = engine.Run(p, cfg, [], None, None)
+        row = run.row(cs.EVERYONE, job_from(ESOP), True)                 # as the engine builds every row
         self.assertEqual(row['skills'], ['User Experience (UX) Design', 'Artificial Intelligence (AI)', 'Product Management'])
-        self.assertEqual((row['offersEquity'], row['salaryMin'], row['countryCode'], row['jobId']), (True, 3000000, 'IN', 'ZgeQIcht'))
+        self.assertEqual((row['offersEquity'], row['salaryMin'], row['countryCode'], row['jobId'], row['companyStage']),
+                         (True, 3000000, 'IN', 'ZgeQIcht', 'Raised funding'))
         for key in ('department', 'team', 'expiresAt', 'reference', 'region'):
             self.assertNotIn(key, row)
         self.assertTrue(row['description'].startswith('About'))
+        plain = run.row(cs.EVERYONE, job_from(ESOP), False)               # a plain row has them too, with no description
+        self.assertEqual((plain['experienceMin'], plain['salaryMax'], plain.get('description')), (2, 6500000, None))
 
     def test_an_answer_without_a_page_is_no_job(self):
         self.assertIsNone(job_from({}))
@@ -209,9 +220,9 @@ class Answers(unittest.TestCase):
 
 class Inputs(unittest.TestCase):
     def test_cutshorts_own_fields(self):
-        _, cfg = platform_for({'skills': ['python', 'react'], 'experienceYears': 3, 'minSalaryLakhs': 12,
-                               'companyStage': ['raised funding'], 'companyType': ['product'], 'excludeAgencies': True})
-        self.assertEqual(cfg.extra, {'skills': ['python', 'react'], 'experienceYears': [3.0, 3.0], 'minSalaryLakhs': 12.0,
+        p, _ = platform_for({'skills': ['python', 'react'], 'experienceYears': 3, 'minSalaryLakhs': 12,
+                             'companyStage': ['raised funding'], 'companyType': ['product'], 'excludeAgencies': True})
+        self.assertEqual(p.settings(), {'skills': ['python', 'react'], 'experienceYears': [3.0, 3.0], 'minSalaryLakhs': 12.0,
                                      'companyStage': ['funded'], 'companyType': ['product'], 'excludeAgencies': True})
 
     def test_years_and_lakhs_as_people_type_them(self):
@@ -227,19 +238,19 @@ class Inputs(unittest.TestCase):
         self.assertIsNone(Cutshort.read_lakhs('lots', notes))
 
     def test_every_stage_or_type_is_no_filter(self):
-        _, cfg = platform_for({'companyStage': ['bootstrapped', 'funded', 'profitable'], 'companyType': ['product', 'services']})
-        self.assertEqual((cfg.extra['companyStage'], cfg.extra['companyType']), ([], []))
+        p, _ = platform_for({'companyStage': ['bootstrapped', 'funded', 'profitable'], 'companyType': ['product', 'services']})
+        self.assertEqual((p.settings()['companyStage'], p.settings()['companyType']), ([], []))
 
     def test_a_pasted_listing_link_is_read_as_its_skill_place_and_remote(self):
-        _, cfg = platform_for({'searchTerms': ['https://cutshort.io/jobs/remote-python-jobs-in-bangalore-bengaluru']})
-        self.assertEqual((cfg.extra['skills'], cfg.locations, cfg.work_types), (['python'], ['Bangalore', 'Bengaluru'], ['remote']))
+        p, cfg = platform_for({'searchTerms': ['https://cutshort.io/jobs/remote-python-jobs-in-bangalore-bengaluru']})
+        self.assertEqual((p.settings()['skills'], cfg.locations, cfg.work_types), (['python'], ['Bangalore', 'Bengaluru'], ['remote']))
         self.assertEqual(cfg.skipped, [])
         self.assertTrue(any('Read the Cutshort link' in n for n in cfg.notes))
 
     def test_a_company_listing_and_a_search_link(self):
-        _, cfg = platform_for({'skills': ['https://cutshort.io/jobs/product-based-company-jobs',
-                                          'https://cutshort.io/search-jobs?free_text=golang']})
-        self.assertEqual((cfg.extra['companyType'], cfg.extra['skills']), (['product'], ['golang']))
+        p, _ = platform_for({'skills': ['https://cutshort.io/jobs/product-based-company-jobs',
+                                        'https://cutshort.io/search-jobs?free_text=golang']})
+        self.assertEqual((p.settings()['companyType'], p.settings()['skills']), (['product'], ['golang']))
 
     def test_listing_parts(self):
         self.assertEqual(listing_parts('datascience-jobs')['skills'], ['datascience'])
@@ -292,7 +303,7 @@ class Candidates(unittest.TestCase):
 class SiteFilters(unittest.TestCase):
     def ok(self, raw, response):
         p, _ = platform_for(raw)
-        return p.site_ok(job_from(response.body['data']))
+        return p.fits(job_from(response.body['data']))
 
     def test_skills_match_a_skill_or_the_title(self):
         self.assertTrue(self.ok({'skills': ['react']}, job('x-AbCd1234', 'Engineer', '2026-11-07T00:00:00Z', skills=['React.js'])))
@@ -312,7 +323,7 @@ class SiteFilters(unittest.TestCase):
         self.assertFalse(self.ok({'minSalaryLakhs': 20}, job('x-AbCd1234', 'E', '2026-11-07T00:00:00Z', pay=(800000, 1500000))))
         self.assertFalse(self.ok({'minSalaryLakhs': 1}, job('x-AbCd1234', 'E', '2026-11-07T00:00:00Z')))     # hidden pay
         p, _ = platform_for({'minSalaryLakhs': 2})
-        self.assertTrue(p.site_ok(job_from(INTERN)))           # 18,000 a month is 2.16 lakhs a year
+        self.assertTrue(p.fits(job_from(INTERN)))           # 18,000 a month is 2.16 lakhs a year
 
     def test_stage_type_and_agencies(self):
         self.assertTrue(self.ok({'companyStage': ['funded']}, job('x-AbCd1234', 'E', '2026-11-07T00:00:00Z', stage='Raised funding')))
@@ -351,8 +362,18 @@ class Scan(unittest.TestCase):
         http = FakeHttp(routes())
         with patch.object(cs, 'PAGE', 2):
             pages = collect(p, http, {'everyone': True})
+        read = [j for page in pages for j in page]
         self.assertTrue(all(pages))                             # no empty page reaches the engine
-        self.assertEqual([j['title'] for page in pages for j in page][:1], ['Python Developer 5'])
+        self.assertEqual([j['title'] for j in read if p.fits(j)], ['Python Developer 5'])
+        self.assertEqual(len(read), 6)                          # it read on past pages with no fit, and stopped at one
+
+    def test_a_note_says_how_many_jobs_cutshorts_own_filters_kept(self):
+        p, cfg = platform_for({'maxJobs': 1, 'experienceYears': 6})
+        with patch.object(cs, 'PAGE', 2):
+            collect(p, FakeHttp(routes()), {'everyone': True})
+        self.assertIn("Cutshort's own filters (experience) kept 1 of the 6 jobs read, newest first back to 2026-11-03.",
+                      cfg.notes)
+        self.assertEqual(sum('own filters' in n for n in cfg.notes), 1)      # one note, kept current
 
     def test_it_stops_past_the_period(self):
         p, _ = platform_for({'postedWithin': '2 days'})
@@ -399,6 +420,71 @@ class Scan(unittest.TestCase):
             self.assertEqual(asyncio.run(p.named(http, 'Hello Mentor Private Limited')), ['hello-mentor-private-limited-65-MaMzzYis'])
             self.assertEqual(asyncio.run(p.named(http, 'Hello Mentor')), ['hello-mentor-private-limited-65-MaMzzYis'])
             self.assertEqual(asyncio.run(p.named(http, 'Nobody Here')), [])
+
+
+LISTINGS = Response(200, None, ''.join(f'<loc>https://cutshort.io/jobs/{s}</loc>' for s in (
+    'python-jobs', 'remote-python-jobs', 'python-jobs-in-pune', 'python-jobs-in-bangalore-bengaluru', 'reactjs-jobs',
+    'machine-learning-ml-jobs', 'java-jobs')), {'content-type': 'text/xml'})
+
+
+def listing(slugs, full=False):
+    jobs = [{'publicUrl': f'https://cutshort.io/job/{s}'} for s in slugs] + [{'publicUrl': 'x'}] * (50 - len(slugs) if full else 0)
+    return Response(200, answer({'pageData': {'jobs': jobs}}))
+
+
+class Listings(unittest.TestCase):
+    SLUGS = set(LISTINGS.text.replace('<loc>https://cutshort.io/jobs/', ' ').replace('</loc>', ' ').split())
+
+    def found(self, raw, skill):
+        p, _ = platform_for(raw)
+        return p.listing_for(skill, self.SLUGS)
+
+    def test_a_typed_skill_finds_its_listing(self):
+        self.assertEqual(self.found({}, 'python'), 'python-jobs')
+        self.assertEqual(self.found({}, 'react js'), 'reactjs-jobs')
+        self.assertEqual(self.found({}, 'machine learning'), 'machine-learning-ml-jobs')
+        self.assertIsNone(self.found({}, 'cobol'))
+
+    def test_the_narrowest_listing_the_search_allows(self):
+        self.assertEqual(self.found({'workType': ['remote']}, 'python'), 'remote-python-jobs')
+        self.assertEqual(self.found({'location': ['Pune']}, 'python'), 'python-jobs-in-pune')
+        self.assertEqual(self.found({'location': ['Bangalore']}, 'python'), 'python-jobs-in-bangalore-bengaluru')
+        self.assertEqual(self.found({'location': ['Pune', 'Mumbai']}, 'python'), 'python-jobs')
+
+    def test_a_pasted_listing_is_read_as_it_is(self):
+        p, _ = platform_for({'searchTerms': ['https://cutshort.io/jobs/remote-python-jobs']})
+        self.assertEqual(p.settings()['listings'], ['remote-python-jobs'])
+        self.assertEqual(p.listing_for('python', self.SLUGS), 'remote-python-jobs')
+
+    def picked(self, complete):
+        addresses = [f'Role-{n}-Acme-Job{n:05d}' for n in range(10)]
+        addresses[3] = 'Python-Developer-Acme-Job00003'
+        p, _ = platform_for({'skills': ['python']})
+        page = listing(['Role-2-Acme-Job00002', 'Role-5-Acme-Job00005'], full=not complete)
+        http = FakeHttp({cs.LISTINGS_SITEMAP: LISTINGS, cs.LISTING_API.format(slug='python-jobs'): page,
+                         **{f'{cs.LISTING_API.format(slug="python-jobs")}?page={n}': page for n in range(2, 9)}})
+        with patch.object(cs, 'PACE', 0):
+            return [int(a[-5:]) for a in asyncio.run(p.skill_addresses(http, addresses))]
+
+    def test_only_the_jobs_a_listing_names_inside_its_depth(self):
+        # 0 and 1 are newer than the listing's newest job, 3 has the skill in its title, 2 and 5 are listed
+        self.assertEqual(self.picked(complete=True), [0, 1, 2, 3, 5])
+
+    def test_past_the_last_page_of_a_full_listing_every_job_is_opened(self):
+        self.assertEqual(self.picked(complete=False), [0, 1, 2, 3, 5, 6, 7, 8, 9])
+
+    def test_title_words_or_descriptions_need_no_listing(self):
+        for raw in ({'skills': ['python'], 'searchTerms': ['backend']}, {'searchTerms': ['python'], 'searchDescriptions': True}):
+            p, _ = platform_for(raw)
+            self.assertIsNone(asyncio.run(p.skill_addresses(FakeHttp({}), ['A-Job00001'])))
+
+    def test_a_listing_that_cannot_be_read_falls_back_to_every_job(self):
+        p, cfg = platform_for({'skills': ['python'], 'maxJobs': 2})
+        http = FakeHttp(routes((cs.LISTINGS_SITEMAP, Response(502, None, 'bad gateway'))))
+        with patch.object(cs, 'RETRY_S', ()):
+            pages = collect(p, http, {'everyone': True})
+        self.assertEqual(p.read, len(SLUGS))                 # every job of the sitemap was a candidate
+        self.assertTrue(any('could not be read' in n for n in cfg.notes))
 
 
 class FixedNow(cs.datetime):
