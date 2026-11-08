@@ -637,7 +637,7 @@ async def main(platform_key: str) -> None:
             f' workType={cfg.work_types or "any"} employmentType={cfg.job_types or "any"}'
             f' postedWithinDays={cfg.posted_within_days or "any"} maxJobs={cfg.max_jobs if cfg.max_jobs is not None else "all"}'
             f' details={cfg.include_details} searchDescriptions={cfg.search_descriptions}'
-            f' companies={len(cfg.companies) or f"all {len(boards):,}"} payPerEvent={delivery.ppe}'
+            f' companies={len(cfg.companies) or (f"all {len(boards):,}" if boards else "all")} payPerEvent={delivery.ppe}'
             + (f' experienceYears={cfg.experience[0]:g}' + ('+' if math.isinf(cfg.experience[1]) else f'-{cfg.experience[1]:g}')
                if cfg.experience is not None else ''))
         for note in cfg.notes:
