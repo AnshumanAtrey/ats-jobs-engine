@@ -51,6 +51,7 @@ class FakeHttp:
         self.routes, self.calls = routes, []
 
     async def get(self, url, params=None, **kwargs):
+        params = {k: v for k, v in (params or {}).items() if k != 'fresh'}     # past Cloudflare's copy: any value
         if params:
             url += '?' + '&'.join(f'{k}={v}' for k, v in params.items())
         self.calls.append(url)
@@ -396,6 +397,26 @@ class Scan(unittest.TestCase):
             collect(p, http, {'everyone': True})
         self.assertTrue(p.incomplete)
         self.assertTrue(any('the most one run reads' in n for n in cfg.notes))
+
+    def test_jobs_posted_since_the_sitemap_was_built_come_first(self):
+        p, cfg = platform_for({'maxJobs': 0})
+        fresh = 'Python-Developer-Pune-Acme-NewJob01'
+        live = listing([fresh, SLUGS[0], SLUGS[1]], full=False)                # every job, newest first
+        http = FakeHttp(routes((cs.LISTING_API.format(slug=cs.EVERY_JOB), live),
+                               (cs.JOB_API.format(id=fresh), job(fresh, 'Python Developer new', '2026-11-08T09:00:00Z'))))
+        pages = collect(p, http, {'everyone': True})
+        titles = [j['title'] for page in pages for j in page]
+        self.assertEqual(titles[:2], ['Python Developer new', 'Python Developer 0'])
+        self.assertEqual(len(titles), len(SLUGS) + 1)                     # the sitemap's jobs once each
+        self.assertFalse(any('could not be read' in n for n in cfg.notes))
+
+    def test_without_the_live_list_the_sitemap_alone_is_searched(self):
+        p, cfg = platform_for({'maxJobs': 0})
+        http = FakeHttp(routes((cs.LISTING_API.format(slug=cs.EVERY_JOB), Response(403, None, 'forbidden',
+                                                                                 {'content-type': 'application/json'}))))
+        pages = collect(p, http, {'everyone': True})
+        self.assertEqual(sum(len(page) for page in pages), len(SLUGS))
+        self.assertTrue(any("live list of new jobs could not be read" in n for n in cfg.notes))
 
     def test_a_company_is_read_newest_first(self):
         p, _ = platform_for({'companies': ['acme-AbCdEfGh']})

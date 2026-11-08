@@ -15,7 +15,11 @@ them. No login and no key. Measured from this laptop on 2026-11-08.
 - GET https://cutshort.io/sitemap_companies.xml: every company page (16,202), read only to find a company typed by name.
 - GET https://cutshort.io/backend-api/webpage/jobs/<listing>?page=N: a listing such as python-jobs, remote-python-jobs
   or python-jobs-in-pune (sitemap_listings.xml names 21,036), 50 jobs a page in the sitemap's order, 8 pages at most.
-  A search by skill reads it to know which jobs to open, since an address does not name a job's skills.
+  A search by skill reads it to know which jobs to open, since an address does not name a job's skills. startup-jobs
+  holds every job (liveJobCount 44,963, its page 1 the sitemap's top 50): read past Cloudflare's copy of hours ago (a
+  query that changes every 10 minutes; 2 to 15 s from Cutshort's server), it adds the jobs posted since the sitemap was
+  built. The sitemap answered the
+  same bytes at 00:35 and 02:27 UTC, its newest lastmod 23:30 UTC, so it may be built once a day.
 robots.txt disallows /profile/, /apply/, /view/j/ and ?free_text= search pages; none of them is read. The site's own
 search (/finddemojobsignals/q?free_text=) is one of them, ranks by relevance and sends about 1 MB a job.
 
@@ -78,6 +82,8 @@ RETRY_S = (2, 5)              # waits before a 5xx or a broken connection is tri
 REFUSAL_WAIT_CAP = 330        # the longest Retry-After waited out (Cloudflare's 1015 lasts about 5 minutes)
 PAGE = 50                     # jobs read and handed to the engine at a time
 LISTING_PAGES = 8             # a listing serves its newest 400 jobs, 50 a page; page 9 answers 400 jobs_not_found
+EVERY_JOB = 'startup-jobs'    # the listing that holds every job: 44,963 of 44,963, its page 1 the sitemap's top 50
+FRESH_S = 600                 # the live list's query changes this often (newer_than)
 READ_BUDGET = 5000            # job pages read at most when a number of jobs is asked for: about 11 minutes at PACE
 WORK_TYPES = {'remote_only': 'remote', 'remote_okay': 'hybrid', 'remote_not_okay': 'onsite'}
 PERIODS = {'YEAR': 'year', 'MONTH': 'month', 'WEEK': 'week', 'DAY': 'day', 'HOUR': 'hour'}
@@ -527,12 +533,53 @@ class Cutshort(Platform):
         raise BoardError(f'HTTP {response.status_code}: {code or "unexpected answer"}')
 
     async def sitemap(self, http) -> list[str]:
-        """Every live job's address, newest first."""
+        """Every live job's address, newest first: the sitemap, with the jobs posted since it was built on top. The
+        live list's first page is asked for at the same time as the sitemap."""
         if self._jobs is None:
-            self._jobs = list(dict.fromkeys(LOC.findall(await self.text(http, JOBS_SITEMAP))))
-            if not self._jobs:
+            text, first = await asyncio.gather(self.text(http, JOBS_SITEMAP), self.live_page(http, 1),
+                                               return_exceptions=True)
+            if isinstance(text, BaseException):
+                raise text
+            listed = list(dict.fromkeys(LOC.findall(text)))
+            if not listed:
                 raise BoardError('the jobs sitemap listed no job')
+            self._jobs = await self.newer_than(http, listed, first) + listed
         return self._jobs
+
+    async def live_page(self, http, page: int) -> list[dict]:
+        """A page of startup-jobs, every job newest first, past Cloudflare's copy of hours ago: the query changes every
+        10 minutes, so runs inside the same 10 minutes share one copy and Cutshort's server answers once."""
+        params = {'fresh': str(int(time.time() // FRESH_S))} | ({'page': page} if page > 1 else {})
+        response = await self.call(http, LISTING_API.format(slug=EVERY_JOB), params=params)
+        if response.status_code != 200:
+            raise BoardError(f'HTTP {response.status_code}')
+        jobs = ((response.json().get('data') or {}).get('pageData') or {}).get('jobs') or []
+        return [j for j in jobs if isinstance(j, dict)]
+
+    async def newer_than(self, http, listed: list[str], first) -> list[str]:
+        """The jobs of the live list down to the first one the sitemap has (first: its page 1, or why it failed). A
+        list that cannot be read adds nothing: the sitemap alone is searched, and a note says so."""
+        known = {short_id(a) for a in listed[:2000]}
+        newer: list[str] = []
+        try:
+            for page in range(1, LISTING_PAGES + 1):
+                jobs = first if page == 1 else await self.live_page(http, page)
+                if isinstance(jobs, BaseException):
+                    raise jobs
+                for job in jobs:
+                    address = str(job.get('publicUrl') or '').rsplit('/job/', 1)[-1]
+                    if short_id(address) in known:
+                        return newer
+                    if short_id(address):
+                        newer.append(address)
+                if len(jobs) < PAGE:
+                    return newer
+        except Stopped:
+            raise
+        except (BoardError, ValueError, AttributeError) as exc:
+            self.tell(f"Cutshort's live list of new jobs could not be read ({exc}), so jobs posted since its sitemap was "
+                      f'built may be missing.')
+        return newer
 
     # ---------- boards ----------
 
