@@ -192,6 +192,21 @@ def cities() -> dict[str, str]:
 
 
 @lru_cache(maxsize=1)
+def shared_cities() -> frozenset[str]:
+    """The city names, in words, that Naukri's list holds in two states (Bijapur: Chhattisgarh and Karnataka), for
+    which cities() can only give the first."""
+    text = resources.files('ats_jobs').joinpath('data/naukri-cities.tsv').read_text(encoding='utf-8')
+    first, shared = {}, set()
+    for line in text.splitlines():
+        if line and not line.startswith('#'):
+            city, _, state = line.partition('\t')
+            key = ' '.join(words(city))
+            if first.setdefault(key, state.strip()) != state.strip():
+                shared.add(key)
+    return frozenset(shared)
+
+
+@lru_cache(maxsize=1)
 def states() -> dict[str, str]:
     """The states and union territories of Naukri's list, by each of their names in words: 'orissa' -> 'Odisha'."""
     found = {}

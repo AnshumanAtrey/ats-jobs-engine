@@ -15,8 +15,12 @@ pages call. No login, no key, no browser. Measured from this laptop on 2026-11-0
 - A place that the site's own place list does not know (Bombay, Atlantis) is answered with the site's remote jobs, and
   Gurgaon is answered with all of Delhi NCR. So a place goes to a site only when its list (data/foundit_places.tsv, from
   scripts/refresh_foundit.py) or pycountry places it there, a job's place gets the list's other spellings of it
-  (Bengaluru / Bangalore), and every job is still checked here. A state is not on the lists and not in the job list's
-  location text, so with a state typed a job is opened (details) for its state before it is checked.
+  (Bengaluru / Bangalore), and every job is still checked here. A state is not on the lists and rarely in the job
+  list's location text, so an Indian city there is given its state from Naukri's list of 5,810 cities
+  (data/naukri-cities.tsv: Bengaluru is Karnataka), and with a state typed only a job with no such city is opened
+  (details) for its state before it is checked: a Karnataka search opened 172 jobs for 100 rows before, 95 of them in
+  Bengaluru (2026-11-08). A name either list gives to two states (Bilaspur, five on foundit's; Bijapur, two on
+  Naukri's) gives no state.
 - Remote: the API's own remote filter (the place Remote, the job type Work From Home, or remote in a query, which it reads
   as that filter: "python remote" answers the 102 jobs of python with the place Remote) covers only jobs posted on
   foundit. Syndicated jobs say remote only in their title (35 of the newest 1,000 foundit.in jobs, none with the place
@@ -60,6 +64,7 @@ from urllib.parse import parse_qs, urlparse
 
 from .. import places as regions
 from ..http import BoardError, send
+from . import naukri
 from ..rows import classify_place, country_code, words
 from .base import Board, Platform
 from .cornerstone import text_of
@@ -180,6 +185,15 @@ def subdivisions() -> dict[str, str]:
 def subdivision(text: str) -> str | None:
     """'Karnataka' -> 'IN', 'Selangor' -> 'MY': the country of a state or province, by its name."""
     return subdivisions().get(fold(text))
+
+
+def indian_state(name: str) -> str | None:
+    """'Bengaluru / Bangalore' -> 'Karnataka', 'Chhattisgarh' -> 'Chhattisgarh': the state of an Indian place by
+    Naukri's list of cities. None when it is not on that list, or when either list gives the name to two states."""
+    key = fold(name)
+    if key in naukri.shared_cities() or len({m[0] for m in place_list()[0].get(key, []) if m[1] == 'IN'}) > 1:
+        return None
+    return naukri.state_of(name)
 
 
 def iso(ms) -> str | None:
@@ -478,7 +492,8 @@ class Foundit(Platform):
     def places(self, text: str | None, site: Site) -> list[dict]:
         """A job's location text -> its places: the text, with the country it names, else the country of a city on the
         place lists (Kuala Lumpur is Malaysia, even on foundit.sg), else the country of a site that has one; then the
-        list's name of each place in it when that is another spelling (Bengaluru, India -> Bengaluru / Bangalore)."""
+        list's name of each place in it when that is another spelling (Bengaluru, India -> Bengaluru / Bangalore), and
+        in India the state of each city whose state is known (Bengaluru -> Karnataka)."""
         home = next(iter(site.countries)) if len(site.countries) == 1 else None
         if not text:
             return [{'name': country_label(home), 'country': country_label(home)}] if home else []
@@ -500,6 +515,11 @@ class Foundit(Platform):
         country = country or (None if named else (found[0] if found else home))
         if country:
             out[0]['country'] = country_label(country)
+        if country == 'IN':
+            for part in parts:
+                state = indian_state(part)
+                if state and all(p.get('region') != state for p in out):
+                    out.append({'name': part, 'region': state, 'country': 'India'})
         return out
 
     def job(self, site: Site, r: dict) -> dict:
@@ -545,10 +565,11 @@ class Foundit(Platform):
         }
 
     def vague_place(self, job):
-        """With a state typed, a job whose location text does not name it is opened for its state (details)."""
+        """With a state typed, a job whose places name none (its location text, or the state of an Indian city in it)
+        is opened for its state (details)."""
         if not self.states:
             return False
-        said = ' ' + ' '.join(fold(p.get('name')) for p in job.get('places') or []) + ' '
+        said = ' ' + ' '.join(fold(t) for p in job.get('places') or [] for t in (p.get('name'), p.get('region')) if t) + ' '
         return not any(f' {fold(state)} ' in said for state in self.states)
 
     # ---------- details and links ----------

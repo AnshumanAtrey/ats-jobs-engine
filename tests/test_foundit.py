@@ -192,11 +192,28 @@ class Routing(unittest.TestCase):
                                                                           'siteContext': 'monstergulf'})))
         self.assertFalse(passes({'location': ['Gulf']}, platform.job(GULF, {**SYNDICATED, 'locations': 'Egypt, Cairo', 'siteContext': 'monstergulf'})))
 
-    def test_a_state_goes_to_its_country_and_its_jobs_are_opened(self):
-        platform, _, keys = routed({'location': ['Karnataka']})
+    def test_a_state_goes_to_its_country_and_only_jobs_with_no_known_city_there_are_opened(self):
+        platform, cfg, keys = routed({'location': ['Karnataka']})
         self.assertEqual((keys, platform.states), (['foundit.in'], ['Karnataka']))
-        self.assertTrue(platform.vague_place(platform.job(IN, SYNDICATED)))
-        self.assertFalse(platform.vague_place(platform.job(IN, {**SYNDICATED, 'locations': 'Bengaluru, Karnataka, India'})))
+        at = lambda where: platform.job(IN, {**SYNDICATED, 'locations': where})  # noqa: E731
+        for where in ('Bengaluru, India', 'Bengaluru, Karnataka, India', 'Hubli', 'Coimbatore, Bengaluru / Bangalore'):
+            self.assertFalse(platform.vague_place(at(where)), where)      # its state is known: no call
+            self.assertTrue(Filters(cfg).passes(at(where), NOW), where)
+        for where in ('Coimbatore', 'Bokaro Steel City', 'Hinjewadi'):     # another state, or a city no list places
+            self.assertTrue(platform.vague_place(at(where)), where)
+            self.assertFalse(Filters(cfg).passes(at(where), NOW), where)
+
+    def test_a_city_name_two_states_share_gives_no_state(self):
+        # Bijapur: two states on Naukri's list; Bilaspur: five on foundit's ("Bilaspur, Chhattisgarh", ...)
+        self.assertEqual([fi.indian_state(n) for n in ('Bengaluru / Bangalore', 'Kerala', 'Bijapur', 'Bilaspur')],
+                         ['Karnataka', 'Kerala', None, None])
+        platform, cfg, _ = routed({'location': ['Chhattisgarh']})
+        self.assertEqual(platform.states, ['Chhattisgarh'])
+        bijapur = platform.job(IN, {**SYNDICATED, 'locations': 'Bijapur'})
+        self.assertTrue(platform.vague_place(bijapur))
+        self.assertFalse(Filters(cfg).passes(bijapur, NOW))
+        self.assertEqual([p['region'] for p in P.job(IN, RENEWED)['places'] if p.get('region')], ['Karnataka', 'Chhattisgarh'])
+        self.assertEqual([p.get('region') for p in P.job(SG, SINGAPORE_PAY)['places']], [None])   # outside India: none
 
     def test_worldwide_asks_every_site_for_its_remote_jobs(self):
         self.assertEqual(routed({'location': ['Worldwide']})[0].plan, {site.host: ['Remote'] for site in fi.SITES})
@@ -318,7 +335,7 @@ class Details(unittest.TestCase):
 
     def test_a_state_filter_passes_once_the_details_name_it(self):
         platform, cfg, _ = routed({'location': ['Karnataka']})
-        job = platform.job(IN, RENEWED)
+        job = platform.job(IN, {**RENEWED, 'locations': 'Bokaro Steel City'})   # no list gives it a state
         self.assertFalse(Filters(cfg).passes(job, NOW))
         self.assertTrue(Filters(cfg).passes(platform.enrich(job, DETAIL['jobDetailResponse']), NOW))
 
