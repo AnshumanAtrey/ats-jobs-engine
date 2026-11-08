@@ -8,7 +8,10 @@ from unittest.mock import patch
 
 from ats_jobs import engine
 from ats_jobs.http import BoardError
+from datetime import datetime, timezone
+
 from ats_jobs.inputs import parse_input
+from ats_jobs.rows import Filters
 from ats_jobs.platforms import cutshort as cs
 from ats_jobs.platforms.base import Board
 from ats_jobs.platforms.cutshort import Cutshort, alias_names, created_at, job_from, listing_parts, short_id
@@ -223,15 +226,11 @@ class Inputs(unittest.TestCase):
     def test_cutshorts_own_fields(self):
         p, _ = platform_for({'skills': ['python', 'react'], 'experienceYears': 3, 'minSalaryLakhs': 12,
                              'companyStage': ['raised funding'], 'companyType': ['product'], 'excludeAgencies': True})
-        self.assertEqual(p.settings(), {'skills': ['python', 'react'], 'experienceYears': [3.0, 3.0], 'minSalaryLakhs': 12.0,
+        self.assertEqual(p.settings(), {'skills': ['python', 'react'], 'minSalaryLakhs': 12.0,
                                      'companyStage': ['funded'], 'companyType': ['product'], 'excludeAgencies': True})
 
     def test_years_and_lakhs_as_people_type_them(self):
         notes = []
-        self.assertEqual(Cutshort.read_years('2-5', notes), [2.0, 5.0])
-        self.assertEqual(Cutshort.read_years('fresher', notes), [0.0, 0.0])
-        self.assertEqual(Cutshort.read_years('5 years', notes), [5.0, 5.0])
-        self.assertIsNone(Cutshort.read_years('', notes))
         self.assertEqual(Cutshort.read_lakhs('12 LPA', notes), 12.0)
         self.assertEqual(Cutshort.read_lakhs('1.2 crore', notes), 120.0)
         self.assertEqual(Cutshort.read_lakhs(1200000, notes), 12.0)
@@ -304,7 +303,7 @@ class Candidates(unittest.TestCase):
 class SiteFilters(unittest.TestCase):
     def ok(self, raw, response):
         p, _ = platform_for(raw)
-        return p.fits(job_from(response.body['data']))
+        return p.fits(job_from(response.body['data'])) is True      # else the name of the filter it fails
 
     def test_skills_match_a_skill_or_the_title(self):
         self.assertTrue(self.ok({'skills': ['react']}, job('x-AbCd1234', 'Engineer', '2026-11-07T00:00:00Z', skills=['React.js'])))
@@ -314,10 +313,19 @@ class SiteFilters(unittest.TestCase):
         self.assertFalse(self.ok({'skills': ['java']}, job('x-AbCd1234', 'Engineer', '2026-11-07T00:00:00Z',
                                                            skills=['Javascript'])))
 
-    def test_experience_range_holds_the_years(self):
-        self.assertTrue(self.ok({'experienceYears': 3}, job('x-AbCd1234', 'E', '2026-11-07T00:00:00Z', exp=(2, 6))))
-        self.assertFalse(self.ok({'experienceYears': 8}, job('x-AbCd1234', 'E', '2026-11-07T00:00:00Z', exp=(2, 6))))
-        self.assertTrue(self.ok({'experienceYears': 0}, job('x-AbCd1234', 'E', '2026-11-07T00:00:00Z', exp=(0, 1))))
+    def test_experience_range_holds_the_years(self):         # the engine's experienceYears filter on Cutshort's jobs
+        def ok(years, exp):
+            _, cfg = platform_for({'experienceYears': years})
+            page = job('x-AbCd1234', 'E', '2026-11-07T00:00:00Z', exp=exp)
+            return Filters(cfg).passes(job_from(page.body['data']), datetime.now(timezone.utc))
+        self.assertTrue(ok(3, (2, 6)))
+        self.assertFalse(ok(8, (2, 6)))
+        self.assertTrue(ok(0, (0, 1)))
+
+    def test_a_failed_filter_says_its_name(self):
+        p, _ = platform_for({'minSalaryLakhs': 20})
+        page = job('x-AbCd1234', 'E', '2026-11-07T00:00:00Z', pay=(800000, 1500000))
+        self.assertEqual(p.fits(job_from(page.body['data'])), 'minSalaryLakhs')
 
     def test_pay_reaches_the_lakhs_and_a_stipend_counts_twelve_months(self):
         self.assertTrue(self.ok({'minSalaryLakhs': 12}, job('x-AbCd1234', 'E', '2026-11-07T00:00:00Z', pay=(800000, 1500000))))
@@ -358,6 +366,18 @@ class Scan(unittest.TestCase):
                          ['Python Developer 0', 'Python Developer 1', 'Python Developer 2'])
         self.assertEqual(p.read, 3)                  # the first page held 2 matches: nothing older can make the cut
 
+    def test_its_own_filters_count_for_the_stop_by_name(self):
+        # jobs 0 to 4 are an agency's, so with No agency jobs the first fit is job 5: fits() names the filter a job fails,
+        # a truthy string, and the stop must not count those jobs as held
+        agency = [(cs.JOB_API.format(id=slug), job(slug, f'Python Developer {n}', f'2026-11-0{8 - n}T00:00:00Z',
+                                                   exp=(n, n + 1), agency=True)) for n, slug in enumerate(SLUGS[:5])]
+        p, _ = platform_for({'maxJobs': 1, 'excludeAgencies': True})
+        with patch.object(cs, 'PAGE', 2):
+            pages = collect(p, FakeHttp(routes(*agency)), {'everyone': True})
+        read = [j for page in pages for j in page]
+        self.assertEqual([j['title'] for j in read if p.fits(j) is True], ['Python Developer 5'])
+        self.assertEqual(len(read), 6)
+
     def test_a_filter_that_drops_every_job_of_a_page_does_not_end_the_search(self):
         p, _ = platform_for({'maxJobs': 1, 'experienceYears': 6})
         http = FakeHttp(routes())
@@ -365,16 +385,21 @@ class Scan(unittest.TestCase):
             pages = collect(p, http, {'everyone': True})
         read = [j for page in pages for j in page]
         self.assertTrue(all(pages))                             # no empty page reaches the engine
-        self.assertEqual([j['title'] for j in read if p.fits(j)], ['Python Developer 5'])
+        both = Filters(p.cfg)                                   # experience is the engine's filter
+        now = datetime.now(timezone.utc)
+        self.assertEqual([j['title'] for j in read if p.fits(j) is True and both.passes(j, now)], ['Python Developer 5'])
         self.assertEqual(len(read), 6)                          # it read on past pages with no fit, and stopped at one
 
     def test_a_note_says_how_many_jobs_cutshorts_own_filters_kept(self):
-        p, cfg = platform_for({'maxJobs': 1, 'experienceYears': 6})
+        p, cfg = platform_for({'maxJobs': 1, 'skills': ['python']})
         with patch.object(cs, 'PAGE', 2):
             collect(p, FakeHttp(routes()), {'everyone': True})
-        self.assertIn("Cutshort's own filters (experience) kept 1 of the 6 jobs read, newest first back to 2026-11-03.",
-                      cfg.notes)
+        self.assertTrue(any(n.startswith("Cutshort's own filters (skills) kept ") for n in cfg.notes), cfg.notes)
         self.assertEqual(sum('own filters' in n for n in cfg.notes), 1)      # one note, kept current
+        p, cfg = platform_for({'maxJobs': 1, 'experienceYears': 6})          # experience is the engine's: no note
+        with patch.object(cs, 'PAGE', 2):
+            collect(p, FakeHttp(routes()), {'everyone': True})
+        self.assertFalse(any('own filters' in n for n in cfg.notes), cfg.notes)
 
     def test_it_stops_past_the_period(self):
         p, _ = platform_for({'postedWithin': '2 days'})

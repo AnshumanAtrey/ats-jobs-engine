@@ -45,10 +45,10 @@ STOP_REASONS = {
 }
 # a search that finds nothing names the filter that stood in the way (rows.Filters.misses) and how to loosen it
 FILTER_NAMES = {'employmentType': 'job type', 'workType': 'work type', 'location': 'location',
-                'postedWithin': 'posting date', 'experience': 'years of experience'}
+                'postedWithin': 'posting date', 'experienceYears': 'years of experience'}
 FILTER_FIXES = {'employmentType': 'clear Job type', 'workType': 'clear Work type and any "Remote" typed in location',
                 'location': 'add a wider place, such as a region or Worldwide', 'postedWithin': 'pick a longer period',
-                'experience': 'type a wider range of years or leave it empty'}
+                'experienceYears': 'type a wider range of years or leave it empty'}
 
 
 async def safe_status(message: str) -> None:
@@ -500,9 +500,11 @@ class Run:
         """Why a search found nothing, from the near misses: the jobs that had the words, the filter that alone left
         them out, and how to loosen it. Without words, the filter that left out the most jobs."""
         cfg = self.cfg
+        names = {**FILTER_NAMES, **{k: v[0] for k, v in self.platform.filter_words.items()}}
+        fixes = {**FILTER_FIXES, **{k: v[1] for k, v in self.platform.filter_words.items()}}
         if not self.near_misses:
             filtered = bool(cfg.locations or cfg.work_types or cfg.job_types or cfg.posted_within_days is not None
-                            or any(self.platform.settings().values()))
+                            or cfg.experience is not None or any(self.platform.settings().values()))
             if cfg.search_terms and self.platform.server_filters and filtered:
                 # the platform's own search dropped the jobs outside the filters before the engine saw them
                 return (f' {self.platform.name} has no job with your words inside your other filters: try fewer '
@@ -513,14 +515,14 @@ class Run:
             return ''
         if not cfg.search_terms:
             top, n = self.missed_first.most_common(1)[0]
-            return (f' The {FILTER_NAMES.get(top, top)} filter left out the most jobs read: {n:,} of {self.near_misses:,}. To '
-                    f'see more, {FILTER_FIXES.get(top, f'clear {top}')}.')
+            return (f' The {names.get(top, top)} filter left out the most jobs read: {n:,} of {self.near_misses:,}. To '
+                    f'see more, {fixes.get(top, f'clear {top}')}.')
         text = f' {plural(self.near_misses, "job")} had your words but not your other filters'
         only = self.missed_only.most_common()
         if not only:
             return text + ': each missed more than one of them, so loosen several.'
-        alone = ', '.join(f'the {FILTER_NAMES.get(k, k)} alone left out {n:,}' for k, n in only)
-        return f'{text}: {alone}. To see them, {FILTER_FIXES.get(only[0][0], f'clear {only[0][0]}')}.'
+        alone = ', '.join(f'the {names.get(k, k)} alone left out {n:,}' for k, n in only)
+        return f'{text}: {alone}. To see them, {fixes.get(only[0][0], f'clear {only[0][0]}')}.'
 
     def message(self) -> str:
         cfg, seconds, name = self.cfg, round(time.monotonic() - self.started), self.platform.name

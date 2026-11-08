@@ -180,7 +180,7 @@ class Filtering(unittest.TestCase):
 
     def test_experience_is_a_named_near_miss(self):
         senior = job(experienceMin=8, experienceMax=12)
-        self.assertEqual(filters(searchTerms=['security engineer'], experienceYears='3').misses(senior, NOW), ('experience',))
+        self.assertEqual(filters(searchTerms=['security engineer'], experienceYears='3').misses(senior, NOW), ('experienceYears',))
         self.assertEqual(filters(searchTerms=['security engineer'], experienceYears='10').misses(senior, NOW), ())
 
     def test_first_pass_keeps_jobs_that_can_match(self):

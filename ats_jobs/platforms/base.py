@@ -27,6 +27,8 @@ class Platform:
     page_cap: int | None = None    # pages read per board and word, unless every match was asked for
     never: tuple = ()        # row fields this platform never publishes: left out of its rows
     extra: tuple = ()        # job fields of this platform alone that its rows carry too (Hirist: years of experience)
+    filter_words: dict = {}  # its own filters that fits() names -> (words for them, how to loosen them), for the
+                             # message of a run that finds nothing: {'minSalaryLakhs': ('salary', 'type a lower Salary from')}
     server_filters = False   # its own search applies place, period or other filters besides the words, so the engine
                              # never sees the jobs they leave out and cannot say which filter did
     description_terms: tuple = ()     # set by the engine: the words of a run that searches descriptions, so a
@@ -82,10 +84,10 @@ class Platform:
         """Inputs of this platform alone, read from the raw input once the shared ones are in cfg (inputs.Config)."""
 
     def fits(self, job: dict) -> bool | str:
-        """A filter of this platform alone, asked for every job whose words match (Hirist: years of experience).
-        True when the job fits; else the input name of the filter it fails ('experience'), which a run that finds
-        nothing names (engine.FILTER_NAMES); False when the job's words did not match after all, so it is no near
-        miss (Hirist's skills, with searchDescriptions)."""
+        """A filter of this platform alone, asked for every job whose words match (Cutshort: salary, funding stage).
+        True when the job fits; else the input name of the filter it fails ('minSalaryLakhs'), which a run that finds
+        nothing names (filter_words); False when the job's words did not match after all, so it is no near miss
+        (Hirist's skills, with searchDescriptions). Years of experience is the engine's own filter (experienceYears)."""
         return True
 
     def settings(self) -> dict:

@@ -520,13 +520,19 @@ class NothingFound(unittest.TestCase):
                       run.message())
 
     def test_a_platform_filter_is_named_too(self):
-        class Senior(Fake):                       # a platform with its own filter, as Hirist's years of experience
+        class Paid(Fake):                         # a platform with its own filter, as Cutshort's salary
+            filter_words = {'minSalaryLakhs': ('salary', 'type a lower Salary from')}
+
             def fits(self, job):
-                return True if job['id'] == 'ok' else 'experience'
-        run = search(Senior({'a': [[job('1', 'Engineer'), job('2', 'Engineer II')]]}), {'searchTerms': ['engineer']})
-        self.assertIn('2 jobs had your words but not your other filters: the years of experience alone left out 2. '
-                      'To see them, type a wider range of years or leave it empty.', run.message())
-        run = search(Senior({'a': [[job('ok', 'Engineer'), job('2', 'Engineer II')]]}), {'searchTerms': ['engineer']})
+                return True if job['id'] == 'ok' else 'minSalaryLakhs'
+        run = search(Paid({'a': [[job('1', 'Engineer'), job('2', 'Engineer II')]]}), {'searchTerms': ['engineer']})
+        self.assertIn('2 jobs had your words but not your other filters: the salary alone left out 2. '
+                      'To see them, type a lower Salary from.', run.message())
+        senior = [dict(job('1', 'Engineer'), experienceMin=8, experienceMax=12)]   # the engine's experience filter
+        run = search(Fake({'a': [senior]}), {'searchTerms': ['engineer'], 'experienceYears': '3'})
+        self.assertIn('the years of experience alone left out 1. To see them, type a wider range of years or leave it '
+                      'empty.', run.message())
+        run = search(Paid({'a': [[job('ok', 'Engineer'), job('2', 'Engineer II')]]}), {'searchTerms': ['engineer']})
         self.assertEqual(run.delivery.rows, 1)
 
     def test_filters_a_platform_applies_itself_are_not_blamed_on_the_words(self):

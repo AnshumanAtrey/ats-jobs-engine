@@ -12,8 +12,7 @@ from ats_jobs.http import BoardMissing
 from ats_jobs.inputs import parse_input
 from ats_jobs.platforms import hirist
 from ats_jobs.platforms.base import Board
-from ats_jobs.platforms.hirist import (EVERYONE, LISTED, Hirist, experience_fits, pay, posted_at, read_experience, slug,
-                                       typed_places)
+from ats_jobs.platforms.hirist import EVERYONE, LISTED, Hirist, pay, posted_at, slug, typed_places
 
 IST = timezone(timedelta(hours=5, minutes=30))
 # Recorded on 2026-11-08 (feed rows, trimmed to what the adapter reads; four tags each)
@@ -204,18 +203,6 @@ class Jobs(unittest.TestCase):
 
 
 class Settings(unittest.TestCase):
-    def test_years_of_experience(self):
-        notes = []
-        self.assertEqual([read_experience(v, notes) for v in (5, '5', '3-6', '3 to 6 years', '10+', 'fresher', 0, '', None)],
-                         [(5, 5), (5, 5), (3, 6), (3, 6), (10, 99), (0, 0), (0, 0), None, None])
-        self.assertIsNone(read_experience('senior', notes))
-        self.assertIn('Could not read experience "senior"', notes[0])
-
-    def test_experience_overlaps_as_on_hirist(self):
-        job = {'experienceMin': 4, 'experienceMax': 8}
-        self.assertTrue(all(experience_fits(job, w) for w in [(5, 5), (2, 4), (8, 12), None]))
-        self.assertFalse(any(experience_fits(job, w) for w in [(0, 3), (9, 12)]))
-
     def test_places_go_to_hirist_when_each_names_its_ids(self):
         platform = Hirist()
         parse_input({'location': ['Bengaluru', 'Karnataka']}, platform, {})
@@ -241,7 +228,7 @@ class Settings(unittest.TestCase):
 
     def test_hirist_is_asked_for_what_it_filters(self):
         platform = Hirist()
-        parse_input({'location': ['Pune'], 'experience': '0'}, platform, {})
+        parse_input({'location': ['Pune'], 'experienceYears': '0'}, platform, {})
         self.assertEqual(platform.query(2), {'loc': '0,7,100000', 'posting': 2, 'minexp': 0, 'maxexp': 1})
         self.assertEqual(Hirist().query(200), {})
 
@@ -389,13 +376,13 @@ class Rows(unittest.TestCase):
         records = [record(n, n, low=n, high=n + 2) for n in range(1, 6)]
         with small_window():
             http = FakeHirist(records, window=20)
-            run = search_run(Hirist(), http, {'experience': '4', 'maxJobs': 10})
+            run = search_run(Hirist(), http, {'experienceYears': '4', 'maxJobs': 10})
         rows = run.delivery.rows_out
         self.assertEqual([r['jobId'] for r in rows], ['2', '3', '4'])
         self.assertEqual((rows[0]['experienceMin'], rows[0]['experienceMax'], rows[0]['skills']), (2, 4, ['Python']))
         for key in ('employmentType', 'department', 'companySlug', 'companyWebsite', 'expiresAt'):
             self.assertNotIn(key, rows[0])
-        self.assertEqual(run.output('done')['settings']['experience'], [4, 4])
+        self.assertEqual(run.output('done')['settings']['experienceYears'], [4.0, 4.0])
         self.assertIn('minexp', http.calls[0][1])
         self.assertTrue(run.message().startswith('Found and saved 3 matching jobs at 1 company on Hirist'))
 

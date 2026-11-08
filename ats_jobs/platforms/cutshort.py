@@ -266,6 +266,12 @@ class Cutshort(Platform):
     board_example = 'https://cutshort.io/company/egnyte-SClW7oZH'
     job_example = 'https://cutshort.io/job/Sr-Backend-Engineering-Manager-Egnyte-koBBDTQ1'
     concurrency = 8               # pages of companies read at once and the size of the connection pool; PACE keeps the rate
+    server_filters = True         # the sitemap opens only jobs whose address holds the words and the city
+    filter_words = {'skills': ('skills or roles', 'clear Skills or roles'),
+                    'minSalaryLakhs': ('salary', 'type a lower Salary from or leave it empty'),
+                    'companyStage': ('funding stage', 'clear Funding stage'),
+                    'companyType': ('company type', 'clear Company type'),
+                    'excludeAgencies': ('no-agency filter', 'untick No agency jobs')}
     newest_first = True           # the sitemap lists jobs newest posted first, and a company's jobs are sorted so
     never = ('department', 'team', 'expiresAt', 'reference', 'region')
     extra = ('skills', 'experienceMin', 'experienceMax', 'salaryMin', 'salaryMax', 'salaryCurrency', 'salaryPeriod',
@@ -365,7 +371,6 @@ class Cutshort(Platform):
                 skills += parse_terms([token], 'skills', notes, skipped)
         self._settings.update({
             'skills': list(dict.fromkeys(skills)),
-            'experienceYears': self.read_years(raw.get('experienceYears'), notes),
             'minSalaryLakhs': self.read_lakhs(raw.get('minSalaryLakhs'), notes),
             'companyStage': list(dict.fromkeys(stages)) if len(set(stages)) < len(STAGES) else [],
             'companyType': list(dict.fromkeys(types)) if len(set(types)) < len(TYPES) else [],
@@ -385,26 +390,6 @@ class Cutshort(Platform):
         if asked:
             notes.append(f'Cutshort has two job types, full time (which its employers use for contracts too) and '
                          f'internship, so {", ".join(asked)} finds no job.')
-
-    @staticmethod
-    def read_years(value, notes) -> list[float] | None:
-        """3, '3', '3 years', '2-5', 'fresher' -> [low, high] years; empty -> None."""
-        if value is None or value == '' or isinstance(value, bool):
-            return None
-        if isinstance(value, (int, float)):
-            return [float(value), float(value)] if value >= 0 else None
-        text = str(value).strip().lower()
-        if text in EVERY or text in ('any', 'none'):
-            return None
-        if text in ('fresher', 'freshers', 'entry level', 'entry-level', 'graduate'):
-            return [0.0, 0.0]
-        found = [float(n) for n in re.findall(r'\d+(?:\.\d+)?', text)]
-        if 1 <= len(found) <= 2:
-            low, high = min(found), max(found)
-            return [low, high] if not text.endswith('+') else [low, low]
-        notes.append(f'Could not read experienceYears "{value}" as years, such as 3 or 2-5, so every experience level '
-                     f'is kept.')
-        return None
 
     @staticmethod
     def read_lakhs(value, notes) -> float | None:
@@ -754,38 +739,32 @@ class Cutshort(Platform):
     def settings(self) -> dict:
         return dict(self._settings)
 
-    def fits(self, job: dict) -> bool:
-        """Cutshort's own filters: skills or roles, experience, pay, funding stage, company type, agencies."""
+    def fits(self, job: dict) -> bool | str:
+        """Cutshort's own filters: skills or roles, pay, funding stage, company type, agencies. True when the job
+        passes them all, else the input name of the first it fails (Platform.fits); experience is the engine's."""
         settings = self._settings
         extra = job
         wanted = [Term(s) for s in settings.get('skills') or []]
         wanted = [t for t in wanted if t.tokens]
         if wanted and not any(t.in_title(index(job.get('title'))) or any(t.in_title(index(s)) for s in extra.get('skills') or [])
                               for t in wanted):
-            return False
-        years = settings.get('experienceYears')
-        if years is not None:
-            low, high = extra.get('experienceMin'), extra.get('experienceMax')
-            if low is None:
-                return False
-            if not (low <= years[1] and years[0] <= (high if high is not None else low)):
-                return False
+            return 'skills'
         lakhs = settings.get('minSalaryLakhs')
         if lakhs is not None:
             top = extra.get('salaryMax') if extra.get('salaryMax') is not None else extra.get('salaryMin')
             per_year = {'year': 1, 'month': 12, 'week': 52, 'day': 260, 'hour': 2080}.get(extra.get('salaryPeriod'))
             if top is None or extra.get('salaryCurrency') != 'INR' or per_year is None or \
                     top * per_year < lakhs * 100000:
-                return False
+                return 'minSalaryLakhs'
         stages = settings.get('companyStage')
         if stages and STAGE_OF.get(str(extra.get('companyStage') or '').lower()) not in stages:
-            return False
+            return 'companyStage'
         types = settings.get('companyType')
         if types:
             kind = str(extra.get('companyType') or '').lower()
             if not any(t.rstrip('s') in kind for t in types):
-                return False
-        return not (settings.get('excludeAgencies') and extra.get('agency'))
+                return 'companyType'
+        return 'excludeAgencies' if settings.get('excludeAgencies') and extra.get('agency') else True
 
     async def jobs_of(self, http, addresses: list[str]) -> list[dict]:
         """The open jobs among these addresses, in their order; a job that closed since, or that cannot be read, is
@@ -844,7 +823,7 @@ class Cutshort(Platform):
             start = end
             if jobs:
                 self.oldest = jobs[-1].get('postedAt') or self.oldest
-            fit = [j for j in jobs if self.fits(j)]   # the engine asks fits() too; counted here for the note and the stop
+            fit = [j for j in jobs if self.fits(j) is True]   # the engine asks fits() too; counted here for the note and the stop
             self.passed += len(fit)
             if self.own_filters():
                 self.say('filters', f"Cutshort's own filters ({', '.join(self.own_filters())}) kept {self.passed:,} of "
@@ -870,7 +849,7 @@ class Cutshort(Platform):
     def own_filters(self) -> list[str]:
         """The names of Cutshort's own filters this run uses, as the form names them."""
         settings = self._settings
-        names = {'skills': 'skills', 'experienceYears': 'experience', 'minSalaryLakhs': 'salary',
+        names = {'skills': 'skills', 'minSalaryLakhs': 'salary',
                  'companyStage': 'funding stage', 'companyType': 'company type', 'excludeAgencies': 'no agency jobs'}
         return [name for key, name in names.items() if settings.get(key) not in (None, [], False)]
 

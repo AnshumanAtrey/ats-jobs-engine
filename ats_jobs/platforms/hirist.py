@@ -42,11 +42,13 @@ iimjobs.com (management jobs, the same company) runs the same API on gladiator.i
 keyword feed answers 404 and the newest-first lists are per category, so it is not read here.
 """
 import asyncio
+import math
 import re
 from datetime import datetime, timedelta, timezone
 from urllib.parse import parse_qs, unquote, urlparse
 
 from ..http import BoardError, BoardMissing, send
+from ..inputs import parse_experience
 from ..rows import Place, Term, index, job_area, terms, words
 from .base import Board, Platform
 from .cornerstone import text_of
@@ -76,8 +78,6 @@ COMPANY_PATH = re.compile(r'^(.+?)-careers$')
 SLUG = re.compile(r'^[a-z0-9][a-z0-9-]*$')
 OTHERS, ANYWHERE = 100000, 0                    # "Others" and "Any Location": the recruiter's own text says where
 REMOTE_ID = 132
-EXPERIENCE = re.compile(r'^(\d{1,2})\s*(?:(?:-|to|–)\s*(\d{1,3})|(\+)|)\s*(?:years?|yrs?|y)?$')
-FRESHER = {'fresher', 'freshers', 'fresh', 'entry level', 'entry-level', 'graduate', 'new grad', 'no experience'}
 
 # Hirist's places as its filter lists them (www.hirist.tech, 2026-11-08), plus 'Any Location' (id 0) seen only on jobs:
 # id (a group's members after ':'), Hirist's label, the city's name as written today (for a city), the state, the country,
@@ -343,36 +343,6 @@ def company_slug(name: str) -> str:
     return re.sub(r'[^a-z0-9]+', '-', name.lower()).strip('-')
 
 
-def read_experience(value, notes: list[str]) -> tuple[int, int] | None:
-    """5 -> (5, 5): jobs that take 5 years. '3-6', '3 to 6 years' -> (3, 6); '10+' -> (10, 99); 'fresher' or 0 -> (0, 0)."""
-    if value is None or isinstance(value, bool) or str(value).strip() == '':
-        return None
-    if isinstance(value, (int, float)):
-        text = str(int(value)) if value >= 0 else ''
-    else:
-        text = ' '.join(str(value).strip().lower().split())
-    if text in FRESHER:
-        return 0, 0
-    found = EXPERIENCE.match(text)
-    if not found:
-        notes.append(f'Could not read experience "{value}" as years such as 5, 3-6 or 10+, so jobs of any '
-                     'experience are kept.')
-        return None
-    low = int(found.group(1))
-    high = 99 if found.group(3) else int(found.group(2)) if found.group(2) else low
-    return (low, high) if low <= high else (high, low)
-
-
-def experience_fits(job: dict, wanted: tuple[int, int] | None) -> bool:
-    """Hirist's own rule: a job matches when the years it asks for overlap the years wanted."""
-    if wanted is None:
-        return True
-    low, high = job.get('experienceMin'), job.get('experienceMax')
-    if low is None and high is None:
-        return False
-    return (low or 0) <= wanted[1] and (high if high is not None else low) >= wanted[0]
-
-
 class Hirist(Platform):
     key = 'hirist'
     name = 'Hirist'
@@ -447,11 +417,13 @@ class Hirist(Platform):
         self.cfg = cfg
         self._mend_links(raw, cfg)
         link = self._link_settings(raw)
-        value = raw.get('experience')
-        if (value is None or str(value).strip() == '') and link.get('experience'):
-            value = link['experience']
-            cfg.notes.append(f'Read the experience of the pasted Hirist link: {value} years.')
-        self.experience = read_experience(value, cfg.notes)
+        if cfg.experience is None and link.get('experience'):      # experienceYears is the engine's (inputs.py)
+            cfg.experience = parse_experience(link['experience'], cfg.notes)
+            if cfg.experience is not None:
+                cfg.notes.append(f'Read the experience of the pasted Hirist link: {link["experience"]} years.')
+        # Hirist's own search takes whole years, 99 for no ceiling ("10+")
+        self.experience = None if cfg.experience is None else (
+            int(cfg.experience[0]), 99 if math.isinf(cfg.experience[1]) else math.ceil(cfg.experience[1]))
         if cfg.posted_within_days is None and link.get('posting'):
             cfg.posted_within_days = float(link['posting'])
             cfg.notes.append(f'Read the posting period of the pasted Hirist link: the last {link["posting"]} days.')
@@ -539,8 +511,7 @@ class Hirist(Platform):
         return [EVERYONE]
 
     def settings(self):
-        return {'experience': list(self.experience) if self.experience else None,
-                'hiristLocationIds': self.loc or None}
+        return {'hiristLocationIds': self.loc or None}
 
     # ---------- reading ----------
 
@@ -704,7 +675,7 @@ class Hirist(Platform):
         if self.cfg is not None and self.cfg.search_descriptions and self.cfg.search_terms:
             if not any(t.in_title(skill_index(job)) for t in self._asked):
                 return False
-        return True if experience_fits(job, self.experience) else 'experience'
+        return True
 
     async def open(self, http, board):
         if board.key in (EVERYONE.key, LISTED.key):

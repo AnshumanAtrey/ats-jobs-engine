@@ -336,7 +336,7 @@ class Filters:
         return self.misses(job, now, server_match) == ()
 
     def misses(self, job: dict, now: datetime, server_match: bool = False, every: bool = False) -> tuple[str, ...] | None:
-        """The filters a full job fails, by their input names: employmentType, workType, location, experience,
+        """The filters a full job fails, by their input names: employmentType, workType, location, experienceYears,
         postedWithin; ()
         when it passes; None when its words do not match (or an excluded word does), so it is no near miss. The
         first failure ends the check unless every is set: then each filter is checked, so a run that found nothing
@@ -363,7 +363,7 @@ class Filters:
                 if not every:
                     return tuple(failed)
         if self.experience is not None and not experience_fits(job, self.experience):
-            failed.append('experience')
+            failed.append('experienceYears')
             if not every:
                 return tuple(failed)
         if self.within_days is not None:
