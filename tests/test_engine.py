@@ -391,6 +391,32 @@ class CutRuns(unittest.TestCase):
             asyncio.run(run.search())
         self.assertEqual((run.boards_read, run.ran(), run.status()), (0, False, 'failed'))
 
+    def test_a_feed_cut_at_the_time_limit_after_a_page_is_read_in_part_and_delivered(self):
+        # Cutshort on Apify, 2026-11-08: its one feed, cut at the time limit after 1,450 jobs, ended the run FAILED,
+        # "Cutshort could not be read", with 18 jobs saved and charged
+        class Feed(Fake):
+            def search_all(self, boards, cfg):
+                return [Board('*', 'Fake')]
+
+            async def pages(self, http, session, term, days):
+                yield [dict(job('1'), jobUrl='https://x/1'), dict(job('2', 'Analyst'), jobUrl='https://x/2')]
+                await asyncio.sleep(5)          # the next page, which the time limit cancels
+                yield [dict(job('3'), jobUrl='https://x/3')]
+
+        @asynccontextmanager
+        async def no_client(actor, connections=64):
+            yield None
+        platform = Feed({})
+        run = engine.Run(platform, parse_input({}, platform), [], None, Delivered())
+        with patch.object(engine, 'client', no_client), patch.object(engine, 'safe_status', _quiet), \
+                patch.object(engine, 'seconds_left_in_run', lambda: engine.RUN_SAFETY_MARGIN_S + 0.3):
+            asyncio.run(run.search())
+        self.assertEqual((run.boards_read, run.ran(), run.status(), run.stop), (1, True, 'partial', 'time'))
+        self.assertEqual(sorted(i for i, _ in run.delivery.pushed), ['1', '2'])
+        self.assertIn('Found at least 2 matching jobs at 1 company on Fake, saved the 2 newest', run.message())
+        self.assertIn('Stopped early: the run was about to reach its time limit, so the jobs read by then were used.',
+                      run.message())
+
 
 class Streaming(unittest.TestCase):
     def test_details_are_read_a_push_chunk_at_a_time_and_stop_at_the_spending_limit(self):

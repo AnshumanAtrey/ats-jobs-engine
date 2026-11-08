@@ -40,8 +40,8 @@ PUSH_CHUNK = 500
 OLDEST = datetime.min.replace(tzinfo=timezone.utc)
 STOP_REASONS = {
     'limit': 'your spending limit for this run was reached. Raise the limit to get the rest.',
-    'time': 'the run was about to reach its time limit, so the boards read so far were used. '
-            'Raise the run timeout to read every board.',
+    'time': 'the run was about to reach its time limit, so the jobs read by then were used. '
+            'Raise the run timeout to read the rest.',
 }
 # a search that finds nothing names the filter that stood in the way (rows.Filters.misses) and how to loosen it
 FILTER_NAMES = {'employmentType': 'job type', 'workType': 'work type', 'location': 'location',
@@ -306,7 +306,7 @@ class Run:
                     if nothing_can_beat_this():
                         self.enough = True
                         return
-                    hit, read = False, True
+                    hit, read, paged = False, True, False
                     try:
                         session = await platform.open(http, board)
                         if session is None:
@@ -318,6 +318,7 @@ class Run:
                             page = 0
                             async for jobs in platform.pages(http, session, term, days):
                                 page += 1
+                                paged = True
                                 jobs = await placed(session, jobs)
                                 on_page = take(board, jobs, term is not None)
                                 hit = hit or on_page
@@ -339,7 +340,10 @@ class Run:
                     except BoardMissing:
                         self.boards_missing.append(board.key)
                     except asyncio.CancelledError:
-                        read = False       # given up at the time limit: not read, so a run where nothing answered fails
+                        # given up at the time limit: a board that gave no page is not read, so a run where nothing
+                        # answered fails; one cut after a page was read in part, and its jobs are used (Cutshort's one
+                        # feed, cut after 1,450 jobs, failed the run with 18 jobs saved, 2026-11-08)
+                        read = paged
                         raise
                     except Exception as exc:  # noqa: BLE001  a BoardError, or a record the platform did not expect
                         self.board_error(board.key, exc)
@@ -351,6 +355,8 @@ class Run:
 
             self.phase = 'boards'
             await self.run_all([one(b) for b in targets])
+            # boards cut, or never opened, at the time limit held jobs that were never counted: the count is a floor
+            self.cut_short = self.cut_short or self.stop == 'time'
             # matches the platform counted without handing them over (Platform.unopened_matches): read and matching,
             # never kept
             self.jobs_listed += platform.unopened_matches
