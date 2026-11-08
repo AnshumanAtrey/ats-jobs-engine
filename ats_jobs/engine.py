@@ -205,9 +205,9 @@ class Run:
     async def search(self) -> None:
         cfg, platform = self.cfg, self.platform
         platform.description_terms = tuple(cfg.search_terms) if cfg.search_descriptions else ()
-        filters = Filters(cfg)
         now = datetime.now(timezone.utc)
         everyone = platform.search_all(self.boards, cfg)
+        filters = Filters(cfg)              # after search_all, which may drop a filter its platform can never meet
         targets = [self.board(k) for k in cfg.companies] or everyone
         if not cfg.companies and len(everyone) == 1 and everyone[0] not in self.boards:
             self.feed = everyone[0]         # one place listing every company, not one of the boards
@@ -325,8 +325,10 @@ class Run:
                                     break
                                 if cfg.max_jobs is not None and platform.page_cap and page >= platform.page_cap:
                                     break
-                                # a page of a newest-first board can end older than anything still wanted
-                                last, cut = parse_time(jobs[-1].get('postedAt')) or OLDEST, floor()
+                                # a page of a newest-first board can end older than anything still wanted; a platform
+                                # that sorts by another time than postedAt names it listedAt (rows.py)
+                                last = parse_time(jobs[-1].get('listedAt') or jobs[-1].get('postedAt')) or OLDEST
+                                cut = floor()
                                 by_date = platform.newest_first and not (term and platform.ranked_search)
                                 if by_date and ((cut and last < cut) or (window and last < window)):
                                     self.cut_short = self.cut_short or bool(cut and last < cut)
@@ -599,6 +601,8 @@ class Run:
                 'postedWithinDays': cfg.posted_within_days, 'maxJobs': cfg.max_jobs,
                 'includeDetails': cfg.include_details, 'searchDescriptions': cfg.search_descriptions,
                 'companies': cfg.companies, **self.platform.settings(),
+                **({'experienceYears': [cfg.experience[0], None if math.isinf(cfg.experience[1]) else cfg.experience[1]]}
+                   if cfg.experience is not None else {}),     # years asked for; None: no ceiling (5+)
             },
             'companyList': {'boards': len(self.boards), 'updated': self.updated},
             'traffic': {'calls': STATS['calls'], 'averageSeconds': round(STATS['seconds'] / (STATS['calls'] or 1), 2),
@@ -633,7 +637,9 @@ async def main(platform_key: str) -> None:
             f' workType={cfg.work_types or "any"} employmentType={cfg.job_types or "any"}'
             f' postedWithinDays={cfg.posted_within_days or "any"} maxJobs={cfg.max_jobs if cfg.max_jobs is not None else "all"}'
             f' details={cfg.include_details} searchDescriptions={cfg.search_descriptions}'
-            f' companies={len(cfg.companies) or f"all {len(boards):,}"} payPerEvent={delivery.ppe}')
+            f' companies={len(cfg.companies) or f"all {len(boards):,}"} payPerEvent={delivery.ppe}'
+            + (f' experienceYears={cfg.experience[0]:g}' + ('+' if math.isinf(cfg.experience[1]) else f'-{cfg.experience[1]:g}')
+               if cfg.experience is not None else ''))
         for note in cfg.notes:
             Actor.log.warning(note)
         for text, why in cfg.skipped:

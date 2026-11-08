@@ -9,6 +9,11 @@ places is every place the job names: {'name': text, 'city': ..., 'region': ..., 
 dateOnly says postedAt holds a day and no time. Missing keys read as unknown. company is for a platform that names the
 company itself, so a board that is not on our list still shows it. companySlug and companyWebsite are for a feed of
 every company's jobs (Platform.search_all): a job that has them replaces the board's.
+Optional, for the platforms that have them: experienceMin and experienceMax, the years of experience a job asks for
+(job boards such as foundit state them; the experience filter reads them and rows carry them); listedAt, the time a
+platform's pages are sorted by when that is not postedAt (foundit sorts by the last time a job was listed, and a renewal
+lists an old job again), never earlier than postedAt, so the engine stops paging on it; extra, the platform's own row
+fields (skills, industry), added to the row as they are.
 
 Matching is by words, not by a list of job titles: a search term matches a title when every word of
 the term is in it. Words are cut at anything that is not a letter or digit (C++ and C# keep their
@@ -300,6 +305,7 @@ class Filters:
         self.job_types = set(cfg.job_types)
         self.within_days = cfg.posted_within_days
         self.search_descriptions = cfg.search_descriptions
+        self.experience = getattr(cfg, 'experience', None)     # (low, high) years, or None
 
     def title_ok(self, title: str | None, description: str | None = None) -> bool:
         idx = index(title)
@@ -330,7 +336,8 @@ class Filters:
         return self.misses(job, now, server_match) == ()
 
     def misses(self, job: dict, now: datetime, server_match: bool = False, every: bool = False) -> tuple[str, ...] | None:
-        """The filters a full job fails, by their input names: employmentType, workType, location, postedWithin; ()
+        """The filters a full job fails, by their input names: employmentType, workType, location, experience,
+        postedWithin; ()
         when it passes; None when its words do not match (or an excluded word does), so it is no near miss. The
         first failure ends the check unless every is set: then each filter is checked, so a run that found nothing
         can say which one filter stood between the user and the jobs that had their words."""
@@ -355,6 +362,10 @@ class Filters:
                 failed.append('location')
                 if not every:
                     return tuple(failed)
+        if self.experience is not None and not experience_fits(job, self.experience):
+            failed.append('experience')
+            if not every:
+                return tuple(failed)
         if self.within_days is not None:
             posted = parse_time(job.get('postedAt'))
             age = (now - posted).total_seconds() if posted else None
@@ -363,6 +374,17 @@ class Filters:
             if age is None or age > self.within_days * 86400:
                 failed.append('postedWithin')
         return tuple(failed)
+
+
+def experience_fits(job: dict, wanted: tuple[float, float]) -> bool:
+    """A job asking for 2 to 5 years fits 3, 0 to 2 and 5 to 8 (the ranges overlap); one that states no experience fits
+    nothing, as a job with no date fits no period. A job that states only a minimum (5 or more) has no ceiling."""
+    low, high = job.get('experienceMin'), job.get('experienceMax')
+    if low is None and high is None:
+        return False
+    low = 0 if low is None else low
+    high = float('inf') if high is None else high
+    return low <= wanted[1] and high >= wanted[0]
 
 
 def parse_time(value: str | None) -> datetime | None:
@@ -404,6 +426,10 @@ def job_row(platform: str, company: dict, job: dict, checked_at: str, details: b
         'jobId': job.get('id'),
         'checkedAt': checked_at,
     }
+    for key in ('experienceMin', 'experienceMax'):      # only the platforms that state experience have these keys
+        if key in job:
+            row[key] = job[key]
+    row.update(job.get('extra') or {})
     if details:
         first = (entries(job) or [{}])[0]
         country = first.get('country')

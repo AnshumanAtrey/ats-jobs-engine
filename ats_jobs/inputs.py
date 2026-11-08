@@ -64,6 +64,7 @@ class Config:
     search_descriptions: bool = False
     companies: list[str] = field(default_factory=list)        # board keys; empty: every known company
     job_urls: list[tuple[str, str, str]] = field(default_factory=list)   # (board key, job id, as typed)
+    experience: tuple[float, float] | None = None             # years asked for, (low, high); None: any (experienceYears)
     notes: list[str] = field(default_factory=list)
     skipped: list[tuple[str, str]] = field(default_factory=list)
 
@@ -178,7 +179,7 @@ def route_links(value, platform, notes: list[str],
         if link is not None:
             query = parse_qs(urlparse(text if IS_URL.match(text) else f'https://{text}').query)
             asked = [v.strip() for key in ('query', 'q', 'keywords') for v in query.get(key, []) if v.strip()]
-            place = [v.strip() for v in query.get('location', []) if v.strip()]
+            place = [v.strip() for key in ('location', 'locations') for v in query.get(key, []) if v.strip()]
             more_words, more_places = platform.search_link(text)
             asked += [w for w in more_words if w not in asked]
             place += [p for p in more_places if p not in place]
@@ -390,6 +391,32 @@ def parse_max_jobs(value, notes: list[str]) -> int | None:
     return n
 
 
+FRESHER = {'fresher', 'freshers', 'fresh', 'fresh graduate', 'entry', 'entry level', 'entry-level', 'no experience',
+           'graduate', 'new grad'}
+YEARS = re.compile(r'^(\d+(?:\.\d+)?)\s*(?:(?:-|to|\u2013|\u2014)\s*(\d+(?:\.\d+)?)|(\+|or more|and above|plus))?$')
+
+
+def parse_experience(value, notes: list[str]) -> tuple[float, float] | None:
+    """Years of experience, as a job board asks for them: 3 keeps the jobs whose range holds 3 years, 2-5 the jobs whose
+    range overlaps 2 to 5, 5+ five years or more, fresher 0. Empty: any. Unreadable: any, with a note."""
+    if value is None or isinstance(value, bool):
+        return None
+    if isinstance(value, (int, float)) and value >= 0:
+        return float(value), float(value)
+    text = ' '.join(str(value).strip().lower().replace('years', '').replace('year', '').replace('yrs', '').split())
+    if text in ('', 'any', 'all', 'any experience'):
+        return None
+    if text in FRESHER:
+        return 0.0, 0.0
+    m = YEARS.match(text)
+    if m:
+        low = float(m.group(1))
+        high = float('inf') if m.group(3) else float(m.group(2)) if m.group(2) else low
+        return (min(low, high), max(low, high))
+    notes.append(f'Could not read "{value}" as years of experience, such as 3, 2-5 or 5+, so any experience is kept.')
+    return None
+
+
 def parse_bool(value, default: bool) -> bool:
     if isinstance(value, bool):
         return value
@@ -503,6 +530,7 @@ def parse_input(raw: dict | None, platform, company_names: dict[str, list[str]] 
         search_descriptions=parse_bool(raw.get('searchDescriptions'), False),
         companies=companies,
         job_urls=job_urls,
+        experience=parse_experience(raw.get('experienceYears'), notes),
         notes=notes,
         skipped=skipped,
     )

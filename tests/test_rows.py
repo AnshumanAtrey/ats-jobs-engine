@@ -178,6 +178,11 @@ class Filtering(unittest.TestCase):
         self.assertIsNone(chosen.misses(job(title='Designer'), NOW))          # no words: not a near miss
         self.assertEqual(filters(searchTerms=['security engineer']).misses(job(), NOW), ())
 
+    def test_experience_is_a_named_near_miss(self):
+        senior = job(experienceMin=8, experienceMax=12)
+        self.assertEqual(filters(searchTerms=['security engineer'], experienceYears='3').misses(senior, NOW), ('experience',))
+        self.assertEqual(filters(searchTerms=['security engineer'], experienceYears='10').misses(senior, NOW), ())
+
     def test_first_pass_keeps_jobs_that_can_match(self):
         short = {'title': 'Security Engineer', 'location': 'New York', 'employmentType': 'full-time'}
         self.assertTrue(filters(searchTerms=['security'], workType=['remote']).maybe(short))

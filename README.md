@@ -9,6 +9,8 @@ aggregator, and it is the `site:jobs.lever.co` Google dork done at the source.
 - `ats_jobs/inputs.py`: reads what people type, a pasted Google dork included. No input stops a run.
 - `ats_jobs/platforms/`: one small adapter per ATS, on `platforms/base.py`.
 - `ats_jobs/data/<platform>.tsv`: every board found, rebuilt by `scripts/refresh_<platform>.py` from the Wayback Machine index.
+  A job board that searches its own index (foundit) has no board list: its sites are in its adapter, and
+  `data/foundit_places.tsv` holds the site's own place list, rebuilt by `scripts/refresh_foundit.py`.
 
 An actor pins a tagged release in `requirements.txt` and runs `ats_jobs.engine.main('<platform>')`.
 
