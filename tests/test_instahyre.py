@@ -236,6 +236,15 @@ class Pages(unittest.TestCase):
         read = read_page(html)
         self.assertEqual((read['locations'], read['skills']), (['Bangalore', 'Chennai'], ['Python', 'SQL & NoSQL']))
 
+    def test_an_internship_page_is_told_by_its_internship_block(self):
+        html = PAGE.replace('<p><span class="bold-text">', '<p>Duration: <strong>[[ job.internship.duration ]] months'
+                            '</strong></p><p><span class="bold-text">').replace('<span class="experience"><img src="y.svg" '
+                            'alt="">2-4 Years</span>', '')
+        p = Instahyre()
+        job = p.job(RECORD, p.from_page(RECORD, read_page(html)))
+        self.assertEqual((job['employmentType'], job['extra']['experienceMin']), ('intern', None))
+        self.assertEqual(p.job(RECORD, p.from_page(RECORD, read_page(PAGE)))['employmentType'], 'full-time')
+
     def test_a_closed_jobs_page_has_no_date(self):
         self.assertNotIn('date', read_page('<span class="experience">4-7 Years</span>'))
         self.assertEqual(read_page('<span class="experience">4-7 Years</span>')['experience'], (4, 7))

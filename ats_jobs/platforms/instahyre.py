@@ -97,6 +97,7 @@ EMPLOYER_ID = re.compile(r"employerId\s*=\s*'?(\d+)")
 PAGE_PLACES = re.compile(r'class="location-span">(?:\s*<img[^>]*>)?\s*([^<]*?)\s*<')
 PAGE_SKILLS = re.compile(r'id="job-skills-description"(.*?)</ul>', re.S)
 PAGE_SKILL = re.compile(r'<li>([^<]+)</li>')
+INTERNSHIP_BLOCK = 'job.internship.duration'
 YEARS_TEXT = re.compile(r'(\d+)\s*(?:-\s*(\d+))?\s*\+?\s*years?', re.I)
 SIZE_WORDS = {'small': 'small', 'startup': 'small', 'startups': 'small', 'medium': 'medium', 'mid': 'medium',
               'midsize': 'medium', 'mid-size': 'medium', 'large': 'large', 'big': 'large', 'enterprise': 'large'}
@@ -188,6 +189,9 @@ def read_page(html: str, job_id: int | None = None) -> dict:
     found = PAGE_SKILLS.search(html)
     if found:
         out['skills'] = [htmllib.unescape(s).strip() for s in PAGE_SKILL.findall(found.group(1)) if s.strip()]
+    # an internship's page carries the internship block (start date, duration, stipend, drawn in the browser) and no
+    # experience; its JobPosting markup still says FULL_TIME (3 of 3 internships, 0 of 3 jobs, 2026-11-08)
+    out['internship'] = INTERNSHIP_BLOCK in html
     return out
 
 
@@ -427,6 +431,8 @@ class Instahyre(Platform):
             if pace.refused:
                 raise Refused(pace.refused)
             await pace.turn()
+            if pace.refused:                         # refused while this call waited its turn
+                raise Refused(pace.refused)
             started = time.monotonic()
             try:
                 response = await http.request('GET', url, params=params)
@@ -949,7 +955,7 @@ class Instahyre(Platform):
                 'keywords': record.get('keywords'), 'accept_outstation': record.get('accept_outstation'),
                 'workex_min': read.get('experience', (None, None))[0], 'workex_max': read.get('experience', (None, None))[1],
                 'job_category': category, 'job_function_dict': {category: functions} if category and functions else {},
-                'description': read.get('descriptionHtml'), 'is_internship': read.get('employmentType') == 'INTERN',
+                'description': read.get('descriptionHtml'), 'is_internship': bool(read.get('internship')),
                 'opportunity_url': None}
 
     async def fill_dates(self, ids: list[int]) -> None:
@@ -1079,7 +1085,8 @@ class Instahyre(Platform):
         if self.refusals:
             kinds = {'search': 'searches', 'detail': 'job answers', 'profile': 'company pages', 'page': 'job pages'}
             cfg.notes.append('Instahyre asked this run to slow down ' + ', '.join(
-                f'{n:,} times for its {kinds.get(k, k)}' for k, n in sorted(self.refusals.items())) + ', and it waited.')
+                f'{n:,} time{"" if n == 1 else "s"} for its {kinds.get(k, k)}' for k, n in sorted(self.refusals.items()))
+                + ', and it waited.')
         self.progress = None
         for i in range(0, len(jobs), 200):
             yield jobs[i:i + 200]
