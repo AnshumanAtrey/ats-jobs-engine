@@ -155,7 +155,8 @@ class Filtering(unittest.TestCase):
         mixed = filters(location=['Barcelona', 'Spain', 'Europe', 'Remote'])
         self.assertTrue(mixed.passes(at('Barcelona, Spain', 'Spain', 'onsite'), NOW))      # lost before 2026-11-08
         self.assertTrue(mixed.passes(at('Leeds, United Kingdom', 'United Kingdom'), NOW))  # Europe, no work type
-        self.assertTrue(mixed.passes(at('Remote', None, 'remote'), NOW))                  # open to anyone
+        self.assertTrue(mixed.passes(at('Remote - Europe', None, 'remote'), NOW))         # remote in a place asked
+        self.assertFalse(mixed.passes(at('Remote', None, 'remote'), NOW))                 # just "Remote": Worldwide's
         self.assertFalse(mixed.passes(at('Remote - US', 'United States', 'remote'), NOW))  # remote for the US only
         alone = filters(location=['Remote'])
         self.assertTrue(alone.passes(at('Remote - US', 'United States', 'remote'), NOW))   # alone: every remote job

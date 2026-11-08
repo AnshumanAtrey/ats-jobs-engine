@@ -124,8 +124,9 @@ class Places(unittest.TestCase):
         # a Deel user's real input (run UxZ0dOfitMrBnt6TF, 2026-11-03): remote-only found none of the 4 jobs there
         cfg = parse({'location': ['Barcelona', 'Spain', 'EMEA', 'Europe', 'Remote']})
         self.assertEqual((cfg.locations, cfg.work_types, cfg.remote_places),
-                         (['Barcelona', 'Spain', 'EMEA', 'Europe', 'Remote worldwide'], [], []))
-        self.assertTrue(any('remote jobs open everywhere' in n and 'set Work type to Remote' in n for n in cfg.notes),
+                         (['Barcelona', 'Spain', 'EMEA', 'Europe'], [], []))
+        self.assertTrue(any('next to other places' in n and 'set Work type to Remote' in n and 'add Worldwide' in n
+                            for n in cfg.notes),
                         cfg.notes)
 
     def test_remote_with_a_place_next_to_other_places_is_remote_there_only(self):
