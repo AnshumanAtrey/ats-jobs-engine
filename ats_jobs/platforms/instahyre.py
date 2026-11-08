@@ -73,6 +73,8 @@ WALK_SAMPLE = 120              # ids a walk reads before it judges its pace agai
 WALK_CAP = 4_000               # ids one walk may read: about 35 minutes
 RESERVE_S = 150                # seconds kept before the run's time limit for dates, details and delivery
 TOP_STEP = 64                  # the first step above the newest id known, when looking for the newest id
+IDS_PER_DAY = 150              # job ids handed out a day: 3,571 from 2026-10-14 to 2026-11-07 (job pages)
+WALK_START_S = 20              # finding the newest open job before a walk: about 30 answers
 PENDING_STEP = 16              # the step down through the newest ids, jobs not yet published, to the first open one
 PENDING_TRIES = 60             # steps tried before the walk starts at the very top anyway
 NEWEST_KNOWN = 450_470         # an id known to exist on 2026-11-08: where the newest-id probe starts without a search
@@ -248,7 +250,7 @@ def _list(value) -> list[str]:
 class Instahyre(Platform):
     key = 'instahyre'
     name = 'Instahyre'
-    site_word = 'company'
+    site_word = 'employer'         # 'company' would read "companys" in the engine's running message
     actor = 'instahyre-jobs-search'
     board_example = 'https://www.instahyre.com/jobs-at-zomato/'
     job_example = 'https://www.instahyre.com/job-447415-senior-data-engineer-at-the-walt-disney-company-bangalore/'
@@ -270,6 +272,7 @@ class Instahyre(Platform):
         self.read_pages: dict[int, dict | None] = {}    # job id -> what its page says (read_page), None: no page
         self.page_trouble: str | None = None        # why job pages stopped being read
         self.counts = {'searchPages': 0, 'jobAnswers': 0, 'jobPages': 0, 'companyPages': 0}
+        self.refusals: dict[str, int] = {}          # 429s by kind of call ('search', 'detail', 'profile', 'page')
 
     # ---------- data ----------
 
@@ -290,6 +293,23 @@ class Instahyre(Platform):
                 self._companies[parts[0].strip()] = {'name': parts[1].strip(), 'employees': years(parts[3]),
                                                      'founded': years(parts[4]), 'tagline': parts[5].strip() or None}
         return self._companies
+
+    def boards(self) -> tuple[list[Board], str | None]:
+        """The companies of data/instahyre.tsv, keyed by name: Instahyre's search filters companies by name, and a typed
+        name then reads as itself (the file's first column is the employer id, for the headcount of a job's company).
+        A name two employers share (5 on 2026-11-08) is the one with more jobs, listed first."""
+        boards, updated = super().boards()
+        seen, out = set(), []
+        for board in boards:
+            if board.name.lower() not in seen:
+                seen.add(board.name.lower())
+                out.append(Board(board.name, board.name, board.website))
+        return out, updated
+
+    def all_jobs(self) -> int:
+        """Open jobs on Instahyre when the data file was built (its header), for judging how dense a filter is."""
+        found = re.search(r'([\d,]+) open jobs', _data(f'{self.key}.tsv').split('\n', 1)[0])
+        return int(found.group(1).replace(',', '')) if found else 13_000
 
     # ---------- links, names and the platform's own fields ----------
 
@@ -390,9 +410,9 @@ class Instahyre(Platform):
     async def open(self, http, board):
         if board.key == SITE.key:
             return {'company': None}
-        known = self.companies().get(board.key)
-        if known:
-            return {'company': known['name']}
+        names = {name.lower() for name in (c['name'] for c in self.companies().values())}
+        if board.key.lower() in names:
+            return {'company': board.name}
         if COMPANY_LINK.match(f'/jobs-at-{board.key}/'):          # a company page's name, from a pasted link
             name = await self.company_by_slug(http, board.key)
             if name:
@@ -420,6 +440,7 @@ class Instahyre(Platform):
             STATS['seconds'] += time.monotonic() - started
             if response.status_code == 429:
                 STATS['retries']['429'] += 1
+                self.refusals[kind] = self.refusals.get(kind, 0) + 1
                 wait = _seconds(response.headers.get('retry-after'))
                 if wait > LONGEST_WAIT:
                     pace.refused = (f'Instahyre limits how often one address may call its {kind}, and asked this run '
@@ -883,6 +904,7 @@ class Instahyre(Platform):
             self.counts['jobPages'] += 1
             if response.status_code == 429:
                 STATS['retries']['429'] += 1
+                self.refusals['page'] = self.refusals.get('page', 0) + 1
                 wait = _seconds(response.headers.get('retry-after'))
                 if wait > LONGEST_WAIT:
                     self.page_trouble = (f'Instahyre asked this run to wait {max(round(wait / 60), 2)} minutes for '
@@ -1008,8 +1030,15 @@ class Instahyre(Platform):
                     records += more
                 else:
                     records, how_read, way = None, None, 'walk'
-        elif first is None or (walkable and not cfg.search_terms and pages_left * SEARCH_GAP > SMALL_SEARCH_S):
+        elif first is None:
             way = 'walk' if walkable else 'search'
+        elif walkable and not cfg.search_terms and pages_left * SEARCH_GAP > SMALL_SEARCH_S:
+            # a walk reads every new id and keeps the matches: Instahyre's count for these filters over all its jobs is
+            # how many ids it reads per match (freshers, 512 of 13,453: about 790 ids for 30 jobs, against 15 pages)
+            density = min(1.0, total / max(self.all_jobs(), total, 1))
+            ids = need / density if need is not None else (cfg.posted_within_days or 0) * IDS_PER_DAY
+            walk_s = min(ids, WALK_CAP) * DETAIL_GAP + WALK_START_S
+            way = 'walk' if walk_s < pages_left * SEARCH_GAP else 'search'
         stop, next_id, top = None, None, None
         if way == 'walk':
             hint = max([int(r['id']) for r in (first or {}).get('objects') or [] if r.get('id')] + [NEWEST_KNOWN])
@@ -1047,6 +1076,10 @@ class Instahyre(Platform):
             undated = sum(1 for j in jobs if not j.get('postedAt'))
             if undated:
                 cfg.notes.append(f'{undated:,} jobs have no posting date: {self.page_trouble}.')
+        if self.refusals:
+            kinds = {'search': 'searches', 'detail': 'job answers', 'profile': 'company pages', 'page': 'job pages'}
+            cfg.notes.append('Instahyre asked this run to slow down ' + ', '.join(
+                f'{n:,} times for its {kinds.get(k, k)}' for k, n in sorted(self.refusals.items())) + ', and it waited.')
         self.progress = None
         for i in range(0, len(jobs), 200):
             yield jobs[i:i + 200]
@@ -1101,7 +1134,7 @@ class Instahyre(Platform):
     async def lookup(self, http, session, job_id):
         info = await self.answer(http, int(job_id))
         if info is None:
-            return 'not found', None
+            return 'not found', {'company': None, 'companySlug': None, 'companyWebsite': None}
         if not info.get('is_active'):
             return 'closed', {'company': info.get('hiring_company_name'), 'companySlug': None, 'companyWebsite': None}
         await self.page_date(int(job_id))

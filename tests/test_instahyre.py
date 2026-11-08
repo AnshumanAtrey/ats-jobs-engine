@@ -86,6 +86,14 @@ class Links(unittest.TestCase):
                           p, {})
         self.assertEqual((cfg.search_terms, cfg.locations), (['Python', 'Django'], ['Pune']))
 
+    def test_companies_are_keyed_by_name(self):
+        boards, updated = Instahyre().boards()
+        self.assertIn('Flipkart', {b.key for b in boards})
+        self.assertEqual(len({b.key.lower() for b in boards}), len(boards))
+        self.assertEqual(updated, '2026-11-08')
+        cfg = parse_input({'companies': ['flipkart', 'Walt Disney']}, Instahyre(), engine.name_index(Instahyre(), boards))
+        self.assertEqual(cfg.companies, ['Flipkart', 'The Walt Disney Company'])
+
     def test_a_name_with_the_is_found_without_it(self):
         self.assertEqual(Instahyre().aliases(Board('54291', 'The Walt Disney Company')), ['Walt Disney Company'])
 
@@ -406,6 +414,15 @@ class Choice(unittest.TestCase):
         self.assertEqual(calls, {'search': 1, 'walk': 0})
         self.assertEqual(len(jobs), 30)
 
+    def test_a_sparse_filter_with_no_words_reads_the_search(self):
+        """Freshers: 512 of 13,453 jobs, about 790 new ids to read for 30 matches against 15 search pages."""
+        jobs, calls = self.run_pages({'experienceYears': 0, 'maxJobs': 30}, 512)
+        self.assertEqual(calls['walk'], 0)
+
+    def test_a_dense_filter_with_no_words_walks(self):
+        jobs, calls = self.run_pages({'location': ['Bangalore'], 'maxJobs': 30}, 7_025)
+        self.assertEqual(calls['walk'], 1)
+
     def test_the_empty_form_walks(self):
         jobs, calls = self.run_pages({'maxJobs': 20}, 13_453)
         self.assertEqual((calls['walk'], len(jobs)), (1, 20))
@@ -528,7 +545,7 @@ class Lookup(unittest.TestCase):
         self.assertEqual(self.status(ANSWER)[0], 'open')
         self.assertEqual(self.status({**ANSWER, 'is_active': False}), ('closed', {'company': 'The Walt Disney Company',
                                                                                'companySlug': None, 'companyWebsite': None}))
-        self.assertEqual(self.status(None), ('not found', None))
+        self.assertEqual(self.status(None), ('not found', {'company': None, 'companySlug': None, 'companyWebsite': None}))
 
 
 if __name__ == '__main__':
