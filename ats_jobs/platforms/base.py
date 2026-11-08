@@ -35,6 +35,12 @@ class Platform:
                                       # platform whose job list leaves descriptions out can ask for them and skip
                                       # the text that holds none of these words
     incomplete = False       # set during a run that read only part of what the platform lists (a feed cut short)
+    unopened_matches = 0     # set during a run: matches the platform counted and never handed over, since opening each
+                             # costs a call and none can make the cut (Instahyre: a search's matches past the newest
+                             # maxJobs, their years vouched for by its own filter). They count; they are never delivered
+    unopened_companies: frozenset = frozenset()    # their companies, for the run's count of companies
+    count_is_floor = False   # set during a run: matches may hide among records the platform did not open, so the count
+                             # says "at least" (Instahyre: a range of years, which its own search cannot take)
     progress: str | None = None       # set by a platform that works a while before its first page: the status line
 
 

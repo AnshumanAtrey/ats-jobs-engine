@@ -32,8 +32,8 @@ Each run takes the cheaper of two ways to the newest matches (pages()):
 - search: Instahyre's search with every filter it has, read to its end, then put in id order. One call per 35 jobs at
   20 calls a minute, so it fits a small search: a rare skill, a city with a skill, remote, a company.
 A walk that finds matches too slowly to beat the search hands over to it. Dates come last, for the jobs that are
-delivered or counted, from as few job pages as a bisection needs. The run's own clock stops both ways in time to
-deliver what was found.
+delivered, from as few job pages as a bisection needs. The run's own clock stops both ways in time to deliver what was
+found.
 """
 import asyncio
 import html as htmllib
@@ -189,7 +189,8 @@ def read_page(html: str, job_id: int | None = None) -> dict:
     if found:
         out['skills'] = [htmllib.unescape(s).strip() for s in PAGE_SKILL.findall(found.group(1)) if s.strip()]
     # an internship's page carries the internship block (start date, duration, stipend, drawn in the browser) and no
-    # experience; its JobPosting markup still says FULL_TIME (3 of 3 internships, 0 of 3 jobs, 2026-11-08)
+    # experience; its JobPosting markup still says FULL_TIME (2026-11-08: 64 of 64 internship pages; the block agreed
+    # with the job's own answer on 60 of the 60 newest jobs open to freshers)
     out['internship'] = INTERNSHIP_BLOCK in html
     return out
 
@@ -277,6 +278,9 @@ class Instahyre(Platform):
         self.page_trouble: str | None = None        # why job pages stopped being read
         self.counts = {'searchPages': 0, 'jobAnswers': 0, 'jobPages': 0, 'companyPages': 0}
         self.refusals: dict[str, int] = {}          # 429s by kind of call ('search', 'detail', 'profile', 'page')
+        self.unopened_matches = 0                   # a search's matches past the newest maxJobs (Platform)
+        self.unopened_companies: set[str] = set()
+        self.count_is_floor = False
 
     # ---------- data ----------
 
@@ -387,9 +391,10 @@ class Instahyre(Platform):
 
     def matcher(self, cfg):
         """Every filter of the run but the posting date, which needs the job's page (the engine checks it once the
-        date is known), plus experience and company size where the job states them. A search record states no
-        experience until its answer or page is read, so here an unknown experience passes and the job is opened; the
-        engine's own check (rows.experience_fits) is strict once it is known."""
+        date is known), plus experience and company size. A search record states no experience until its answer or
+        page is read, so a record passes on experience and is opened; an opened job is held to the engine's own rule
+        (rows.experience_fits), where a job that states no experience fits no years, so a job that does not fit makes
+        room for the next and never counts toward maxJobs."""
         filters = Filters(cfg)
         filters.within_days = None
         filters.experience = None
@@ -399,8 +404,7 @@ class Instahyre(Platform):
         def wanted(job: dict) -> bool:
             if not filters.passes(job, now):
                 return False
-            known = job.get('experienceMin') is not None or job.get('experienceMax') is not None
-            if cfg.experience is not None and known and not experience_fits(job, cfg.experience):
+            if cfg.experience is not None and job.get('_answered') and not experience_fits(job, cfg.experience):
                 return False
             return not (sizes and job.get('_size') is not None and job['_size'] not in sizes)
         return wanted
@@ -694,10 +698,12 @@ class Instahyre(Platform):
 
     async def from_search(self, http, query: list, records: list, how: str, total: int, need: int | None,
                           cutoff: str | None, found: dict) -> list[dict]:
-        """A search's records in id order. The newest need matches get their own answers (or pages, when Instahyre
-        refuses those) and dates; one that its answer rules out (closed since, other experience) makes room for the
-        next. With a posting period every match inside it gets its date, so the count is right. found: jobs a walk
-        already answered."""
+        """A search's records in id order -> the newest need matches, opened. Each gets its own answer (or its page,
+        when Instahyre refuses those) and its date; one that its answer or page rules out (closed since, other years
+        of experience, none stated) makes room for the next. The matches past those are never handed to the engine:
+        they count as matches (unopened_matches) when Instahyre's own search held them to every filter of the run,
+        the years included, and leave the count a floor (count_is_floor) when a range of years only an opened job
+        shows was asked. found: jobs a walk already answered."""
         cfg = self.cfg
         if how in ('time', 'refused', 'most'):
             self.incomplete = True
@@ -721,7 +727,7 @@ class Instahyre(Platform):
         if cutoff:
             jobs = jobs[:await self.cutoff_index([j['rank'] for j in jobs], cutoff)]
         records_by_id = {int(r['id']): r for r in records if r.get('id')}
-        kept, queue, failed, from_pages = [], list(jobs), 0, 0
+        kept, queue, failed, from_pages, unread = [], list(jobs), 0, 0, []
         while queue and (need is None or len(kept) < need):
             batch = queue[:len(queue) if need is None else need - len(kept)]
             queue = queue[len(batch):]
@@ -729,6 +735,8 @@ class Instahyre(Platform):
             for job in batch:
                 info = self.answers.get(job['rank'])
                 record = records_by_id.get(job['rank'], {'id': job['rank']})
+                if job['rank'] in self.answers and info is None:
+                    continue                         # no such job any more: deleted since the search listed it
                 if not job['_answered'] and job['rank'] not in self.answers:       # its answer was refused: its page
                     read = await self.page(job['rank'])
                     if read and read.get('date'):
@@ -737,23 +745,39 @@ class Instahyre(Platform):
                     job = self.job(record, info)
                 if info is not None and not info.get('is_active', True):
                     continue                         # closed since Instahyre's search last saw it
+                if not job['_answered'] and cfg.experience is not None:
+                    unread.append(job)               # neither its answer nor its page: its years cannot be checked
+                    continue
                 if job['_answered'] and not self.wanted(job):
-                    continue                         # its own answer rules it out (experience)
+                    continue                         # its own answer or page rules it out (experience)
                 kept.append(job)
             if out_of_time():
+                if queue and (need is None or len(kept) < need):
+                    self.incomplete = True
+                    cfg.notes.append(f'The run was about to reach its time limit, so {len(kept):,} of the matches were '
+                                     f'opened and saved.')
                 break
-        rest = queue
+        left = queue + unread  # matches past the newest need, and those no answer or page could open: never handed
+        if left:               # over, as they have no years and no date
+            if cfg.experience is None or self.server_years(cfg) is not None:
+                self.unopened_matches += len(left)   # Instahyre's own search held them to the run's filters, years too
+                self.unopened_companies |= {j['company'] or SITE.name for j in left}
+            else:
+                self.count_is_floor = True           # a range of years (2-5, 5+): only an opened job shows its years
         if from_pages:
             cfg.notes.append(f'Instahyre refused the job answers, so {from_pages:,} jobs were read from their pages, '
                              f'which name no recruiter company or stipend.')
-        if failed > from_pages:
+        if unread:
+            cfg.notes.append(f'{len(unread):,} jobs could not be read one by one, so their years of experience are '
+                             f'unknown and they were left out.')
+        elif failed > from_pages:
             cfg.notes.append(f'{failed - from_pages:,} jobs could not be read one by one, so they come without '
                              f'experience.')
-        await self.fill_dates([j['rank'] for j in kept + (rest if cutoff else [])])
+        await self.fill_dates([j['rank'] for j in kept])
         await self.company_facts(http, kept)
-        for job in kept + rest:
+        for job in kept:
             job['postedAt'] = self.dates.get(job['rank'])
-        return kept + rest
+        return kept
 
     async def answer_all(self, http, ids: list[int]) -> int:
         """Own answers for these jobs -> how many could not be read."""
@@ -941,14 +965,17 @@ class Instahyre(Platform):
 
     def from_page(self, record: dict, read: dict) -> dict:
         """A search record and a job's page -> an answer of the job's own shape, for when Instahyre refuses those: the
-        page has the experience, category, functions and description, and no recruiter or stipend."""
+        page has the experience, category, functions and description, and no recruiter or stipend. An internship's
+        page states no years: it gets 0-0, the years every internship Instahyre listed on 2026-11-08 states in its own
+        answer (64 of 64, ids 155,264 to 450,020; their 64 pages state none)."""
         category, *functions = read.get('function') or [None]
+        low, high = read.get('experience') or ((0, 0) if read.get('internship') else (None, None))
         return {'id': record.get('id'), 'is_active': True, 'title': record.get('title'),
                 'hiring_company_name': (record.get('employer') or {}).get('company_name'),
                 'employer_profile_url': (record.get('employer') or {}).get('profile_image_src'),
                 'locations': [c.strip() for c in (record.get('locations') or '').split(',') if c.strip()],
                 'keywords': record.get('keywords'), 'accept_outstation': record.get('accept_outstation'),
-                'workex_min': read.get('experience', (None, None))[0], 'workex_max': read.get('experience', (None, None))[1],
+                'workex_min': low, 'workex_max': high,
                 'job_category': category, 'job_function_dict': {category: functions} if category and functions else {},
                 'description': read.get('descriptionHtml'), 'is_internship': bool(read.get('internship')),
                 'opportunity_url': None}

@@ -2,7 +2,11 @@
 walk and search, on answers shaped like Instahyre's own (2026-11-08; the recruiter's name replaced)."""
 import asyncio
 import copy
+import gzip
+import json
+import os
 import unittest
+from contextlib import asynccontextmanager
 from datetime import date, datetime, timedelta, timezone
 from unittest.mock import patch
 
@@ -197,6 +201,9 @@ class Matching(unittest.TestCase):
         self.assertFalse(platform({'experienceYears': 7}).wanted(job))
         self.assertFalse(platform({'companySize': ['small']}).wanted(job))
         self.assertTrue(platform({'experienceYears': 7}).wanted(Instahyre().job(RECORD)))     # a record: unknown
+        opened = Instahyre().job(RECORD, {**ANSWER, 'workex_min': None, 'workex_max': None})
+        self.assertFalse(platform({'experienceYears': 3}).wanted(opened))     # opened and stating none: the engine's rule
+        self.assertTrue(platform({}).wanted(opened))
 
 
 class Query(unittest.TestCase):
@@ -243,13 +250,16 @@ class Pages(unittest.TestCase):
         self.assertEqual((read['locations'], read['skills']), (['Bangalore', 'Chennai'], ['Python', 'SQL & NoSQL']))
 
     def test_an_internship_page_is_told_by_its_internship_block(self):
+        """Its page states no years; every internship's own answer says 0-0 (64 of 64 on 2026-11-08), so it gets that."""
         html = PAGE.replace('<p><span class="bold-text">', '<p>Duration: <strong>[[ job.internship.duration ]] months'
                             '</strong></p><p><span class="bold-text">').replace('<span class="experience"><img src="y.svg" '
                             'alt="">2-4 Years</span>', '')
         p = Instahyre()
         job = p.job(RECORD, p.from_page(RECORD, read_page(html)))
-        self.assertEqual((job['employmentType'], job['extra']['experienceMin']), ('intern', None))
+        self.assertEqual((job['employmentType'], job['experienceMin'], job['experienceMax']), ('intern', 0, 0))
         self.assertEqual(p.job(RECORD, p.from_page(RECORD, read_page(PAGE)))['employmentType'], 'full-time')
+        no_years = PAGE.replace('<span class="experience"><img src="y.svg" alt="">2-4 Years</span>', '')
+        self.assertEqual(p.job(RECORD, p.from_page(RECORD, read_page(no_years)))['experienceMin'], None)
 
     def test_a_closed_jobs_page_has_no_date(self):
         self.assertNotIn('date', read_page('<span class="experience">4-7 Years</span>'))
@@ -318,7 +328,7 @@ class Dates(unittest.TestCase):
 
 
 class Walk(unittest.TestCase):
-    def run_walk(self, answers: dict, raw: dict, top: int, need, cutoff=None, search_s=None, pages_ok=True):
+    def run_walk(self, answers: dict, raw: dict, top: int, need, cutoff=None, search_s=None, pages_ok=True, reads=None):
         p = platform(raw)
 
         async def answer(http, job_id):
@@ -331,6 +341,8 @@ class Walk(unittest.TestCase):
             if not pages_ok:
                 p.page_trouble = 'refused'
                 return None
+            if reads and job_id in reads:
+                return reads[job_id]
             return {'date': days(0), 'title': f'Engineer {job_id}', 'company': 'Acme', 'locations': ['Pune'],
                     'skills': ['Python'], 'experience': (2, 4), 'function': ['Software Engineering', 'Backend']}
 
@@ -370,6 +382,19 @@ class Walk(unittest.TestCase):
         self.assertEqual(stop[0], 'enough')
         self.assertEqual((found[990]['title'], found[990]['extra']['experienceMin'], found[990]['company']),
                          ('Engineer 990', 2, 'Acme'))
+
+    def test_a_job_whose_page_states_no_years_does_not_count_toward_max_jobs(self):
+        """Answers refused, so pages stand in: an internship's page gets 0-0 years, every internship's own answer (64 of
+        64 on 2026-11-08), and a job page that states no years fits no years, so the walk reads on for the next."""
+        intern = {'date': days(0), 'title': 'Marketing Intern', 'company': 'Acme', 'locations': ['Pune'], 'skills': [],
+                  'function': ['Marketing'], 'internship': True}
+        bare = {'date': days(0), 'title': 'Engineer 999', 'company': 'Acme', 'locations': ['Pune'], 'skills': ['Python'],
+                'function': ['Software Engineering']}
+        answers = {**self.answers(), 1000: 'refused'}
+        stop, found = self.run_walk(answers, {'experienceYears': '0-3'}, 1000, 3, reads={1000: intern, 999: bare})
+        self.assertEqual((stop[0], sorted(found, reverse=True)[:3]), ('enough', [1000, 998, 997]))   # a batch is 5 ids
+        self.assertEqual((found[1000]['employmentType'], found[1000]['experienceMin'], found[1000]['experienceMax']),
+                         ('intern', 0, 0))
 
     def test_answers_and_pages_both_refused_end_the_walk(self):
         answers = {**self.answers(), 990: 'refused'}
@@ -477,11 +502,12 @@ class SearchRead(unittest.TestCase):
         more, how = asyncio.run(p.read_search(None, [], {'meta': first['meta'], 'objects': []}, dry=True, offset=105))
         self.assertEqual((how, asked[0], len(records) + len(more)), ('whole', 105, 350))
 
-    def test_a_job_its_answer_rules_out_makes_room_for_the_next(self):
-        p, _ = self.fake({'searchTerms': ['data engineer'], 'experienceYears': 3}, [35], total=35)
+    def opened(self, raw: dict, need: int = 10):
+        """from_search on one page of 35 matches, every other one asking 8-12 years and the rest 2-4."""
+        p, _ = self.fake(raw, [35], total=35)
 
         async def answer(http, job_id):
-            old = job_id % 2 == 0                       # every other job asks 8-12 years
+            old = job_id % 2 == 0
             p.answers[job_id] = {**ANSWER, 'id': job_id, 'title': f'Data Engineer {job_id}', 'opportunity_url': f'/job-{job_id}-x/',
                                  'workex_min': 8 if old else 2, 'workex_max': 12 if old else 4}
             return p.answers[job_id]
@@ -490,10 +516,41 @@ class SearchRead(unittest.TestCase):
             return None
         p.answer, p.fill_dates, p.company_facts = answer, nothing, nothing
         first = asyncio.run(p.search_page(None, [], 0))
+        return p, asyncio.run(p.from_search(None, [], first['objects'], 'whole', 35, need, None, {}))
+
+    def test_a_job_its_answer_rules_out_makes_room_for_the_next(self):
+        p, jobs = self.opened({'searchTerms': ['data engineer'], 'experienceYears': 3})
+        self.assertEqual(len(jobs), 10)
+        self.assertTrue(all(j['_answered'] and j['extra']['experienceMax'] == 4 for j in jobs))
+        # the 15 not opened are counted, never handed over: Instahyre's own search took the one number of years
+        self.assertEqual((p.unopened_matches, p.unopened_companies, p.count_is_floor),
+                         (15, {'The Walt Disney Company'}, False))
+
+    def test_a_range_of_years_leaves_the_count_a_floor(self):
+        """2-5 cannot go to Instahyre's search, so the jobs not opened may or may not ask for those years."""
+        p, jobs = self.opened({'searchTerms': ['data engineer'], 'experienceYears': '2-5'})
+        self.assertEqual(len(jobs), 10)
+        self.assertEqual((p.unopened_matches, p.count_is_floor), (0, True))
+        p, jobs = self.opened({'searchTerms': ['data engineer'], 'experienceYears': '2-5'}, need=None)
+        self.assertEqual((len(jobs), p.count_is_floor), (17, False))      # every match opened: the count is exact
+
+    def test_a_job_with_no_answer_and_no_page_is_left_out_under_years(self):
+        p, _ = self.fake({'searchTerms': ['data engineer'], 'experienceYears': 3}, [35], total=35)
+
+        async def refused(http, job_id):
+            raise Refused('limit')
+
+        async def no_page(job_id):
+            return None
+
+        async def nothing(*args, **kwargs):
+            return None
+        p.answer, p.page, p.fill_dates, p.company_facts = refused, no_page, nothing, nothing
+        first = asyncio.run(p.search_page(None, [], 0))
         jobs = asyncio.run(p.from_search(None, [], first['objects'], 'whole', 35, 10, None, {}))
-        kept = [j for j in jobs if j['_answered']]
-        self.assertEqual(len(kept), 10)
-        self.assertTrue(all(j['extra']['experienceMax'] == 4 for j in kept))
+        self.assertEqual((jobs, p.unopened_matches), ([], 35))    # Instahyre's search took the years: still matches
+        self.assertIn('35 jobs could not be read one by one, so their years of experience are unknown and they were '
+                      'left out.', p.cfg.notes)
 
     def test_one_title_in_other_cities_is_another_job(self):
         p = Instahyre()
@@ -539,6 +596,100 @@ class Engine(unittest.TestCase):
                 patch.object(engine, 'seconds_left_in_run', lambda: None):
             asyncio.run(run.search())
         self.assertEqual(run.delivery.pushed, ['30', '20', '10'])
+
+
+FRESHERS = os.path.join(os.path.dirname(__file__), 'data', 'instahyre_freshers_2026-11-08.json.gz')
+# run r2-03's rows, newest first
+R2_03 = ['451486', '451198', '451143', '451141', '451049', '450921', '450915', '450824', '450810', '450802', '450714',
+         '450635', '450464', '450452', '450445', '450414', '450326', '450271', '450201', '450199', '450140', '450128',
+         '450077', '450073', '450063', '450055', '450020', '450015', '449970', '449843']
+
+
+class Freshers(unittest.TestCase):
+    """The freshers search of 2026-11-08 (experienceYears 0, maxJobs 30) offline, on Instahyre's answers recorded at
+    09:11 UTC: the 524 jobs its years=0 search listed, the same the local runs r2-03 (08:39) and r2-04 read, and the
+    answers and pages of the 60 newest (data/instahyre_freshers_2026-11-08.json.gz). On engine 0.5.1 r2-03 said "Found
+    and saved 30 matching jobs at 29 companies", its 493 jobs not opened counted as left out by experienceYears, and
+    r2-04 (job answers refused) saved 28 of 30: the two internships' pages state no years, so the engine dropped them
+    after they had counted toward maxJobs."""
+
+    class Delivered:
+        def __init__(self):
+            self.rows_saved, self.rows, self.limit = [], 0, False
+
+        def can_pay(self, event):
+            return True
+
+        async def push(self, rows, event):
+            self.rows_saved += rows
+            self.rows += len(rows)
+            return len(rows)
+
+    @classmethod
+    def setUpClass(cls):
+        with gzip.open(FRESHERS, 'rt', encoding='utf-8') as f:
+            cls.fx = json.load(f)
+
+    def run_freshers(self, answers_refused: bool) -> engine.Run:
+        fx, p = self.fx, Instahyre()
+
+        async def search_page(http, query, offset):
+            self.assertEqual([list(q) for q in query], fx['query'])
+            return {'meta': {'total_count': fx['total']}, 'objects': copy.deepcopy(fx['records'][offset:offset + 35])}
+
+        async def answer(http, job_id):
+            if answers_refused:
+                raise Refused('Instahyre limits how often one address may call its detail')
+            self.assertIn(str(job_id), fx['answers'], f'the answer of job {job_id} was not recorded')
+            p.answers[job_id] = copy.deepcopy(fx['answers'][str(job_id)])
+            return p.answers[job_id]
+
+        async def page(job_id):
+            self.assertIn(str(job_id), fx['reads'], f'the page of job {job_id} was not recorded')
+            read = copy.deepcopy(fx['reads'][str(job_id)])
+            if read and read.get('experience'):
+                read['experience'] = tuple(read['experience'])
+            p.read_pages[job_id] = read
+            if read and read.get('date'):
+                p.dates[job_id] = read['date']
+            return read
+
+        async def profile(http, employer):
+            return fx['profiles'].get(employer)
+
+        async def walked(*args, **kwargs):
+            raise AssertionError('a search this sparse is read, not walked')
+
+        async def quiet(message):
+            return None
+
+        @asynccontextmanager
+        async def no_client(actor, connections=64):
+            yield None
+        p.search_page, p.answer, p.page, p.profile, p.newest_id = search_page, answer, page, profile, walked
+        run = engine.Run(p, parse_input({'experienceYears': 0, 'maxJobs': 30}, p, {}), [], None, self.Delivered())
+        with patch.object(engine, 'client', no_client), patch.object(engine, 'safe_status', quiet), \
+                patch.object(engine, 'seconds_left_in_run', lambda: None):
+            asyncio.run(run.search())
+        return run
+
+    def test_every_match_is_counted_and_the_newest_30_are_saved(self):
+        run = self.run_freshers(answers_refused=False)
+        rows = run.delivery.rows_saved
+        self.assertEqual([r['jobId'] for r in rows], R2_03)
+        self.assertTrue(all(r['experienceMin'] == 0 for r in rows))
+        # 524 jobs listed, one a copy: the 30 opened and the 493 that Instahyre's own years filter vouches for
+        self.assertEqual((run.matching, run.jobs_listed, run.near_misses), (523, 523, 0))
+        self.assertRegex(run.message(), r'^Found 523 matching jobs at \d{3} companies on Instahyre, saved the 30 newest')
+
+    def test_with_the_answers_refused_the_pages_give_the_same_30(self):
+        run = self.run_freshers(answers_refused=True)
+        rows = run.delivery.rows_saved
+        self.assertEqual([r['jobId'] for r in rows], R2_03)      # the two internships too, at 0-0 years
+        self.assertEqual([(r['employmentType'], r['experienceMin'], r['experienceMax']) for r in rows
+                          if r['jobId'] in ('450020', '450015')], [('intern', 0, 0)] * 2)
+        self.assertEqual((run.matching, run.near_misses), (523, 0))
+        self.assertIn('Instahyre refused the job answers, so 30 jobs were read from their pages', run.message())
 
 
 class Lookup(unittest.TestCase):

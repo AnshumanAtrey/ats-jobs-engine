@@ -351,6 +351,11 @@ class Run:
 
             self.phase = 'boards'
             await self.run_all([one(b) for b in targets])
+            # matches the platform counted without handing them over (Platform.unopened_matches): read and matching,
+            # never kept
+            self.jobs_listed += platform.unopened_matches
+            self.matching += platform.unopened_matches
+            self.companies_matched |= set(platform.unopened_companies)
 
             chosen = self.newest_copies(sorted(kept if cfg.max_jobs is None else heap,
                                                key=lambda item: (item[0], item[1]), reverse=True))
@@ -543,10 +548,12 @@ class Run:
             where = self.feed.name if self.feed else plural(self.answered(), self.where)
             people = plural(len(self.companies_matched), 'company')
             if self.delivery.rows:
-                # boards cut short were not read to their end, so what they held below the cut was never counted
-                every = not self.cut_short and self.delivery.rows >= self.matching
+                # boards cut short were not read to their end, so what they held below the cut was never counted; a
+                # platform's count is a floor when matches may hide among the records it did not open
+                floor = self.cut_short or self.platform.count_is_floor
+                every = not floor and self.delivery.rows >= self.matching
                 newest = '' if every else f', saved the {self.delivery.rows:,} newest'
-                counted = ('at least ' if self.cut_short else '') + plural(self.matching, 'matching job')
+                counted = ('at least ' if floor else '') + plural(self.matching, 'matching job')
                 text = f'Found {counted} at {people} on {where}{newest} in {seconds} s.'
                 if every:
                     text = (f'Found and saved {plural(self.delivery.rows, "matching job")} at {people} '

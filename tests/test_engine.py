@@ -246,6 +246,17 @@ class Paging(unittest.TestCase):
         window = search(Fake({'a': self.pages()}, newest_first=True), {'postedWithin': '3 days', 'maxJobs': 0})
         self.assertNotIn('at least', window.message())
 
+    def test_matches_a_platform_did_not_hand_over_are_counted_and_never_saved(self):
+        # Instahyre, 2026-11-08: the freshers search listed 524 jobs, its own years filter vouching for each; only the
+        # 30 newest are opened, and the rest are counted without being handed over
+        def site():
+            return {'a': [[job('x', 'Engineer X'), job('y', 'Engineer Y')]]}
+        counted = search(Fake(site(), unopened_matches=5, unopened_companies={'b', 'c'}), {'maxJobs': 2})
+        self.assertIn('Found 7 matching jobs at 3 companies on 1 Fake board, saved the 2 newest', counted.message())
+        self.assertEqual((counted.delivery.rows, counted.output('done')['matchingJobs']), (2, 7))
+        floor = search(Fake(site(), count_is_floor=True), {'maxJobs': 2})
+        self.assertIn('Found at least 2 matching jobs at 1 company on 1 Fake board, saved the 2 newest', floor.message())
+
     def test_a_spending_limit_on_every_match_says_how_many_matched(self):
         # f-everything, 2026-11-03: maxJobs 0 stopped by the limit said 'Found and saved 20,000 matching jobs' when
         # 222,724 matched
