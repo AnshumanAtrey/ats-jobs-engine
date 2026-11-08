@@ -284,6 +284,7 @@ class Foundit(Platform):
     job_example = 'https://www.foundit.in/job/polarion-alm-developer-career-soft-solutions-pvt-ltd-bengaluru-bangalore-india-69755276'
     concurrency = 9               # every site at once; Pace keeps the rate
     server_search = True          # pages() gets the word: foundit searches titles, skills and descriptions
+    server_filters = True         # places, period, experience and job type go to foundit's own search
     newest_first = True           # sort=2: newest listed first, and listedAt says when
     never = ('team', 'offersEquity', 'companyWebsite', 'reference')
 
