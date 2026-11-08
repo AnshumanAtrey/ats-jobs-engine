@@ -246,6 +246,17 @@ class Paging(unittest.TestCase):
         window = search(Fake({'a': self.pages()}, newest_first=True), {'postedWithin': '3 days', 'maxJobs': 0})
         self.assertNotIn('at least', window.message())
 
+    def test_a_short_list_inside_a_period_says_the_period_left_older_jobs_out(self):
+        # owner, 2026-11-09: postedWithin is 30 days by default on the India boards, and Hirist's data analyst run saved 30
+        # jobs with nothing to say that older ones were left out on purpose
+        def board():
+            return Fake({'a': self.pages()}, newest_first=True)
+        hint = 'Only jobs posted in the last 30 days were looked for: pick a longer period in postedWithin'
+        self.assertIn(hint, search(board(), {'postedWithin': '30 days', 'maxJobs': 100}).message())
+        self.assertNotIn('Only jobs posted', search(board(), {'postedWithin': '30 days', 'maxJobs': 2}).message())
+        self.assertNotIn('Only jobs posted', search(board(), {'maxJobs': 100}).message())
+        self.assertIn('in the last 24 hours were looked for', search(board(), {'postedWithin': '24 hours'}).message())
+
     def test_matches_a_platform_did_not_hand_over_are_counted_and_never_saved(self):
         # Instahyre, 2026-11-08: the freshers search listed 524 jobs, its own years filter vouching for each; only the
         # 30 newest are opened, and the rest are counted without being handed over

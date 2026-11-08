@@ -51,6 +51,14 @@ FILTER_FIXES = {'employmentType': 'clear Job type', 'workType': 'clear Work type
                 'experienceYears': 'type a wider range of years or leave it empty'}
 
 
+def period_text(days: float) -> str:
+    """30 -> '30 days', 1 -> '24 hours', 0.5 -> '12 hours', 2 -> '48 hours': postedWithin as people say it."""
+    hours = days * 24
+    if hours <= 48 and abs(hours - round(hours)) < 1e-6:
+        return '1 hour' if round(hours) == 1 else f'{round(hours)} hours'
+    return f'{days:g} days'
+
+
 async def safe_status(message: str) -> None:
     """Set the run's status message without ever failing the run."""
     try:
@@ -564,6 +572,11 @@ class Run:
                 if every:
                     text = (f'Found and saved {plural(self.delivery.rows, "matching job")} at {people} '
                             f'on {where} in {seconds} s.')
+                    # fewer than asked and a posting period set (30 days by default on the India boards, owner 2026-11-09):
+                    # say the period left the older jobs out, or a short list reads as all the board has (Hirist, 30 jobs)
+                    if cfg.posted_within_days and cfg.max_jobs and self.delivery.rows < cfg.max_jobs:
+                        text += (f' Only jobs posted in the last {period_text(cfg.posted_within_days)} were looked for: '
+                                 f'pick a longer period in postedWithin to get older ones too.')
             elif self.matching and cfg.max_jobs == 0:
                 text = f'Found {plural(self.matching, "matching job")} on {where} in {seconds} s (maxJobs is 0).'
             elif not self.answered():
