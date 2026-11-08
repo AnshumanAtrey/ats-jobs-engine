@@ -125,7 +125,7 @@ class Places(unittest.TestCase):
         cfg = parse({'location': ['Barcelona', 'Spain', 'EMEA', 'Europe', 'Remote']})
         self.assertEqual((cfg.locations, cfg.work_types, cfg.remote_places),
                          (['Barcelona', 'Spain', 'EMEA', 'Europe'], [], []))
-        self.assertTrue(any('next to other places' in n and 'set Work type to Remote' in n and 'add Worldwide' in n
+        self.assertTrue(any('next to other places' in n and 'set Work type to Remote' in n and 'or Worldwide' in n
                             for n in cfg.notes),
                         cfg.notes)
 

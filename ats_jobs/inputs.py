@@ -351,8 +351,8 @@ def parse_locations(entries: list[list[str]], work_types: list[str], notes: list
                          f'every work type.')
         elif each_its_own:
             notes.append(f'Read "{text}" next to other places as their remote jobs, which they already hold with '
-                         f'every other work type there. To get remote jobs only, set Work type to Remote; to add the '
-                         f'jobs that say just "Remote" with no country, add Worldwide.')
+                         f'every other work type there. To get remote jobs only, set Work type to Remote; to add remote '
+                         f'jobs elsewhere, add their country or region, or Worldwide for jobs open to anyone.')
         else:
             if 'remote' not in moved:
                 moved.append('remote')

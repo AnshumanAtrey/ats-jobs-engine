@@ -389,6 +389,18 @@ class Rows(unittest.TestCase):
         asyncio.run(platform.typed(None, [low]))
         self.assertEqual(opened, [])
 
+    def test_an_internship_with_no_stated_experience_takes_0_to_1_years(self):
+        # the list states none for internships (32 of 32) and their pages say 0-1 Yrs (25 of 25): without it, any
+        # experienceYears left out every internship (marketing + intern + fresher gave 0 rows on v0.5.0)
+        from datetime import datetime, timezone
+        from ats_jobs.rows import Filters
+        platform, _ = search({})
+        job = platform.job(INTERN)
+        self.assertEqual((job['experienceMin'], job['experienceMax'], job['experience']), (0, 1, '0-1 Yrs'))
+        for years, kept in (('fresher', True), ('1', True), ('3', False)):
+            _, cfg = search({'experienceYears': years, 'employmentType': ['internship']})
+            self.assertEqual(Filters(cfg).passes(platform.job(INTERN), datetime.now(timezone.utc)), kept, years)
+
     def test_experience_is_the_engines_filter_on_naukris_ranges(self):
         from datetime import datetime, timezone
         from ats_jobs.rows import Filters

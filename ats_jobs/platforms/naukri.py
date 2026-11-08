@@ -785,6 +785,10 @@ class Naukri(Platform):
         review = record.get('ambitionBoxData') or {}
         skills = [s.strip() for s in (record.get('tagsAndSkills') or '').split(',') if s.strip()]
         low, high = number(record.get('minimumExperience')), number(record.get('maximumExperience'))
+        if intern and low is None and high is None:
+            # Naukri's list states no experience for an internship (32 of 32 on 2026-11-08) while its page says 0-1 Yrs
+            # (25 of 25): without these, any experienceYears left out every internship
+            low, high = 0, 1
         return {
             'id': job_id,
             'company': clean(record.get('companyName')) or None,
@@ -800,7 +804,7 @@ class Naukri(Platform):
             'dateOnly': not posted,
             'jobUrl': link,
             'applyUrl': link,
-            'experience': clean(record.get('experienceText') or holders.get('experience')) or None,
+            'experience': clean(record.get('experienceText') or holders.get('experience')) or ('0-1 Yrs' if intern else None),
             'experienceMin': low,
             'experienceMax': high,
             'skills': list(dict.fromkeys(skills)),
