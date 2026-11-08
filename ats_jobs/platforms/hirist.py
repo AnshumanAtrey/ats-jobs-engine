@@ -27,15 +27,16 @@ laptop on 2026-11-08:
   ("frontend developer": 1,168 jobs, 53 with both words in the title) or narrowly ("react": 40 jobs, while 295 titles in
   the newest 10,000 name React). Words are matched here, in titles, and with searchDescriptions in Hirist's skill tags.
 
-Fields: experience as a range of years (min, max) on every job; skills on every job (tags, with a mandatory flag); pay in
-lakhs of rupees a year (minSal, maxSal) shown on 6% (hideSal 0); work from home as a flag (workFromHome, 9.6%) or Remote
-among the places (6.3%): 12.3% together. Of 20 work-from-home jobs read, 7 describe a hybrid setup and 8 remote work, and of
-60 others 8 say hybrid and 11 an office, so remote here is Hirist's work-from-home mark and onsite its absence. Hirist
-states no job type. Titles carry the company first ("GeBBS - Java Developer"). The company's AmbitionBox rating and
-review count come with 63% of jobs. createdTimeMs, the moment within the day the job went live (always in office hours),
-falls on the day Hirist shows for 95% of jobs; for the rest it is a later day, so postedAt is that moment when it is on the
-shown day and the shown day alone otherwise. A job whose only place is "Others" carries the place the recruiter typed in
-createdByAlias ("Bengaluru,Karnataka,India", "Mumbai (all Areas)"): 451 of 28,770.
+Fields: experience as a range of years (min, max) on every job; skills on every job (tags, with a mandatory flag); pay
+in lakhs of rupees a year (minSal, maxSal) shown on 7% (hideSal 0); work from home as a flag (workFromHome) or Remote
+among the places: 10.7% of the 28,356 jobs a full read delivered on 2026-11-08. Of 20 work-from-home jobs read, 7
+describe a hybrid setup and 8 remote work, and of 60 others 8 say hybrid and 11 an office, so remote here is Hirist's
+work-from-home mark and onsite its absence. Hirist states no job type. Titles carry the company first ("GeBBS - Java
+Developer"). The company's AmbitionBox rating and review count come with 57% of jobs. createdTimeMs, the moment the job
+went live (98.5% between 09:00 and 20:00 India time), falls on the day Hirist shows for 95% of jobs; for the rest it is
+a later day, so postedAt is that moment when it is on the shown day and the shown day alone otherwise. A job whose only
+place is "Others" carries the place the recruiter typed in createdByAlias ("Bengaluru,Karnataka,India", "Mumbai (all
+Areas)"): 451 of 28,770.
 
 iimjobs.com (management jobs, the same company) runs the same API on gladiator.iimjobs.com with its own jobs; there the
 keyword feed answers 404 and the newest-first lists are per category, so it is not read here.
@@ -303,8 +304,8 @@ def posted_at(created: int | None, moment: int | None) -> tuple[str | None, bool
 
 
 KEEP = ('id', 'title', 'min', 'max', 'createdTime', 'createdTimeMs', 'locations', 'createdByAlias', 'workFromHome',
-        'minSal', 'maxSal', 'hideSal', 'tags', 'companyData', 'applyUrl', 'jobDetailUrl', 'applyCount', 'applicationCount', 'introText',
-        'confidential')
+        'minSal', 'maxSal', 'hideSal', 'tags', 'companyData', 'applyUrl', 'jobDetailUrl', 'applyCount', 'applicationCount',
+        'introText', 'confidential')
 
 
 def trim(record: dict) -> dict:
