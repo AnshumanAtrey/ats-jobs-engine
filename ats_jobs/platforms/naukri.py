@@ -536,7 +536,13 @@ class Naukri(Platform):
         if self._via is None:
             if self._proxy is None:
                 from apify import Actor
-                self._proxy = await Actor.create_proxy_configuration(actor_proxy_input=self._proxy_input)
+                try:
+                    self._proxy = await Actor.create_proxy_configuration(actor_proxy_input=self._proxy_input)
+                except Exception as exc:  # noqa: BLE001  a proxy the platform cannot use (socks5://, a typo)
+                    why = str(exc).splitlines()[0][:160]
+                    self.tell('proxy', f'Connection (proxyConfiguration) could not be used ({why}), so the run used its '
+                                       f'own address.')
+                    self._proxy = None
                 if self._proxy is None:          # a setting that names no proxy: the run's own address
                     self._proxy_input = None
                     return http

@@ -461,6 +461,15 @@ class Calls(unittest.TestCase):
         self.assertIn("the proxy's addresses were refused too", platform.cfg.notes[-1])
         self.assertNotIn('proxyConfiguration', platform.settings())   # proxy addresses can hold a password
 
+    def test_a_proxy_the_platform_cannot_use_leaves_the_run_on_its_own_address(self):
+        platform, _ = search({'proxyConfiguration': {'useApifyProxy': False, 'proxyUrls': ['socks5://127.0.0.1:1050']}})
+
+        async def refuse(**kwargs):
+            raise ValueError("1 validation error\n  URL scheme should be 'http' or 'https'")
+        with patch('apify.Actor.create_proxy_configuration', refuse):
+            self.assertEqual(asyncio.run(platform.route('own client')), 'own client')
+        self.assertIn('Connection (proxyConfiguration) could not be used (1 validation error)', platform.cfg.notes[-1])
+
     def test_without_a_proxy_the_note_says_how_to_add_one(self):
         platform, _ = search({})
         refused = Response(406, text='{"message":"recaptcha required"}')
