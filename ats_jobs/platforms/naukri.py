@@ -815,6 +815,9 @@ class Naukri(Platform):
         }
         if money.get('salaryMin') or money.get('salaryMax'):
             found.update({k: money.get(k) for k in ('salaryMin', 'salaryMax', 'salaryCurrency', 'salaryPeriod')})
+        posted = from_india_time(info.get('createdDate'))
+        if job.get('dateOnly') and posted:           # an internship's list gives only its first day; its page, the date
+            found.update({'postedAt': posted, 'dateOnly': False})
         if detail_places and not job.get('places'):
             found.update({'location': detail_places[0], 'otherLocations': detail_places[1:],
                           'places': [place(p) for p in detail_places]})

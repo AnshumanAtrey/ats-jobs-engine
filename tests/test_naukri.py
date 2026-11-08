@@ -285,6 +285,12 @@ class Rows(unittest.TestCase):
         self.assertEqual((job['postedAt'], job['dateOnly']), ('2026-11-02', True))
         self.assertEqual((job['salaryMin'], job['salaryMax'], job['salaryPeriod']), (5000, 5000, 'month'))
 
+    def test_an_internships_page_gives_its_real_posting_date(self):
+        job = self.P.enrich(self.P.job(INTERN), dict(CONSULTANT_DETAILS, createdDate='2026-11-07 10:00:00'))
+        self.assertEqual((job['postedAt'], job['dateOnly'], job['firstPostedAt']), ('2026-11-07T04:30:00Z', False, '2026-11-02'))
+        job = self.P.enrich(self.P.job(SHOWN), CRAWLED_DETAILS)                     # a job with its time keeps the list's
+        self.assertEqual(job['postedAt'], '2026-11-07T20:45:35Z')
+
     def test_hidden_pay_is_no_pay(self):
         self.assertEqual(pay({'hideSalary': True, 'minimumSalary': 0}, 'Not disclosed'), {'salary': None})
         self.assertEqual(pay({'hideSalary': False}, 'Unpaid'), {'salary': 'Unpaid'})
