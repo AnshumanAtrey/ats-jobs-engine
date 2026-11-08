@@ -529,6 +529,15 @@ class NothingFound(unittest.TestCase):
         run = search(Senior({'a': [[job('ok', 'Engineer'), job('2', 'Engineer II')]]}), {'searchTerms': ['engineer']})
         self.assertEqual(run.delivery.rows, 1)
 
+    def test_filters_a_platform_applies_itself_are_not_blamed_on_the_words(self):
+        class Filtering(Fake):                    # Hirist sends place, period and experience to its own search
+            server_filters = True
+        run = search(Filtering({'a': [[job('1', 'Cook')]]}), {'searchTerms': ['engineer'], 'location': ['Pune']})
+        self.assertIn('Fake has no job with your words inside your other filters', run.message())
+        self.assertNotIn('No job title had your words', run.message())
+        run = search(Filtering({'a': [[job('1', 'Cook')]]}), {'searchTerms': ['engineer']})   # words alone: they missed
+        self.assertIn('No job title had your words', run.message())
+
     def test_a_platform_word_miss_is_no_near_miss(self):
         class Skills(Fake):
             def fits(self, job):

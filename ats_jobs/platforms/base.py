@@ -27,6 +27,8 @@ class Platform:
     page_cap: int | None = None    # pages read per board and word, unless every match was asked for
     never: tuple = ()        # row fields this platform never publishes: left out of its rows
     extra: tuple = ()        # job fields of this platform alone that its rows carry too (Hirist: years of experience)
+    server_filters = False   # its own search applies place, period or other filters besides the words, so the engine
+                             # never sees the jobs they leave out and cannot say which filter did
     description_terms: tuple = ()     # set by the engine: the words of a run that searches descriptions, so a
                                       # platform whose job list leaves descriptions out can ask for them and skip
                                       # the text that holds none of these words

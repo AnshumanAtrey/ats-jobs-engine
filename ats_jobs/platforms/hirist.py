@@ -383,6 +383,7 @@ class Hirist(Platform):
     concurrency = 16
     server_search = True          # pages() gets each word: Hirist's own search is not used, the words are matched here
     newest_first = True
+    server_filters = True         # places, period and experience go to Hirist's own search (see params)
     never = ('employmentType', 'department', 'team', 'expiresAt', 'reference', 'offersEquity', 'companySlug',
              'companyWebsite')
     extra = ('salaryMin', 'salaryMax', 'salaryCurrency', 'salaryPeriod', 'experienceMin', 'experienceMax', 'skills',

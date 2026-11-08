@@ -499,6 +499,12 @@ class Run:
         them out, and how to loosen it. Without words, the filter that left out the most jobs."""
         cfg = self.cfg
         if not self.near_misses:
+            filtered = bool(cfg.locations or cfg.work_types or cfg.job_types or cfg.posted_within_days is not None
+                            or any(self.platform.settings().values()))
+            if cfg.search_terms and self.platform.server_filters and filtered:
+                # the platform's own search dropped the jobs outside the filters before the engine saw them
+                return (f' {self.platform.name} has no job with your words inside your other filters: try fewer '
+                        f'words, or loosen the place, period or other filters.')
             if cfg.search_terms:
                 wider = '' if cfg.search_descriptions else ', or search descriptions too'
                 return f' No job title had your words: try fewer or other words{wider}.'
