@@ -76,7 +76,8 @@ TOP_STEP = 64                  # the first step above the newest id known, when 
 IDS_PER_DAY = 150              # job ids handed out a day: 3,571 from 2026-10-14 to 2026-11-07 (job pages)
 WALK_START_S = 20              # finding the newest open job before a walk: about 30 answers
 PENDING_STEP = 16              # the step down through the newest ids, jobs not yet published, to the first open one
-PENDING_TRIES = 60             # steps tried before the walk starts at the very top anyway
+PENDING_TRIES = 60             # steps of PENDING_STEP before they double
+SEARCH_PER_HOUR = 240          # search calls one address may make in an hour (about 250: module docstring)
 NEWEST_KNOWN = 450_470         # an id known to exist on 2026-11-08: where the newest-id probe starts without a search
 SITE = Board('*', 'Instahyre')
 SIZE_CODES = {'small': 1, 'medium': 3, 'large': 2}            # company_size of the search
@@ -822,18 +823,33 @@ class Instahyre(Platform):
         return low
 
     async def first_open(self, http, top: int) -> int:
-        """Where a walk starts. The newest ids are jobs Instahyre has not published yet: on 2026-11-08 the 193 ids
-        below the top were all unpublished, in one block, and the 165 below them all open jobs. So ids PENDING_STEP
-        apart are tried down from the top until one is an open job, and the walk starts PENDING_STEP - 1 above it: 14
-        answers instead of 193, and on that map no open job passed over (an open job inside the block, between two ids
-        tried, would be)."""
-        for job_id in range(top, max(top - PENDING_STEP * PENDING_TRIES, 0), -PENDING_STEP):
-            try:
-                if await self.open_job(http, job_id):
-                    return min(top, job_id + PENDING_STEP - 1)
-            except BoardError:
-                return top
-        return top
+        """Where a walk starts. The newest ids are jobs Instahyre has not published yet: on 2026-11-08 at 10:44 UTC the
+        193 ids below the top were all unpublished, in one block, and the 165 below them all open jobs. So ids
+        PENDING_STEP apart are tried down from the top until one is an open job, and the walk starts PENDING_STEP - 1
+        above it: 14 answers instead of 193, and on that map no open job passed over (an open job between two ids tried
+        would be; at 13:03 open jobs were 100 of the 760 newest ids, and none of them is far from an id tried). Two hours
+        later no job was published from 452,520 to 453,200, past the PENDING_TRIES steps (960 ids), and the walk began at
+        the very top, met no open job and handed the empty form to a search that cannot finish (older jobs delivered).
+        So past those steps they double, at most WALK_CAP ids down, and the gap above the open job found is halved back
+        to PENDING_STEP: about 72 answers for 2,000 unpublished ids."""
+        high, step, probe, tries = top + 1, PENDING_STEP, top, 0     # high: the lowest id tried with no open job there
+        try:
+            while not await self.open_job(http, probe):
+                tries += 1
+                step *= 2 if tries > PENDING_TRIES else 1
+                high, probe = probe, probe - step
+                if probe <= 0 or top - probe > WALK_CAP:
+                    return top
+            low = probe                                          # an open job
+            while high - low > PENDING_STEP:
+                middle = (low + high) // 2
+                if await self.open_job(http, middle):
+                    low = middle
+                else:
+                    high = middle
+        except BoardError:
+            return top
+        return min(top, low + PENDING_STEP - 1)
 
     async def walk(self, http, top: int, need: int | None, cutoff: str | None, search_s: float | None,
                    found: dict) -> tuple[str, int]:
@@ -1072,7 +1088,14 @@ class Instahyre(Platform):
             hint = max([int(r['id']) for r in (first or {}).get('objects') or [] if r.get('id')] + [NEWEST_KNOWN])
             self.progress = 'Finding Instahyre\'s newest job.'
             top = await self.first_open(http, await self.newest_id(http, hint))
-            stop, next_id = await self.walk(http, top, need, cutoff, pages_left * SEARCH_GAP if first else None, found)
+            # a slow walk hands over only to a search that can be read whole in the time left and under the hourly
+            # limit: one read in part comes in Instahyre's own order, not newest first (the empty form's 441 pages
+            # delivered jobs a week old, 2026-11-08), so otherwise the walk reads on
+            search_s = pages_left * SEARCH_GAP if first else None
+            left = seconds_left()
+            if search_s is not None and (pages_left > SEARCH_PER_HOUR or (left is not None and search_s > left - RESERVE_S)):
+                search_s = None
+            stop, next_id = await self.walk(http, top, need, cutoff, search_s, found)
             # a refused walk hands over only to a search that can finish (the empty form's is 385 pages behind a limit
             # of about 250 an hour): otherwise the jobs found so far are delivered, marked partial
             if first is not None and (stop == 'slow' or (stop == 'refused' and pages_left * SEARCH_GAP <= LONG_SEARCH_S)):

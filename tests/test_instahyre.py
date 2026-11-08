@@ -13,7 +13,7 @@ from unittest.mock import patch
 from ats_jobs import engine
 from ats_jobs.inputs import parse_input
 from ats_jobs.platforms.base import Board
-from ats_jobs.platforms.instahyre import SITE, Instahyre, Refused, read_page, stipend
+from ats_jobs.platforms.instahyre import PENDING_STEP, SEARCH_GAP, SITE, Instahyre, Refused, read_page, stipend
 from ats_jobs.rows import Filters, job_row
 
 RECORD = {
@@ -412,6 +412,32 @@ class Walk(unittest.TestCase):
         p.answer, p.browser_get = answer, offline
         self.assertEqual(asyncio.run(p.newest_id(None, 4000)), 5000)
 
+    def start(self, top: int, unpublished: set[int], closed: set[int] = frozenset()) -> tuple[int, int]:
+        """first_open over a map of ids -> (where the walk starts, answers asked)."""
+        p, asked = Instahyre(), []
+
+        async def answer(http, job_id):
+            asked.append(job_id)
+            return {'id': job_id, 'is_active': job_id not in unpublished and job_id not in closed}
+        p.answer = answer
+        return asyncio.run(p.first_open(None, top)), len(asked)
+
+    def test_a_walk_starts_just_above_the_newest_open_job(self):
+        self.assertEqual(self.start(1000, set()), (1000, 1))
+        # the morning map of 2026-11-08: 193 unpublished ids over open jobs; the walk reads every id below the
+        # lowest one tried with no open job, so none of the open jobs is passed over
+        start, asked = self.start(5000, set(range(4808, 5001)))
+        self.assertTrue(4807 <= start < 4807 + PENDING_STEP, start)
+        self.assertEqual(asked, 14)                          # as before the fix: 13 unpublished, 1 open
+
+    def test_a_block_of_unpublished_ids_past_960_is_crossed(self):
+        """Two hours later no job was published for 680 ids and more: 60 steps of 16 found none and the walk began at
+        the very top. Past those 60 steps the steps double: 2,000 unpublished ids take about 72 answers."""
+        start, asked = self.start(455_000, set(range(453_001, 455_001)))
+        self.assertTrue(453_000 <= start < 453_000 + PENDING_STEP, start)
+        self.assertLessEqual(asked, 75)
+        self.assertEqual(self.start(10_000, set(range(1, 10_001)))[0], 10_000)   # no open job within WALK_CAP: the top
+
 
 class Choice(unittest.TestCase):
     """pages(): a small search is read whole; a big one is walked."""
@@ -427,6 +453,7 @@ class Choice(unittest.TestCase):
 
         async def walk(http, top, need, cutoff, search_s, found):
             calls['walk'] += 1
+            calls['search_s'] = search_s
             found.update({i: p.job({'id': i}, {**ANSWER, 'id': i}) for i in range(1000, 1000 - (need or 5), -1)})
             return 'enough', 1000 - (need or 5)
 
@@ -467,6 +494,13 @@ class Choice(unittest.TestCase):
         jobs, calls = self.run_pages({'maxJobs': 20}, 13_453)
         self.assertEqual((calls['walk'], len(jobs)), (1, 20))
         self.assertEqual([j['rank'] for j in jobs][:2], [1000, 999])
+
+    def test_a_slow_walk_hands_over_only_to_a_search_that_can_be_read_whole(self):
+        """The empty form's search is 441 pages behind a limit of about 250 calls an hour: read in part, it comes in
+        Instahyre's own order and delivered jobs a week old (2026-11-08), so its walk never hands over."""
+        self.assertIsNone(self.run_pages({'maxJobs': 20}, 15_349)[1]['search_s'])
+        self.assertEqual(self.run_pages({'location': ['Bangalore'], 'maxJobs': 30}, 7_025)[1]['search_s'],
+                         200 * SEARCH_GAP)          # 200 pages: read whole if the walk is slower
 
 
 class SearchRead(unittest.TestCase):
