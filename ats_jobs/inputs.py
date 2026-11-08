@@ -179,6 +179,9 @@ def route_links(value, platform, notes: list[str],
             query = parse_qs(urlparse(text if IS_URL.match(text) else f'https://{text}').query)
             asked = [v.strip() for key in ('query', 'q', 'keywords') for v in query.get(key, []) if v.strip()]
             place = [v.strip() for v in query.get('location', []) if v.strip()]
+            more_words, more_places = platform.search_link(text)
+            asked += [w for w in more_words if w not in asked]
+            place += [p for p in more_places if p not in place]
             if asked or place:
                 words += asked
                 where += place
@@ -508,4 +511,5 @@ def parse_input(raw: dict | None, platform, company_names: dict[str, list[str]] 
                          'Run again without job links to search.')
     if cfg.search_descriptions and not cfg.search_terms:
         cfg.search_descriptions = False
+    platform.read_input(raw, cfg)
     return cfg

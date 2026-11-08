@@ -26,6 +26,7 @@ class Platform:
     ranked_search = False    # a word search comes back by relevance, so only a list with no word is newest first
     page_cap: int | None = None    # pages read per board and word, unless every match was asked for
     never: tuple = ()        # row fields this platform never publishes: left out of its rows
+    extra: tuple = ()        # job fields of this platform alone that its rows carry too (Hirist: years of experience)
     description_terms: tuple = ()     # set by the engine: the words of a run that searches descriptions, so a
                                       # platform whose job list leaves descriptions out can ask for them and skip
                                       # the text that holds none of these words
@@ -69,6 +70,25 @@ class Platform:
     def read_link(self, text: str) -> tuple[str | None, str | None] | None:
         """A link of this platform -> (board key, job id), either can be None. Anything else -> None."""
         raise NotImplementedError
+
+    def search_link(self, text: str) -> tuple[list[str], list[str]]:
+        """A search page link of this platform -> (words, places) it asks for besides ?query= and ?location= (a site
+        that puts the words in the path: /search/python-jobs)."""
+        return [], []
+
+    def read_input(self, raw: dict, cfg) -> None:
+        """Inputs of this platform alone, read from the raw input once the shared ones are in cfg (inputs.Config)."""
+
+    def fits(self, job: dict) -> bool | str:
+        """A filter of this platform alone, asked for every job whose words match (Hirist: years of experience).
+        True when the job fits; else the input name of the filter it fails ('experience'), which a run that finds
+        nothing names (engine.FILTER_NAMES); False when the job's words did not match after all, so it is no near
+        miss (Hirist's skills, with searchDescriptions)."""
+        return True
+
+    def settings(self) -> dict:
+        """This platform's own settings of the run, for the OUTPUT record."""
+        return {}
 
     def guess_board(self, name: str) -> str | None:
         """A company typed that is not on our list -> the board key to try, or None."""

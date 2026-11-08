@@ -45,9 +45,10 @@ STOP_REASONS = {
 }
 # a search that finds nothing names the filter that stood in the way (rows.Filters.misses) and how to loosen it
 FILTER_NAMES = {'employmentType': 'job type', 'workType': 'work type', 'location': 'location',
-                'postedWithin': 'posting date'}
+                'postedWithin': 'posting date', 'experience': 'years of experience'}
 FILTER_FIXES = {'employmentType': 'clear Job type', 'workType': 'clear Work type and any "Remote" typed in location',
-                'location': 'add a wider place, such as a region or Worldwide', 'postedWithin': 'pick a longer period'}
+                'location': 'add a wider place, such as a region or Worldwide', 'postedWithin': 'pick a longer period',
+                'experience': 'type a wider range of years or leave it empty'}
 
 
 async def safe_status(message: str) -> None:
@@ -190,6 +191,7 @@ class Run:
 
     def row(self, board: Board, job: dict, details: bool) -> dict:
         row = job_row(self.platform.key, company(board), job, self.checked_at, details)
+        row.update({k: job.get(k) for k in self.platform.extra})
         return {k: v for k, v in row.items() if k not in self.platform.never}
 
     def board_error(self, key: str, exc: Exception) -> None:
@@ -254,6 +256,12 @@ class Run:
                 if not job.get('id'):
                     continue
                 missed = filters.misses(job, now, server_match, every=bool(filters.terms))
+                if missed is not None and (not missed or filters.terms):
+                    fit = platform.fits(job)     # this platform's own filter (Hirist: years of experience)
+                    if fit is False:
+                        missed = None            # its words were not there after all: no near miss
+                    elif fit is not True:
+                        missed = (*missed, fit)
                 if missed:
                     self.near_misses += 1
                     self.missed_first[missed[0]] += 1
@@ -465,7 +473,7 @@ class Run:
             else:
                 who = company(board) if job is None else {      # a lookup can name the company of a job that is gone
                     'name': job.get('company'), 'slug': job.get('companySlug'), 'website': job.get('companyWebsite')}
-                row = link_row(platform.key, who, job_id, url, status, self.checked_at)
+                row = {**link_row(platform.key, who, job_id, url, status, self.checked_at), **dict.fromkeys(platform.extra)}
                 rows.append(({k: v for k, v in row.items() if k not in platform.never}, LINK_EVENT))
         await self.deliver_all(rows)
 
@@ -497,14 +505,14 @@ class Run:
             return ''
         if not cfg.search_terms:
             top, n = self.missed_first.most_common(1)[0]
-            return (f' The {FILTER_NAMES[top]} filter left out the most jobs read: {n:,} of {self.near_misses:,}. To '
-                    f'see more, {FILTER_FIXES[top]}.')
+            return (f' The {FILTER_NAMES.get(top, top)} filter left out the most jobs read: {n:,} of {self.near_misses:,}. To '
+                    f'see more, {FILTER_FIXES.get(top, f'clear {top}')}.')
         text = f' {plural(self.near_misses, "job")} had your words but not your other filters'
         only = self.missed_only.most_common()
         if not only:
             return text + ': each missed more than one of them, so loosen several.'
-        alone = ', '.join(f'the {FILTER_NAMES[k]} alone left out {n:,}' for k, n in only)
-        return f'{text}: {alone}. To see them, {FILTER_FIXES[only[0][0]]}.'
+        alone = ', '.join(f'the {FILTER_NAMES.get(k, k)} alone left out {n:,}' for k, n in only)
+        return f'{text}: {alone}. To see them, {FILTER_FIXES.get(only[0][0], f'clear {only[0][0]}')}.'
 
     def message(self) -> str:
         cfg, seconds, name = self.cfg, round(time.monotonic() - self.started), self.platform.name
@@ -584,7 +592,7 @@ class Run:
                 'workType': cfg.work_types, 'employmentType': cfg.job_types,
                 'postedWithinDays': cfg.posted_within_days, 'maxJobs': cfg.max_jobs,
                 'includeDetails': cfg.include_details, 'searchDescriptions': cfg.search_descriptions,
-                'companies': cfg.companies,
+                'companies': cfg.companies, **self.platform.settings(),
             },
             'companyList': {'boards': len(self.boards), 'updated': self.updated},
             'traffic': {'calls': STATS['calls'], 'averageSeconds': round(STATS['seconds'] / (STATS['calls'] or 1), 2),

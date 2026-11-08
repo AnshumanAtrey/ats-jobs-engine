@@ -519,6 +519,23 @@ class NothingFound(unittest.TestCase):
         self.assertIn('1 job had your words but not your other filters: each missed more than one of them',
                       run.message())
 
+    def test_a_platform_filter_is_named_too(self):
+        class Senior(Fake):                       # a platform with its own filter, as Hirist's years of experience
+            def fits(self, job):
+                return True if job['id'] == 'ok' else 'experience'
+        run = search(Senior({'a': [[job('1', 'Engineer'), job('2', 'Engineer II')]]}), {'searchTerms': ['engineer']})
+        self.assertIn('2 jobs had your words but not your other filters: the years of experience alone left out 2. '
+                      'To see them, type a wider range of years or leave it empty.', run.message())
+        run = search(Senior({'a': [[job('ok', 'Engineer'), job('2', 'Engineer II')]]}), {'searchTerms': ['engineer']})
+        self.assertEqual(run.delivery.rows, 1)
+
+    def test_a_platform_word_miss_is_no_near_miss(self):
+        class Skills(Fake):
+            def fits(self, job):
+                return False
+        run = search(Skills({'a': [[job('1', 'Engineer')]]}), {'searchTerms': ['engineer']})
+        self.assertIn('No job title had your words', run.message())
+
     def test_no_title_with_the_words_says_so(self):
         run = search(Fake({'a': [[job('1', 'Cook')]]}), {'searchTerms': ['engineer']})
         self.assertIn('No job title had your words: try fewer or other words, or search descriptions too.',
