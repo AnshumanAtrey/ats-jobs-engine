@@ -4,19 +4,21 @@ Matching and output rows, for every platform. Pure module: no Apify or network i
 A platform turns its own records into one job shape (a plain dict):
   id, company, title, location, otherLocations, places, workType, employmentType, department, team, salary, salaryMin,
   salaryMax, salaryCurrency, salaryPeriod, offersEquity, postedAt, expiresAt, dateOnly, jobUrl, applyUrl, reference,
-  description, descriptionHtml.
+  description, descriptionHtml, skills, rank, extra.
 places is every place the job names: {'name': text, 'city': ..., 'region': ..., 'country': name or code}.
 dateOnly says postedAt holds a day and no time. Missing keys read as unknown. company is for a platform that names the
 company itself, so a board that is not on our list still shows it. companySlug and companyWebsite are for a feed of
-every company's jobs (Platform.search_all): a job that has them replaces the board's.
+every company's jobs (Platform.search_all): a job that has them replaces the board's. skills are the skill tags a
+platform gives a job: with Config.match_skills (Instahyre), a search term matches them as it matches a title. rank orders
+two jobs posted the same day (newest first, as a job id that grows with posting).
 Optional, for the platforms that have them: experienceMin and experienceMax, the years of experience a job asks for
 (job boards such as foundit state them; the experience filter reads them and rows carry them); listedAt, the time a
 platform's pages are sorted by when that is not postedAt (foundit sorts by the last time a job was listed, and a renewal
 lists an old job again), never earlier than postedAt, so the engine stops paging on it; extra, the platform's own row
 fields (skills, industry), added to the row as they are.
 
-Matching is by words, not by a list of job titles: a search term matches a title when every word of
-the term is in it. Words are cut at anything that is not a letter or digit (C++ and C# keep their
+Matching is by words, not by a list of job titles: a search term matches a title, or one of the job's skills, when
+every word of the term is in it. Words are cut at anything that is not a letter or digit (C++ and C# keep their
 sign), accents are dropped (developpeur finds Développeur, Zürich finds Zurich), an s plural is folded,
 and two neighbouring words also count joined, so frontend, front end and front-end match each other
 while java does not match JavaScript. Descriptions, when searched, must hold
@@ -305,13 +307,20 @@ class Filters:
         self.job_types = set(cfg.job_types)
         self.within_days = cfg.posted_within_days
         self.search_descriptions = cfg.search_descriptions
+        self.match_skills = getattr(cfg, 'match_skills', False)   # a platform whose skill tags are searched (Instahyre)
         self.experience = getattr(cfg, 'experience', None)     # (low, high) years, or None
 
-    def title_ok(self, title: str | None, description: str | None = None) -> bool:
+    def skill_ok(self, skills: list | None) -> bool:
+        """A term is one of the job's skill tags: python finds a job tagged Python, machine learning one tagged
+        Machine Learning. Each tag is matched as a title is, so java still does not find JavaScript."""
+        return self.match_skills and bool(skills) and any(t.in_title(index(skill)) for skill in skills if isinstance(skill, str)
+                                    for t in self.terms)
+
+    def title_ok(self, title: str | None, description: str | None = None, skills: list | None = None) -> bool:
         idx = index(title)
         if any(t.in_title(idx) for t in self.excludes):
             return False
-        if not self.terms or any(t.in_title(idx) for t in self.terms):
+        if not self.terms or any(t.in_title(idx) for t in self.terms) or self.skill_ok(skills):
             return True
         if self.search_descriptions and description:
             text, didx = folded_text(description)
@@ -323,7 +332,8 @@ class Filters:
         idx = index(job.get('title'))
         if any(t.in_title(idx) for t in self.excludes):
             return False
-        if self.terms and not self.search_descriptions and not any(t.in_title(idx) for t in self.terms):
+        if (self.terms and not self.search_descriptions and not any(t.in_title(idx) for t in self.terms)
+                and not self.skill_ok(job.get('skills'))):
             return False
         if self.job_types and job_type(job) not in self.job_types:
             return False
@@ -344,7 +354,7 @@ class Filters:
         if server_match and self.search_descriptions:
             if any(t.in_title(index(job.get('title'))) for t in self.excludes):
                 return None
-        elif not self.title_ok(job.get('title'), job.get('description')):
+        elif not self.title_ok(job.get('title'), job.get('description'), job.get('skills')):
             return None
         failed: list[str] = []
         if self.job_types and job_type(job) not in self.job_types:

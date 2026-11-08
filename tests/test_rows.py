@@ -183,6 +183,14 @@ class Filtering(unittest.TestCase):
         self.assertEqual(filters(searchTerms=['security engineer'], experienceYears='3').misses(senior, NOW), ('experienceYears',))
         self.assertEqual(filters(searchTerms=['security engineer'], experienceYears='10').misses(senior, NOW), ())
 
+    def test_skill_tags_match_only_where_a_platform_asks(self):
+        tagged = job(title='Software Engineer', skills=['Python', 'Django'])
+        self.assertFalse(filters(searchTerms=['python']).passes(tagged, NOW))       # title words only: the family's rule
+        cfg = parse_input({'searchTerms': ['python']}, Stub())
+        cfg.match_skills = True                                                       # Instahyre's read_input sets it
+        self.assertTrue(Filters(cfg).passes(tagged, NOW))
+        self.assertFalse(Filters(cfg).passes(job(title='Software Engineer', skills=['JavaScript']), NOW))
+
     def test_first_pass_keeps_jobs_that_can_match(self):
         short = {'title': 'Security Engineer', 'location': 'New York', 'employmentType': 'full-time'}
         self.assertTrue(filters(searchTerms=['security'], workType=['remote']).maybe(short))

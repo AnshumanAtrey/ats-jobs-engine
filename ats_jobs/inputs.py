@@ -65,6 +65,8 @@ class Config:
     companies: list[str] = field(default_factory=list)        # board keys; empty: every known company
     job_urls: list[tuple[str, str, str]] = field(default_factory=list)   # (board key, job id, as typed)
     experience: tuple[float, float] | None = None             # years asked for, (low, high); None: any (experienceYears)
+    extra: dict = field(default_factory=dict)                 # a platform's own settings (Platform.read_input)
+    match_skills: bool = False                                # words match a job's skill tags too (Instahyre)
     notes: list[str] = field(default_factory=list)
     skipped: list[tuple[str, str]] = field(default_factory=list)
 
@@ -158,6 +160,21 @@ def parse_terms(value, key: str, notes: list[str], skipped: list[tuple[str, str]
     return terms
 
 
+def _links_whole(value) -> list[str]:
+    """_items, except that a link with a query keeps its commas: a site's own search link can list values with them
+    (Instahyre: ?skills=Python,Django&location=Pune). A comma before another link still separates the two."""
+    raw = value if isinstance(value, list) else [value] if isinstance(value, (str, int, float)) else []
+    out = []
+    for item in raw:
+        text = str(item).strip() if isinstance(item, (str, int, float)) else ''
+        if IS_URL.match(text) and '?' in text:
+            out += [part.strip() for part in re.split(r'[,;\s]+(?=[a-z][a-z0-9+.-]*://)|[;\n\r\t]+', text, flags=re.I)
+                    if part.strip()]
+        else:
+            out += _items([item])
+    return out
+
+
 def route_links(value, platform, notes: list[str],
                 skipped: list[tuple[str, str]]) -> tuple[list[str], list[str], list[str], list[str]]:
     """Main search box -> (words, job links, board links, places). A link of this platform pasted there is read
@@ -165,7 +182,7 @@ def route_links(value, platform, notes: list[str],
     (?query=engineer&location=Germany) searches its words and place, and a link that names none of these is
     skipped with the note the companies field gives, instead of being searched as words."""
     words, jobs, boards, where = [], [], [], []
-    for token in _items(value):
+    for token in _links_whole(value):
         text = _clean(token)
         link = None if DORK_OPERATOR.search(text) or DORK_TEXT.search(text) else platform.read_link(text)
         if link and link[1]:
@@ -178,7 +195,9 @@ def route_links(value, platform, notes: list[str],
             continue
         if link is not None:
             query = parse_qs(urlparse(text if IS_URL.match(text) else f'https://{text}').query)
-            asked = [v.strip() for key in ('query', 'q', 'keywords') for v in query.get(key, []) if v.strip()]
+            # Instahyre's search links carry skills=python,java: one word list, split at the commas
+            asked = [part.strip() for key in ('query', 'q', 'keywords', 'skills') for value in query.get(key, [])
+                     for part in (value.split(',') if key == 'skills' else [value]) if part.strip()]
             place = [v.strip() for key in ('location', 'locations') for v in query.get(key, []) if v.strip()]
             more_words, more_places = platform.search_link(text)
             asked += [w for w in more_words if w not in asked]

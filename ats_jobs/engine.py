@@ -160,6 +160,8 @@ class Run:
         return False
 
     def progress_line(self) -> str:
+        if self.phase == 'boards' and self.platform.progress:      # a platform that works before its first page
+            return self.platform.progress
         if self.phase == 'boards' and self.feed:
             return f'Read {self.jobs_listed:,} jobs of {self.feed.name}, {plural(self.matching, "matching job")} so far.'
         if self.phase == 'boards':
@@ -238,7 +240,8 @@ class Run:
                     [job.get('description'), job.get('descriptionHtml')]).encode('utf-8'))
             job.pop('description', None)
             job.pop('descriptionHtml', None)
-            item = (posted, next(order), board, job)
+            # a job's rank orders jobs of one day newest first (Instahyre's growing ids); else the order they came in
+            item = (posted, job['rank'] if isinstance(job.get('rank'), int) else next(order), board, job)
             if cfg.max_jobs is None:
                 kept.append(item)
             elif cfg.max_jobs > 0:
