@@ -247,3 +247,52 @@ class NothingStopsARun(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class PlaceInTheSearchBox(unittest.TestCase):
+    """What a job seeker types into one search box (owner, 2026-11-09): the place, remote and fresher go to their own fields,
+    because a job matches only when its title has every word (Cutshort's "python developer in pune" found 1 job)."""
+
+    def test_a_place_after_in_is_the_location(self):
+        cfg = parse({'searchTerms': ['python developer in pune']})
+        self.assertEqual((cfg.search_terms, cfg.locations), (['python developer'], ['pune']))
+        self.assertIn('as the job title "python developer", jobs in pune', cfg.notes[0])
+
+    def test_a_city_at_the_end_and_the_words_of_an_ad(self):
+        cfg = parse({'searchTerms': ['Java Developer jobs Bangalore', 'Business Development Executive - Mumbai']})
+        self.assertEqual((cfg.search_terms, cfg.locations),
+                         (['Java Developer', 'Business Development Executive'], ['Bangalore', 'Mumbai']))
+        self.assertEqual(parse({'searchTerms': ['sales executive delhi ncr']}).locations, ['delhi ncr'])
+
+    def test_only_a_place_or_only_ad_words_search_every_job(self):
+        cfg = parse({'searchTerms': ['jobs in bangalore']})
+        self.assertEqual((cfg.search_terms, cfg.locations), ([], ['bangalore']))
+        cfg = parse({'searchTerms': ['jobs']})
+        self.assertEqual((cfg.search_terms, cfg.locations, cfg.notes), ([], [], ['Read "jobs" in searchTerms as every job.']))
+
+    def test_remote_and_work_from_home_are_the_work_type(self):
+        cfg = parse({'searchTerms': ['remote react developer', 'data entry work-from-home']})
+        self.assertEqual((cfg.search_terms, cfg.locations, cfg.work_types), (['react developer', 'data entry'], [], ['remote']))
+
+    def test_fresher_is_the_experience_unless_experience_is_typed(self):
+        cfg = parse({'searchTerms': ['fresher jobs in Pune']})
+        self.assertEqual((cfg.search_terms, cfg.locations, cfg.experience), ([], ['Pune'], (0.0, 0.0)))
+        cfg = parse({'searchTerms': ['mba fresher'], 'experienceYears': '2-5'})
+        self.assertEqual((cfg.search_terms, cfg.experience), (['mba'], (2.0, 5.0)))
+        self.assertIn('experienceYears 2-5 was kept over the fresher', cfg.notes[-1])
+
+    def test_the_typed_location_is_kept_and_not_doubled(self):
+        self.assertEqual(parse({'searchTerms': ['java developer pune'], 'location': ['Pune']}).locations, ['Pune'])
+        self.assertEqual(parse({'searchTerms': ['data analyst mumbai'], 'location': ['Chennai']}).locations,
+                         ['Chennai', 'mumbai'])
+
+    def test_title_words_that_name_a_small_place_stay_words(self):
+        # Industrial, Aurora, Palo and Bid are places on the boards' long lists and words of 103,226 real titles and skills
+        for text in ('industrial engineer', 'aws aurora', 'palo alto networks engineer', 'internship in marketing',
+                     'react native', 'Go developer', 'kerala nurse'):
+            cfg = parse({'searchTerms': [text]})
+            self.assertEqual((cfg.search_terms, cfg.locations, cfg.work_types), ([text], [], []), text)
+
+    def test_exclude_terms_are_not_read_for_places(self):
+        cfg = parse({'excludeTerms': ['pune', 'remote']})
+        self.assertEqual((cfg.exclude_terms, cfg.locations, cfg.work_types), (['pune', 'remote'], [], []))

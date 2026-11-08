@@ -5,9 +5,10 @@ No field is required and no input stops a run (owner rule, 2026-10-01: type one 
 get the newest jobs). An empty form returns the newest jobs from every company. Accepted as typed:
 several entries on one line split by commas, a pasted Google dork (site:<host> intext:frontend reads as
 the keyword frontend), board links instead of company names, work types and job types in everyday words
-("offline" is onsite, "internship" is intern), "remote" typed as a location, and periods such as "24h",
-"2 weeks" or a number of days. Anything that cannot be read falls back to the field's default, and the
-OUTPUT record and the log say what was read and how.
+("offline" is onsite, "internship" is intern), "remote" typed as a location, periods such as "24h",
+"2 weeks" or a number of days, and a place, remote or fresher typed with the job title as a search box takes
+them ("python developer in pune" is python developer in Pune). Anything that cannot be read falls back to the
+field's default, and the OUTPUT record and the log say what was read and how.
 
 Links belong to a platform: Platform.read_link says whether a text is one of its links and what it names.
 
@@ -15,10 +16,12 @@ Pure module: no Apify or network import, so the tests run offline.
 """
 import re
 from dataclasses import dataclass, field
+from functools import lru_cache
+from importlib import resources
 from urllib.parse import parse_qs, urlparse
 
 from . import places
-from .rows import classify_place
+from .rows import classify_place, country_code
 
 DEFAULT_MAX_JOBS = 100
 MAX_JOBS_CAP = 100_000             # our guard: more than every open job on one platform we read
@@ -133,9 +136,98 @@ def alternatives(token: str) -> list[str]:
     return [f'{operators} {part.strip()}'.strip() for part in DORK_OR.split(DORK_OPERATOR.sub(' ', text)) if part.strip()]
 
 
+# What people type into a job site's search box beside the job title (owner, 2026-11-09: someone who wants a job types the
+# position or the place and presses Start): a place ("python developer in pune", "java developer bangalore"), remote
+# ("remote react developer", "data entry work from home"), fresher, and the words of a job ad ("jobs", "vacancies"). None
+# is a word of the job's title, and a job matches only when its title has every word, so each is read into its own field
+# (Cutshort's "python developer in pune" found 1 job, 2026-11-09). Only at the start or the end of an entry.
+AD_WORDS = frozenset({'job', 'jobs', 'vacancy', 'vacancies', 'opening', 'openings', 'hiring', 'for'})
+PLACE_WORDS = frozenset({'in', 'at', 'near', 'around'})
+TERM_REMOTE = frozenset({'remote', 'wfh', 'work from home'})      # no title starts with "remote" but a remote job's,
+FRESHER_WORDS = frozenset({'fresher', 'freshers'})                  # 103,346 rows of five boards, 2026-11-09
+
+
+@lru_cache(maxsize=1)
+def _place_names() -> tuple[frozenset[str], frozenset[str]]:
+    """(every place the job boards list, the places a bare word is read as). A bare word needs the short list, the cities
+    Instahyre lists and the other names of places.py: the long one holds words of job titles and skills too (Industrial,
+    Aurora, Palo, Bid, Rail: 103,226 rows of five boards, 2026-11-09). After "in" or "at" a name of the long one is a place."""
+    def rows(name: str) -> list[list[str]]:
+        text = resources.files('ats_jobs').joinpath(f'data/{name}').read_text(encoding='utf-8')
+        return [line.split('\t') for line in text.splitlines() if line.strip() and not line.startswith('#')]
+    every = {places.key(cols[0]) for name in ('naukri-cities.tsv', 'foundit_places.tsv') for cols in rows(name)}
+    major = {places.key(n) for cols in rows('instahyre_places.tsv')
+             for n in [cols[0]] + (cols[3].split(',') if len(cols) > 3 else []) if n.strip()}
+    major |= {places.key(n) for name, others in places.OTHER_NAMES.items() for n in (name, *others)}
+    major |= {places.key(cols[1]) for cols in rows('naukri-cities.tsv') if len(cols) > 1}     # the states
+    major = (major | {'india'}) - {''}
+    return frozenset(every | major), frozenset(major)
+
+
+def _is_place(words: list[str], bare: bool) -> bool:
+    text = ' '.join(words)
+    name = places.key(text)
+    if not name:
+        return False
+    every, major = _place_names()
+    return (name in (major if bare else every) or name in places.REGIONS
+            or country_code(text, allow_codes=False) is not None)
+
+
+def _place_text(words: list[str]) -> str:
+    """['-', 'Bangalore'] -> 'Bangalore', ['(pune)'] -> 'pune': the place as typed, without the marks around it."""
+    return re.sub(r'^[\W_]+|[\W_]+$', '', ' '.join(words))
+
+
+def read_place_words(term: str) -> tuple[str, list[str], bool]:
+    """One search entry -> (the job title words, the places in it, fresher asked). 'python developer in pune' ->
+    ('python developer', ['pune'], False); 'remote react developer' -> ('react developer', ['Remote'], False);
+    'fresher jobs in Bangalore' -> ('', ['Bangalore'], True); 'data analyst' -> ('data analyst', [], False)."""
+    words, found, fresher = term.split(), [], False
+    while words:
+        keys = [places.key(w) for w in words]
+        if not keys[-1] or keys[-1] in AD_WORDS or keys[-1] in PLACE_WORDS:     # a dash, "jobs", a hanging "in"
+            words.pop()
+            continue
+        if not keys[0] or keys[0] in AD_WORDS:
+            words.pop(0)
+            continue
+        if keys[-1] in FRESHER_WORDS or keys[0] in FRESHER_WORDS:
+            words.pop(-1 if keys[-1] in FRESHER_WORDS else 0)
+            fresher = True
+            continue
+        end = next((n for n in (3, 2, 1) if n <= len(words) and ' '.join(keys[-n:]) in TERM_REMOTE), 0)
+        start = next((n for n in (3, 2, 1) if n <= len(words) and ' '.join(keys[:n]) in TERM_REMOTE), 0)
+        if end or start:                                                        # "work-from-home" is one word
+            if end:
+                del words[-end:]
+            else:
+                del words[:start]
+            found += [] if 'Remote' in found else ['Remote']
+            continue
+        cut = next((n for n in range(min(4, len(words) - 1), 0, -1)
+                    if keys[-n - 1] in PLACE_WORDS and _is_place(words[-n:], bare=False)), 0)
+        if cut:                                                                 # "... in <place>"
+            found.append(_place_text(words[-cut:]))
+            del words[-cut - 1:]
+            continue
+        if keys[0] in PLACE_WORDS and len(words) > 1 and _is_place(words[1:], bare=False):
+            found.append(_place_text(words[1:]))                                   # "in <place>", its "jobs" gone
+            words = []
+            continue
+        cut = next((n for n in range(min(3, len(words)), 0, -1) if _is_place(words[-n:], bare=True)), 0)
+        if not cut:
+            break
+        found.append(_place_text(words[-cut:]))                                    # "... <city>", or the city alone
+        del words[-cut:]
+    return ' '.join(words), found, fresher
+
+
 def parse_terms(value, key: str, notes: list[str], skipped: list[tuple[str, str]],
-                boards: list[str] | None = None, platform=None, excludes: list[str] | None = None) -> list[str]:
-    """Search words -> terms. Boards named by a pasted dork are added to boards, a dork's -word to excludes."""
+                boards: list[str] | None = None, platform=None, excludes: list[str] | None = None,
+                places_found: list[str] | None = None, fresher: list[bool] | None = None) -> list[str]:
+    """Search words -> terms. Boards named by a pasted dork are added to boards, a dork's -word to excludes. Given
+    places_found, the places typed with the words go there (read_place_words) and a fresher typed with them to fresher."""
     terms, seen = [], set()
     for token in [alternative for item in _items(value) for alternative in alternatives(item)]:
         term, note, board, dork_excludes = read_search_term(token, platform)
@@ -154,6 +246,19 @@ def parse_terms(value, key: str, notes: list[str], skipped: list[tuple[str, str]
             continue
         if note:
             notes.append(note)
+        elif places_found is not None:
+            words, found, is_fresher = read_place_words(term)
+            if words != term:
+                read = ([f'the job title "{words}"'] if words else [])
+                read += [('remote jobs' if place == 'Remote' else f'jobs in {place}') for place in found]
+                read += ['fresher'] if is_fresher else []
+                notes.append(f'Read "{_clean(token)}" in {key} as ' + (', '.join(read) or 'every job') + '.')
+                places_found += [p for p in found if places.key(p) not in {places.key(q) for q in places_found}]
+                if is_fresher and fresher is not None:
+                    fresher.append(True)
+                term = words
+            if not term:
+                continue
         if term.lower() not in seen:
             seen.add(term.lower())
             terms.append(term)
@@ -521,14 +626,20 @@ def parse_input(raw: dict | None, platform, company_names: dict[str, list[str]] 
     if _items(raw.get('jobUrls')) and not job_urls:
         notes.append('None of the job links could be read, so the run searched instead. ' + skipped[-1][1])
     work_types = parse_choices(raw.get('workType'), 'workType', WORK_TYPES, WORK_TYPE_ALIASES, notes)
+    from_dork: list[str] = []
+    dork_excludes: list[str] = []
+    term_places: list[str] = []
+    term_fresher: list[bool] = []
+    search_terms = parse_terms(words, 'searchTerms', notes, skipped, from_dork, platform, dork_excludes,
+                               term_places, term_fresher)
+    typed = location_entries(raw.get('location'))
+    have = {places.key(part) for entry in typed for part in entry} | {places.key(p) for p in pasted_places}
     locations, work_types, remote_places = parse_locations(
-        location_entries(raw.get('location')) + [[place] for place in pasted_places], work_types, notes, skipped)
+        typed + [[place] for place in pasted_places] + [[p] for p in term_places if places.key(p) not in have],
+        work_types, notes, skipped)
     companies = parse_companies(_items(raw.get('companies')) + pasted_boards, platform, company_names, notes, skipped)
     if _items(raw.get('companies')) and not companies:
         notes.append('None of the companies could be read, so every company was searched. ' + skipped[-1][1])
-    from_dork: list[str] = []
-    dork_excludes: list[str] = []
-    search_terms = parse_terms(words, 'searchTerms', notes, skipped, from_dork, platform, dork_excludes)
     for key in parse_companies(from_dork, platform, company_names, notes, skipped):
         if key.lower() not in (c.lower() for c in companies):
             companies.append(key)
@@ -549,10 +660,13 @@ def parse_input(raw: dict | None, platform, company_names: dict[str, list[str]] 
         search_descriptions=parse_bool(raw.get('searchDescriptions'), False),
         companies=companies,
         job_urls=job_urls,
-        experience=parse_experience(raw.get('experienceYears'), notes),
+        experience=parse_experience(raw.get('experienceYears'), notes) or (
+            (0.0, 0.0) if term_fresher and raw.get('experienceYears') in (None, '') else None),
         notes=notes,
         skipped=skipped,
     )
+    if term_fresher and raw.get('experienceYears') not in (None, ''):
+        cfg.notes.append(f'experienceYears {raw["experienceYears"]} was kept over the fresher typed in searchTerms.')
     if cfg.job_urls and (cfg.search_terms or cfg.locations or cfg.companies):
         cfg.notes.append('Job links were given, so the run checks those links and does not search. '
                          'Run again without job links to search.')
