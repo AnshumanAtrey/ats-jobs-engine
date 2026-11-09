@@ -877,6 +877,10 @@ class Instahyre(Platform):
                 job['postedAt'] = self.dates.get(job['rank'])
                 if cutoff and job['postedAt'] and job['postedAt'] < cutoff:
                     return 'cutoff', job['rank']
+                if cutoff and not job['postedAt'] and not self.page_trouble:
+                    # Instahyre answers for its newest jobs before their pages go up (the 8 newest on 2026-11-09, run
+                    # 6djGkek4HuAfre4ec delivered 93 of 100): no page, no date, and a job with no date fits no period
+                    continue
                 key = (job['company'] or '').casefold(), *self.copy_key(job)
                 if key not in keys and self.wanted(job):
                     keys.add(key)

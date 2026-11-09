@@ -328,7 +328,8 @@ class Dates(unittest.TestCase):
 
 
 class Walk(unittest.TestCase):
-    def run_walk(self, answers: dict, raw: dict, top: int, need, cutoff=None, search_s=None, pages_ok=True, reads=None):
+    def run_walk(self, answers: dict, raw: dict, top: int, need, cutoff=None, search_s=None, pages_ok=True, reads=None,
+                 undated=(), trouble=None):
         p = platform(raw)
 
         async def answer(http, job_id):
@@ -347,8 +348,12 @@ class Walk(unittest.TestCase):
                     'skills': ['Python'], 'experience': (2, 4), 'function': ['Software Engineering', 'Backend']}
 
         async def fill_dates(ids):
+            if trouble:
+                p.page_trouble = trouble
+                return
             for i in ids:
-                p.dates[i] = days(0) if i > 950 else days(30)
+                if i not in undated:
+                    p.dates[i] = days(0) if i > 950 else days(30)
         p.answer, p.page, p.fill_dates = answer, page, fill_dates
         found = {}
         stop = asyncio.run(p.walk(None, top, need, cutoff, search_s, found))
@@ -371,6 +376,22 @@ class Walk(unittest.TestCase):
         stop, found = self.run_walk(self.answers(), {}, 1000, None, cutoff=days(7))
         self.assertEqual(stop[0], 'cutoff')
         self.assertEqual(min(found), 951)
+
+    def test_a_job_whose_page_is_not_up_yet_does_not_count_toward_max_jobs_in_a_period(self):
+        """Instahyre answers for its newest jobs before their pages go up (the 8 newest on 2026-11-09: run
+        6djGkek4HuAfre4ec delivered 93 of 100). Such a job has no date, and a job with no date fits no posting period,
+        so the walk reads on for the next."""
+        no_page = set(range(993, 1001))
+        stop, found = self.run_walk(self.answers(), {}, 1000, 30, cutoff=days(30), undated=no_page)
+        self.assertEqual(stop[0], 'enough')
+        self.assertGreaterEqual(len(found), 30)                  # a batch can pass maxJobs; pages() keeps the newest 30
+        self.assertFalse(no_page & set(found))
+
+    def test_with_no_job_pages_to_read_an_undated_job_still_counts(self):
+        """Pages refused for the whole run leave every job undated: passing them over would read on to WALK_CAP."""
+        stop, found = self.run_walk(self.answers(), {}, 1000, 30, cutoff=days(30), trouble='refused')
+        self.assertEqual(stop[0], 'enough')
+        self.assertIn(1000, found)
 
     def test_a_slow_walk_hands_over_to_the_search(self):
         stop, found = self.run_walk(self.answers(), {'searchTerms': ['nothing like this']}, 1000, 100, search_s=30)
