@@ -34,9 +34,9 @@ key, no browser, no proxy. Measured from this laptop on 2026-11-10:
   profile the job's page shows: the brand's own when it has one, else the account that posted the job, with its name and
   industry. HR & Recruitment marks a recruitment agency or job platform: Robert Half, Hays, Morgan McKinley, Selby
   Jennings (a brand's profile), and Workwise, which posts for German tax firms and banks under their names (the
-  account's). Of the 1,480 newest jobs on 2026-11-10, 277 came from such an account, 361 from accounts in other
-  industries, and 842 from accounts with no profile, among them agencies such as Michael Page and Gravitas: so agency is
-  True, False, or None when the site has no profile to say.
+  account's). Of the 1,000 newest jobs a run saved on 2026-11-10, 82 had such a profile, 87 one in another industry and
+  831 none, mostly employers' career-site feeds but also agencies such as Michael Page and Gravitas: so agency is True,
+  False, or None when the site has no profile to say.
 
 Three dates. A paid job goes back to the top of the list every 6 days (90 of 196 jobs listed one morning had been
 posted before, 85 of them exactly 6 days earlier), and the search's postedDate is that last listing; the job's own page
