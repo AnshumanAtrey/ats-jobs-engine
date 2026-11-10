@@ -909,6 +909,12 @@ class Wellfound(Platform):
         closed = response.status_code == 410 or TAKEN_DOWN in page or not (markup(page) or JOB_TEXT in page)
         return ('closed' if closed else 'open'), page
 
+    def detailed(self, job):
+        """Search rows carry a description already; only the job page adds descriptionHtml. Run X0e4ow9WlHJHNm6BA
+        (2026-11-10, throttled job pages and a 300 s limit) delivered 31 of 100 rows without their page, which the
+        engine's default rule would have charged as job-details."""
+        return bool(job.get('descriptionHtml'))
+
     async def details(self, http, session, job):
         status, page = await self.job_page(http, job['jobUrl'].rsplit('/', 1)[-1])
         return {**job, **read_page(page, job)} if status == 'open' else job

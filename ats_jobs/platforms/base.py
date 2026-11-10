@@ -128,6 +128,12 @@ class Platform:
         """The job with its full description, when pages() does not carry it."""
         return job
 
+    def detailed(self, job: dict) -> bool:
+        """The job holds what includeDetails pays for, so its row is charged job-details, not job: by default any
+        description. A platform whose search results already carry a description asks for what only its job page adds
+        (Wellfound: descriptionHtml), or a job page that failed or that the time limit cut is charged as detailed."""
+        return bool(job.get('description') or job.get('descriptionHtml'))
+
     async def lookup(self, http, session, job_id: str) -> tuple[str, dict | None]:
         """One job -> ('open', job) | ('closed', None) | ('not found', None)."""
         raise NotImplementedError

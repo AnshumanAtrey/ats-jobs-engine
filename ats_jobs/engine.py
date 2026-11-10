@@ -388,7 +388,7 @@ class Run:
                 self.phase = 'saving'
                 rows = []
                 for _, _, board, job in part:
-                    has_details = cfg.include_details and bool(job.get('description') or job.get('descriptionHtml'))
+                    has_details = cfg.include_details and platform.detailed(job)
                     rows.append((self.row(board, job, cfg.include_details), DETAILS_EVENT if has_details else LINK_EVENT))
                 await self.deliver_all(rows)
                 for _, _, _, job in part:

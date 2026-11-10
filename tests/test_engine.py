@@ -181,6 +181,23 @@ class Delivery(unittest.TestCase):
         run = search(Odd({'a': [[job('1')]]}), {'includeDetails': True})
         self.assertEqual((run.delivery.pushed, run.board_errors[0]['error']), ([('1', 'job')], 'TypeError: odd details'))
 
+    def test_a_platform_whose_list_carries_descriptions_charges_details_only_when_its_page_came(self):
+        # Wellfound, 2026-11-10: search rows hold a description, so a job page that failed was still charged job-details
+        class Listed(Fake):
+            async def pages(self, http, session, term, days):
+                async for page in super().pages(http, session, term, days):
+                    yield [{**j, 'description': 'from the list'} for j in page]
+
+            async def details(self, http, session, job):
+                if job['id'] == 'cut':
+                    raise TypeError('page refused')
+                return {**job, 'descriptionHtml': '<p>from the page</p>'}
+
+            def detailed(self, job):
+                return bool(job.get('descriptionHtml'))
+        run = search(Listed({'a': [[job('ok'), job('cut', title='Analyst')]]}), {'includeDetails': True})
+        self.assertEqual(dict(run.delivery.pushed), {'ok': 'job-details', 'cut': 'job'})
+
     def test_details_are_charged_only_when_they_came(self):
         run = search(Fake({'a': [[job('ok'), job('nodetails', title='Analyst')]]}), {'includeDetails': True})
         self.assertEqual(dict(run.delivery.pushed), {'ok': 'job-details', 'nodetails': 'job'})
