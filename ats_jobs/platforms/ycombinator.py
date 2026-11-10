@@ -55,6 +55,8 @@ import math
 import re
 import time
 from datetime import datetime, timedelta, timezone
+from functools import lru_cache
+from importlib import resources
 from urllib.parse import unquote, urlencode, urlparse
 
 from .. import places as regions
@@ -138,8 +140,49 @@ STAGE_ALIASES = {'early': 'early', 'early stage': 'early', 'seed': 'early', 'sta
                  'public': 'public', 'ipo': 'public', 'listed': 'public'}
 SEASONS = {'w': 'Winter', 's': 'Summer', 'f': 'Fall', 'p': 'Spring', 'x': 'Spring'}    # YC wrote Spring 2025 as X25
 SEASON_CODE = {'winter': 'W', 'summer': 'S', 'fall': 'F', 'autumn': 'F', 'spring': 'P'}
+# Places people type that YC's jobs write another way, and the Bay Area's cities (YC's location text names the city)
+ABBREVIATIONS = {'sf': ('San Francisco',), 'nyc': ('New York',), 'new york city': ('New York',),
+                 'bay area': ('San Francisco Bay Area', 'San Francisco', 'South San Francisco', 'Oakland', 'Berkeley',
+                              'Alameda', 'Emeryville', 'San Jose', 'Palo Alto', 'Mountain View', 'Menlo Park',
+                              'Redwood City', 'San Mateo', 'Foster City', 'Burlingame', 'Belmont', 'Sunnyvale',
+                              'Santa Clara', 'Cupertino', 'Los Altos', 'Milpitas', 'Fremont', 'Hayward', 'San Leandro')}
+ABBREVIATIONS['sf bay area'] = ABBREVIATIONS['san francisco bay area'] = ABBREVIATIONS['bay area']
+PLACE_WORDS = ('in', 'at', 'near', 'around')
 DIRECTORY_FIELDS = ['id', 'name', 'slug', 'website', 'batch', 'status', 'stage', 'team_size', 'industries', 'one_liner',
                     'all_locations', 'isHiring']
+
+
+@lru_cache(maxsize=1)
+def yc_places() -> dict[str, str]:
+    """data/ycombinator_places.tsv (scripts/refresh_ycombinator.py): the places YC's jobs name, as words -> the name."""
+    text = resources.files('ats_jobs').joinpath('data/ycombinator_places.tsv').read_text(encoding='utf-8')
+    out = {}
+    for line in text.splitlines():
+        if line.strip() and not line.startswith('#'):
+            name = line.split('\t')[0].strip()
+            out.setdefault(' '.join(words(name)), name)
+    return out
+
+
+def typed_place(tokens: list[str]) -> str | None:
+    """Words a person typed -> the YC place they name ('new york', 'nyc', 'london'), or None."""
+    key = ' '.join(words(' '.join(tokens)))
+    if not key:
+        return None
+    return (ABBREVIATIONS.get(key) or (None,))[0] or yc_places().get(key)
+
+
+def split_place(term: str) -> tuple[str, str | None]:
+    """'product manager in new york' -> ('product manager', 'New York'); 'designer london' -> ('designer', 'London');
+    'San Francisco' -> ('', 'San Francisco'); 'engineer in residence' -> unchanged, None: Residence is no YC place."""
+    ws = term.split()
+    for n in range(min(4, len(ws) - 1), 0, -1):               # "<title> in <place>"
+        if ws[-n - 1].lower() in PLACE_WORDS and typed_place(ws[-n:]):
+            return ' '.join(ws[:-n - 1]), typed_place(ws[-n:])
+    for n in range(min(4, len(ws)), 0, -1):                   # "<title> <place>", or the place alone
+        if typed_place(ws[-n:]) and not (n < len(ws) and ws[-n - 1].lower() in PLACE_WORDS):
+            return ' '.join(ws[:-n]), typed_place(ws[-n:])
+    return term, None
 
 
 # ---------- reading YC's pages ----------
@@ -281,15 +324,21 @@ def batches_typed(text: str) -> set[str] | None:
     return None
 
 
-def is_country(code: str) -> bool:
-    """'US', 'IN' -> True; 'SF', 'NY' -> False: a two-letter code pycountry knows as a country."""
+def country_name(code: str | None) -> str | None:
+    """'US' -> 'United States', 'GB' -> 'United Kingdom'; None when it is not a two-letter code pycountry knows ('SF')."""
     if not re.fullmatch(r'[A-Z]{2}', code or ''):
-        return False
+        return None
     try:
         import pycountry
-        return pycountry.countries.get(alpha_2=code) is not None
+        found = pycountry.countries.get(alpha_2=code)
     except (ImportError, LookupError, KeyError):
-        return False
+        return None
+    return (getattr(found, 'common_name', None) or found.name) if found else None
+
+
+def is_country(code: str) -> bool:
+    """'US', 'IN' -> True; 'SF', 'NY' -> False: a two-letter code pycountry knows as a country."""
+    return country_name(code) is not None
 
 
 def place_of(text: str) -> dict:
@@ -298,11 +347,11 @@ def place_of(text: str) -> dict:
     and the engine reads a country name in them."""
     bits = [b.strip() for b in text.split(',') if b.strip()]
     if len(bits) == 1 and is_country(bits[0]):
-        return {'name': text, 'country': bits[0]}
+        return {'name': text, 'country': country_name(bits[0])}
     if len(bits) >= 3 and is_country(bits[-1]):
-        return {'name': text, 'city': bits[0], 'region': bits[-2], 'country': bits[-1]}
+        return {'name': text, 'city': bits[0], 'region': bits[-2], 'country': country_name(bits[-1])}
     if len(bits) == 2 and is_country(bits[1]) and re.fullmatch(r'[A-Z]{2,3}', bits[0]):
-        return {'name': text, 'region': bits[0], 'country': bits[1]}
+        return {'name': text, 'region': bits[0], 'country': country_name(bits[1])}
     return {'name': text}
 
 
@@ -346,9 +395,10 @@ def address_places(posting: dict) -> list[dict]:
             continue
         address = address if isinstance(address, dict) else {}
         city, region = address.get('addressLocality') or None, address.get('addressRegion') or None
-        country = address.get('addressCountry')
-        country = country if isinstance(country, str) and country.strip() else None
-        name = ', '.join(p for p in (city, region, country) if p)
+        code = address.get('addressCountry')
+        code = code.strip() if isinstance(code, str) and code.strip() else None
+        country = country_name(code) or code
+        name = ', '.join(p for p in (city, region, code) if p)
         if name:
             out.append({'name': name, 'city': city, 'region': region, 'country': country})
     return out
@@ -376,7 +426,7 @@ def squeeze(text: str | None) -> str:
 class YCombinator(Platform):
     key = 'ycombinator'
     name = 'Y Combinator'
-    site_word = 'company'
+    site_word = 'company page'       # a named company's jobs page: "Found 14 matching jobs at 1 company on 1 Y Combinator company page"
     actor = 'ycombinator-jobs-search'
     board_example = 'https://www.ycombinator.com/companies/airbnb/jobs'
     job_example = 'https://www.ycombinator.com/companies/authzed/jobs/ena6RKJ-solutions-engineer-u-s-and-canada'
@@ -466,6 +516,7 @@ class YCombinator(Platform):
                 notes.append(f'Read {token.strip()} in searchTerms as the role {found.group(1).replace("-", " ")}.')
         cfg.skipped[:] = [(t, why) for t, why in cfg.skipped if not re.search(r'ycombinator\.com/jobs/role/', t, re.I)]
         roles = self.read_roles(_items(raw.get('role')) + linked, notes)
+        self.read_places(cfg)
         batches: list[str] = []
         for token in _items(raw.get('batch')):
             found = batches_typed(token)
@@ -503,6 +554,35 @@ class YCombinator(Platform):
         if asked:
             notes.append(f'YC jobs are full-time, internship, contract or co-founder, so {", ".join(asked)} finds no '
                          f'job.')
+
+    @staticmethod
+    def read_places(cfg) -> None:
+        """A place where YC companies hire, typed with the job title ("product manager in new york", "designer london"),
+        moves to location, as the engine does for the places it knows; and SF, NYC and the Bay Area, typed in either
+        field, also find the names YC's jobs write (San Francisco, New York, the Bay Area's cities)."""
+        have = {' '.join(words(p)) for p in cfg.locations}
+        terms = []
+        for term in cfg.search_terms:
+            title, place = split_place(term)
+            if place is None:
+                terms.append(term)
+                continue
+            read = [f'the job title "{title}"'] if title else []
+            cfg.notes.append(f'Read "{term}" in searchTerms as ' + ', '.join(read + [f'jobs in {place}']) + '.')
+            if ' '.join(words(place)) not in have:
+                have.add(' '.join(words(place)))
+                cfg.locations.append(place)
+            if title and title.lower() not in (t.lower() for t in terms):
+                terms.append(title)
+        cfg.search_terms[:] = terms
+        for typed in list(cfg.locations):
+            others = ABBREVIATIONS.get(' '.join(words(typed)), ())
+            added = [o for o in others if ' '.join(words(o)) not in have]
+            if added:
+                have.update(' '.join(words(o)) for o in added)
+                cfg.locations.extend(added)
+                cfg.notes.append(f'YC writes {typed} as {", ".join(added[:3])}{" and its other cities" if len(added) > 3 else ""}, '
+                                 f'so {"they are" if len(added) > 1 else "it is"} searched too.')
 
     @staticmethod
     def read_roles(tokens: list[str], notes: list[str]) -> list[str]:
@@ -740,6 +820,7 @@ class YCombinator(Platform):
         industries = [i for i in company.get('industries') or [] if isinstance(i, str) and i and i != 'Unspecified']
         return {
             'id': str(raw['id']),
+            'rank': int(raw['id']) if str(raw['id']).isdigit() else None,     # jobs posted the same second: newest id first
             'title': title,
             'company': ' '.join(str(raw.get('companyName') or company.get('name') or slug).split()),
             'companySlug': slug,

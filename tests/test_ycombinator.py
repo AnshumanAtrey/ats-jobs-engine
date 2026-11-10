@@ -230,10 +230,11 @@ class Places(unittest.TestCase):
     def test_ycs_place_text(self):
         parts, entries, vague = yc.text_places('US / CA / Remote (US; CA)')
         self.assertEqual(parts, ['US', 'CA', 'Remote (US; CA)'])
-        self.assertEqual([e.get('country') for e in entries], ['US', 'CA', 'US', 'CA'])     # CA alone is Canada
+        self.assertEqual([e.get('country') for e in entries],
+                         ['United States', 'Canada', 'United States', 'Canada'])     # CA alone is Canada
         self.assertFalse(vague)
         _, entries, vague = yc.text_places('Bengaluru, KA, IN')
-        self.assertEqual(entries[0], {'name': 'Bengaluru, KA, IN', 'city': 'Bengaluru', 'region': 'KA', 'country': 'IN'})
+        self.assertEqual(entries[0], {'name': 'Bengaluru, KA, IN', 'city': 'Bengaluru', 'region': 'KA', 'country': 'India'})
         self.assertFalse(vague)
 
     def test_a_place_with_no_country_is_vague(self):
@@ -245,7 +246,7 @@ class Places(unittest.TestCase):
     def test_the_pages_addresses_place_a_vague_job(self):
         posting = FX['postings']['121727']                     # Preload, "San Francisco, CA"
         offices = yc.address_places(posting)
-        self.assertEqual(offices[0]['country'], 'US')
+        self.assertEqual((offices[0]['country'], offices[0]['name']), ('United States', 'San Francisco, California, US'))
         self.assertEqual(yc.address_places({'jobLocation': [{'address': 'SF Headquarters'}]}),
                          [{'name': 'SF Headquarters'}])
 
@@ -274,6 +275,42 @@ class Links(unittest.TestCase):
         self.assertEqual(cfg.work_types, ['remote'])
         self.assertEqual(cfg.search_terms, [])
         self.assertEqual(cfg.skipped, [])
+
+
+class OneBox(unittest.TestCase):
+    """The owner's one-box rule (2026-11-09): a place typed with the job title is read as the place. The engine knows the
+    places of India's boards; YC's own places come from data/ycombinator_places.tsv (2026-11-10: 126 names on 3 or more
+    of 6,316 jobs, the top ones San Francisco 2,449, New York 835, London 279)."""
+
+    def test_the_places_yc_jobs_name(self):
+        places = yc.yc_places()
+        for name in ('san francisco', 'new york', 'london', 'bengaluru', 'austin', 'mountain view'):
+            self.assertIn(name, places)
+        self.assertNotIn('nyc office', places)                     # an office label, not a place
+        self.assertNotIn('residence', places)
+
+    def test_a_place_typed_with_the_title(self):
+        for typed, expected in (('product manager in new york', ('product manager', ['New York'])),
+                                ('founding engineer in nyc', ('founding engineer', ['New York'])),
+                                ('ml engineer in london', ('ml engineer', ['London'])),
+                                ('sales in sf', ('sales', ['San Francisco'])),
+                                ('designer london', ('designer', ['London'])),
+                                ('San Francisco', ('', ['San Francisco'])),
+                                ('engineer in residence', ('engineer in residence', [])),
+                                ('growth', ('growth', []))):
+            p, cfg = platform_for({'searchTerms': [typed]})
+            self.assertEqual((' '.join(cfg.search_terms), cfg.locations), expected, typed)
+
+    def test_remote_and_a_place_with_the_title(self):
+        p, cfg = platform_for({'searchTerms': ['remote product manager in new york']})
+        self.assertEqual((cfg.search_terms, cfg.locations, cfg.work_types), (['product manager'], ['New York'], ['remote']))
+        self.assertTrue(any('jobs in New York' in n for n in cfg.notes))
+
+    def test_bay_area_and_nyc_typed_as_places(self):
+        p, cfg = platform_for({'location': ['Bay Area', 'NYC']})
+        for city in ('San Francisco', 'Palo Alto', 'Mountain View', 'Oakland', 'New York'):
+            self.assertIn(city, cfg.locations)
+        self.assertEqual(len(cfg.notes), 2)
 
 
 class Inputs(unittest.TestCase):
@@ -326,11 +363,11 @@ class Jobs(unittest.TestCase):
         self.assertTrue(job['vague'])
         full = p.with_page(job, FX['postings']['121727'])
         self.assertEqual(full['postedAt'], '2026-11-10T03:48:20Z')
-        self.assertEqual(full['places'][0]['country'], 'US')
+        self.assertEqual(full['places'][0]['country'], 'United States')
         self.assertTrue(full['description'])
         self.assertNotIn('ages', full)
         row = job_row('ycombinator', {'name': 'Preload', 'slug': 'preload', 'website': None}, full, 'now', True)
-        self.assertEqual((row['country'], row['countryCode'], row['salaryPeriod']), ('US', 'US', 'hour'))
+        self.assertEqual((row['country'], row['countryCode'], row['salaryPeriod']), ('United States', 'US', 'hour'))
 
     def test_a_vague_place_is_opened_only_for_a_place_filter(self):
         p, job = listed('preload', 121726)
@@ -407,6 +444,15 @@ class Searches(unittest.TestCase):
         self.assertIn("on YC's Work at a Startup board", run.message())
         pages = [u for m, u, h in http.calls if '/jobs/' in u and u.startswith(yc.SITE + '/companies/')]
         self.assertLessEqual(len(pages), 10)                               # only the jobs that can make the cut
+
+    def test_jobs_posted_the_same_second_come_newest_id_first(self):
+        """Preload posted 121722 and 121723 one second apart; dated the same second, the higher id still comes first
+        (rank), as YC numbers jobs in posting order (local run r09: 81 such ties among 2,000 rows)."""
+        postings = copy.deepcopy(FX['postings'])
+        postings['121722']['datePosted'] = postings['121723']['datePosted']
+        run, _ = search({'companies': ['Preload'], 'postedWithin': 'any time'}, lists_routes(postings=postings))
+        ids = [r['jobId'] for r in run.delivery.pushed]
+        self.assertEqual(ids, sorted(ids, reverse=True))
 
     def test_job_lists_and_pages_are_asked_for_as_partial_reloads(self):
         run, http = search({'maxJobs': 1})
