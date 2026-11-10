@@ -42,6 +42,9 @@ class Platform:
     count_is_floor = False   # set during a run: matches may hide among records the platform did not open, so the count
                              # says "at least" (Instahyre: a range of years, which its own search cannot take)
     progress: str | None = None       # set by a platform that works a while before its first page: the status line
+    job_types: tuple = ()    # employment types this platform states besides the engine's five, which the employmentType
+                             # input then offers too (Welcome to the Jungle: apprenticeship, work-study)
+    job_type_aliases: dict = {}       # their everyday words, and this platform's words for the engine's types (cdd)
 
 
     def search_all(self, boards: list[Board], cfg) -> list[Board]:
@@ -74,6 +77,11 @@ class Platform:
     def vague_place(self, job: dict) -> bool:
         """The list does not say where this job is ("2 Locations"), so a place filter needs details() first."""
         return False
+
+    def place_names(self) -> tuple[frozenset[str], frozenset[str]]:
+        """(every place name this platform's jobs use, the ones common enough to read alone at the end of a search
+        entry), in places.key form, beside the engine's lists, so "data analyst in Lyon" reads Lyon as the place."""
+        return frozenset(), frozenset()
 
     def aliases(self, board: Board) -> list[str]:
         """Words that find this board in the companies field, besides its name and key."""

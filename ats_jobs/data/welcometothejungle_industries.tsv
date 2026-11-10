@@ -1,0 +1,110 @@
+# Welcome to the Jungle industries, updated 2026-11-10: 84,831 open jobs read
+# reference	name	parent reference	parent name	jobs
+education-formation				7
+communication-pub				4
+appli-mobile				2
+big-data				2
+tech				2
+recrutement				2
+e-commerce				1
+automobile				1
+objets-connectes				1
+digital	Digital	advertising-marketing-agency	Advertising / Marketing / Agency	2366
+event-management	Event Management	advertising-marketing-agency	Advertising / Marketing / Agency	1036
+marketing-communications	Marketing / Communications	advertising-marketing-agency	Advertising / Marketing / Agency	950
+advertising	Advertising	advertising-marketing-agency	Advertising / Marketing / Agency	684
+adtech-martech	AdTech / MarTech	advertising-marketing-agency	Advertising / Marketing / Agency	621
+public-relations	Public Relations	advertising-marketing-agency	Advertising / Marketing / Agency	534
+design-2	Design	advertising-marketing-agency	Advertising / Marketing / Agency	314
+architecture-2	Architecture	architecture-1	Architecture	169
+interior-design	Interior Design	architecture-1	Architecture	152
+finance-2	Finance	banking-insurance-finance	Banking / Insurance / Finance	10049
+insurance-1	Insurance	banking-insurance-finance	Banking / Insurance / Finance	4472
+banking-1	Banking	banking-insurance-finance	Banking / Insurance / Finance	3470
+fintech-insurtech	FinTech / InsurTech	banking-insurance-finance	Banking / Insurance / Finance	2460
+it-digital-1	IT / Digital	consulting-audit	Consulting / Audit	7000
+organization-management	Organization / Management	consulting-audit	Consulting / Audit	3356
+strategy-1	Strategy	consulting-audit	Consulting / Audit	2781
+audit-1	Audit	consulting-audit	Consulting / Audit	1734
+change-management	Change Management	consulting-audit	Consulting / Audit	1661
+accounting	Accounting	consulting-audit	Consulting / Audit	746
+digital-marketing-data-marketing	Digital Marketing / Data Marketing	consulting-audit	Consulting / Audit	454
+transaction-services	Transaction Services	consulting-audit	Consulting / Audit	208
+supply-chain	Supply Chain	consulting-audit	Consulting / Audit	200
+corporate-support	Corporate Support	corporate-services	Corporate Services	746
+incubator-accelerator	Incubator / Accelerator	corporate-services	Corporate Services	78
+coworking-2	Coworking	corporate-services	Corporate Services	46
+corporate-concierge-services	Corporate Concierge Services	corporate-services	Corporate Services	44
+media-1	Media	culture-media-entertainment	Culture / Media / Entertainment	3397
+sports	Sports	culture-media-entertainment	Culture / Media / Entertainment	1032
+television-film-production	Television & Film Production	culture-media-entertainment	Culture / Media / Entertainment	226
+music-1	Music	culture-media-entertainment	Culture / Media / Entertainment	145
+publishing	Publishing	culture-media-entertainment	Culture / Media / Entertainment	123
+print-media	Print Media	culture-media-entertainment	Culture / Media / Entertainment	103
+video-games	Video Games	culture-media-entertainment	Culture / Media / Entertainment	68
+radio-1	Radio	culture-media-entertainment	Culture / Media / Entertainment	60
+museums-cultural-institutions	Museums / Cultural Institutions	culture-media-entertainment	Culture / Media / Entertainment	26
+film	Film	culture-media-entertainment	Culture / Media / Entertainment	22
+lotteries-gambling-1	Lotteries / Gambling	culture-media-entertainment	Culture / Media / Entertainment	12
+art-art-market	Art / Art Market	culture-media-entertainment	Culture / Media / Entertainment	8
+theater-1	Theater	culture-media-entertainment	Culture / Media / Entertainment	5
+e-commerce-1	E-commerce	distribution-1	Distribution	10218
+mass-distribution	Mass Distribution	distribution-1	Distribution	8723
+selective-distribution	Selective Distribution	distribution-1	Distribution	2770
+recruitment-1	Recruitment	education-training-recruitment	Education / Training / Recruitment	1555
+human-resources	Human Resources	education-training-recruitment	Education / Training / Recruitment	1464
+education-1	Education	education-training-recruitment	Education / Training / Recruitment	1135
+job-training-1	Job Training	education-training-recruitment	Education / Training / Recruitment	894
+edtech-1	EdTech	education-training-recruitment	Education / Training / Recruitment	748
+engineering	Specialised Engineering	engineering-1	Engineering	2935
+design-engineering-office	Design & Engineering Office	engineering-1	Engineering	1735
+luxury-1	Luxury	fashion-luxury-beauty-lifestyle	Fashion / Luxury / Beauty / Lifestyle	1195
+fashion-1	Fashion	fashion-luxury-beauty-lifestyle	Fashion / Luxury / Beauty / Lifestyle	950
+cosmetics	Cosmetics	fashion-luxury-beauty-lifestyle	Fashion / Luxury / Beauty / Lifestyle	537
+lifestyle	Lifestyle	fashion-luxury-beauty-lifestyle	Fashion / Luxury / Beauty / Lifestyle	285
+jewelry-1	Jewelry	fashion-luxury-beauty-lifestyle	Fashion / Luxury / Beauty / Lifestyle	86
+consumer-goods	Consumer Goods	food-and-beverage	Food and Beverage	2617
+foodservice	Foodservice	food-and-beverage	Food and Beverage	1411
+beverage	Beverage	food-and-beverage	Food and Beverage	1053
+foodtech-1	FoodTech	food-and-beverage	Food and Beverage	309
+gourmet-grocery	Gourmet Grocery	food-and-beverage	Food and Beverage	100
+food-craft	Food Craft	food-and-beverage	Food and Beverage	44
+environment-sustainable-development	Environment / Sustainable Development	health-social-environment	Health / Social / Environment	3563
+home-care-services	Home Care Services	health-social-environment	Health / Social / Environment	2030
+health-1	Health	health-social-environment	Health / Social / Environment	2010
+socialtech-greentech	SocialTech / GreenTech	health-social-environment	Health / Social / Environment	1437
+collaborative-economy	Collaborative Economy	health-social-environment	Health / Social / Environment	131
+hotel	Hotel	hotel-tourism-leisure	Hotel / Tourism / Leisure	521
+tourism-1	Tourism	hotel-tourism-leisure	Hotel / Tourism / Leisure	351
+leisure	Leisure	hotel-tourism-leisure	Hotel / Tourism / Leisure	210
+agri-food-animal-nutrition	Agri-food / Animal Nutrition	industry-1	Industry	7583
+aeronautics-space	Aeronautics / Space	industry-1	Industry	5024
+energy	Energy	industry-1	Industry	4586
+building-public-works	Building / Public Works	industry-1	Industry	2489
+electronics-telecommunications	Electronics / Telecommunications	industry-1	Industry	1677
+metallurgy	Metallurgy	industry-1	Industry	1489
+automotive	Automotive	industry-1	Industry	1091
+pharmaceutical-biotech	Pharmaceutical / Biotech	industry-1	Industry	1041
+rail	Rail	industry-1	Industry	669
+legal-department	Legal Department	legal-law	Legal / Law	261
+law	Law	legal-law	Legal / Law	54
+mobility-1	Mobility	mobility-transport	Mobility / Transport	1542
+logistics	Logistics	mobility-transport	Mobility / Transport	834
+shipping-and-ground-transport	Shipping and Ground Transport	mobility-transport	Mobility / Transport	653
+nonprofit	Nonprofit	nonprofit-association	Nonprofit / Association	516
+ngo	NGO	nonprofit-association	Nonprofit / Association	245
+foundation	Foundation	nonprofit-association	Nonprofit / Association	50
+public-administration	Public Administration	public-administration-1	Public Administration	2605
+public-and-local-agencies	Public and Local Agencies	public-administration-1	Public Administration	295
+academic-administration	Academic Administration	public-administration-1	Public Administration	37
+residential-real-estate	Residential Real Estate	real-estate	Real Estate	2720
+commercial-real-estate	Commercial Real Estate	real-estate	Real Estate	2588
+software-1	Software	tech-1	Tech	21563
+artificial-intelligence-machine-learning	Artificial Intelligence / Machine Learning	tech-1	Tech	9297
+big-data-1	Big Data	tech-1	Tech	7075
+cyber-security	Cyber Security	tech-1	Tech	5007
+saas-cloud-services	SaaS / Cloud Services	tech-1	Tech	4105
+mobile-apps	Mobile Apps	tech-1	Tech	1761
+connected-objects	Connected Objects	tech-1	Tech	548
+robotics	Robotics	tech-1	Tech	382
+blockchain-1	Blockchain	tech-1	Tech	38
