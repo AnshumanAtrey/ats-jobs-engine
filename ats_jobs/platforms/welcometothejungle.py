@@ -656,7 +656,8 @@ class WelcomeToTheJungle(Platform):
             code = clean(office.get('country_code')).upper() or None
             country = country or (country_name(code) if code else None)
             state = state or (region_of.get((fold(city), code or '')) if city else None)
-            text = place_text(city, state, country)
+            # "San Mateo, CA" with its region known is shown "San Mateo, California, United States"
+            text = place_text(re.sub(r',\s*[A-Z]{2,3}$', '', city) if city and state else city, state, country)
             if not text:
                 continue
             shown.append(text)

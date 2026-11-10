@@ -145,6 +145,11 @@ class Jobs(unittest.TestCase):
         self.assertEqual((sf['workType'], sf['remotePolicy'], sf['salary']), ('remote', 'full', 'USD 210,000 - 290,000 per year'))
         london = P.job(hit('security-privacy-lead'))
         self.assertEqual(london['location'], 'London, England, United Kingdom')
+        coded = P.job({**hit('security-engineer-red-team'), 'offices': [{'city': 'San Mateo, CA', 'country': 'United States',
+                                                                          'country_code': 'US'}]})
+        self.assertEqual(coded['location'], 'San Mateo, California, United States')
+        self.assertEqual(coded['places'][0]['city'], 'San Mateo, CA')
+        self.assertTrue(passes({'location': ['California']}, coded))
 
     def test_every_office_is_a_place_and_its_own_language_names_find_it(self):
         job = P.job(hit('data-analyst-supply-chain'))
