@@ -86,6 +86,8 @@ LD_JSON = re.compile(r'<script type="application/ld\+json"[^>]*>(.*?)</script>',
 JOB_PATH = re.compile(r'^(\d{1,10})-([a-z0-9][a-z0-9-]*)$', re.I)
 SLUG = re.compile(r'^[a-z0-9][a-z0-9._-]*$')
 TAKEN_DOWN = 'recently taken down'
+JOB_TEXT = 'id="job-description"'     # the job's own text: on the page of every open job, with markup or without
+HEADER = re.compile(r'<h1[^>]*>(.*?)</h1>\s*<ul[^>]*>(.*?)</ul>', re.S)    # the title, then pay | places | years | type
 # Every job Wellfound places somewhere, by continent, and every remote job: 578 pages on 2026-11-10
 EVERYWHERE = ('location/north-america', 'location/europe', 'location/asia', 'location/africa', 'location/oceania',
               'location/south-america', 'location/middle-east', 'location/central-america', 'remote')
@@ -895,14 +897,17 @@ class Wellfound(Platform):
 
     async def job_page(self, http, key: str) -> tuple[str, str | None]:
         """('open' | 'closed' | 'not found', the page). A job taken down answers 410 (or 200) with its page saying so
-        and no JobPosting markup; a job that never was, or a wrong slug, 404."""
+        and neither JobPosting markup nor the job's text; a job that never was, or a wrong slug, 404. An open job's
+        page can lack the markup: Wellfound marks some pages noindex and leaves it out (2 of 139 job pages opened on
+        2026-11-10), and those are read from their HTML."""
         response = await self.get(http, f'jobs/{key}', follow=True)
         if response.status_code == 404:
             return 'not found', None
         if response.status_code not in (200, 410):
             raise BoardError(f'HTTP {response.status_code}')
         page = response.text
-        return ('closed' if response.status_code == 410 or TAKEN_DOWN in page or not markup(page) else 'open'), page
+        closed = response.status_code == 410 or TAKEN_DOWN in page or not (markup(page) or JOB_TEXT in page)
+        return ('closed' if closed else 'open'), page
 
     async def details(self, http, session, job):
         status, page = await self.job_page(http, job['jobUrl'].rsplit('/', 1)[-1])
@@ -1014,6 +1019,28 @@ def markup(page: str | None) -> dict:
     return {}
 
 
+def header(page: str | None) -> dict:
+    """The job's title and the line under it: its pay and equity text (an empty first item when it shows none), its
+    places, years of experience and job type ("Full Time", "Internship", "Cofounder"). Its markup calls a cofounder role
+    FULL_TIME, so the type is read here."""
+    m = HEADER.search(page or '')
+    if not m:
+        return {}
+    items = [clean(li) for li in re.findall(r'<li[^>]*>(.*?)</li>', m.group(2), re.S)]
+    kind = items[-1].lstrip('| ').lower().replace(' ', '-') if items else ''
+    return {'title': clean(m.group(1)) or None, 'pay': items[0] if items else None, 'type': JOB_TYPES.get(kind)}
+
+
+def job_text(page: str | None) -> str | None:
+    """The job's text as its page shows it (the div with id job-description): the description of a page without
+    markup."""
+    at = (page or '').find(JOB_TEXT)
+    if at < 0:
+        return None
+    block = element(page, page.rfind('<div', 0, at))
+    return block[block.find('>') + 1:-len('</div>')].strip() or None
+
+
 def yes_no(values: list[str] | None) -> bool | None:
     """['Not Available'] -> False, ['Allowed'] -> True."""
     text = ' '.join(values or []).lower()
@@ -1051,7 +1078,7 @@ def read_page(page: str, job: dict) -> dict:
     company's website and markets, and the fact grid and funding of its HTML."""
     found = markup(page)
     grid = facts(page)
-    html = found.get('description') or None
+    html = found.get('description') or job_text(page)
     out: dict = {'description': text_of(html) or job.get('description'), 'descriptionHtml': html}
     org = found.get('hiringOrganization') or {}
     if org.get('sameAs'):
@@ -1097,24 +1124,31 @@ def company_of(page: str | None) -> dict:
 
 
 def job_from_page(page: str, key: str) -> dict:
-    """A job from its page alone, for a checked link."""
+    """A job from its page alone, for a checked link: from its markup, or from the HTML of an open job's page without
+    any (title, pay, job type, places, remote setting; no posting time, which such a page gives only as "5 days ago")."""
     found = markup(page)
+    head = header(page)
+    grid = facts(page)
     org = found.get('hiringOrganization') or {}
-    policy_text = next(iter(facts(page).get('Remote Work Policy') or []), None)
-    remote = found.get('jobLocationType') == 'TELECOMMUTE'
-    names = unique((entry.get('address') or {}).get('addressLocality') or (entry.get('address') or {}).get('addressRegion')
-                   for entry in found.get('jobLocation') or [] if isinstance(entry, dict))
-    employment = {'FULL_TIME': 'full-time', 'PART_TIME': 'part-time', 'CONTRACTOR': 'contract', 'INTERN': 'intern',
-                  'TEMPORARY': 'temporary'}.get(str(found.get('employmentType') or '').upper())
+    policy_text = next(iter(grid.get('Remote Work Policy') or []), None)
+    remote = found.get('jobLocationType') == 'TELECOMMUTE' if found else bool(grid.get('Hires remotely in'))
+    if found:
+        names = unique((entry.get('address') or {}).get('addressLocality') or (entry.get('address') or {}).get(
+            'addressRegion') for entry in found.get('jobLocation') or [] if isinstance(entry, dict))
+    else:
+        names = unique(grid.get('Job Location') or [])
+    types = {'FULL_TIME': 'full-time', 'PART_TIME': 'part-time', 'CONTRACTOR': 'contract', 'INTERN': 'intern',
+             'TEMPORARY': 'temporary'}
+    employment = head.get('type') or types.get(str(found.get('employmentType') or '').upper())
     years = re.search(r'>(\d+) years? of exp<', page or '')
     link = f'{ORIGIN}/jobs/{key}'
     job = {
         'id': str((found.get('identifier') or {}).get('value') or key.split('-', 1)[0]),
         'company': org.get('name'), 'companySlug': None, 'companyWebsite': None, **company_of(page),
-        'title': ' '.join((found.get('title') or '').split()),
+        'title': ' '.join((found.get('title') or '').split()) or head.get('title'),
         'location': names[0] if names else ('Remote' if remote else None), 'otherLocations': names[1:], 'places': [],
         'workType': 'hybrid' if policy_text and 'flexib' in policy_text.lower() else ('remote' if remote else 'onsite'),
-        'employmentType': employment, **compensation(None), 'postedAt': found.get('datePosted'),
+        'employmentType': employment, **compensation(head.get('pay')), 'postedAt': found.get('datePosted'),
         'jobUrl': link, 'applyUrl': link, 'experienceMin': int(years.group(1)) if years else None, 'experienceMax': None,
         'remoteIn': [], 'remotePolicy': policy_text, 'role': None, 'companySize': None, 'companyStage': None,
         'companyTagline': None, 'companyLogo': org.get('logo'), 'companyBadges': [],

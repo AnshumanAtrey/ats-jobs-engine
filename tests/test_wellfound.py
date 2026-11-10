@@ -583,6 +583,40 @@ class Pages(unittest.TestCase):
             platform.pace = wellfound.Pace()
             self.assertEqual(asyncio.run(platform.details(site, None, job)), job)
 
+    def test_an_open_job_whose_page_has_no_markup_is_open_and_read_from_its_html(self):
+        # 2026-11-10: Wellfound marks some open jobs' pages noindex and leaves their JobPosting markup out (2 of 139)
+        page = recorded_job('4985575')
+        self.assertEqual(wellfound.markup(page), {})
+        link = 'https://wellfound.com/jobs/4985575-senior-software-engineer'
+        pages = {'4985575-senior-software-engineer': (200, page)}
+        run = run_of(Wellfound(), FakeSite({}, pages), {'jobUrls': [link]}, links=True)
+        row, = run.delivery.rows_out
+        self.assertEqual((row['status'], row['title'], row['company'], row['companySlug'], row['workType'],
+                          row['employmentType'], row['experienceMin']),
+                         ('open', 'Senior Software Engineer', 'CELSTARTAB', 'celstartab', 'remote', 'full-time', 8))
+        self.assertEqual((row['salaryMin'], row['salaryMax'], row['salaryCurrency'], row['offersEquity']),
+                         (115000, 125000, 'USD', False))
+        self.assertEqual((row['location'], row['otherLocations'], row['remoteIn'], row['postedAt']),
+                         ('California', ['Texas', 'Florida', 'Montana'], ['Everywhere'], None))
+        job = {'id': '4985575', 'jobUrl': link, 'title': 'Senior Software Engineer', 'description': 'list text',
+               'remoteIn': ['Everywhere'], 'places': []}
+        platform = Wellfound()
+        with patch.object(wellfound, 'RATE', 10_000.0):
+            platform.pace = wellfound.Pace()
+            out = asyncio.run(platform.details(FakeSite({}, pages), None, job))
+        self.assertTrue(out['descriptionHtml'].startswith('<p><strong>About Us'))
+        self.assertTrue(out['description'].startswith('About Us'))
+        self.assertEqual((out['visaSponsorship'], out['relocation'], out['skills'][:2]), (False, False, ['.NET', 'SCRUM']))
+
+    def test_the_header_names_a_cofounder_role_which_the_markup_calls_full_time(self):
+        page = ('<h1 class="inline text-xl font-semibold text-black">Cofounder &amp; CTO</h1><ul class="flex"><li class="md:'
+                'flex-none"></li><li class="flex">Remote (<div><a href="/remote">Egypt</a></div>)</li><li class="md:flex-none">'
+                '<span class="mx-2 inline-block">|</span>3 years of exp</li><li class="md:flex-none"><span class="mx-2 '
+                'inline-block">|</span>Cofounder</li></ul>')
+        self.assertEqual(wellfound.header(page), {'title': 'Cofounder & CTO', 'pay': '', 'type': 'cofounder'})
+        self.assertEqual(wellfound.header(recorded_job('4965854')),
+                         {'title': 'Software Engineer', 'pay': '$175k – $215k', 'type': 'full-time'})
+
 
 class Lists(unittest.TestCase):
     def test_the_role_and_place_lists_load(self):
