@@ -8,12 +8,16 @@ aggregator, and it is the `site:jobs.lever.co` Google dork done at the source.
 - `ats_jobs/rows.py`: the job shape, word and place matching, output rows.
 - `ats_jobs/inputs.py`: reads what people type, a pasted Google dork included. No input stops a run.
 - `ats_jobs/platforms/`: one small adapter per platform, on `platforms/base.py`: the ATSs (Greenhouse, Lever, Workday,
-  SmartRecruiters, Workable, Cornerstone, Deel) and India's job boards (Naukri, foundit, Instahyre, Hirist, Cutshort).
+  SmartRecruiters, Workable, Cornerstone, Deel), India's job boards (Naukri, foundit, Instahyre, Hirist, Cutshort) and
+  Welcome to the Jungle (Europe and the US, with the UK site that was Otta; its search index and job API).
 - `ats_jobs/data/<platform>.tsv`: every board found, rebuilt by `scripts/refresh_<platform>.py` from the Wayback Machine index.
   A job board that searches its own index has no board list: its sites are in its adapter, and a data file holds the
-  site's own places or companies (`foundit_places.tsv`, `naukri-cities.tsv`, `instahyre.tsv`), rebuilt by its script.
+  site's own places or companies (`foundit_places.tsv`, `naukri-cities.tsv`, `instahyre.tsv`,
+  `welcometothejungle_places.tsv`, `welcometothejungle_industries.tsv`), rebuilt by its script.
 - Shared filters beyond the ATSs': years of experience (`experienceYears`) for every job board; a platform's own
-  filters live in its adapter (`Platform.fits`), and a run that finds nothing names the one that left jobs out.
+  filters live in its adapter (`Platform.fits`), and a run that finds nothing names the one that left jobs out. A
+  platform can add job types of its own (`Platform.job_types`: work-study on Welcome to the Jungle) and the place names
+  its search box reads (`Platform.place_names`).
 - Instahyre's job pages need a browser's TLS: install the `instahyre` extra (`curl_cffi`).
 
 An actor pins a tagged release in `requirements.txt` and runs `ats_jobs.engine.main('<platform>')`.

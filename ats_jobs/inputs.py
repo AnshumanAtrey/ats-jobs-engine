@@ -164,13 +164,16 @@ def _place_names() -> tuple[frozenset[str], frozenset[str]]:
     return frozenset(every | major), frozenset(major)
 
 
-def _is_place(words: list[str], bare: bool) -> bool:
+def _is_place(words: list[str], bare: bool, platform=None) -> bool:
+    """A place, by the job boards' lists and the platform's own (Platform.place_names: a site outside India names its
+    towns, such as Welcome to the Jungle's Paris, Lyon and London)."""
     text = ' '.join(words)
     name = places.key(text)
     if not name:
         return False
     every, major = _place_names()
-    return (name in (major if bare else every) or name in places.REGIONS
+    own_every, own_major = platform.place_names() if platform is not None else (frozenset(), frozenset())
+    return (name in (major if bare else every) or name in (own_major if bare else own_every) or name in places.REGIONS
             or country_code(text, allow_codes=False) is not None)
 
 
@@ -179,10 +182,11 @@ def _place_text(words: list[str]) -> str:
     return re.sub(r'^[\W_]+|[\W_]+$', '', ' '.join(words))
 
 
-def read_place_words(term: str) -> tuple[str, list[str], bool]:
+def read_place_words(term: str, platform=None) -> tuple[str, list[str], bool]:
     """One search entry -> (the job title words, the places in it, fresher asked). 'python developer in pune' ->
     ('python developer', ['pune'], False); 'remote react developer' -> ('react developer', ['Remote'], False);
-    'fresher jobs in Bangalore' -> ('', ['Bangalore'], True); 'data analyst' -> ('data analyst', [], False)."""
+    'fresher jobs in Bangalore' -> ('', ['Bangalore'], True); 'data analyst' -> ('data analyst', [], False). A platform
+    adds the places of its own list (Platform.place_names)."""
     words, found, fresher = term.split(), [], False
     while words:
         keys = [places.key(w) for w in words]
@@ -206,16 +210,16 @@ def read_place_words(term: str) -> tuple[str, list[str], bool]:
             found += [] if 'Remote' in found else ['Remote']
             continue
         cut = next((n for n in range(min(4, len(words) - 1), 0, -1)
-                    if keys[-n - 1] in PLACE_WORDS and _is_place(words[-n:], bare=False)), 0)
+                    if keys[-n - 1] in PLACE_WORDS and _is_place(words[-n:], False, platform)), 0)
         if cut:                                                                 # "... in <place>"
             found.append(_place_text(words[-cut:]))
             del words[-cut - 1:]
             continue
-        if keys[0] in PLACE_WORDS and len(words) > 1 and _is_place(words[1:], bare=False):
+        if keys[0] in PLACE_WORDS and len(words) > 1 and _is_place(words[1:], False, platform):
             found.append(_place_text(words[1:]))                                   # "in <place>", its "jobs" gone
             words = []
             continue
-        cut = next((n for n in range(min(3, len(words)), 0, -1) if _is_place(words[-n:], bare=True)), 0)
+        cut = next((n for n in range(min(3, len(words)), 0, -1) if _is_place(words[-n:], True, platform)), 0)
         if not cut:
             break
         found.append(_place_text(words[-cut:]))                                    # "... <city>", or the city alone
@@ -247,7 +251,7 @@ def parse_terms(value, key: str, notes: list[str], skipped: list[tuple[str, str]
         if note:
             notes.append(note)
         elif places_found is not None:
-            words, found, is_fresher = read_place_words(term)
+            words, found, is_fresher = read_place_words(term, platform)
             if words != term:
                 read = ([f'the job title "{words}"'] if words else [])
                 read += [('remote jobs' if place == 'Remote' else f'jobs in {place}') for place in found]
@@ -653,7 +657,9 @@ def parse_input(raw: dict | None, platform, company_names: dict[str, list[str]] 
         locations=locations,
         remote_places=remote_places,
         work_types=work_types,
-        job_types=parse_choices(raw.get('employmentType'), 'employmentType', JOB_TYPES, JOB_TYPE_ALIASES, notes),
+        job_types=parse_choices(raw.get('employmentType'), 'employmentType',
+                                JOB_TYPES + tuple(t for t in platform.job_types if t not in JOB_TYPES),
+                                {**JOB_TYPE_ALIASES, **platform.job_type_aliases}, notes),
         posted_within_days=parse_period(raw.get('postedWithin'), notes),
         max_jobs=parse_max_jobs(raw.get('maxJobs'), notes),
         include_details=parse_bool(raw.get('includeDetails'), False),
