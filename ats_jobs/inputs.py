@@ -143,6 +143,10 @@ def alternatives(token: str) -> list[str]:
 # (Cutshort's "python developer in pune" found 1 job, 2026-11-09). Only at the start or the end of an entry.
 AD_WORDS = frozenset({'job', 'jobs', 'vacancy', 'vacancies', 'opening', 'openings', 'hiring', 'for'})
 PLACE_WORDS = frozenset({'in', 'at', 'near', 'around'})
+# The same words in the languages of the European boards, read only before a place a list knows: "développeur à Paris",
+# "developpeur a Paris" (no accent), "chef de projet sur Lyon", "desarrollador en Madrid", "analista em Lisboa". Not
+# dropped when they end an entry, as "in" is: "Class A" and a trailing "en" can be words of a title.
+BEFORE_PLACE_WORDS = PLACE_WORDS | frozenset({'à', 'a', 'au', 'aux', 'en', 'dans', 'sur', 'em'})
 TERM_REMOTE = frozenset({'remote', 'wfh', 'work from home'})      # no title starts with "remote" but a remote job's,
 FRESHER_WORDS = frozenset({'fresher', 'freshers'})                  # 103,346 rows of five boards, 2026-11-09
 
@@ -213,12 +217,12 @@ def read_place_words(term: str, platform=None) -> tuple[str, list[str], bool]:
             found += [] if 'Remote' in found else ['Remote']
             continue
         cut = next((n for n in range(min(4, len(words) - 1), 0, -1)
-                    if keys[-n - 1] in PLACE_WORDS and _is_place(words[-n:], False, platform)), 0)
+                    if keys[-n - 1] in BEFORE_PLACE_WORDS and _is_place(words[-n:], False, platform)), 0)
         if cut:                                                                 # "... in <place>"
             found.append(_place_text(words[-cut:]))
             del words[-cut - 1:]
             continue
-        if keys[0] in PLACE_WORDS and len(words) > 1 and _is_place(words[1:], False, platform):
+        if keys[0] in BEFORE_PLACE_WORDS and len(words) > 1 and _is_place(words[1:], False, platform):
             found.append(_place_text(words[1:]))                                   # "in <place>", its "jobs" gone
             words = []
             continue

@@ -218,6 +218,21 @@ class Inputs(unittest.TestCase):
             cfg = parse_input({'searchTerms': [text]}, wt.WelcomeToTheJungle())
             self.assertEqual((cfg.search_terms, cfg.locations), ([words], places), text)
 
+    def test_a_place_after_a_french_spanish_or_portuguese_word_is_the_place(self):
+        """62% of the site's ads are French: "développeur à Paris" kept "à" as a title word, so only titles holding "à"
+        matched (2026-11-10)."""
+        cases = {'développeur à Paris': ('développeur', ['Paris']), 'developpeur a Paris': ('developpeur', ['Paris']),
+                 'chef de projet sur Lyon': ('chef de projet', ['Lyon']),
+                 'comptable en Île-de-France': ('comptable', ['Île-de-France']),
+                 'desarrollador en Madrid': ('desarrollador', ['Madrid']), 'analista em Lisboa': ('analista', ['Lisboa']),
+                 'stage au Luxembourg': ('stage', ['Luxembourg']), 'class a': ('class a', []), 'mode en': ('mode en', [])}
+        for text, (words, found) in cases.items():
+            cfg = parse_input({'searchTerms': [text]}, wt.WelcomeToTheJungle())
+            self.assertEqual((cfg.search_terms, cfg.locations), ([words], found), text)
+        cfg = parse_input({'searchTerms': ['développeur à Paris']}, wt.WelcomeToTheJungle())
+        self.assertTrue(Filters(cfg).title_ok('Développeur Fullstack'))
+        self.assertEqual(read_place_words('class a', Stub()), ('class a', [], False))
+
     def test_other_platforms_keep_their_place_words(self):
         self.assertEqual(read_place_words('data analyst in Lyon'), ('data analyst in Lyon', [], False))
         self.assertEqual(read_place_words('data analyst in Lyon', Stub()), ('data analyst in Lyon', [], False))
