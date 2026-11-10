@@ -201,6 +201,7 @@ class Pay(unittest.TestCase):
         self.assertEqual(pay('$90k – $120k CAD • No equity'), (90000, 120000, 'CAD', False, None, None))
         self.assertEqual(pay('Up to $90k'), (None, 90000, 'USD', None, None, None))
         self.assertEqual(pay('د.إ120k – د.إ240k'), (120000, 240000, 'AED', None, None, None))
+        self.assertEqual(pay('ج.م900k – ج.م1.2M'), (900000, 1200000, 'EGP', None, None, None))   # 2026-11-10 board
         self.assertEqual(pay('0.1% – 0.8%'), (None, None, None, True, 0.1, 0.8))
         self.assertEqual(pay('No equity'), (None, None, None, False, None, None))
         self.assertEqual(pay(None), (None, None, None, None, None, None))

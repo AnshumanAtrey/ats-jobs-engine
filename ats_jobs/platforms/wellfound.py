@@ -119,7 +119,7 @@ POLICY = {'REMOTE': 'Remote only', 'ONSITE_OR_REMOTE': 'Onsite or remote', 'ONSI
 SIGNS = {'$': 'USD', '₹': 'INR', '£': 'GBP', '€': 'EUR', 'د.إ': 'AED', 'ر.س': 'SAR', 'ر.ق': 'QAR', 'د.ك': 'KWD',
          '₱': 'PHP', '₦': 'NGN', 'R$': 'BRL', 'R': 'ZAR', '₩': 'KRW', '₺': 'TRY', '₪': 'ILS', 'zł': 'PLN', 'Kč': 'CZK',
          'CHF': 'CHF', 'S$': 'SGD', 'A$': 'AUD', 'C$': 'CAD', 'HK$': 'HKD', 'NZ$': 'NZD', 'Rp': 'IDR', '฿': 'THB',
-         '₫': 'VND', 'RM': 'MYR', 'KSh': 'KES', '₴': 'UAH', '₸': 'KZT', '৳': 'BDT', 'E£': 'EGP'}
+         '₫': 'VND', 'RM': 'MYR', 'KSh': 'KES', '₴': 'UAH', '₸': 'KZT', '৳': 'BDT', 'E£': 'EGP', 'ج.م': 'EGP'}
 UNITS = {'': 1, 'k': 1_000, 'K': 1_000, 'm': 1_000_000, 'M': 1_000_000, 'L': 100_000, 'cr': 10_000_000, 'Cr': 10_000_000}
 AMOUNT = re.compile(r'(?P<n>\d[\d,]*(?:\.\d+)?)\s?(?P<unit>k|K|m|M|L|cr|Cr)?(?![A-Za-z])')
 EQUITY = re.compile(r'(\d+(?:\.\d+)?)\s?%(?:\s*[–-]\s*(\d+(?:\.\d+)?)\s?%)?')
