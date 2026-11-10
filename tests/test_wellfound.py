@@ -461,6 +461,15 @@ class Reading(unittest.TestCase):
         self.assertEqual(run.status(), 'partial')
         self.assertIn('Cloudflare check refused this address', run.message())
 
+    def test_a_refusal_before_any_page_fails_the_run_and_says_so(self):
+        # live on 2026-11-10 (run 13_remote_india): refused at planning, nothing read, a failed run with this message
+        site = FakeSite({'role/software-engineer': [('Acme', [listing(1, 1)])]}, refuse_after=0)
+        with patch.object(wellfound, 'REFUSAL_WAITS', (0, 0)):
+            run = run_of(Wellfound(), site, {'searchTerms': ['software engineer']})
+        self.assertEqual((run.delivery.rows, run.ran(), run.status()), (0, False, 'failed'))
+        self.assertIn('refused this address (HTTP 403 with a challenge) before any page was read: run again in 10 '
+                      'minutes, or turn on Apify Proxy', run.message())
+
     def test_cloudflares_429_challenge_is_a_refusal_too(self):
         # send() retries a 429 by itself and then raises; the run must still wait, slow down and keep what it read
         from ats_jobs import http as http_module
