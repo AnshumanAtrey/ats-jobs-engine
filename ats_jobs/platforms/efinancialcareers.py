@@ -732,11 +732,13 @@ class EFinancialCareers(Platform):
             return found
         done = dict(zip(wanted, await asyncio.gather(*[one(chunk[i]) for i in wanted])))
         if self.expired:
-            self.note(f'{self.expired:,} jobs eFinancialCareers still listed had expired (their own pages say so), so they '
-                      f'were left out.', key='expired')
+            self.note(f'{self.expired:,} job{"" if self.expired == 1 else "s"} eFinancialCareers still listed had expired '
+                      f'(their own pages say so), so {"it was" if self.expired == 1 else "they were"} left out.', key='expired')
         if self.unreadable:
-            self.note(f'The pages of {self.unreadable:,} jobs could not be read, so they were left out: their first '
-                      f'posting is not known.', key='unreadable')
+            one = self.unreadable == 1
+            self.note(f'The page{"" if one else "s"} of {self.unreadable:,} job{"" if one else "s"} could not be read, so '
+                      f'{"it was" if one else "they were"} left out: {"its" if one else "their"} first posting is not known.',
+                      key='unreadable')
         return [done[i] if i in done else job for i, job in enumerate(chunk) if i not in done or done[i] is not None]
 
     # ---------- searches ----------

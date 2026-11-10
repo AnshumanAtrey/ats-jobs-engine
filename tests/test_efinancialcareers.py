@@ -398,7 +398,7 @@ class Opening(unittest.TestCase):
         self.assertTrue(first['description'].startswith('About the Role:'))
         self.assertEqual(out[1]['postedAt'], '2026-08-01T09:00:00Z')     # dated: outside the 60 days, so never kept ...
         self.assertIsNone(out[1]['postedBy'])                             # ... and its poster was not looked up
-        self.assertTrue(any('1 jobs eFinancialCareers still listed had expired' in n for n in platform.cfg.notes))
+        self.assertTrue(any('1 job eFinancialCareers still listed had expired' in n for n in platform.cfg.notes))
 
     def test_an_agency_is_a_poster_filed_under_hr_and_recruitment(self):
         platform, _ = platform_for({'excludeAgencies': True})
@@ -514,7 +514,7 @@ class Engine(unittest.TestCase):
                     'seniority', 'salaryMin', 'salaryCurrency'):
             self.assertIn(key, rows[0])
         self.assertIn('Found and saved 2 matching jobs', run.message())
-        self.assertIn('1 jobs eFinancialCareers still listed had expired', run.message())
+        self.assertIn('1 job eFinancialCareers still listed had expired', run.message())
 
     def test_an_empty_form_and_details_with_the_employers_apply_link(self):
         run, delivery = run_search(self.site(), {'maxJobs': 2, 'includeDetails': True})
