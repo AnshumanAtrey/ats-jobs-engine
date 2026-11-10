@@ -424,6 +424,16 @@ class Filtering(unittest.TestCase):
         self.assertFalse(Filters(made({'experienceYears': '3'}).cfg).passes(jobs['ebyx3hzfrtb5kuj8'], NOW))
         self.assertFalse(Filters(made({'experienceYears': '3'}).cfg).passes(jobs['sw9o89i2sh5l7dtv'], NOW))   # none stated
 
+    def test_pay_typed_with_its_symbol_and_a_linked_date_range(self):
+        self.assertEqual(made({'minSalary': '$120,000'}).options['minSalary'], 120000.0)
+        self.assertEqual(made({'minSalary': '150k a year'}).options['minSalary'], 150000.0)
+        state = {'searchQuery': 'nurse', 'dateFetchedPastNDays': {'from': '2026-11-03'}}
+        with patch.object(hc, 'datetime', wraps=datetime) as clock:
+            clock.now.return_value = NOW
+            clock.fromisoformat = datetime.fromisoformat
+            platform = made({'searchTerms': ['https://hiringcafe.com/?searchState=' + quote(json.dumps(state))]})
+        self.assertEqual(platform.cfg.posted_within_days, 8.0)
+
     def test_typed_options_in_everyday_words(self):
         platform = made({'seniority': ['Junior', 'senior level', 'boss'], 'companySize': ['10001+', 'big'],
                          'minSalary': 'lots'})

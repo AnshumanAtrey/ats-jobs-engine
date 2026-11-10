@@ -13,9 +13,10 @@ address in India) on 2026-11-10:
   __NEXT_DATA__ (/talent-network, 64 KB, is the smallest page found); after a deployment the old one answers 404.
 - The same address with company=<base64 of source___board___name___website>, as "View all jobs" writes it: one
   employer board's every job, 40 a page, newest first, inside the same searchState (OpenAI's Ashby board: 778 jobs, 328
-  with engineer in the title). So an employer shown with 4 is read here when its hidden jobs can still be wanted: a
-  "full stack engineer" search of 48 hours found 108 jobs this way where the plain search missed 5 titles a broader
-  search showed.
+  with engineer in the title). So an employer shown with 4 waits in a queue and is read once the newest maxJobs are
+  known and its 4th job is still newer than them (every match, and the end of the search, read them all): a "full stack
+  engineer" search of 48 hours found 108 jobs this way where the plain search missed 5 titles a broader search showed.
+  Opening them all on the first page cost a 2,000-job run 16 calls before its first page and met the rate limit.
 - searchState: jobTitleQuery is the job title alone, in Elasticsearch's query syntax: "python" AND "developer" matched
   598 titles, 98% holding both words, where python developer unquoted matched 26,496 holding either; plurals are not
   folded ("nurses" matched 12 titles, "nurse" thousands) and Front-End is two words, so title_query() spells each word
@@ -551,6 +552,12 @@ class HiringCafe(Platform):
             bucket = linked.get('dateFetchedPastNDays')
             days = {2: 1, 4: 3, 14: 7, 21: 14, 29: 21, 61: 30, 91: 61, 121: 91, 151: 122, 181: 152, 211: 183,
                     750: 365, 1080: 730, 1440: 1095}.get(bucket if isinstance(bucket, int) else 121 if bucket is None else -1)
+            if isinstance(bucket, dict) and isinstance(bucket.get('from'), str):      # a range: from its first day
+                try:
+                    start = datetime.fromisoformat(bucket['from'][:10]).replace(tzinfo=timezone.utc)
+                    days = max((datetime.now(timezone.utc) - start).days + 1, 1)
+                except ValueError:
+                    days = None
             cfg.posted_within_days = float(days) if days else None
         if cfg.experience is None and isinstance(linked.get('roleYoeRange'), list) and len(linked['roleYoeRange']) == 2:
             low, high = linked['roleYoeRange']
@@ -567,9 +574,9 @@ class HiringCafe(Platform):
             options['companySize'] = sizes
         pay = raw.get('minSalary')
         if pay not in (None, '', 0):
+            typed = re.sub(r'[\s,$€£₹]|usd|eur|gbp|inr|a year|per year|/yr|/year', '', str(pay).lower())
             try:
-                amount = float(str(pay).replace(',', '').strip().lower().removesuffix('k').strip()) * (
-                    1000 if str(pay).strip().lower().endswith('k') else 1)
+                amount = float(typed.removesuffix('k')) * (1000 if typed.endswith('k') else 1)
             except ValueError:
                 amount = None
             if amount is None or amount < 0:
