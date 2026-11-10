@@ -242,10 +242,15 @@ class Inputs(unittest.TestCase):
         self.assertTrue(any('seniority has no option chief wizard' in n for n in cfg.notes))
 
     def test_sectors_by_form_value_name_word_or_sub_sector(self):
-        platform, cfg = platform_for({'sector': ['quantitative-analytics', 'Hedge Funds', 'investment banking',
+        platform, cfg = platform_for({'sector': ['quant', 'Hedge Funds', 'investment banking',
                                                  'ASSET_MANAGEMENT/PORTFOLIO_MANAGER', 'basket weaving']})
         self.assertEqual(platform.sectors, ['QUANTITATIVE_ANALYTICS', 'HEDGE_FUNDS', 'INVESTMENT_BANKING_M_A',
                                             'ASSET_MANAGEMENT/PORTFOLIO_MANAGER'])
+        platform, _ = platform_for({'sector': ['wealth-management', 'quantitative-analytics', 'PRIVATE_EQUITY_VENTURE_CAPITAL']})
+        self.assertEqual(platform.sectors, ['PRIVATE_BANKING_WEALTH_MANAGEMENT', 'QUANTITATIVE_ANALYTICS',
+                                            'PRIVATE_EQUITY_VENTURE_CAPITAL'])
+        names = efc.taxonomy()[0]
+        self.assertTrue(all(code in names for code in efc.FORM_SECTORS.values()))    # every form value is a sector of the site
         self.assertTrue(any('sector has no option basket weaving' in n for n in cfg.notes))
 
     def test_minimum_pay_as_people_type_it(self):
@@ -483,7 +488,8 @@ class Engine(unittest.TestCase):
         rows = [row for row, _ in delivery.pushed]
         self.assertEqual([r['jobId'] for r in rows], ['2400021', '2400012'])   # 11 first posted in September, 22 expired
         self.assertEqual(rows[0]['postedAt'], at(3).replace('.000', ''))
-        self.assertTrue(all(k not in rows[0] for k in ('department', 'team', 'offersEquity', 'companyWebsite')))
+        self.assertTrue(all(k not in rows[0] for k in ('department', 'team', 'offersEquity', 'companyWebsite',
+                                                       'otherLocations', 'salaryPeriod')))
         for key in ('refreshedAt', 'contractType', 'sectors', 'skills', 'agency', 'postedBy', 'postedByIndustry', 'summary',
                     'seniority', 'salaryMin', 'salaryCurrency'):
             self.assertIn(key, rows[0])
@@ -518,3 +524,19 @@ def clock(now: datetime):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class SearchBox(unittest.TestCase):
+    def test_a_city_typed_with_the_job_title_is_read_as_its_place(self):
+        cases = {'risk manager in Zurich': (['risk manager'], ['Zurich']), 'quant analyst in Frankfurt': (['quant analyst'], ['Frankfurt']),
+                 'compliance officer london': (['compliance officer'], ['london']), 'trader in New York': (['trader'], ['New York']),
+                 'Zürich': ([], ['Zürich']), 'analyst in training': (['analyst in training'], []),
+                 'portfolio manager': (['portfolio manager'], [])}
+        for typed, (title, where) in cases.items():
+            cfg = parse_input({'searchTerms': [typed]}, efc.EFinancialCareers())
+            self.assertEqual((cfg.search_terms, cfg.locations), (title, where), typed)
+
+    def test_other_platforms_read_the_search_box_as_before(self):
+        from ats_jobs.platforms import PLATFORMS
+        cfg = parse_input({'searchTerms': ['risk manager in Zurich']}, PLATFORMS['naukri']())
+        self.assertEqual((cfg.search_terms, cfg.locations), (['risk manager in Zurich'], []))

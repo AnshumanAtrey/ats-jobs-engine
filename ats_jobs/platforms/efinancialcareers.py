@@ -64,7 +64,7 @@ from urllib.parse import unquote, urlparse
 from .. import places as regions
 from ..http import BoardError, send
 from ..inputs import _items, parse_bool, parse_choices
-from ..rows import Filters, Term, classify_place, index, words
+from ..rows import Filters, Term, classify_place, index, plain, words
 from .base import Board, Platform
 from .cornerstone import text_of
 
@@ -85,6 +85,7 @@ MIN_CHUNK = 25                # and at least
 OPEN_AT_ONCE = 32             # calls for single jobs (pages, profiles) at once: 81 a second at 32 answered
 SCAN_JOBS = 1_000             # newest jobs read for a place the site cannot be asked about
 NEVER = 2049                  # an expiry in this year or later is no expiry (2050-01-01)
+BARE_CITY_JOBS = 100          # a city with this many open jobs is read as a place at the end of a search entry alone
 AGENCY_INDUSTRY = 'HR_RECRUITMENT'
 OLDEST = datetime.min.replace(tzinfo=timezone.utc)
 HOST = re.compile(r'^efinancialcareers(?:-[a-z]+)?\.[a-z]{2,3}(?:\.[a-z]{2})?$')
@@ -115,7 +116,22 @@ SENIORITY_WORDS.update({code.lower(): key for key, (code, _) in SENIORITY.items(
 SENIORITY_WORDS.update({code.lower().replace('_', ' '): key for key, (code, _) in SENIORITY.items()})
 SENIORITY_NAMES = {code: name for code, name in SENIORITY.values()}
 
-# What people type for a sector, besides its name and its value in the form (data/efinancialcareers.tsv)
+# The form's value of each sector (the actor's Sector list), short enough for its 40-character option names
+FORM_SECTORS = {
+    'technology': 'INFORMATION_TECHNOLOGY', 'accounting': 'ACCOUNTING_FINANCE', 'insurance': 'INSURANCE',
+    'compliance': 'COMPLIANCE_LEGAL', 'operations': 'OPERATIONS', 'asset-management': 'ASSET_MANAGEMENT',
+    'wealth-management': 'PRIVATE_BANKING_WEALTH_MANAGEMENT', 'sales-marketing': 'SALES_MARKETING',
+    'risk': 'RISK_MANAGEMENT', 'corporate-banking': 'CORPORATE_BANKING', 'retail-banking': 'RETAIL_BANKING',
+    'consultancy': 'CONSULTANCY', 'hr-recruitment': 'HR_RECRUITMENT', 'investment-banking': 'INVESTMENT_BANKING_M_A',
+    'real-estate': 'REAL_ESTATE', 'graduates': 'GRADUATES_INTERNSHIPS', 'trading': 'TRADING',
+    'quant': 'QUANTITATIVE_ANALYTICS', 'info-services': 'INFORMATION_SERVICES', 'private-equity': 'PRIVATE_EQUITY_VENTURE_CAPITAL',
+    'fintech': 'FINTECH', 'hedge-funds': 'HEDGE_FUNDS', 'ir-pr': 'INVESTOR_RELATIONS_PR', 'credit': 'CREDIT',
+    'equities': 'EQUITIES', 'capital-markets': 'CAPITAL_MARKETS', 'commodities': 'COMMODITIES',
+    'fixed-income': 'DEBT_FIXED_INCOME', 'research': 'RESEARCH', 'fx': 'FX_MONEY_MARKETS', 'derivatives': 'DERIVATIVES',
+    'inv-consulting': 'INVESTMENT_CONSULTING', 'custody': 'GLOBAL_CUSTODY', 'industry': 'INDUSTRY_COMMERCE',
+    'public-sector': 'PUBLIC_SECTOR', 'islamic-finance': 'ISLAMIC_FINANCE',
+}
+# What people type for a sector, besides its name, its form value and the site's value (data/efinancialcareers.tsv)
 SECTOR_WORDS = {
     'quant': 'QUANTITATIVE_ANALYTICS', 'quants': 'QUANTITATIVE_ANALYTICS', 'quantitative': 'QUANTITATIVE_ANALYTICS',
     'investment banking': 'INVESTMENT_BANKING_M_A', 'ib': 'INVESTMENT_BANKING_M_A', 'm a': 'INVESTMENT_BANKING_M_A',
@@ -184,9 +200,28 @@ def taxonomy() -> tuple[dict, dict, dict, str | None]:
                     typed[fold(word)] = value
         elif kind == 'PLACE' and form:
             countries.setdefault(form, value)
-    for word, value in SECTOR_WORDS.items():
+    for word, value in (*FORM_SECTORS.items(), *SECTOR_WORDS.items()):
         typed.setdefault(fold(word), value)
     return names, typed, countries, updated
+
+
+@lru_cache(maxsize=1)
+def city_names() -> tuple[frozenset, frozenset]:
+    """The cities the site has jobs in (data/efinancialcareers.tsv), keyed as places.key reads them with accents dropped:
+    (every one, read after in, at or near; those with BARE_CITY_JOBS open jobs or more, read alone at the end too). A
+    German city is found by its first name too: Frankfurt for Frankfurt am Main."""
+    every, big = set(), set()
+    text = resources.files('ats_jobs').joinpath('data/efinancialcareers.tsv').read_text(encoding='utf-8')
+    for line in text.splitlines():
+        parts = line.split('\t')
+        if parts[0] != 'CITY' or len(parts) < 5:
+            continue
+        city = parts[2]
+        names = {regions.key(plain(city)), regions.key(plain(re.split(r'\s+(?:am|an der|an)\s+', city)[0]))} - {''}
+        every |= names
+        if parts[4].isdigit() and int(parts[4]) >= BARE_CITY_JOBS:
+            big |= names
+    return frozenset(every), frozenset(big)
 
 
 def iso(value) -> str | None:
@@ -314,8 +349,8 @@ class EFinancialCareers(Platform):
     server_search = True          # pages() gets each word: the site searches it, and the titles are matched here
     newest_first = True           # pages come newest listed first, with or without words (sorted here)
     server_filters = True         # place, sector, seniority, job and work type and pay go to the site's own search
-    never = ('department', 'team', 'offersEquity', 'companyWebsite')
-    extra = ('salaryMin', 'salaryMax', 'salaryCurrency', 'salaryPeriod', 'contractType', 'seniority', 'sectors', 'skills',
+    never = ('department', 'team', 'offersEquity', 'companyWebsite', 'otherLocations', 'salaryPeriod')   # one place a job;
+    extra = ('salaryMin', 'salaryMax', 'salaryCurrency', 'contractType', 'seniority', 'sectors', 'skills',  # no pay period
              'agency', 'postedBy', 'postedByIndustry', 'summary', 'refreshedAt')
     filter_words = {'sector': ('sector', 'clear Sector'),
                     'minSalary': ('minimum pay', 'type a lower Minimum pay or leave it empty'),
@@ -380,6 +415,9 @@ class EFinancialCareers(Platform):
 
     def guess_board(self, name):
         return ' '.join(name.split()) or None
+
+    def place_names(self):
+        return city_names()
 
     def read_input(self, raw, cfg):
         """The site's own fields: seniority, sector, minimum pay with its currency, and no agency jobs."""

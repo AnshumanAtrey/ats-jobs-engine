@@ -88,6 +88,12 @@ class Platform:
         that puts the words in the path: /search/python-jobs)."""
         return [], []
 
+    def place_names(self) -> tuple[frozenset, frozenset]:
+        """This platform's own place names, for a search entry such as "risk manager in Zurich" when its places are not on
+        the engine's lists (inputs.read_place_words): (names read after in, at or near; names read at either end alone).
+        Keyed as places.key reads them, accents dropped. None by default."""
+        return frozenset(), frozenset()
+
     def read_input(self, raw: dict, cfg) -> None:
         """Inputs of this platform alone, read from the raw input once the shared ones are in cfg (inputs.Config)."""
 

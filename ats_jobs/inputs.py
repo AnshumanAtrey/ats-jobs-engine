@@ -21,7 +21,7 @@ from importlib import resources
 from urllib.parse import parse_qs, urlparse
 
 from . import places
-from .rows import classify_place, country_code
+from .rows import classify_place, country_code, plain
 
 DEFAULT_MAX_JOBS = 100
 MAX_JOBS_CAP = 100_000             # our guard: more than every open job on one platform we read
@@ -164,14 +164,16 @@ def _place_names() -> tuple[frozenset[str], frozenset[str]]:
     return frozenset(every | major), frozenset(major)
 
 
-def _is_place(words: list[str], bare: bool) -> bool:
+def _is_place(words: list[str], bare: bool, own: tuple[frozenset, frozenset] = (frozenset(), frozenset())) -> bool:
+    """own: a platform's own places (Platform.place_names), read after in or at, and the ones read bare too."""
     text = ' '.join(words)
     name = places.key(text)
     if not name:
         return False
     every, major = _place_names()
     return (name in (major if bare else every) or name in places.REGIONS
-            or country_code(text, allow_codes=False) is not None)
+            or country_code(text, allow_codes=False) is not None
+            or places.key(plain(text)) in own[1 if bare else 0])
 
 
 def _place_text(words: list[str]) -> str:
@@ -179,10 +181,11 @@ def _place_text(words: list[str]) -> str:
     return re.sub(r'^[\W_]+|[\W_]+$', '', ' '.join(words))
 
 
-def read_place_words(term: str) -> tuple[str, list[str], bool]:
+def read_place_words(term: str, own: tuple[frozenset, frozenset] = (frozenset(), frozenset())) -> tuple[str, list[str], bool]:
     """One search entry -> (the job title words, the places in it, fresher asked). 'python developer in pune' ->
     ('python developer', ['pune'], False); 'remote react developer' -> ('react developer', ['Remote'], False);
-    'fresher jobs in Bangalore' -> ('', ['Bangalore'], True); 'data analyst' -> ('data analyst', [], False)."""
+    'fresher jobs in Bangalore' -> ('', ['Bangalore'], True); 'data analyst' -> ('data analyst', [], False). own: the
+    platform's own place names (Platform.place_names), for a board whose places are not on the lists here."""
     words, found, fresher = term.split(), [], False
     while words:
         keys = [places.key(w) for w in words]
@@ -206,16 +209,16 @@ def read_place_words(term: str) -> tuple[str, list[str], bool]:
             found += [] if 'Remote' in found else ['Remote']
             continue
         cut = next((n for n in range(min(4, len(words) - 1), 0, -1)
-                    if keys[-n - 1] in PLACE_WORDS and _is_place(words[-n:], bare=False)), 0)
+                    if keys[-n - 1] in PLACE_WORDS and _is_place(words[-n:], bare=False, own=own)), 0)
         if cut:                                                                 # "... in <place>"
             found.append(_place_text(words[-cut:]))
             del words[-cut - 1:]
             continue
-        if keys[0] in PLACE_WORDS and len(words) > 1 and _is_place(words[1:], bare=False):
+        if keys[0] in PLACE_WORDS and len(words) > 1 and _is_place(words[1:], bare=False, own=own):
             found.append(_place_text(words[1:]))                                   # "in <place>", its "jobs" gone
             words = []
             continue
-        cut = next((n for n in range(min(3, len(words)), 0, -1) if _is_place(words[-n:], bare=True)), 0)
+        cut = next((n for n in range(min(3, len(words)), 0, -1) if _is_place(words[-n:], bare=True, own=own)), 0)
         if not cut:
             break
         found.append(_place_text(words[-cut:]))                                    # "... <city>", or the city alone
@@ -247,7 +250,7 @@ def parse_terms(value, key: str, notes: list[str], skipped: list[tuple[str, str]
         if note:
             notes.append(note)
         elif places_found is not None:
-            words, found, is_fresher = read_place_words(term)
+            words, found, is_fresher = read_place_words(term, platform.place_names() if platform else (frozenset(), frozenset()))
             if words != term:
                 read = ([f'the job title "{words}"'] if words else [])
                 read += [('remote jobs' if place == 'Remote' else f'jobs in {place}') for place in found]
