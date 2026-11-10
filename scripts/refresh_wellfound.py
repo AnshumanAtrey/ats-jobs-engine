@@ -10,9 +10,10 @@ Places: wellfound.com/browse/tech-job-locations (NewTag records: slug, name, US 
 cities, US states, other places), then every country pycountry knows whose slug has a page (location/united-states,
 location/india...) and the continents that do (north-america, europe, asia...). A place's kind is country when
 pycountry knows its name, region when it is a continent or a region of the engine's list, state for a US state, else
-city. On 2026-11-10: 306 listed places.
+city; and its job count, the total its page's first page states, which decides the towns a search entry reads alone
+(platforms/wellfound.py place_names). On 2026-11-10: 306 listed places.
 
-Run: python3 scripts/refresh_wellfound.py   (needs httpx and pycountry; about 260 calls, under 2 minutes)
+Run: python3 scripts/refresh_wellfound.py   (needs httpx and pycountry; about 560 calls, paced, under 10 minutes)
 """
 import json
 import re
@@ -60,27 +61,34 @@ def kind_of(name: str, state: str, group: str) -> str:
     return 'region' if regions.region_query(regions.tokens(name)) is not None else 'city'
 
 
-def page_exists(http: httpx.Client, path: str) -> str | None:
-    """The name Wellfound gives a place's page, or None when it has none."""
+def page_of(http: httpx.Client, path: str) -> tuple[str, int] | None:
+    """(the name Wellfound gives a place's page, the jobs it lists), or None when it has none. Paced under one call a
+    second: Wellfound's Cloudflare check refused an address for minutes after about 1,500 pages in 15 minutes."""
     response = http.get(f'{ORIGIN}/{path}')
-    time.sleep(0.3)
+    time.sleep(0.6)
     if response.status_code != 200:
         return None
     data = apollo(response.text)
-    return next((v.get('displayName') for k, v in data.items() if k.startswith('NewTag:')), None)
+    name = next((v.get('displayName') for k, v in data.items() if k.startswith('NewTag:')), None)
+    found = next((v for k, v in data['ROOT_QUERY']['talent'].items() if k.startswith('seoLandingPageJobSearchResults')), {})
+    return name, int(found.get('totalJobCount') or 0)
 
 
-def places(http: httpx.Client) -> list[tuple[str, str, str, str]]:
+def places(http: httpx.Client) -> list[tuple[str, str, str, str, str]]:
     data = apollo(http.get(f'{ORIGIN}/browse/tech-job-locations').text)
     out = {}
     for group in data['ROOT_QUERY']['talent']['seoBrowseLocations']['categories']:
         for ref in group.get('locations') or []:
             tag = data[ref['__ref']]
             name, state = clean(tag['displayName']), clean(tag.get('stateShortName'))
-            out[tag['slug']] = (tag['slug'], name, state, kind_of(name, state, group.get('displayName') or ''))
+            found = page_of(http, f'location/{tag["slug"]}')
+            if found is None:                 # listed, but no page answers (remote-friendly)
+                continue
+            out[tag['slug']] = (tag['slug'], name, state, kind_of(name, state, group.get('displayName') or ''), str(found[1]))
     for slug, name in CONTINENTS.items():
-        if slug not in out and page_exists(http, f'location/{slug}'):
-            out[slug] = (slug, name, '', 'region')
+        found = None if slug in out else page_of(http, f'location/{slug}')
+        if found:
+            out[slug] = (slug, name, '', 'region', str(found[1]))
     import pycountry
     listed = {row[1].lower() for row in out.values()}
     for country in pycountry.countries:
@@ -90,9 +98,9 @@ def places(http: httpx.Client) -> list[tuple[str, str, str, str]]:
         for slug in dict.fromkeys((slugify(name), slugify(country.name))):
             if slug in out:
                 break
-            shown = page_exists(http, f'location/{slug}')
-            if shown:
-                out[slug] = (slug, clean(shown), '', 'country')
+            found = page_of(http, f'location/{slug}')
+            if found:
+                out[slug] = (slug, clean(found[0] or name), '', 'country', str(found[1]))
                 break
     return sorted(out.values(), key=lambda r: r[0])
 
@@ -111,7 +119,7 @@ def main() -> None:
     PLACES.write_text(
         f'# Wellfound places, updated {today}: {len(found_places)} places with a page ({", ".join(f"{n} {k}" for k, n in kinds.items())}),'
         f' from {ORIGIN}/browse/tech-job-locations, the continents and the countries whose slug has a page.\n'
-        f'# Columns: slug (wellfound.com/location/<slug>), name, US state code, kind. Rebuilt by scripts/refresh_wellfound.py.\n'
+        f'# Columns: slug (wellfound.com/location/<slug>), name, US state code, kind, jobs listed. Rebuilt by scripts/refresh_wellfound.py.\n'
         + ''.join('\t'.join(p) + '\n' for p in found_places), encoding='utf-8')
     print(json.dumps({'roles': len(found_roles), 'groups': len(groups), 'places': len(found_places), **kinds}))
 

@@ -303,6 +303,54 @@ class Filters(unittest.TestCase):
         self.assertEqual(run.delivery.rows, 4)
 
 
+class SearchBox(unittest.TestCase):
+    """The engine's shared hooks (0.6.x): Platform.place_names for places typed with a job title, Platform.job_types for
+    Wellfound's cofounder type."""
+
+    def read(self, raw):
+        return parse_input(raw, Wellfound(), {})
+
+    def test_a_place_typed_with_the_title_is_read_as_a_place(self):
+        cfg = self.read({'searchTerms': ['software engineer in San Francisco']})
+        self.assertEqual((cfg.search_terms, cfg.locations), (['software engineer'], ['San Francisco']))
+        cfg = self.read({'searchTerms': ['product manager in Kochi']})      # a small town, read after "in"
+        self.assertEqual((cfg.search_terms, cfg.locations), (['product manager'], ['Kochi']))
+        cfg = self.read({'searchTerms': ['backend engineer at Düsseldorf']})   # accents or none
+        self.assertEqual(cfg.locations, ['Düsseldorf'])
+        cfg = self.read({'searchTerms': ['data scientist NYC']})            # a short name of a big one, read alone
+        self.assertEqual((cfg.search_terms, cfg.locations), (['data scientist'], ['NYC']))
+
+    def test_only_big_towns_are_read_alone_at_the_end(self):
+        every, bare = wellfound.place_names()
+        self.assertIn('san francisco', bare)
+        self.assertIn('lehi', every)
+        self.assertNotIn('lehi', bare)
+        self.assertNotIn('madrid colombia', every)          # a page's odd slug is no name people type
+        cfg = self.read({'searchTerms': ['data scientist san francisco']})
+        self.assertEqual((cfg.search_terms, cfg.locations), (['data scientist'], ['san francisco']))
+        cfg = self.read({'searchTerms': ['engineer lehi']})                 # Lehi, Utah: too few jobs to read alone
+        self.assertEqual((cfg.search_terms, cfg.locations), (['engineer lehi'], []))
+        cfg = self.read({'searchTerms': ['engineer in Lehi']})              # only Wellfound's list has it: read after in
+        self.assertEqual((cfg.search_terms, cfg.locations), (['engineer'], ['Lehi']))
+        from tests.stub import Stub                                          # a platform with no list of its own
+        self.assertEqual(parse_input({'searchTerms': ['engineer in Lehi']}, Stub(), {}).locations, [])
+
+    def test_cofounder_is_a_job_type(self):
+        self.assertEqual(self.read({'employmentType': ['cofounder']}).job_types, ['cofounder'])
+        self.assertEqual(self.read({'employmentType': ['Co-founder', 'intern']}).job_types, ['cofounder', 'intern'])
+        cfg = self.read({'employmentType': ['part-time', 'contract']})
+        self.assertEqual(cfg.job_types, ['contract'])
+        self.assertIn('Wellfound has no part-time job type', ' '.join(cfg.notes))
+
+    def test_a_cofounder_search_keeps_cofounder_roles(self):
+        jobs = [listing(1, 2, title='Technical Cofounder', job_type='cofounder'),
+                listing(2, 3, title='Cofounder and CTO', job_type='full-time')]
+        site = FakeSite({'role/cofounder': [('Acme', jobs[:1]), ('Bolt', jobs[1:])]})
+        run = run_of(Wellfound(), site, {'employmentType': ['cofounder'], 'searchTerms': ['cofounder']})
+        self.assertEqual([(r['jobId'], r['employmentType']) for r in run.delivery.rows_out], [('1', 'cofounder')])
+        self.assertEqual(run.missed_only, {'employmentType': 1})
+
+
 class Plans(unittest.TestCase):
     def test_a_title_reads_its_role_and_a_longer_one_the_role_inside_it(self):
         _, _, queries = plan_of({'searchTerms': ['data scientist']}, site_with('role/data-scientist'))

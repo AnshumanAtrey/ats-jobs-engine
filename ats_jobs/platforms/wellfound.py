@@ -44,6 +44,11 @@ visitors who are not logged in. No login, no key, no browser. Measured from this
 Pay and equity come from the text Wellfound shows ("$175k – $215k • 0.5% – 1%"). Its markup calls every amount yearly,
 even an employer's ₹20,000 – ₹25,000, so salaryPeriod is year as Wellfound states it. liveStartAt is when the job went
 live, again when it was reposted ("Reposted: today" on its page).
+
+The engine's shared hooks (0.6.x): place_names() gives the search box every name of Wellfound's place pages, so "software
+engineer in San Francisco" or "product manager in Kochi" reads the place, and alone at the end of an entry only the towns
+and US states whose page listed 300 jobs or more ("data scientist london"); job_types adds cofounder, Wellfound's fourth
+type besides full-time, contract and internship (442 of 12,460 jobs on 2026-11-10; none was part-time or temporary).
 """
 import asyncio
 import html as htmllib
@@ -58,7 +63,7 @@ from urllib.parse import unquote, urlparse
 
 from .. import places as regions
 from ..http import BoardError, BoardMissing, send
-from ..rows import Term, classify_place, fold, index, words
+from ..rows import Term, classify_place, fold, index, plain, words
 from .base import Board, Platform
 from .cornerstone import text_of
 from .workable import pay_text
@@ -207,6 +212,8 @@ class Place:
     slug: str
     name: str
     country: str | None = None     # a country's page: its name, which the engine's matching reads as the country
+    kind: str = ''                 # city, state, region or country
+    jobs: int = 0                  # jobs its page listed when the list was made
 
 
 @lru_cache(maxsize=1)
@@ -218,13 +225,37 @@ def place_list() -> tuple[dict[str, Place], str | None]:
     for cols in rows:
         slug, name = cols[0], cols[1] if len(cols) > 1 else cols[0]
         kind = cols[3] if len(cols) > 3 else ''
-        place = Place(slug, name, name if kind == 'country' else None)
+        jobs = int(cols[4]) if len(cols) > 4 and cols[4].strip().isdigit() else 0
+        place = Place(slug, name, name if kind == 'country' else None, kind, jobs)
         for key in (squeeze(name), squeeze(slug.replace('-', ' '))):
             if key:
                 found.setdefault(key, place)
         for other in regions.OTHER_NAMES.get(' '.join(words(name)), ()):     # Bangalore for Bengaluru
             found.setdefault(squeeze(other), place)
     return found, updated
+
+
+BARE_JOBS = 300       # a town or US state with this many jobs is read alone at the end of a search entry (place_names)
+BARE_SHORT = ('nyc', 'sf', 'bay area', 'sf bay area', 'silicon valley')   # short names of the biggest, read alone too
+
+
+@lru_cache(maxsize=1)
+def place_names() -> tuple[frozenset[str], frozenset[str]]:
+    """(every name of Wellfound's place pages and the names people type for them, in places.key form with and without
+    accents; the towns and US states whose page listed BARE_JOBS jobs or more, with the short names of the biggest), for
+    inputs.read_place_words: after in, at or near, any of them ("software engineer in Kochi"); alone at the end of a search
+    entry, only the big ones ("data scientist london"), since a small town's name can be a word of a job title. Countries
+    and regions the engine reads by itself."""
+    every, bare = set(), set()
+    for place in set(place_list()[0].values()):
+        names = [place.name, *regions.OTHER_NAMES.get(' '.join(words(place.name)), ())]    # names, not slugs (madrid-colombia)
+        keys = {k for n in names for k in (regions.key(n), regions.key(plain(n)))} - {''}
+        every |= keys
+        if place.kind in ('city', 'state') and place.jobs >= BARE_JOBS:
+            bare |= keys
+    every |= {regions.key(n) for pair in ALIASES.items() for n in pair}
+    bare |= set(BARE_SHORT)
+    return frozenset(every), frozenset(bare)
 
 
 # ---------- one job ----------
@@ -368,6 +399,9 @@ class Wellfound(Platform):
     job_example = 'https://wellfound.com/jobs/4965854-software-engineer'
     concurrency = CONCURRENCY
     server_filters = True        # a typed place goes to Wellfound's own place pages
+    job_types = ('cofounder',)          # Wellfound's own type besides the engine's five: 442 of 12,460 jobs (2026-11-10)
+    job_type_aliases = {'cofounder': 'cofounder', 'co-founder': 'cofounder', 'co founder': 'cofounder',
+                        'founder': 'cofounder', 'founding partner': 'cofounder'}
     filter_words = {'minSalary': ('pay', 'type a lower minSalary, another currency, or clear it'),
                     'companyStage': ('company stage', 'pick more stages in companyStage or clear it')}
     never = ('department', 'team', 'expiresAt', 'reference')
@@ -449,6 +483,9 @@ class Wellfound(Platform):
     def guess_board(self, name):
         return ' '.join(name.split()) or None
 
+    def place_names(self):
+        return place_names()
+
     # ---------- the run's settings ----------
 
     def read_input(self, raw, cfg):
@@ -456,10 +493,12 @@ class Wellfound(Platform):
         proxy = raw.get('proxyConfiguration')
         if isinstance(proxy, dict) and (proxy.get('useApifyProxy') or proxy.get('proxyUrls')):
             self._proxy_input = proxy        # kept out of the settings: proxy addresses can hold a password
-        if 'temporary' in cfg.job_types:
-            cfg.job_types = [t for t in cfg.job_types if t != 'temporary']
-            self.note('Wellfound has no temporary job type, so it was left out. Its types are full-time, part-time, '
-                      'contract, intern and cofounder.')
+        absent = [t for t in cfg.job_types if t in ('part-time', 'temporary')]
+        if absent:          # none of 12,460 jobs read on 2026-11-10 had either type
+            cfg.job_types = [t for t in cfg.job_types if t not in absent]
+            self.note(f'Wellfound has no {" or ".join(absent)} job type, so it was left out: its types are full-time, '
+                      f'contract, intern and cofounder. Type {absent[0]} in Job titles to find (searchTerms) to find it in '
+                      f'titles.')
         self.min_pay = read_pay(raw.get('minSalary'), self.note)
         self.stages = read_stages(raw.get('companyStage'), self.note)
 

@@ -1,477 +1,475 @@
-# Wellfound places, updated 2026-11-10: 475 places with a page (193 city, 51 state, 9 region, 222 country), from https://wellfound.com/browse/tech-job-locations, the continents and the countries whose slug has a page.
-# Columns: slug (wellfound.com/location/<slug>), name, US state code, kind. Rebuilt by scripts/refresh_wellfound.py.
-afghanistan	Afghanistan		country
-africa	Africa		region
-alabama	Alabama		state
-aland-islands	Åland Islands		country
-alaska	Alaska		state
-albania	Albania		country
-alberta	Alberta		city
-albuquerque	Albuquerque	NM	city
-algeria	Algeria		country
-amsterdam	Amsterdam		city
-andorra	Andorra		country
-angola	Angola		country
-anguilla	Anguilla		country
-ann-arbor	Ann Arbor	MI	city
-antarctica	Antarctica		country
-antigua-and-barbuda	Antigua and Barbuda		country
-argentina	Argentina		country
-arizona	Arizona		state
-arkansas	Arkansas		state
-arlington	Arlington	TX	city
-armenia	Armenia		country
-asia	Asia		region
-atlanta	Atlanta	GA	city
-austin	Austin	TX	city
-australia	Australia		country
-austria	Austria		country
-azerbaijan	Azerbaijan		country
-bahamas	The Bahamas		country
-bahrain	Bahrain		country
-baltimore	Baltimore	MD	city
-bangalore	Bengaluru		city
-bangkok	Bangkok		city
-bangladesh	Bangladesh		country
-barbados	Barbados		country
-barcelona	Barcelona		city
-baton-rouge	Baton Rouge	LA	city
-beijing	Beijing		city
-belarus	Belarus		country
-belfast	Belfast	Northern Ireland	city
-belgium	Belgium		country
-belgrade	Belgrade		city
-belize	Belize		country
-bellevue	Bellevue	WA	city
-benin	Benin		country
-berkeley	Berkeley	CA	city
-berlin	Berlin		city
-bermuda	Bermuda		country
-bhutan	Bhutan		country
-birmingham-al	Birmingham	AL	city
-bogota	Bogota		city
-boise	Boise	ID	city
-bolivia	Bolivia		country
-bosnia-and-herzegovina	Bosnia and Herzegovina		country
-boston	Boston	MA	city
-botswana	Botswana		country
-boulder	Boulder	CO	city
-bouvet-island	Bouvet Island		country
-brazil	Brazil		country
-brisbane	Brisbane		city
-british-columbia	British Columbia		city
-british-indian-ocean-territory	British Indian Ocean Territory		country
-brooklyn	Brooklyn		city
-brunei-darussalam	Brunei		country
-brussels	Brussels		city
-bucharest	Bucharest		city
-budapest	Budapest		city
-buenos-aires-mexico	Buenos Aires		city
-buffalo-1	Buffalo	NY	city
-bulgaria	Bulgaria		country
-burkina-faso	Burkina Faso		country
-burundi	Burundi		country
-cabo-verde	Cabo Verde		country
-calgary	Calgary		city
-california	California		state
-cambodia	Cambodia		country
-cambridge-ma	Cambridge	MA	city
-cameroon	Cameroon		country
-canada-startups	Canada		country
-cape-town	Cape Town		city
-cayman-islands	Cayman Islands		country
-central-african-republic	Central African Republic		country
-central-america	Central America		region
-chad	Chad		country
-charleston	Charleston	SC	city
-charlotte	Charlotte	NC	city
-chicago	Chicago	IL	city
-chile	Chile		country
-china	China		country
-christmas-island	Christmas Island		country
-cincinnati	Cincinnati	OH	city
-cleveland	Cleveland	OH	city
-cocos-keeling-islands	Cocos (Keeling) Islands		country
-cologne	Cologne		city
-colombia	Colombia		country
-colorado	Colorado		state
-columbus	Columbus	OH	city
-comoros	Comoros		country
-congo	Republic of the Congo		country
-connecticut	Connecticut		state
-cook-islands	Cook Islands		country
-copenhagen	Copenhagen		city
-costa-rica	Costa Rica		country
-cote-d-ivoire	Côte d'Ivoire		country
-cracow-banana	Cracow		city
-croatia	Croatia		country
-cuba	Cuba		country
-culver-city	Culver City	CA	city
-curacao	Curaçao		country
-cyprus	Cyprus		country
-czech-republic	Czech Republic		country
-czechia	Czechia		country
-dallas	Dallas	TX	city
-dayton	Dayton	OH	city
-delaware	Delaware		state
-delhi-in	New Delhi		city
-denmark	Denmark		country
-denver	Denver	CO	city
-des-moines	Des Moines	IA	city
-detroit	Detroit	MI	city
-district-of-columbia	District of Columbia		state
-djibouti	Djibouti		country
-dominica	Dominica		country
-dominican-republic	Dominican Republic		country
-dubai	Dubai		city
-dublin-oh	Dublin	OH	city
-durham	Durham	NC	city
-dusseldorf	Düsseldorf		city
-ecuador	Ecuador		country
-edinburgh	Edinburgh	Scotland	city
-egypt	Egypt		country
-el-salvador	El Salvador		country
-equatorial-guinea	Equatorial Guinea		country
-eritrea	Eritrea		country
-estonia	Estonia		country
-ethiopia	Ethiopia		country
-europe	Europe		region
-faroe-islands	Faroe Islands		country
-fiji	Fiji		country
-finland	Finland		country
-florida	Florida		state
-fort-lauderdale	Fort Lauderdale	Florida	city
-fort-worth	Fort Worth	TX	city
-france	France		country
-frankfurt	Frankfurt		city
-french-guiana	French Guiana		country
-french-polynesia	French Polynesia		country
-gabon	Gabon		country
-gambia	The Gambia		country
-georgia	Georgia		state
-germany	Germany		country
-ghana	Ghana		country
-gibraltar	Gibraltar		country
-greece	Greece		country
-greenland	Greenland		country
-greensboro	Greensboro	NC	city
-grenada	Grenada		country
-guadalajara	Guadalajara		city
-guadeloupe	Guadeloupe		country
-guam	Guam		country
-guatemala	Guatemala		country
-guinea	Guinea		country
-gurgaon	Gurgaon		city
-gurugram	Gurugram		city
-guyana	Guyana		country
-haiti	Haiti		country
-hamburg	Hamburg		city
-hampton-roads-1	Hampton Roads		city
-hartford	Hartford	CT	city
-hawaii	Hawaii		state
-helsinki	Helsinki		city
-honduras	Honduras		country
-hong-kong	Hong Kong		country
-houston	Houston	TX	city
-hungary	Hungary		country
-hunterdon-county	Hunterdon County		city
-huntsville	Huntsville	AL	city
-hyderabad	Hyderabad		city
-iceland	Iceland		country
-idaho	Idaho		state
-illinois	Illinois		state
-india	India		country
-indiana	Indiana		state
-indianapolis	Indianapolis	IN	city
-indonesia	Indonesia		country
-iowa	Iowa		state
-iran	Iran		country
-iraq	Iraq		country
-ireland	Ireland		country
-irvine	Irvine	CA	city
-isle-of-man	Isle of Man		country
-israel	Israel		country
-istanbul-istanbul	Istanbul		city
-italy	Italy		country
-jacksonville	Jacksonville	Florida	city
-jaipur	Jaipur		city
-jakarta-special-capital-region-of-jakarta	Jakarta		city
-jamaica	Jamaica		country
-japan	Japan		country
-jersey	Jersey		country
-jersey-city	Jersey City	NJ	city
-jordan	Jordan		country
-kansas	Kansas		state
-kansas-city	Kansas City	KS	city
-karnataka	Karnataka		city
-kazakhstan	Kazakhstan		country
-kentucky	Kentucky		state
-kenya	Kenya		country
-kiribati	Kiribati		country
-kitchener	Kitchener		city
-kuala-lumpur-1	Kuala Lumpur		city
-kuwait	Kuwait		country
-kyrgyzstan	Kyrgyzstan		country
-lagos	Lagos		city
-lao-people-s-democratic-republic	Laos		country
-las-vegas	Las Vegas	NV	city
-latvia	Latvia		country
-lebanon	Lebanon		country
-lehi	Lehi	UT	city
-lesotho	Lesotho		country
-lexington	Lexington	MA	city
-liberia	Liberia		country
-liechtenstein	Liechtenstein		country
-lincoln	Lincoln	NE	city
-lisbon	Lisbon		city
-lithuania	Lithuania		country
-little-rock	Little Rock	AR	city
-london	London	England	city
-los-angeles	Los Angeles	CA	city
-louisiana	Louisiana		state
-louisville	Louisville	KY	city
-luxembourg	Luxembourg		country
-macao	Macau		country
-madagascar	Madagascar		country
-madison	Madison	WI	city
-madras	Chennai		city
-madrid-colombia	Madrid		city
-maharashtra	Maharashtra		city
-maine	Maine		state
-malawi	Malawi		country
-malaysia	Malaysia		country
-maldives	Maldives		country
-mali	Mali		country
-malta	Malta		country
-manchester	Manchester	England	city
-manila	Manila		city
-marshall-islands	Marshall Islands		country
-martinique	Martinique		country
-maryland	Maryland		state
-massachusetts	Massachusetts		state
-mauritania	Mauritania		country
-mauritius	Mauritius		country
-mayotte	Mayotte		country
-mclean-1	McLean	VA	city
-medellin	Medellín		city
-melbourne	Melbourne		city
-memphis	Memphis	TN	city
-menlo-park	Menlo Park	CA	city
-mexico	Mexico		country
-mexico-city	Mexico City		city
-miami	Miami	Florida	city
-michigan	Michigan		state
-middle-east	Middle East		region
-milan-1	Milan		city
-milwaukee	Milwaukee	WI	city
-minneapolis	Minneapolis	MN	city
-minnesota	Minnesota		state
-mississippi	Mississippi		state
-missouri	Missouri		state
-moldova	Moldova		country
-monaco	Monaco		country
-mongolia	Mongolia		country
-montana	Montana		state
-montenegro	Montenegro		country
-montreal	Montreal		city
-montserrat	Montserrat		country
-morocco	Morocco		country
-mountain-view-1	Mountain View	CA	city
-mozambique	Mozambique		country
-mumbai	Mumbai		city
-munich	Munich		city
-namibia	Namibia		country
-nashville	Nashville	TN	city
-nauru	Nauru		country
-nebraska	Nebraska		state
-nepal	Nepal		country
-netherlands	Netherlands		country
-nevada	Nevada		state
-new-caledonia	New Caledonia		country
-new-delhi	Delhi		city
-new-england	New England		city
-new-hampshire	New Hampshire		state
-new-jersey	New Jersey		state
-new-mexico	New Mexico		state
-new-orleans	New Orleans	LA	city
-new-south-wales	New South Wales		city
-new-york	New York		state
-new-york-city-ny	New York City	NY	city
-new-zealand	New Zealand		country
-nicaragua	Nicaragua		country
-niger	Niger		country
-nigeria	Nigeria		country
-niue	Niue		country
-noida	Noida		city
-norfolk-island	Norfolk Island		country
-north-america	North America		region
-north-carolina	North Carolina		state
-north-dakota	North Dakota		state
-northern-california	Northern California		city
-northern-mariana-islands	Northern Mariana Islands		country
-norway	Norway		country
-oakland	Oakland	CA	city
-oceania	Oceania		region
-ogden	Ogden	UT	city
-ohio	Ohio		state
-oklahoma	Oklahoma		state
-oklahoma-city	Oklahoma City	OK	city
-omaha	Omaha	NE	city
-oman	Oman		country
-orange-county	Orange County		city
-oregon	Oregon		state
-orlando	Orlando	Florida	city
-ottawa	Ottawa		city
-palau	Palau		country
-palo-alto	Palo Alto	CA	city
-panama	Panama		country
-papua-new-guinea	Papua New Guinea		country
-paraguay	Paraguay		country
-paris	Paris		city
-pennsylvania	Pennsylvania		state
-pensacola	Pensacola	Florida	city
-peoria	Peoria	AZ	city
-peru	Peru		country
-philadelphia	Philadelphia	PA	city
-philippines	Philippines		country
-phoenix	Phoenix	AZ	city
-pittsburgh	Pittsburgh	PA	city
-poland	Poland		country
-portland	Portland	OR	city
-porto	Porto		city
-portugal	Portugal		country
-providence	Providence	RI	city
-provo	Provo	UT	city
-puerto-rico	Puerto Rico		country
-pune	Pune		city
-qatar	Qatar		country
-qc-ca	Québec		city
-raleigh	Raleigh	NC	city
-redwood-city	Redwood City	CA	city
-remote-friendly	Remote		city
-reno	Reno	NV	city
-reunion	Reunion		country
-rhode-island	Rhode Island		state
-richmond	Richmond	VA	city
-rochester	Rochester	NY	city
-romania	Romania		country
-russia	Russia		country
-rwanda	Rwanda		country
-sacramento	Sacramento	CA	city
-saint-barthelemy	Saint-Barthélemy		country
-saint-helena-ascension-and-tristan-da-cunha	Saint Helena, Ascension and Tristan da Cunha		country
-saint-kitts-and-nevis	Saint Kitts and Nevis		country
-saint-louis	Saint Louis	OK	city
-saint-louis-1	St. Louis	MO	city
-saint-lucia	Saint Lucia		country
-saint-pierre-and-miquelon	Saint Pierre and Miquelon		country
-saint-vincent-and-the-grenadines	Saint Vincent and the Grenadines		country
-salt-lake-city	Salt Lake City	UT	city
-samoa	Samoa		country
-san-antonio	San Antonio	TX	city
-san-diego	San Diego	CA	city
-san-diego-county	San Diego County		city
-san-francisco	San Francisco	CA	city
-san-jose	San Jose	CA	city
-san-luis-obispo	San Luis Obispo	CA	city
-san-marino	San Marino		country
-san-mateo	San Mateo	CA	city
-santa-clara	Santa Clara	CA	city
-santa-cruz	Santa Cruz	CA	city
-santa-monica	Santa Monica	CA	city
-sao-paulo	São Paulo		city
-sao-tome-and-principe	São Tomé and Príncipe		country
-saudi-arabia	Saudi Arabia		country
-scandinavia	Scandinavia		region
-scottsdale	Scottsdale	AZ	city
-seattle	Seattle	WA	city
-senegal	Senegal		country
-seoul	Seoul		city
-serbia	Serbia		country
-seychelles	Seychelles		country
-shanghai	Shanghai		city
-shenzhen	Shenzhen		city
-sierra-leone	Sierra Leone		country
-silicon-valley	Silicon Valley		city
-singapore	Singapore		country
-slovakia	Slovakia		country
-slovenia	Slovenia		country
-solomon-islands	Solomon Islands		country
-somalia	Somalia		country
-south-africa	South Africa		country
-south-america	South America		region
-south-carolina	South Carolina		state
-south-dakota	South Dakota		state
-south-san-francisco	South San Francisco	CA	city
-southern-california	Southern California		city
-spain	Spain		country
-spokane	Spokane	WA	city
-sri-lanka	Sri Lanka		country
-stockholm	Stockholm		city
-sudan	Sudan		country
-sunnyvale	Sunnyvale	CA	city
-suriname	Suriname		country
-svalbard-and-jan-mayen	Svalbard and Jan Mayen		country
-sweden	Sweden		country
-switzerland	Switzerland		country
-sydney	Sydney		city
-syrian-arab-republic	Syria		country
-taiwan	Taiwan		country
-tajikistan	Tajikistan		country
-tallahassee	Tallahassee	Florida	city
-tallinn	Tallinn		city
-tamil-nadu	Tamil Nadu		city
-tampa	Tampa	Florida	city
-tanzania	Tanzania		country
-tel-aviv-rivas	Tel Aviv		city
-tempe	Tempe	AZ	city
-tennessee	Tennessee		state
-texas	Texas		state
-thailand	Thailand		country
-timor-leste	Timor-Leste		country
-togo	Togo		country
-tokelau	Tokelau		country
-tokyo	Tokyo		city
-tonga	Tonga		country
-toronto	Toronto		city
-trenton	Trenton	NJ	city
-trinidad-and-tobago	Trinidad and Tobago		country
-tucson	Tucson	AZ	city
-tulsa	Tulsa	OK	city
-tunisia	Tunisia		country
-turkmenistan	Turkmenistan		country
-turks-and-caicos-islands	Turks and Caicos Islands		country
-tuvalu	Tuvalu		country
-uganda	Uganda		country
-ukraine	Ukraine		country
-united-arab-emirates	United Arab Emirates		country
-united-kingdom	United Kingdom		country
-united-states	United States		country
-united-states-minor-outlying-islands	United States Minor Outlying Islands		country
-uruguay	Uruguay		country
-utah	Utah		state
-utrecht	Utrecht		city
-uttar-pradesh	Uttar Pradesh		city
-uzbekistan	Uzbekistan		country
-vancouver	Vancouver		city
-vanuatu	Vanuatu		country
-venezuela	Venezuela		country
-vermont	Vermont		state
-victoria	Victoria		city
-vienna	Vienna		city
-vietnam	Vietnam		country
-virginia	Virginia		state
-wallis-and-futuna	Wallis and Futuna		country
-warsaw	Warsaw		city
-washington	Washington		state
-washington-dc	Washington DC	DC	city
-west-virginia	West Virginia		state
-western-sahara	Western Sahara		country
-wichita	Wichita	KS	city
-wilmington	Wilmington	NC	city
-wisconsin	Wisconsin		state
-wyoming	Wyoming		state
-yemen	Yemen		country
-zambia	Zambia		country
-zimbabwe	Zimbabwe		country
-zurich	Zurich		city
+# Wellfound places, updated 2026-11-10: 473 places with a page (191 city, 51 state, 9 region, 222 country), from https://wellfound.com/browse/tech-job-locations, the continents and the countries whose slug has a page.
+# Columns: slug (wellfound.com/location/<slug>), name, US state code, kind, jobs listed. Rebuilt by scripts/refresh_wellfound.py.
+afghanistan	Afghanistan		country	0
+africa	Africa		region	256
+alabama	Alabama		state	47
+aland-islands	Åland Islands		country	0
+alaska	Alaska		state	7
+albania	Albania		country	10
+alberta	Alberta		city	36
+albuquerque	Albuquerque	NM	city	11
+algeria	Algeria		country	2
+amsterdam	Amsterdam		city	133
+andorra	Andorra		country	2
+angola	Angola		country	0
+anguilla	Anguilla		country	0
+ann-arbor	Ann Arbor	MI	city	7
+antarctica	Antarctica		country	0
+antigua-and-barbuda	Antigua and Barbuda		country	0
+argentina	Argentina		country	103
+arizona	Arizona		state	168
+arkansas	Arkansas		state	25
+arlington	Arlington	TX	city	2
+armenia	Armenia		country	11
+asia	Asia		region	6506
+atlanta	Atlanta	GA	city	169
+austin	Austin	TX	city	611
+australia	Australia		country	305
+austria	Austria		country	27
+azerbaijan	Azerbaijan		country	3
+bahamas	The Bahamas		country	0
+bahrain	Bahrain		country	3
+baltimore	Baltimore	MD	city	17
+bangalore	Bengaluru		city	1250
+bangkok	Bangkok		city	19
+bangladesh	Bangladesh		country	18
+barbados	Barbados		country	0
+barcelona	Barcelona		city	93
+baton-rouge	Baton Rouge	LA	city	2
+beijing	Beijing		city	30
+belarus	Belarus		country	9
+belfast	Belfast	Northern Ireland	city	3
+belgium	Belgium		country	51
+belgrade	Belgrade		city	23
+belize	Belize		country	1
+bellevue	Bellevue	WA	city	35
+benin	Benin		country	2
+berkeley	Berkeley	CA	city	20
+berlin	Berlin		city	280
+bermuda	Bermuda		country	0
+bhutan	Bhutan		country	2
+birmingham-al	Birmingham	AL	city	12
+bogota	Bogota		city	58
+boise	Boise	ID	city	12
+bolivia	Bolivia		country	1
+bosnia-and-herzegovina	Bosnia and Herzegovina		country	10
+boston	Boston	MA	city	549
+botswana	Botswana		country	0
+boulder	Boulder	CO	city	32
+bouvet-island	Bouvet Island		country	0
+brazil	Brazil		country	192
+brisbane	Brisbane		city	8
+british-columbia	British Columbia		city	245
+british-indian-ocean-territory	British Indian Ocean Territory		country	0
+brooklyn	Brooklyn		city	61
+brunei-darussalam	Brunei		country	0
+brussels	Brussels		city	34
+bucharest	Bucharest		city	30
+budapest	Budapest		city	29
+buenos-aires-mexico	Buenos Aires		city	4
+buffalo-1	Buffalo	NY	city	9
+bulgaria	Bulgaria		country	48
+burkina-faso	Burkina Faso		country	0
+burundi	Burundi		country	0
+cabo-verde	Cabo Verde		country	0
+calgary	Calgary		city	29
+california	California		state	5043
+cambodia	Cambodia		country	7
+cambridge-ma	Cambridge	MA	city	71
+cameroon	Cameroon		country	4
+canada-startups	Canada		country	1149
+cape-town	Cape Town		city	32
+cayman-islands	Cayman Islands		country	1
+central-african-republic	Central African Republic		country	0
+central-america	Central America		region	2
+chad	Chad		country	0
+charleston	Charleston	SC	city	8
+charlotte	Charlotte	NC	city	69
+chicago	Chicago	IL	city	474
+chile	Chile		country	42
+china	China		country	107
+christmas-island	Christmas Island		country	0
+cincinnati	Cincinnati	OH	city	9
+cleveland	Cleveland	OH	city	9
+cocos-keeling-islands	Cocos (Keeling) Islands		country	0
+cologne	Cologne		city	13
+colombia	Colombia		country	73
+colorado	Colorado		state	492
+columbus	Columbus	OH	city	74
+comoros	Comoros		country	0
+congo	Republic of the Congo		country	0
+connecticut	Connecticut		state	45
+cook-islands	Cook Islands		country	0
+copenhagen	Copenhagen		city	45
+costa-rica	Costa Rica		country	9
+cote-d-ivoire	Côte d'Ivoire		country	1
+cracow-banana	Cracow		city	0
+croatia	Croatia		country	17
+cuba	Cuba		country	132
+culver-city	Culver City	CA	city	5
+curacao	Curaçao		country	0
+cyprus	Cyprus		country	28
+czech-republic	Czech Republic		country	33
+czechia	Czechia		country	0
+dallas	Dallas	TX	city	186
+dayton	Dayton	OH	city	6
+delaware	Delaware		state	88
+delhi-in	New Delhi		city	439
+denmark	Denmark		country	49
+denver	Denver	CO	city	216
+des-moines	Des Moines	IA	city	1
+detroit	Detroit	MI	city	51
+district-of-columbia	District of Columbia		state	203
+djibouti	Djibouti		country	0
+dominica	Dominica		country	0
+dominican-republic	Dominican Republic		country	1
+dubai	Dubai		city	196
+dublin-oh	Dublin	OH	city	5
+durham	Durham	NC	city	15
+dusseldorf	Düsseldorf		city	8
+ecuador	Ecuador		country	3
+edinburgh	Edinburgh	Scotland	city	8
+egypt	Egypt		country	21
+el-salvador	El Salvador		country	0
+equatorial-guinea	Equatorial Guinea		country	0
+eritrea	Eritrea		country	0
+estonia	Estonia		country	22
+ethiopia	Ethiopia		country	3
+europe	Europe		region	3103
+faroe-islands	Faroe Islands		country	0
+fiji	Fiji		country	0
+finland	Finland		country	64
+florida	Florida		state	545
+fort-lauderdale	Fort Lauderdale	Florida	city	25
+fort-worth	Fort Worth	TX	city	21
+france	France		country	231
+frankfurt	Frankfurt		city	26
+french-guiana	French Guiana		country	0
+french-polynesia	French Polynesia		country	0
+gabon	Gabon		country	0
+gambia	The Gambia		country	0
+georgia	Georgia		state	244
+germany	Germany		country	516
+ghana	Ghana		country	9
+gibraltar	Gibraltar		country	1
+greece	Greece		country	32
+greenland	Greenland		country	0
+greensboro	Greensboro	NC	city	3
+grenada	Grenada		country	0
+guadalajara	Guadalajara		city	19
+guadeloupe	Guadeloupe		country	0
+guam	Guam		country	0
+guatemala	Guatemala		country	5
+guinea	Guinea		country	0
+gurgaon	Gurgaon		city	315
+gurugram	Gurugram		city	0
+guyana	Guyana		country	1
+haiti	Haiti		country	0
+hamburg	Hamburg		city	13
+hampton-roads-1	Hampton Roads		city	0
+hartford	Hartford	CT	city	5
+hawaii	Hawaii		state	46
+helsinki	Helsinki		city	61
+honduras	Honduras		country	0
+hong-kong	Hong Kong		country	92
+houston	Houston	TX	city	127
+hungary	Hungary		country	43
+hunterdon-county	Hunterdon County		city	0
+huntsville	Huntsville	AL	city	6
+hyderabad	Hyderabad		city	447
+iceland	Iceland		country	5
+idaho	Idaho		state	36
+illinois	Illinois		state	568
+india	India		country	5219
+indiana	Indiana		state	85
+indianapolis	Indianapolis	IN	city	23
+indonesia	Indonesia		country	37
+iowa	Iowa		state	21
+iran	Iran		country	2
+iraq	Iraq		country	1
+ireland	Ireland		country	89
+irvine	Irvine	CA	city	45
+isle-of-man	Isle of Man		country	4
+israel	Israel		country	51
+istanbul-istanbul	Istanbul		city	8
+italy	Italy		country	69
+jacksonville	Jacksonville	Florida	city	16
+jaipur	Jaipur		city	90
+jakarta-special-capital-region-of-jakarta	Jakarta		city	34
+jamaica	Jamaica		country	1
+japan	Japan		country	205
+jersey	Jersey		country	0
+jersey-city	Jersey City	NJ	city	14
+jordan	Jordan		country	0
+kansas	Kansas		state	40
+kansas-city	Kansas City	KS	city	4
+karnataka	Karnataka		city	2157
+kazakhstan	Kazakhstan		country	6
+kentucky	Kentucky		state	40
+kenya	Kenya		country	44
+kiribati	Kiribati		country	0
+kitchener	Kitchener		city	15
+kuala-lumpur-1	Kuala Lumpur		city	41
+kuwait	Kuwait		country	2
+kyrgyzstan	Kyrgyzstan		country	2
+lagos	Lagos		city	38
+lao-people-s-democratic-republic	Laos		country	0
+las-vegas	Las Vegas	NV	city	38
+latvia	Latvia		country	8
+lebanon	Lebanon		country	12
+lehi	Lehi	UT	city	55
+lesotho	Lesotho		country	0
+lexington	Lexington	MA	city	2
+liberia	Liberia		country	0
+liechtenstein	Liechtenstein		country	0
+lincoln	Lincoln	NE	city	6
+lisbon	Lisbon		city	109
+lithuania	Lithuania		country	35
+little-rock	Little Rock	AR	city	4
+london	London	England	city	1035
+los-angeles	Los Angeles	CA	city	746
+louisiana	Louisiana		state	88
+louisville	Louisville	KY	city	26
+luxembourg	Luxembourg		country	14
+macao	Macau		country	0
+madagascar	Madagascar		country	6
+madison	Madison	WI	city	6
+madras	Chennai		city	34
+madrid-colombia	Madrid		city	0
+maharashtra	Maharashtra		city	944
+maine	Maine		state	26
+malawi	Malawi		country	1
+malaysia	Malaysia		country	56
+maldives	Maldives		country	0
+mali	Mali		country	0
+malta	Malta		country	1
+manchester	Manchester	England	city	25
+manila	Manila		city	84
+marshall-islands	Marshall Islands		country	0
+martinique	Martinique		country	0
+maryland	Maryland		state	140
+massachusetts	Massachusetts		state	663
+mauritania	Mauritania		country	0
+mauritius	Mauritius		country	0
+mayotte	Mayotte		country	0
+mclean-1	McLean	VA	city	4
+medellin	Medellín		city	13
+melbourne	Melbourne		city	93
+memphis	Memphis	TN	city	5
+menlo-park	Menlo Park	CA	city	41
+mexico	Mexico		country	210
+mexico-city	Mexico City		city	138
+miami	Miami	Florida	city	274
+michigan	Michigan		state	168
+middle-east	Middle East		region	3
+milan-1	Milan		city	27
+milwaukee	Milwaukee	WI	city	9
+minneapolis	Minneapolis	MN	city	55
+minnesota	Minnesota		state	91
+mississippi	Mississippi		state	27
+missouri	Missouri		state	166
+moldova	Moldova		country	6
+monaco	Monaco		country	0
+mongolia	Mongolia		country	1
+montana	Montana		state	24
+montenegro	Montenegro		country	7
+montreal	Montreal		city	90
+montserrat	Montserrat		country	0
+morocco	Morocco		country	18
+mountain-view-1	Mountain View	CA	city	144
+mozambique	Mozambique		country	0
+mumbai	Mumbai		city	574
+munich	Munich		city	97
+namibia	Namibia		country	0
+nashville	Nashville	TN	city	58
+nauru	Nauru		country	0
+nebraska	Nebraska		state	24
+nepal	Nepal		country	4
+netherlands	Netherlands		country	170
+nevada	Nevada		state	77
+new-caledonia	New Caledonia		country	0
+new-delhi	Delhi		city	443
+new-england	New England		city	751
+new-hampshire	New Hampshire		state	27
+new-jersey	New Jersey		state	225
+new-mexico	New Mexico		state	28
+new-orleans	New Orleans	LA	city	9
+new-south-wales	New South Wales		city	139
+new-york	New York		state	3884
+new-york-city-ny	New York City	NY	city	2590
+new-zealand	New Zealand		country	62
+nicaragua	Nicaragua		country	99
+niger	Niger		country	0
+nigeria	Nigeria		country	78
+niue	Niue		country	0
+noida	Noida		city	280
+norfolk-island	Norfolk Island		country	0
+north-america	North America		region	15851
+north-carolina	North Carolina		state	223
+north-dakota	North Dakota		state	10
+northern-california	Northern California		city	4012
+northern-mariana-islands	Northern Mariana Islands		country	0
+norway	Norway		country	15
+oakland	Oakland	CA	city	55
+oceania	Oceania		region	344
+ogden	Ogden	UT	city	1
+ohio	Ohio		state	174
+oklahoma	Oklahoma		state	25
+oklahoma-city	Oklahoma City	OK	city	11
+omaha	Omaha	NE	city	13
+oman	Oman		country	0
+orange-county	Orange County		city	71
+oregon	Oregon		state	201
+orlando	Orlando	Florida	city	27
+ottawa	Ottawa		city	28
+palau	Palau		country	0
+palo-alto	Palo Alto	CA	city	215
+panama	Panama		country	12
+papua-new-guinea	Papua New Guinea		country	0
+paraguay	Paraguay		country	2
+paris	Paris		city	209
+pennsylvania	Pennsylvania		state	204
+pensacola	Pensacola	Florida	city	1
+peoria	Peoria	AZ	city	2
+peru	Peru		country	23
+philadelphia	Philadelphia	PA	city	85
+philippines	Philippines		country	127
+phoenix	Phoenix	AZ	city	77
+pittsburgh	Pittsburgh	PA	city	35
+poland	Poland		country	114
+portland	Portland	OR	city	26
+porto	Porto		city	22
+portugal	Portugal		country	152
+providence	Providence	RI	city	13
+provo	Provo	UT	city	0
+puerto-rico	Puerto Rico		country	9
+pune	Pune		city	415
+qatar	Qatar		country	8
+qc-ca	Québec		city	90
+raleigh	Raleigh	NC	city	56
+redwood-city	Redwood City	CA	city	85
+reno	Reno	NV	city	5
+reunion	Reunion		country	0
+rhode-island	Rhode Island		state	26
+richmond	Richmond	VA	city	12
+rochester	Rochester	NY	city	4
+romania	Romania		country	54
+russia	Russia		country	17
+rwanda	Rwanda		country	5
+sacramento	Sacramento	CA	city	16
+saint-barthelemy	Saint-Barthélemy		country	0
+saint-helena-ascension-and-tristan-da-cunha	Saint Helena, Ascension and Tristan da Cunha		country	0
+saint-kitts-and-nevis	Saint Kitts and Nevis		country	0
+saint-louis	Saint Louis	OK	city	0
+saint-louis-1	St. Louis	MO	city	108
+saint-lucia	Saint Lucia		country	0
+saint-pierre-and-miquelon	Saint Pierre and Miquelon		country	0
+saint-vincent-and-the-grenadines	Saint Vincent and the Grenadines		country	0
+salt-lake-city	Salt Lake City	UT	city	118
+samoa	Samoa		country	0
+san-antonio	San Antonio	TX	city	27
+san-diego	San Diego	CA	city	107
+san-diego-county	San Diego County		city	112
+san-francisco	San Francisco	CA	city	2885
+san-jose	San Jose	CA	city	129
+san-luis-obispo	San Luis Obispo	CA	city	0
+san-marino	San Marino		country	0
+san-mateo	San Mateo	CA	city	42
+santa-clara	Santa Clara	CA	city	131
+santa-cruz	Santa Cruz	CA	city	7
+santa-monica	Santa Monica	CA	city	44
+sao-paulo	São Paulo		city	99
+sao-tome-and-principe	São Tomé and Príncipe		country	0
+saudi-arabia	Saudi Arabia		country	43
+scandinavia	Scandinavia		region	179
+scottsdale	Scottsdale	AZ	city	7
+seattle	Seattle	WA	city	435
+senegal	Senegal		country	2
+seoul	Seoul		city	124
+serbia	Serbia		country	30
+seychelles	Seychelles		country	0
+shanghai	Shanghai		city	31
+shenzhen	Shenzhen		city	11
+sierra-leone	Sierra Leone		country	0
+silicon-valley	Silicon Valley		city	3796
+singapore	Singapore		country	210
+slovakia	Slovakia		country	10
+slovenia	Slovenia		country	9
+solomon-islands	Solomon Islands		country	0
+somalia	Somalia		country	0
+south-africa	South Africa		country	61
+south-america	South America		region	377
+south-carolina	South Carolina		state	55
+south-dakota	South Dakota		state	20
+southern-california	Southern California		city	906
+spain	Spain		country	234
+spokane	Spokane	WA	city	2
+sri-lanka	Sri Lanka		country	5
+stockholm	Stockholm		city	43
+sudan	Sudan		country	0
+sunnyvale	Sunnyvale	CA	city	68
+suriname	Suriname		country	0
+svalbard-and-jan-mayen	Svalbard and Jan Mayen		country	0
+sweden	Sweden		country	55
+switzerland	Switzerland		country	98
+sydney	Sydney		city	118
+syrian-arab-republic	Syria		country	1
+taiwan	Taiwan		country	159
+tajikistan	Tajikistan		country	0
+tallahassee	Tallahassee	Florida	city	2
+tallinn	Tallinn		city	15
+tamil-nadu	Tamil Nadu		city	272
+tampa	Tampa	Florida	city	50
+tanzania	Tanzania		country	2
+tel-aviv-rivas	Tel Aviv		city	64
+tempe	Tempe	AZ	city	10
+tennessee	Tennessee		state	107
+texas	Texas		state	1262
+thailand	Thailand		country	23
+timor-leste	Timor-Leste		country	0
+togo	Togo		country	0
+tokelau	Tokelau		country	0
+tokyo	Tokyo		city	196
+tonga	Tonga		country	0
+toronto	Toronto		city	577
+trenton	Trenton	NJ	city	0
+trinidad-and-tobago	Trinidad and Tobago		country	1
+tucson	Tucson	AZ	city	10
+tulsa	Tulsa	OK	city	1
+tunisia	Tunisia		country	2
+turkmenistan	Turkmenistan		country	2
+turks-and-caicos-islands	Turks and Caicos Islands		country	0
+tuvalu	Tuvalu		country	0
+uganda	Uganda		country	25
+ukraine	Ukraine		country	49
+united-arab-emirates	United Arab Emirates		country	237
+united-kingdom	United Kingdom		country	1391
+united-states	United States		country	14612
+united-states-minor-outlying-islands	United States Minor Outlying Islands		country	1
+uruguay	Uruguay		country	11
+utah	Utah		state	202
+utrecht	Utrecht		city	4
+uttar-pradesh	Uttar Pradesh		city	337
+uzbekistan	Uzbekistan		country	3
+vancouver	Vancouver		city	207
+vanuatu	Vanuatu		country	0
+venezuela	Venezuela		country	23
+vermont	Vermont		state	12
+victoria	Victoria		city	8
+vienna	Vienna		city	20
+vietnam	Vietnam		country	25
+virginia	Virginia		state	188
+wallis-and-futuna	Wallis and Futuna		country	0
+warsaw	Warsaw		city	65
+washington	Washington		state	613
+washington-dc	Washington DC	DC	city	174
+west-virginia	West Virginia		state	22
+western-sahara	Western Sahara		country	0
+wichita	Wichita	KS	city	4
+wilmington	Wilmington	NC	city	15
+wisconsin	Wisconsin		state	55
+wyoming	Wyoming		state	49
+yemen	Yemen		country	0
+zambia	Zambia		country	1
+zimbabwe	Zimbabwe		country	1
+zurich	Zurich		city	39
