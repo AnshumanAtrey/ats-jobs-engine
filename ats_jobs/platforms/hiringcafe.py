@@ -31,8 +31,9 @@ address in India) on 2026-11-10:
   address (India here). Also workplaceTypes, commitmentTypes, seniorityLevel, roleYoeRange (the least years asked,
   0 to 20), companySizeRanges, companyNames (the company and the companies HiringCafe relates to it: Stripe brought
   Paystack and Lumanity), benefitsAndPerks (visa_sponsorship), published pay (maxCompensationLowEnd: the top of the
-  range reaches it, 1,054 product manager jobs at $150,000; minCompensationLowEnd: ranges that start there, 512) and
-  sortBy (date: newest first).
+  range reaches it, 1,054 product manager jobs at $150,000; minCompensationLowEnd: ranges that start there, 512; with
+  frequency Any and calcFrequency Yearly, pay listed by the hour or month counts by its yearly sum) and sortBy (date:
+  newest first). A country object is matched by its code (short_name), not its name.
 - GET /api/job-description?requisitionId=<id>: one job's description as HTML (2.8 KB, 1.4 KB gzipped).
 - GET /_next/data/<build>/job/<id>.json: a redirect to the job's own address, /job/<title-company-place>-<id>, whose
   data is the job with its description, views and saves; {"notFound": true} with 404 when there is no such job. No job
@@ -716,7 +717,10 @@ class HiringCafe(Platform):
             state['benefitsAndPerks'] = ['visa_sponsorship']
         if self.options.get('minSalary'):
             state.update({'currency': {'label': self.options['salaryCurrency'], 'value': self.options['salaryCurrency']},
-                          'frequency': {'label': 'Yearly', 'value': 'Yearly'}, 'calcFrequency': 'Yearly',
+                          # pay listed by the hour or month too, by its yearly sum (calcFrequency): Yearly here
+                          # keeps only pay listed by the year (635 registered nurse jobs of a week reaching $100,000
+                          # against 5,762, most of them paid by the hour, 2026-11-10)
+                          'frequency': {'label': 'Any', 'value': None}, 'calcFrequency': 'Yearly',
                           'restrictJobsToTransparentSalaries': True,
                           # the top of the published range reaches it (minCompensationLowEnd keeps ranges that start there)
                           'maxCompensationLowEnd': self.options['minSalary']})

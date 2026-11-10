@@ -257,8 +257,8 @@ class SearchState(unittest.TestCase):
         self.assertEqual(state['seniorityLevel'], ['Entry Level', 'Mid Level'])
         self.assertEqual(state['companySizeRanges'], [[11, 50], [51, 200]])
         self.assertEqual(state['benefitsAndPerks'], ['visa_sponsorship'])
-        self.assertEqual((state['maxCompensationLowEnd'], state['currency']['value'], state['frequency']['value']),
-                         (90000.0, 'GBP', 'Yearly'))
+        self.assertEqual((state['maxCompensationLowEnd'], state['currency']['value'], state['frequency']['value'],
+                          state['calcFrequency']), (90000.0, 'GBP', None, 'Yearly'))     # hourly pay by its yearly sum
         self.assertTrue(state['restrictJobsToTransparentSalaries'])
 
     def test_volunteer_is_a_job_type_of_its_own(self):
