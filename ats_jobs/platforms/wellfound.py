@@ -550,9 +550,10 @@ class Wellfound(Platform):
                 continue
             why = f'HTTP {status}' + (' with a challenge' if mitigated else '')
             later = ('the proxy\'s addresses were refused too' if self._proxy_input else
-                     'run again later, or turn on Apify Proxy in Connection (proxyConfiguration)')
-            self.note(f'Wellfound\'s Cloudflare check refused this address ({why}) after {self._pages_read:,} pages, so '
-                      f'the run saved what it had read: {later}.', key='refused')
+                     'run again in 10 minutes, or turn on Apify Proxy in Connection (proxyConfiguration)')
+            where = (f'after {self._pages_read:,} pages, so the run saved what it had read' if self._pages_read else
+                     'before any page was read')
+            self.note(f'Wellfound\'s Cloudflare check refused this address ({why}) {where}: {later}.', key='refused')
             raise Refused(f'Wellfound refused this address ({why})')
 
     async def page(self, http, path: str, number: int) -> dict | None:
