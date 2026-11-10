@@ -679,7 +679,7 @@ class HiringCafe(Platform):
     # ---------- the search ----------
 
     def note_cap(self, total: int) -> None:
-        self.incomplete = True
+        self.incomplete = self.count_is_floor = True
         self.note(f'HiringCafe shows the newest 10,000 companies of one search (about 33,000 jobs) and this one matched '
                   f'{total:,} jobs: add a place, a period or more words to reach the rest.', 'cap')
 
@@ -799,7 +799,8 @@ class HiringCafe(Platform):
             except BoardError as exc:
                 if not yielded:
                     raise                      # nothing was read: the run fails and says why
-                self.stopped(f'HiringCafe stopped answering after {n} pages of the search ({exc}), so the run saved '
+                pages_read = f'{n:,} page{"" if n == 1 else "s"}'
+                self.stopped(f'HiringCafe stopped answering after {pages_read} of the search ({exc}), so the run saved '
                              f'the jobs read by then.', 'refused')
                 return
             if props.get('ssrError'):
@@ -823,10 +824,11 @@ class HiringCafe(Platform):
             if n == LAST_PAGE:
                 self.note_cap(int(props.get('ssrTotalCount') or 0))
         if self.scan:
-            self.incomplete = True
+            self.incomplete = self.count_is_floor = True
 
     def stopped(self, text: str, key: str) -> None:
-        self.incomplete = True
+        """The search was not read to its end, so the matches counted are a floor ("at least")."""
+        self.incomplete = self.count_is_floor = True
         self.note(text, key)
 
     async def open_employers(self, searched: str, queue: list[list[dict]], n: int, everything: bool) -> list[dict]:

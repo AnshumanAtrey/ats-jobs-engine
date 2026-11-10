@@ -502,7 +502,7 @@ class Paging(unittest.TestCase):
         with patch.object(hc, 'LAST_PAGE', 2):
             pages = read_pages(platform)
         self.assertEqual(len(pages), 3)
-        self.assertTrue(platform.incomplete)
+        self.assertTrue(platform.incomplete and platform.count_is_floor)
         self.assertTrue(any('60,000' in n for n in platform.cfg.notes))
         self.assertEqual(len(session.searches()), 3)
 
@@ -511,7 +511,7 @@ class Paging(unittest.TestCase):
         connected(platform, [Response(200, []), self.page('world_newest')])
         pages = read_pages(platform)
         self.assertEqual(len(pages), hc.SCAN_PAGES)
-        self.assertTrue(platform.incomplete)
+        self.assertTrue(platform.incomplete and platform.count_is_floor)
 
     def test_a_search_error_is_a_board_error(self):
         platform = made()
@@ -597,7 +597,7 @@ class Employers(unittest.TestCase):
         connected(platform, [page, challenge(403)])
         pages = read_pages(platform)
         self.assertEqual(len(pages), 1)
-        self.assertTrue(platform.incomplete)
+        self.assertTrue(platform.incomplete and platform.count_is_floor)      # the run says "at least"
         self.assertTrue(any('stopped answering' in n for n in platform.cfg.notes))
 
     def test_a_refusal_before_anything_was_read_fails_the_search(self):
@@ -773,6 +773,12 @@ class EngineRun(unittest.TestCase):
         self.assertEqual(ids[0], '8c6kz7l4kpgwvs77')          # 09:25:22, the newest on the page
         self.assertEqual({e for _, e in delivery.pushed}, {'job'})
         self.assertIn('on HiringCafe', run_.message())
+
+    def test_a_search_stopped_by_cloudflare_counts_at_least(self):
+        run_, delivery = self.go({'maxJobs': 50, 'postedWithin': 'any time'}, [self.page('world_newest'), challenge(403)])
+        self.assertEqual(delivery.rows, 20)
+        self.assertIn('Found at least 20 matching jobs', run_.message())
+        self.assertIn('stopped answering after 1 page of the search', run_.message())
 
     def test_a_search_keeps_only_what_matches(self):
         run_, delivery = self.go({'searchTerms': ['software engineer'], 'location': ['United Kingdom'],
