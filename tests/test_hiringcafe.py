@@ -516,7 +516,7 @@ class Employers(unittest.TestCase):
         self.assertIn('taboolanew000001', ids)
         added = next(j for j in pages[0] if j['id'] == 'taboolanew000001')
         self.assertEqual(added['listedAt'], '2026-11-10T09:25:22.000Z')   # listed at its employer's newest
-        self.assertEqual(ids.index('taboolanew000001'), 4)                 # right after Taboola's 4
+        self.assertEqual(ids.index('taboolanew000001'), 20)                # after the page's own 20 jobs
 
     def test_a_list_is_read_only_when_its_hidden_jobs_can_make_the_cut(self):
         platform = made({'maxJobs': 3})
@@ -535,6 +535,48 @@ class Employers(unittest.TestCase):
                             employer=[repeat])
         read_pages(platform)
         self.assertEqual(len([c for c in session.calls if 'company' in c[1]]), 3)   # one page each, not 25
+
+    def test_employers_wait_until_the_newest_are_known(self):
+        """A large maxJobs: no employer is opened while fewer than maxJobs wanted jobs were seen and the search goes on;
+        when it ends, every one that can still be wanted is."""
+        platform = made({'maxJobs': 2000})
+        page = Response(200, {'pageProps': {**DATA['world_newest'], 'ssrIsLastPage': False}})
+        last = Response(200, {'pageProps': {**DATA['london_swe'], 'ssrIsLastPage': True}})
+        session = connected(platform, [page, last])
+
+        async def first_page():
+            gen = platform.pages(None, await platform.open(None, hc.EVERYONE), None, None)
+            first = await gen.__anext__()
+            lists_then = len([c for c in session.calls if 'company' in c[1]])
+            rest = [p async for p in gen]
+            return first, lists_then, rest
+        first, lists_then, rest = run(first_page())
+        self.assertEqual(lists_then, 0)                                   # 20 jobs read of 2,000 wanted: read on
+        self.assertGreater(len([c for c in session.calls if 'company' in c[1]]), 0)   # opened once the search ended
+
+    def test_a_refusal_after_a_page_keeps_what_was_read(self):
+        platform = made({'maxJobs': 3})
+        page = Response(200, {'pageProps': {**DATA['world_newest'], 'ssrIsLastPage': False}})
+        connected(platform, [page, challenge(403)])
+        pages = read_pages(platform)
+        self.assertEqual(len(pages), 1)
+        self.assertTrue(platform.incomplete)
+        self.assertTrue(any('stopped answering' in n for n in platform.cfg.notes))
+
+    def test_a_refusal_before_anything_was_read_fails_the_search(self):
+        platform = made()
+        connected(platform, [challenge(403)])
+        with self.assertRaises(hc.Refused):
+            read_pages(platform)
+
+    def test_an_employer_list_that_fails_keeps_the_page(self):
+        platform = made({'maxJobs': 0})
+        session = connected(platform, [Response(200, {'pageProps': {**DATA['world_newest'], 'ssrIsLastPage': True}})],
+                            employer=[challenge(403)])
+        pages = read_pages(platform)
+        self.assertEqual(len(pages[0]), 20)                               # the page's own jobs, all kept
+        self.assertEqual(len([c for c in session.calls if 'company' in c[1]]), 1)   # no more lists after the failure
+        self.assertTrue(any('own list could not be read' in n for n in platform.cfg.notes))
 
     def test_a_named_company_keeps_its_own_jobs_and_names_the_related_ones(self):
         platform = made({'companies': ['OpenAI']})

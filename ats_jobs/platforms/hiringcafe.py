@@ -90,7 +90,7 @@ GAP_S = 2.0                               # seconds between calls from one addre
 PROXY_GAP_S = 0.5                         # through a proxy, where the address changes every CALLS_PER_ADDRESS calls
 CALLS_PER_ADDRESS = 30
 ROTATIONS = 12                            # fresh proxy addresses a run takes after challenges before it gives up
-WAITS = (35, 70)                          # without a proxy, seconds a 429 is waited out before the next try
+WAITS = (60, 120, 180)                    # without a proxy, seconds a 429 is waited out (the block lasted 5 to 6 minutes)
 TRIES = 6                                 # tries of one call: errors, server trouble, challenges
 SCAN_PAGES = 8                            # pages read for a place HiringCafe does not know, checked here by its name
 EXPAND_PAGES = 25                         # pages of one employer's own list a search reads: 1,000 jobs
@@ -433,6 +433,7 @@ class HiringCafe(Platform):
         self.left_out: dict[str, dict] = {}    # a named company -> the related companies' jobs left out, by company
         self.related_note: dict[str, int] = {}
         self.counts = {'employersOpened': 0, 'employerPages': 0}
+        self.expand_failed: str | None = None  # why an employer's list could not be read; no more are opened then
 
     # ---------- notes, boards, links ----------
 
@@ -730,38 +731,78 @@ class HiringCafe(Platform):
         return state
 
     async def pages(self, http, session, term, days):
-        """The search's pages, newest first. A page holds 40 employers, each with at most 4 of its matches: an employer
-        shown with 4 may have more, so its own list is read too (company=, every job of its board, 40 a page) when its
-        hidden jobs can still be wanted: every match, a named company, or a 4th job still newer than the newest
-        maxJobs seen so far (wanted_floor)."""
+        """The search's pages, newest first. A page holds 40 employers, each with at most 4 of its matches; an employer
+        shown with 4 may have more, so it waits in a queue for its own list (company=, every job of its board, 40 a
+        page). Once the newest maxJobs are known (wanted_floor), the queued employers whose 4th job is still newer are
+        opened, newest first, and the floor rises with every job they add; when the search ends, every one still in
+        the queue is. Every match opens them all. A refusal once anything was read ends the reading with what was read
+        (incomplete, with a note); an employer's list that cannot be read never costs the page."""
         state = self.state(session, term, days)
         searched = json.dumps(state, separators=(',', ':'), ensure_ascii=False)
         company = session.get('company')
         last = SCAN_PAGES - 1 if self.scan else LAST_PAGE
+        queue: list[list[dict]] = []            # employers shown with 4 jobs, not opened yet
+        yielded = False
         for n in range(last + 1):
             params = {'searchState': searched, **({'page': n} if n else {})}
-            props = await self.conn.data(SEARCH, params)
+            try:
+                props = await self.conn.data(SEARCH, params)
+            except BoardError as exc:
+                if not yielded:
+                    raise                      # nothing was read: the run fails and says why
+                self.stopped(f'HiringCafe stopped answering after {n} pages of the search ({exc}), so the run saved '
+                             f'the jobs read by then.', 'refused')
+                return
             if props.get('ssrError'):
                 raise BoardError(f'HiringCafe\'s search failed: {str(props["ssrError"])[:120]}')
             hits = [h for h in props.get('ssrHits') or [] if isinstance(h, dict) and h.get('requisition_id')]
+            ended = not hits or bool(props.get('ssrIsLastPage'))
             groups = self.groups(hits)
             for members in groups:
                 self.seen.update(j['id'] for j in members)
                 self.count_wanted(members)
-            page = []
-            for members in groups:
-                page += members
-                if len(members) >= PER_GROUP and (company or self.hides_wanted(members)):
-                    page += await self.employer(searched, members)
+            queue += [m for m in groups if len(m) >= PER_GROUP]
+            page = [job for members in groups for job in members]
+            page += await self.open_employers(searched, queue, n, everything=ended or n == last)
             if company:
                 page = self.of_company(page, company)
+            self.progress = None              # the engine's own line again, once the page is handed over
+            yielded = True
             yield page
-            if not hits or props.get('ssrIsLastPage'):
+            if ended:
                 return
             if n == LAST_PAGE:
                 self.note_cap(int(props.get('ssrTotalCount') or 0))
         if self.scan:
             self.incomplete = True
+
+    def stopped(self, text: str, key: str) -> None:
+        self.incomplete = True
+        self.note(text, key)
+
+    async def open_employers(self, searched: str, queue: list[list[dict]], n: int, everything: bool) -> list[dict]:
+        """The queued employers whose hidden jobs can still be wanted, newest 4th job first, each opened once; the rest
+        stay queued. everything: the search ended, so whatever can still be wanted is opened now."""
+        out: list[dict] = []
+        queue.sort(key=lambda m: min((j['postedAt'] for j in m if j.get('postedAt')), default=''), reverse=True)
+        while queue and not self.expand_failed:
+            floor = self.wanted_floor()
+            every = self.cfg is not None and self.cfg.max_jobs is None
+            if floor is None and not every and not everything:
+                break                         # the newest maxJobs are not known yet: read on first
+            members = queue[0]
+            if not every and floor is not None and not self.hides_wanted(members):
+                break                         # this one's 4th job is older than the floor, and so is every one after it
+            queue.pop(0)
+            self.progress = (f'Reading page {n + 1:,} of HiringCafe\'s search: an employer\'s own list for the jobs past '
+                             f'the 4 it shows ({self.counts["employersOpened"] + 1:,} opened so far).')
+            try:
+                out += await self.employer(searched, members)
+            except BoardError as exc:
+                self.expand_failed = str(exc)
+                self.stopped(f'An employer\'s own list could not be read ({exc}), so employers shown with 4 jobs gave '
+                             f'only those 4 from then on.', 'expand')
+        return out
 
     def groups(self, hits: list[dict]) -> list[list[dict]]:
         """A page's hits -> its employers' jobs, in HiringCafe's order, each job listed at its employer's newest time:
