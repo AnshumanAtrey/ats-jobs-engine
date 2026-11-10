@@ -364,7 +364,7 @@ class Ranked(unittest.TestCase):
                  [platform.job(record('6', 'Quant Researcher', 1))]]
         read = []
 
-        async def stream(http, params, level):
+        async def stream(http, params, level, ahead=1):
             for page in pages:
                 read.append(page[0]['id'])
                 yield page
@@ -445,6 +445,19 @@ class Calls(unittest.TestCase):
         platform.window({**efc.search_params(), 'filters.jobPaymentType': 'UNPAID'}, 57402)
         self.assertTrue(any('every job had 70,407' in n for n in cfg.notes))
         self.assertEqual(sum('shows the 10,000 first jobs' in n for n in cfg.notes), 1)
+
+    def test_a_words_pages_come_four_at_once_and_in_order(self):
+        platform, cfg = platform_for({'searchTerms': ['quant']})
+        # 450 quant titles ranked first, then 750 jobs whose text alone holds the word
+        records = [record(str(i), 'Quant' if i < 450 else 'Clerk', i, jobSummary='quant desk') for i in range(1200)]
+        site = Site(records)
+        with patch.object(efc, 'send', site.send):
+            found = asyncio.run(platform.ranked(None, [(efc.search_params(), None)], 'quant'))
+        pages = sorted(p['page'] for url, p in site.calls if url == efc.SEARCH)
+        self.assertEqual(len(found), 800)                    # pages 1 to 4 read: the fourth held no quant title
+        self.assertEqual(pages[:4], [1, 2, 3, 4])            # the first four asked at once
+        self.assertLessEqual(pages[-1], 7)                   # and never more than three past the last page used
+        self.assertEqual([j['id'] for j in found][:3], ['0', '1', '2'])
 
     def test_a_place_the_site_does_not_know_reads_the_newest_jobs_only(self):
         platform, cfg = platform_for({'location': ['Atlantis']})

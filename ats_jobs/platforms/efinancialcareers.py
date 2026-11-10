@@ -84,6 +84,7 @@ CHUNK = 200                   # jobs handed on at a time, at most
 MIN_CHUNK = 25                # and at least
 OPEN_AT_ONCE = 32             # calls for single jobs (pages, profiles) at once: 81 a second at 32 answered
 SCAN_JOBS = 1_000             # newest jobs read for a place the site cannot be asked about
+AHEAD = 4                     # pages of a word's ranked search fetched at once ("analyst" reads 45 pages of 200)
 NEVER = 2049                  # an expiry in this year or later is no expiry (2050-01-01)
 BARE_CITY_JOBS = 100          # a city with this many open jobs is read as a place at the end of a search entry alone
 AGENCY_INDUSTRY = 'HR_RECRUITMENT'
@@ -760,30 +761,37 @@ class EFinancialCareers(Platform):
                           f'checked for it by name.', key=f'unknown {place}')
         return not self.unknown[place]
 
-    async def stream(self, http, params: dict, level: str | None):
-        """The pages of one search, in the site's order, as jobs."""
+    async def stream(self, http, params: dict, level: str | None, ahead: int = 1):
+        """The pages of one search, in the site's order, as jobs; ahead pages are fetched at once."""
         params = dict(params)
         scan = bool(params.pop('scan', False))
         if 'location' in params and not await self.known(http, params['location']):
             params.pop('location')
             scan = True
         cap = SCAN_JOBS if scan else WINDOW
-        page, read = 1, 0
-        while read < cap:
-            size = min(PAGE, cap - read)
-            data = await self.search(http, {**params, 'page': page, 'pageSize': size})
-            if data.get('beyond'):
-                return
-            records = [r for r in data['data'] if isinstance(r, dict) and r.get('jobId')]
-            total = int(((data.get('meta') or {}).get('totalResults')) or 0)
-            yield [self.job(r, level) for r in records]
-            read += size
-            page += 1
-            if not records or read >= total:
-                return
-            if read >= WINDOW:
-                self.window(params, total)
-                return
+        size = min(PAGE, cap)
+        pending: dict[int, asyncio.Future] = {}
+        try:
+            for number in range(1, cap // size + 1):
+                for later in range(number, min(number + ahead, cap // size + 1)):
+                    if later not in pending:
+                        pending[later] = asyncio.ensure_future(
+                            self.search(http, {**params, 'page': later, 'pageSize': size}))
+                data = await pending.pop(number)
+                if data.get('beyond'):
+                    return
+                records = [r for r in data['data'] if isinstance(r, dict) and r.get('jobId')]
+                total = int(((data.get('meta') or {}).get('totalResults')) or 0)
+                yield [self.job(r, level) for r in records]
+                if not records or number * size >= total:
+                    return
+                if number * size >= WINDOW:
+                    self.window(params, total)
+                    return
+        finally:
+            for future in pending.values():
+                future.cancel()
+            await asyncio.gather(*pending.values(), return_exceptions=True)
 
     def window(self, params: dict, total: int) -> None:
         """One note for every search that reached the window, with its total: a newest-first search read as its PAID and
@@ -803,13 +811,17 @@ class EFinancialCareers(Platform):
         found: dict[str, dict] = {}
 
         async def one(params, level):
-            async for jobs in self.stream(http, {**params, 'q': term}, level):
-                hit = False
-                for job in jobs:
-                    found.setdefault(job['id'], job)
-                    hit = hit or wanted.in_title(index(job['title']))
-                if not hit and not every:
-                    return
+            pages = self.stream(http, {**params, 'q': term}, level, AHEAD)
+            try:
+                async for jobs in pages:
+                    hit = False
+                    for job in jobs:
+                        found.setdefault(job['id'], job)
+                        hit = hit or wanted.in_title(index(job['title']))
+                    if not hit and not every:
+                        return
+            finally:
+                await pages.aclose()
         await asyncio.gather(*[one(params, level) for params, level in searches])
         return sorted(found.values(), key=stamp, reverse=True)
 
