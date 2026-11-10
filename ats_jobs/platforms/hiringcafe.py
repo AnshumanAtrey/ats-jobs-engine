@@ -103,7 +103,6 @@ CALLS_PER_ADDRESS = 30
 ROTATIONS = 12                            # fresh proxy addresses a run takes after challenges before it gives up
 WAITS = (60, 120, 180)                    # without a proxy, seconds a 429 is waited out (the block lasted 5 to 6 minutes)
 TRIES = 6                                 # tries of one call: errors, server trouble, challenges
-SCAN_PAGES = 8                            # pages read for a place HiringCafe does not know, checked here by its name
 EXPAND_PAGES = 25                         # pages of one employer's own list a search reads: 1,000 jobs
 MAX_PLACES = 40                           # place objects one search sends
 BARE_PLACE_JOBS = 40                      # jobs of the place census naming a city or state for it to read alone at
@@ -282,11 +281,11 @@ class Pace:
 
 class Connection:
     """The run's calls to hiringcafe.com, through curl_cffi's Chrome (TLS, HTTP/2 and headers): Cloudflare challenges
-    anything else. Direct, or through the proxy the user set from the first call. At a challenge a direct run moves to
-    a proxy (the user's, else Apify Proxy's RESIDENTIAL group when the run is on Apify), and a run on a proxy takes a
-    fresh address, ROTATIONS times at most; it also takes one every CALLS_PER_ADDRESS calls, before Cloudflare's rate
-    is reached. With no proxy a 429 is waited out (WAITS) and the calls go on SLOW_GAP_S apart, and a 403 ends the
-    reading, with a note."""
+    anything else. From the first call through the proxy the user set, else on Apify through Apify Proxy's RESIDENTIAL
+    group (Cloudflare challenges Apify's own addresses), else direct (a laptop). At a challenge a direct run moves to a
+    proxy when it has one, and a run on a proxy takes a fresh address with a fresh session, ROTATIONS times at most; it
+    also takes one every CALLS_PER_ADDRESS calls, before Cloudflare's rate is reached. With no proxy a 429 is waited out
+    (WAITS) and the calls go on SLOW_GAP_S apart, and a 403 ends the reading, with a note."""
 
     def __init__(self, platform):
         self.platform = platform
@@ -303,23 +302,34 @@ class Connection:
         self.sleep = asyncio.sleep    # the wait between tries (instant in the tests)
         self.build_id: str | None = None
         self.counts = {'calls': 0, 'challenges': 0, 'proxyAddresses': 0}
+        self.retired: list = []       # the sessions of earlier addresses, closed at the end: a call may still be on one
 
     def client(self):
         if self.session is None:
-            try:
-                from curl_cffi.requests import AsyncSession
-            except ImportError as exc:
-                raise BoardError('curl_cffi is not installed, and HiringCafe answers only a browser\'s TLS') from exc
-            self.session = AsyncSession(impersonate='chrome', timeout=30)
+            self.session = self.new_session()
         return self.session
 
+    @staticmethod
+    def new_session():
+        try:
+            from curl_cffi.requests import AsyncSession
+        except ImportError as exc:
+            raise BoardError('curl_cffi is not installed, and HiringCafe answers only a browser\'s TLS') from exc
+        return AsyncSession(impersonate='chrome', timeout=30)
+
+    @staticmethod
+    def at_home() -> bool:
+        from apify import Actor
+        return Actor.is_at_home()
+
     async def close(self) -> None:
-        if self.session is not None:
-            try:
-                await self.session.close()
-            except Exception:  # noqa: BLE001
-                pass
-            self.session = None
+        for session in [*self.retired, self.session]:
+            if session is not None:
+                try:
+                    await session.close()
+                except Exception:  # noqa: BLE001
+                    pass
+        self.retired, self.session = [], None
 
     async def setup_proxy(self, automatic: bool) -> bool:
         """The proxy to move to: the user's, or Apify's RESIDENTIAL group when automatic and the run is on Apify."""
@@ -329,7 +339,7 @@ class Connection:
             try:
                 if self.proxy_input:
                     self.proxy = await Actor.create_proxy_configuration(actor_proxy_input=self.proxy_input)
-                elif automatic and Actor.is_at_home():
+                elif automatic and self.at_home():
                     self.proxy = await Actor.create_proxy_configuration(groups=['RESIDENTIAL'])
             except Exception as exc:  # noqa: BLE001  a proxy the platform cannot use (no access, a typo)
                 why = str(exc).splitlines()[0][:160] if str(exc) else type(exc).__name__
@@ -338,13 +348,22 @@ class Connection:
         return self.proxy is not None
 
     async def rotate(self) -> None:
+        """A fresh proxy address with a fresh session, so Cloudflare's cookies stay with the address that got them: when
+        one session went through every address, 13 fresh residential addresses in a row were challenged and a 2,000-job
+        run stopped at 1,985 (run XfSvA5FkrUJfHSdSD, 2026-11-10)."""
+        if self.session is not None:
+            self.retired.append(self.session)
+            self.session = None
         self.proxy_url = await self.proxy.new_url(session_id=f'hc_{secrets.token_hex(5)}')
         self.address_calls = 0
         self.counts['proxyAddresses'] += 1
 
     async def get(self, url: str, params=None, *, expect: tuple = (200,)):
         """One GET in its turn -> the response (any status but Cloudflare's). Refused when no address gets through."""
-        if self.proxy_input and self.proxy_url is None and await self.setup_proxy(automatic=False):
+        # the user's proxy from the first call; on Apify, Apify Proxy's RESIDENTIAL group from the first call too, since
+        # Cloudflare challenged Apify's own address on the first call of 10 runs of 10 (2026-11-10)
+        if self.proxy_url is None and not self.proxy_ready and (self.proxy_input or self.at_home()) \
+                and await self.setup_proxy(automatic=True):
             await self.rotate()
         for attempt in range(TRIES + ROTATIONS + len(WAITS)):
             if self.proxy_url and self.address_calls >= CALLS_PER_ADDRESS:
@@ -461,7 +480,7 @@ class HiringCafe(Platform):
         self.options: dict = {}       # HiringCafe's own settings of the run (read_input), in OUTPUT's settings
         self.pasted: dict = {}        # the filters of a pasted HiringCafe search link the form has no field for
         self.base: dict | None = None  # the search state every page asks with, but the words and the period
-        self.scan = False             # no typed place is known to HiringCafe: the newest jobs are checked by name
+        self.nowhere = False          # every typed place is missing from HiringCafe's place list: nothing to search
         self.told: set[str] = set()
         self.seen: set[str] = set()   # job ids already handed over this run (an employer's list repeats its first 4)
         self.wanted_dates: list[str] = []      # posting times of jobs that pass the filters: wanted_floor
@@ -786,13 +805,14 @@ class HiringCafe(Platform):
         opened, newest first, and the floor rises with every job they add; when the search ends, every one still in
         the queue is. Every match opens them all. A refusal once anything was read ends the reading with what was read
         (incomplete, with a note); an employer's list that cannot be read never costs the page."""
+        if self.nowhere:
+            return
         state = self.state(session, term, days)
         searched = json.dumps(state, separators=(',', ':'), ensure_ascii=False)
         company = session.get('company')
-        last = SCAN_PAGES - 1 if self.scan else LAST_PAGE
         queue: list[list[dict]] = []            # employers shown with 4 jobs, not opened yet
         yielded = False
-        for n in range(last + 1):
+        for n in range(LAST_PAGE + 1):
             params = {'searchState': searched, **({'page': n} if n else {})}
             try:
                 props = await self.conn.data(SEARCH, params)
@@ -813,7 +833,7 @@ class HiringCafe(Platform):
                 self.count_wanted(members)
             queue += [m for m in groups if len(m) >= PER_GROUP]
             page = [job for members in groups for job in members]
-            page += await self.open_employers(searched, queue, n, everything=ended or n == last)
+            page += await self.open_employers(searched, queue, n, everything=ended or n == LAST_PAGE)
             if company:
                 page = self.of_company(page, company)
             self.progress = None              # the engine's own line again, once the page is handed over
@@ -823,8 +843,6 @@ class HiringCafe(Platform):
                 return
             if n == LAST_PAGE:
                 self.note_cap(int(props.get('ssrTotalCount') or 0))
-        if self.scan:
-            self.incomplete = self.count_is_floor = True
 
     def stopped(self, text: str, key: str) -> None:
         """The search was not read to its end, so the matches counted are a floor ("at least")."""
@@ -968,8 +986,9 @@ class HiringCafe(Platform):
 
     async def locations(self, typed: list[str]) -> list[dict]:
         """Typed places -> HiringCafe's place objects. A country or region goes as its countries or whole continents,
-        a city or state by HiringCafe's own place list (other names too: Bangalore is Bengaluru there); a place it does
-        not know is left to the check here, on the newest SCAN_PAGES pages when no place is known."""
+        a city or state by HiringCafe's own place list (other names too: Bangalore is Bengaluru there). A place the list
+        does not hold is left out with a note, and when no typed place is left nothing is searched: reading the newest
+        pages for its name instead found nothing for Koramangala in 63 s (run jgGIPnx9sJkyfyO57, 2026-11-10)."""
         found: list[dict] = []
         unknown: list[str] = []
         for text in typed:
@@ -986,10 +1005,10 @@ class HiringCafe(Platform):
             else:
                 unknown.append(text)
         if unknown and not found:
-            self.scan = True
+            self.nowhere = True
             self.note(f'{", ".join(unknown)} {"is" if len(unknown) == 1 else "are"} not on HiringCafe\'s list of '
-                      f'places, so the newest {SCAN_PAGES * 40:,} companies\' jobs were checked for '
-                      f'{"it" if len(unknown) == 1 else "them"} by name.', 'unknown')
+                      f'places, so nothing was searched: type the city, state or country '
+                      f'{"it is" if len(unknown) == 1 else "they are"} in.', 'unknown')
             return []
         if unknown:
             self.note(f'{", ".join(unknown)} {"is" if len(unknown) == 1 else "are"} not on HiringCafe\'s list of places, '
@@ -1024,11 +1043,13 @@ class HiringCafe(Platform):
         for name in names:
             response = await self.conn.get(PLACES, {'query': name})
             try:
-                candidates = response.json() if response.status_code == 200 else []
+                candidates = response.json() if response.status_code == 200 else None
             except ValueError:
-                candidates = []
+                candidates = None
+            if not isinstance(candidates, list):
+                raise BoardError(f'HiringCafe\'s place list did not answer for {name} (HTTP {response.status_code})')
             wanted = ' '.join(words(name.split(',')[0]))
-            for c in candidates if isinstance(candidates, list) else []:
+            for c in candidates:
                 detail = c.get('placeDetail') if isinstance(c, dict) else None
                 label = ' '.join(words((detail or {}).get('formatted_address', '').split(',')[0]))
                 if detail and label == wanted:

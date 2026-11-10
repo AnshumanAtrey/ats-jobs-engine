@@ -59,9 +59,19 @@ class Session:
 
     def __init__(self, answers: list, employer: list | None = None):
         self.answers, self.employer, self.calls = list(answers), list(employer or []), []
+        self.opened, self.closed, self.made_by = 1, 0, []    # sessions opened and closed; the one each call went on
+
+    def fresh(self):
+        """Connection.new_session in the tests: the same answers, counted as a new session."""
+        self.opened += 1
+        return self
+
+    async def close(self):
+        self.closed += 1
 
     async def get(self, url, params=None, proxy=None):
         self.calls.append((url, dict(params or {}), proxy))
+        self.made_by.append(self.opened)
         if 'company' in (params or {}):
             answers = self.employer or [Response(200, {'pageProps': {'ssrHits': [], 'ssrIsLastPage': True}})]
         else:
@@ -89,6 +99,8 @@ def connected(platform: hc.HiringCafe, answers: list, proxy: Proxy | None = None
     session = Session(answers, employer)
     conn = platform.conn
     conn.session = session
+    conn.new_session = session.fresh
+    conn.at_home = lambda: False          # a laptop; a test on Apify sets it
     conn.build_id = 'BUILD'
 
     async def turn(gap):
@@ -110,6 +122,11 @@ def connected(platform: hc.HiringCafe, answers: list, proxy: Proxy | None = None
 
 def run(coro):
     return asyncio.run(coro)
+
+
+def hc_actor():
+    from apify import Actor
+    return Actor
 
 
 def read_pages(platform, term=None, days=None, company=None) -> list[list[dict]]:
@@ -322,11 +339,26 @@ class Places(unittest.TestCase):
         self.assertEqual([c[1]['query'] for c in session.calls], ['Bangalore', 'Bengaluru'])
         self.assertEqual(found[0]['id'], 'b1')
 
-    def test_a_place_it_does_not_know_is_checked_by_name_on_the_newest_pages(self):
-        platform, found, session = self.locations(['Atlantis'])
+    def test_a_place_nobody_lists_searches_nothing(self):
+        platform, found, session = self.locations(['Koramangala'])
         self.assertEqual(found, [])
-        self.assertTrue(platform.scan)
-        self.assertTrue(any('Atlantis' in n for n in platform.cfg.notes))
+        self.assertTrue(platform.nowhere)
+        self.assertTrue(any('Koramangala is not on HiringCafe\'s list of places, so nothing was searched' in n
+                            for n in platform.cfg.notes))
+
+    def test_a_place_nobody_lists_is_left_out_beside_one_it_lists(self):
+        platform, found, session = self.locations(['Koramangala', 'London'],
+                                                  [Response(200, []), Response(200, DATA['places_london'])])
+        self.assertEqual([p['id'] for p in found], ['xRg1yZQBoEtHp_8UXQ1z'])
+        self.assertFalse(platform.nowhere)
+        self.assertTrue(any('searched only among the other places' in n for n in platform.cfg.notes))
+
+    def test_a_place_list_that_fails_is_an_error_not_an_unknown_place(self):
+        platform = made({'location': ['Koramangala']})
+        connected(platform, [Response(503, None, text='Service Unavailable')])
+        with self.assertRaises(BoardError):
+            run(platform.locations(platform.cfg.locations))
+        self.assertFalse(platform.nowhere)
 
     def test_the_search_box_reads_hiringcafes_cities_and_states(self):
         cases = {'nurse in California': ('nurse', ['California']), 'data analyst in London': ('data analyst', ['London']),
@@ -506,12 +538,11 @@ class Paging(unittest.TestCase):
         self.assertTrue(any('60,000' in n for n in platform.cfg.notes))
         self.assertEqual(len(session.searches()), 3)
 
-    def test_an_unknown_place_reads_only_the_newest_pages(self):
-        platform = made({'location': ['Atlantis']})
-        connected(platform, [Response(200, []), self.page('world_newest')])
-        pages = read_pages(platform)
-        self.assertEqual(len(pages), hc.SCAN_PAGES)
-        self.assertTrue(platform.incomplete and platform.count_is_floor)
+    def test_a_place_nobody_lists_reads_no_page(self):
+        platform = made({'location': ['Koramangala']})
+        session = connected(platform, [Response(200, []), self.page('world_newest')])
+        self.assertEqual(read_pages(platform), [])
+        self.assertEqual([c for c in session.searches() if 'searchState' in c[1]], [])   # the place lookup alone
 
     def test_a_search_error_is_a_board_error(self):
         platform = made()
@@ -682,6 +713,42 @@ class Connection(unittest.TestCase):
             run(platform.conn.get('https://hiringcafe.com/x'))
         self.assertIn('proxyConfiguration', str(caught.exception))
 
+    def test_each_proxy_address_gets_a_fresh_session(self):
+        """Cloudflare's cookies stay with the address that got them (13 fresh addresses in a row were challenged when
+        one session went through them all, run XfSvA5FkrUJfHSdSD)."""
+        platform = made()
+        proxy = Proxy()
+        session = connected(platform, [challenge(), challenge(), Response(200, {'ok': 1})], proxy)
+        self.assertEqual(run(platform.conn.get('https://hiringcafe.com/x')).status_code, 200)
+        self.assertEqual([c[2] for c in session.calls], [None, 'http://proxy/1', 'http://proxy/2'])
+        self.assertEqual(session.made_by, [1, 2, 3])
+        run(platform.conn.close())
+        self.assertEqual(session.closed, 3)                   # the earlier addresses' sessions too, at the end
+
+    def test_on_apify_the_first_call_goes_through_residential(self):
+        platform = made()
+        proxy = Proxy()
+        session = connected(platform, [Response(200, {'ok': 1})], proxy)
+        platform.conn.at_home = lambda: True
+        run(platform.conn.get('https://hiringcafe.com/x'))
+        self.assertEqual([c[2] for c in session.calls], ['http://proxy/1'])     # no call from Apify's own address
+        self.assertFalse(any('residential proxy' in n for n in platform.cfg.notes))
+
+    def test_on_apify_the_users_proxy_wins_over_residential(self):
+        asked = []
+
+        async def configure(**kwargs):
+            asked.append(kwargs)
+            return Proxy()
+        for raw, want in (({'proxyConfiguration': {'useApifyProxy': True, 'apifyProxyGroups': ['SHADER']}}, 'actor_proxy_input'),
+                          ({}, 'groups')):
+            platform = made(raw)
+            platform.conn.at_home = lambda: True
+            with patch.object(hc_actor(), 'create_proxy_configuration', configure):
+                self.assertTrue(run(platform.conn.setup_proxy(automatic=True)))
+            self.assertIn(want, asked[-1], raw)
+        self.assertEqual(asked[-1], {'groups': ['RESIDENTIAL']})
+
     def test_a_proxy_the_user_set_is_used_from_the_first_call(self):
         platform = made({'proxyConfiguration': {'useApifyProxy': True, 'apifyProxyGroups': ['RESIDENTIAL']}})
         proxy = Proxy()
@@ -701,6 +768,17 @@ class Connection(unittest.TestCase):
 
 
 class DetailsAndLinks(unittest.TestCase):
+    def test_a_search_row_is_charged_as_detailed_only_once_its_description_came(self):
+        """HiringCafe's search hits carry no description (job_information: titles, views, saves; 0 of 1,985 rows of run
+        XfSvA5FkrUJfHSdSD), so the engine's own rule (any description) charges job-details only after details()."""
+        platform = made({'includeDetails': True})
+        job = platform.job(hits('world_newest')[0])
+        self.assertFalse(platform.detailed(job))
+        connected(platform, [Response(200, DATA['description'])])
+        self.assertTrue(platform.detailed(run(platform.details(None, None, job))))
+        connected(platform, [Response(404, {})])                  # gone since the search: saved without details
+        self.assertFalse(platform.detailed(run(platform.details(None, None, job))))
+
     def test_details_add_the_description(self):
         platform = made({'includeDetails': True})
         session = connected(platform, [Response(200, DATA['description'])])
@@ -779,6 +857,13 @@ class EngineRun(unittest.TestCase):
         self.assertEqual(delivery.rows, 20)
         self.assertIn('Found at least 20 matching jobs', run_.message())
         self.assertIn('stopped answering after 1 page of the search', run_.message())
+
+    def test_a_place_nobody_lists_ends_the_run_at_once_and_says_why(self):
+        run_, delivery = self.go({'searchTerms': ['software engineer'], 'location': ['Koramangala']}, [Response(200, [])])
+        self.assertEqual(delivery.rows, 0)
+        self.assertEqual(len(run_.platform.conn.session.calls), 1)            # the place lookup, no search page
+        self.assertIn('Koramangala is not on HiringCafe\'s list of places, so nothing was searched: type the city, '
+                      'state or country it is in.', run_.message())
 
     def test_a_search_keeps_only_what_matches(self):
         run_, delivery = self.go({'searchTerms': ['software engineer'], 'location': ['United Kingdom'],
