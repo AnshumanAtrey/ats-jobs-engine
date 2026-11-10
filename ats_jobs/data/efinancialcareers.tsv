@@ -1,0 +1,1456 @@
+# eFinancialCareers sectors and places, updated 2026-11-10: the values its search filters take.
+# Columns: kind (SECTOR, SUBSECTOR or PLACE), the value eFinancialCareers takes (filters.sectors or filters.locationPath), its name on the site, the form value (a sector) or the country code (a place), open jobs.
+# Rebuilt by scripts/refresh_efinancialcareers.py; 36 sectors, 259 sub-sectors, 66 countries, 1092 cities (CITY rows: the site's name, the city alone, its country code, open jobs).
+SECTOR	INFORMATION_TECHNOLOGY	Technology	technology	34977
+SUBSECTOR	INFORMATION_TECHNOLOGY/OTHER	Other		25805
+SUBSECTOR	INFORMATION_TECHNOLOGY/DEVELOPMENT	Development		3751
+SUBSECTOR	INFORMATION_TECHNOLOGY/PROJECT_MANAGEMENT	Project Management		1344
+SUBSECTOR	INFORMATION_TECHNOLOGY/DATA_MANAGEMENT	Data management		1134
+SUBSECTOR	INFORMATION_TECHNOLOGY/ENGINEERING	Engineering		722
+SUBSECTOR	INFORMATION_TECHNOLOGY/SYSTEM_ADMINISTRATION_SUPPORT	System Administration Support		618
+SUBSECTOR	INFORMATION_TECHNOLOGY/PRODUCT_MANAGEMENT	Product management		539
+SUBSECTOR	INFORMATION_TECHNOLOGY/CHANGE_AND_TRANSFORMATION	Change and Transformation		368
+SUBSECTOR	INFORMATION_TECHNOLOGY/STRATEGY_BUSINESS_ANALYST	Strategy/Business Analyst		342
+SUBSECTOR	INFORMATION_TECHNOLOGY/BUSINESS_ANALYSIS	Business Analysis		241
+SUBSECTOR	INFORMATION_TECHNOLOGY/SALES_MARKETING	Sales & Marketing		231
+SUBSECTOR	INFORMATION_TECHNOLOGY/INFRASTRUCTURE	Infrastructure		227
+SUBSECTOR	INFORMATION_TECHNOLOGY/CYBER_SECURITY	Cyber security		199
+SUBSECTOR	INFORMATION_TECHNOLOGY/ARCHITECTURE_AND_DESIGN	Architecture and design		144
+SUBSECTOR	INFORMATION_TECHNOLOGY/DEVELOPMENT_PROGRAMMING	Development/Programming		133
+SUBSECTOR	INFORMATION_TECHNOLOGY/PROGRAM_MANAGEMENT	Program management		95
+SUBSECTOR	INFORMATION_TECHNOLOGY/QUALITY_MANAGEMENT_AND_TESTING	Quality management and testing		85
+SUBSECTOR	INFORMATION_TECHNOLOGY/DIGITAL_TRANSFORMATION	Digital Transformation		63
+SUBSECTOR	INFORMATION_TECHNOLOGY/IT_SERVICE_MANAGEMENT	IT Service management		62
+SUBSECTOR	INFORMATION_TECHNOLOGY/END_USER_SUPPORT_HELP_DESK	End user support/Help desk		60
+SUBSECTOR	INFORMATION_TECHNOLOGY/PROJECT_PROGRAMME_MANAGEMENT	Project / Programme management		55
+SUBSECTOR	INFORMATION_TECHNOLOGY/INFORMATION_SECURITY	Information security		40
+SUBSECTOR	INFORMATION_TECHNOLOGY/FINTECH	Fintech		19
+SUBSECTOR	INFORMATION_TECHNOLOGY/SYSTEM_NETWORK_ADMINISTRATION	System/ Network Administration		17
+SUBSECTOR	INFORMATION_TECHNOLOGY/TRAINING	Training		1
+SECTOR	ACCOUNTING_FINANCE	Accounting & Finance	accounting-finance	14719
+SUBSECTOR	ACCOUNTING_FINANCE/OTHER	Other		9304
+SUBSECTOR	ACCOUNTING_FINANCE/TAX	Tax		2046
+SUBSECTOR	ACCOUNTING_FINANCE/ACCOUNTING	Accounting		776
+SUBSECTOR	ACCOUNTING_FINANCE/AUDIT	Audit		737
+SUBSECTOR	ACCOUNTING_FINANCE/CONSULTING_AND_ADVISORY	Consulting and Advisory		629
+SUBSECTOR	ACCOUNTING_FINANCE/FINANCIAL_ADVISORY_SERVICES	Financial Advisory Services		493
+SUBSECTOR	ACCOUNTING_FINANCE/FINANCIAL_CONTROL	Financial Control		433
+SUBSECTOR	ACCOUNTING_FINANCE/FINANCIAL_MGMT_ACCOUNTING	Financial/MGMT Accounting		286
+SUBSECTOR	ACCOUNTING_FINANCE/REGULATORY_REPORTING	Regulatory Reporting		152
+SUBSECTOR	ACCOUNTING_FINANCE/ADMINISTRATION	Administration		129
+SUBSECTOR	ACCOUNTING_FINANCE/FD_CFO	FD/CFO		80
+SUBSECTOR	ACCOUNTING_FINANCE/TREASURY	Treasury		56
+SUBSECTOR	ACCOUNTING_FINANCE/FUND_ACCOUNTING	Fund Accounting		54
+SUBSECTOR	ACCOUNTING_FINANCE/CHANGE_AND_TRANSFORMATION	Change and Transformation		48
+SUBSECTOR	ACCOUNTING_FINANCE/PRACTICE	Practice		44
+SUBSECTOR	ACCOUNTING_FINANCE/ACTURIAL	Actuarial		36
+SUBSECTOR	ACCOUNTING_FINANCE/FUND_ADMINISTRATION	Fund Administration		22
+SUBSECTOR	ACCOUNTING_FINANCE/NEWLY_PART_QUALIFIED	Newly/Part Qualified		13
+SUBSECTOR	ACCOUNTING_FINANCE/PRODUCT_CONTROL	Product Control		13
+SUBSECTOR	ACCOUNTING_FINANCE/VALUATIONS	Valuations		8
+SECTOR	INSURANCE	Insurance	insurance	3635
+SUBSECTOR	INSURANCE/OTHER	Other		3484
+SUBSECTOR	INSURANCE/INVESTMENT	Investment		59
+SUBSECTOR	INSURANCE/CLAIMS	Claims		44
+SUBSECTOR	INSURANCE/SALES	Sales		40
+SUBSECTOR	INSURANCE/ACTUARIAL	Actuarial		37
+SUBSECTOR	INSURANCE/UNDERWRITING	Underwriting		14
+SUBSECTOR	INSURANCE/BROKER	Broker		7
+SECTOR	COMPLIANCE_LEGAL	Compliance/Legal	compliance-legal	2878
+SUBSECTOR	COMPLIANCE_LEGAL/COMPLIANCE_REGULATORY	Compliance Regulatory		1389
+SUBSECTOR	COMPLIANCE_LEGAL/OTHER	Other		911
+SUBSECTOR	COMPLIANCE_LEGAL/IN_HOUSE_LEGAL	In-house Legal		725
+SECTOR	OPERATIONS	Operations	operations	2627
+SUBSECTOR	OPERATIONS/OTHER	Other		2010
+SUBSECTOR	OPERATIONS/PROJECT_PROGRAMME_MANAGEMENT	Project / Programme management		288
+SUBSECTOR	OPERATIONS/BUSINESS_MANAGEMENT	Business management		140
+SUBSECTOR	OPERATIONS/TRADE_SUPPORT	Trade Support		120
+SUBSECTOR	OPERATIONS/CLIENT_SERVICES	Client services		107
+SUBSECTOR	OPERATIONS/CHANGE_AND_TRANSFORMATION	Change and Transformation		55
+SUBSECTOR	OPERATIONS/SETTLEMENTS	Settlements		49
+SUBSECTOR	OPERATIONS/RECONCILIATION	Reconciliation		18
+SUBSECTOR	OPERATIONS/DOCUMENTATION	Documentation		17
+SUBSECTOR	OPERATIONS/CORPORATE_ACTION	Corporate action		16
+SUBSECTOR	OPERATIONS/COLLATERAL_MANAGEMENT	Collateral Management		10
+SUBSECTOR	OPERATIONS/CLEARING	Clearing		6
+SUBSECTOR	OPERATIONS/LOAN_SERVICING	Loan servicing		6
+SUBSECTOR	OPERATIONS/CREDIT_ANALYSIS	Credit analysis		5
+SUBSECTOR	OPERATIONS/LOAN_ADMINISTRATION	Loan administration		5
+SECTOR	ASSET_MANAGEMENT	Asset Management	asset-management	2381
+SUBSECTOR	ASSET_MANAGEMENT/OTHER	Other		1200
+SUBSECTOR	ASSET_MANAGEMENT/PORTFOLIO_MANAGER	Portfolio Manager		249
+SUBSECTOR	ASSET_MANAGEMENT/CREDIT	Credit		192
+SUBSECTOR	ASSET_MANAGEMENT/SALES_CLIENT_SERVICES	Sales & Client Services		172
+SUBSECTOR	ASSET_MANAGEMENT/OPERATIONS	Operations		134
+SUBSECTOR	ASSET_MANAGEMENT/SALES_RELATIONSHIP_MANAGEMENT	Sales/Relationship Management		108
+SUBSECTOR	ASSET_MANAGEMENT/ANALYST	Analyst		102
+SUBSECTOR	ASSET_MANAGEMENT/FUND_MANAGEMENT	Fund management		75
+SUBSECTOR	ASSET_MANAGEMENT/REAL_ESTATE	Real Estate		41
+SUBSECTOR	ASSET_MANAGEMENT/TRADING	Trading		39
+SUBSECTOR	ASSET_MANAGEMENT/ACCOUNTING	Accounting		34
+SUBSECTOR	ASSET_MANAGEMENT/COMPLIANCE	Compliance		28
+SUBSECTOR	ASSET_MANAGEMENT/EQUITIES	Equities		25
+SUBSECTOR	ASSET_MANAGEMENT/PRODUCT_MANAGER	Product Manager		24
+SUBSECTOR	ASSET_MANAGEMENT/RESEARCH_BUSINESS_ANALYSIS	Research & Business Analysis		21
+SUBSECTOR	ASSET_MANAGEMENT/CONSULTING_AND_ADVISORY	Consulting and Advisory		16
+SUBSECTOR	ASSET_MANAGEMENT/INVESTOR_RELATIONS	Investor Relations		15
+SUBSECTOR	ASSET_MANAGEMENT/AUDIT	Audit		13
+SUBSECTOR	ASSET_MANAGEMENT/CHANGE_AND_TRANSFORMATION	Change and Transformation		12
+SUBSECTOR	ASSET_MANAGEMENT/ADMINISTRATION	Administration		11
+SUBSECTOR	ASSET_MANAGEMENT/QUANT_STRUCTURING	Quant & Structuring		11
+SUBSECTOR	ASSET_MANAGEMENT/CIO	CIO		9
+SUBSECTOR	ASSET_MANAGEMENT/INTEREST_RATES	Interest Rates		9
+SUBSECTOR	ASSET_MANAGEMENT/INVESTMENT_WRITER	Investment Writer		9
+SUBSECTOR	ASSET_MANAGEMENT/STRATEGIST_ECONOMIST	Strategist/Economist		6
+SUBSECTOR	ASSET_MANAGEMENT/PRODUCT_CONTROL	Product Control		5
+SUBSECTOR	ASSET_MANAGEMENT/STRUCTURED_PRODUCTS	Structured Products		4
+SUBSECTOR	ASSET_MANAGEMENT/CLAIMS	Claims		3
+SUBSECTOR	ASSET_MANAGEMENT/COMMODITIES	Commodities		2
+SUBSECTOR	ASSET_MANAGEMENT/CORPORATE_FINANCE_M_A	Corporate Finance/M&A		2
+SUBSECTOR	ASSET_MANAGEMENT/DERIVATIVES	Derivatives		2
+SUBSECTOR	ASSET_MANAGEMENT/FX	FX		2
+SUBSECTOR	ASSET_MANAGEMENT/BROKING	Broking		1
+SUBSECTOR	ASSET_MANAGEMENT/DEALER	Dealer		1
+SECTOR	PRIVATE_BANKING_WEALTH_MANAGEMENT	Private Banking & Wealth Management	private-banking-wealth-management	1970
+SUBSECTOR	PRIVATE_BANKING_WEALTH_MANAGEMENT/PORTFOLIO_MANAGEMENT	Portfolio Management		935
+SUBSECTOR	PRIVATE_BANKING_WEALTH_MANAGEMENT/CLIENT_RELATIONS	Client Relations		683
+SUBSECTOR	PRIVATE_BANKING_WEALTH_MANAGEMENT/PRIVATE_CLIENT	Private Client		420
+SUBSECTOR	PRIVATE_BANKING_WEALTH_MANAGEMENT/PRODUCT_SPECIALISATION	Product Specialisation		254
+SUBSECTOR	PRIVATE_BANKING_WEALTH_MANAGEMENT/FINANCIAL_PLANNING	Financial Planning		134
+SUBSECTOR	PRIVATE_BANKING_WEALTH_MANAGEMENT/INFRASTRUCTURE	Infrastructure		9
+SECTOR	SALES_MARKETING	Sales & Marketing	sales-marketing	1897
+SECTOR	RISK_MANAGEMENT	Risk Management	risk-management	1857
+SUBSECTOR	RISK_MANAGEMENT/OTHER	Other		1377
+SUBSECTOR	RISK_MANAGEMENT/OPERATIONAL	Operational		183
+SUBSECTOR	RISK_MANAGEMENT/CREDIT	Credit		139
+SUBSECTOR	RISK_MANAGEMENT/MARKET	Market		49
+SUBSECTOR	RISK_MANAGEMENT/CONSULTING_AND_ADVISORY	Consulting and Advisory		47
+SUBSECTOR	RISK_MANAGEMENT/REGULATORY	Regulatory		44
+SUBSECTOR	RISK_MANAGEMENT/AUDIT	Audit		25
+SUBSECTOR	RISK_MANAGEMENT/PROJECT_PROGRAMME_MANAGEMENT	Project / Programme management		15
+SUBSECTOR	RISK_MANAGEMENT/LIQUIDITY_ASSET_BACKED_RISK	Liquidity / asset backed risk		13
+SUBSECTOR	RISK_MANAGEMENT/COUNTRY	Country		9
+SUBSECTOR	RISK_MANAGEMENT/CHANGE_AND_TRANSFORMATION	Change and Transformation		2
+SECTOR	CORPORATE_BANKING	Corporate Banking	corporate-banking	1228
+SUBSECTOR	CORPORATE_BANKING/OTHER	Other		586
+SUBSECTOR	CORPORATE_BANKING/RELATIONSHIP_MANAGEMENT	Relationship Management		381
+SUBSECTOR	CORPORATE_BANKING/LOANS_SYNDICATION	Loans Syndication		152
+SUBSECTOR	CORPORATE_BANKING/TRANSACTION_BANKING	Transaction Banking		51
+SUBSECTOR	CORPORATE_BANKING/ASSET_FINANCE_LEASING	Asset Finance/Leasing		46
+SUBSECTOR	CORPORATE_BANKING/TRADE_FINANCE	Trade Finance		32
+SUBSECTOR	CORPORATE_BANKING/ACQUISITION_FINANCE	Acquisition Finance		25
+SUBSECTOR	CORPORATE_BANKING/LEVERAGED_FINANCE	Leveraged Finance		19
+SUBSECTOR	CORPORATE_BANKING/STRUCTURED_TAX_FINANCE	Structured/Tax Finance		13
+SUBSECTOR	CORPORATE_BANKING/PROJECT_FINANCE_PFI	Project Finance/PFI		7
+SECTOR	RETAIL_BANKING	Retail Banking	retail-banking	1198
+SUBSECTOR	RETAIL_BANKING/BRANCH_AND_RETAIL_SERVICES	Branch and Retail Services		417
+SUBSECTOR	RETAIL_BANKING/RELATIONSHIP_MANAGEMENT	Relationship management		359
+SUBSECTOR	RETAIL_BANKING/BUSINESS_BANKING	Business Banking		153
+SUBSECTOR	RETAIL_BANKING/INSURANCE_AND_INVESTMENT	Insurance & investment		127
+SUBSECTOR	RETAIL_BANKING/LOANS_AN_CREDIT	Loans & credit		60
+SUBSECTOR	RETAIL_BANKING/CALL_CENTERS_AND_CUSTORMER_SERVICES	Call Centers and Customer Service		44
+SUBSECTOR	RETAIL_BANKING/DEPOSITS_AND_SAVINGS	Deposits & savings		1
+SECTOR	CONSULTANCY	Consultancy	consultancy	1079
+SECTOR	HR_RECRUITMENT	HR & Recruitment	hr-recruitment	929
+SUBSECTOR	HR_RECRUITMENT/RECRUITMENT	Recruitment		564
+SUBSECTOR	HR_RECRUITMENT/COMPENSATION_BENEFITS	Compensation Benefits		166
+SUBSECTOR	HR_RECRUITMENT/OTHER	Other		142
+SUBSECTOR	HR_RECRUITMENT/HR_GENERALIST	HR Generalist		60
+SUBSECTOR	HR_RECRUITMENT/TRAINING_DEVELOPMENT	Training & Development		46
+SUBSECTOR	HR_RECRUITMENT/RESEARCH	Research		3
+SECTOR	INVESTMENT_BANKING_M_A	Investment Banking/M&A	investment-banking-m-a	822
+SUBSECTOR	INVESTMENT_BANKING_M_A/M_A_CORPORATE_FINANCE	M&A/Corporate Finance		336
+SUBSECTOR	INVESTMENT_BANKING_M_A/OTHER	Other		174
+SUBSECTOR	INVESTMENT_BANKING_M_A/SALES_RELATIONSHIP_MANAGEMENT	Sales/Relationship Management		92
+SUBSECTOR	INVESTMENT_BANKING_M_A/OPERATIONS	Operations		50
+SUBSECTOR	INVESTMENT_BANKING_M_A/CORPORATE_FINANCE_M_A	Corporate Finance/M&A		39
+SUBSECTOR	INVESTMENT_BANKING_M_A/PORTFOLIO_INVESTMENT_MANAGEMENT	Portfolio & Investment Management		29
+SUBSECTOR	INVESTMENT_BANKING_M_A/ACCOUNTING	Accounting		22
+SUBSECTOR	INVESTMENT_BANKING_M_A/COMPLIANCE	Compliance		21
+SUBSECTOR	INVESTMENT_BANKING_M_A/EQUITIES	Equities		21
+SUBSECTOR	INVESTMENT_BANKING_M_A/CONSULTING_AND_ADVISORY	Consulting and Advisory		14
+SUBSECTOR	INVESTMENT_BANKING_M_A/INVESTOR_RELATIONS	Investor Relations		11
+SUBSECTOR	INVESTMENT_BANKING_M_A/CREDIT	Credit		10
+SUBSECTOR	INVESTMENT_BANKING_M_A/STRUCTURED_PRODUCTS	Structured Products		9
+SUBSECTOR	INVESTMENT_BANKING_M_A/ADMINISTRATION	Administration		8
+SUBSECTOR	INVESTMENT_BANKING_M_A/ORIGINATION	Origination		8
+SUBSECTOR	INVESTMENT_BANKING_M_A/RESEARCH_BUSINESS_ANALYSIS	Research & Business Analysis		8
+SUBSECTOR	INVESTMENT_BANKING_M_A/DERIVATIVES	Derivatives		6
+SUBSECTOR	INVESTMENT_BANKING_M_A/PRODUCT_CONTROL	Product Control		6
+SUBSECTOR	INVESTMENT_BANKING_M_A/PROJECT_MANAGEMENT	Project management		6
+SUBSECTOR	INVESTMENT_BANKING_M_A/AUDIT	Audit		5
+SUBSECTOR	INVESTMENT_BANKING_M_A/CHANGE_AND_TRANSFORMATION	Change and Transformation		4
+SUBSECTOR	INVESTMENT_BANKING_M_A/TRADING	Trading		4
+SUBSECTOR	INVESTMENT_BANKING_M_A/COMMODITIES	Commodities		3
+SUBSECTOR	INVESTMENT_BANKING_M_A/REAL_ESTATE	Real Estate		3
+SUBSECTOR	INVESTMENT_BANKING_M_A/INTEREST_RATES	Interest Rates		2
+SUBSECTOR	INVESTMENT_BANKING_M_A/QUANT_STRUCTURING	Quant & Structuring		2
+SUBSECTOR	INVESTMENT_BANKING_M_A/FX	FX		1
+SUBSECTOR	INVESTMENT_BANKING_M_A/PRIME_BROKERAGE	Prime Brokerage		1
+SECTOR	REAL_ESTATE	Real Estate	real-estate	391
+SECTOR	GRADUATES_INTERNSHIPS	Graduates & Internships	graduates-internships	345
+SUBSECTOR	GRADUATES_INTERNSHIPS/INTERNSHIPS	Internships		262
+SUBSECTOR	GRADUATES_INTERNSHIPS/GRADUATE_TRAINEE	Graduate Trainee		61
+SUBSECTOR	GRADUATES_INTERNSHIPS/OTHER	Other		31
+SECTOR	TRADING	Trading	trading	308
+SUBSECTOR	TRADING/OTHER	Other		158
+SUBSECTOR	TRADING/CAPITAL_MARKETS	Capital markets		48
+SUBSECTOR	TRADING/EQUITIES	Equities		22
+SUBSECTOR	TRADING/DERIVATIVES_GENERAL	Derivatives (general)		13
+SUBSECTOR	TRADING/COMMODITIES	Commodities		9
+SUBSECTOR	TRADING/FIXED_INCOME	Fixed Income		5
+SUBSECTOR	TRADING/FOREX	Forex		4
+SUBSECTOR	TRADING/MONEY_MARKETS	Money markets		4
+SUBSECTOR	TRADING/OTC_DERIVATIVES	OTC Derivatives		4
+SUBSECTOR	TRADING/FX_OPTIONS	FX Options		3
+SUBSECTOR	TRADING/CREDIT	Credit		2
+SUBSECTOR	TRADING/INTEREST_RATES_OTC	Interest Rates / OTC		2
+SUBSECTOR	TRADING/SWAPS	Swaps		1
+SECTOR	QUANTITATIVE_ANALYTICS	Quantitative Analytics	quantitative-analytics	279
+SUBSECTOR	QUANTITATIVE_ANALYTICS/OTHER	Other		142
+SUBSECTOR	QUANTITATIVE_ANALYTICS/EQUITY	Equity		94
+SUBSECTOR	QUANTITATIVE_ANALYTICS/FX	FX		37
+SUBSECTOR	QUANTITATIVE_ANALYTICS/CREDIT	Credit		32
+SUBSECTOR	QUANTITATIVE_ANALYTICS/INTEREST_RATES	Interest Rates		26
+SUBSECTOR	QUANTITATIVE_ANALYTICS/COMMODITIES	Commodities		9
+SECTOR	INFORMATION_SERVICES	Information Services	information-services	265
+SECTOR	PRIVATE_EQUITY_VENTURE_CAPITAL	Private Equity & Venture Capital	private-equity-venture-capital	247
+SECTOR	FINTECH	Fintech	fintech	238
+SUBSECTOR	FINTECH/ASSET_MANAGEMENT	Asset Management		76
+SUBSECTOR	FINTECH/ACCOUNTING_AND_FINANCE	Accounting & Finance		47
+SUBSECTOR	FINTECH/INSURANCE	Insurance		29
+SUBSECTOR	FINTECH/FINANCIAL_SERVICES_AND_AUTOMATION	Financial Services & Automation		21
+SUBSECTOR	FINTECH/CORE_BANKING_AND_INFRASTRUCTURE	Core Banking & Infrastructure		15
+SUBSECTOR	FINTECH/DIGITAL_BANKING	Digital Banking		15
+SUBSECTOR	FINTECH/CAPITAL_MARKETS	Capital Markets		12
+SUBSECTOR	FINTECH/PAYMENTS_PROCESSING_AND_NETWORKS	Payments Processing & Networks		9
+SUBSECTOR	FINTECH/CRYPTO	Crypto		8
+SUBSECTOR	FINTECH/REGULATORY_AND_COMPLIANCE	Regulatory & Compliance 		6
+SUBSECTOR	FINTECH/BLOCKCHAIN	Blockchain		3
+SUBSECTOR	FINTECH/CREDIT_SCORE_AND_ANALYTICS	Credit Score & Analytics		2
+SUBSECTOR	FINTECH/PERSONAL_FINANCE	Personal Finance		2
+SUBSECTOR	FINTECH/BUSINESS_LENDING_AND_FINANCE	Business Lending & Finance		1
+SUBSECTOR	FINTECH/RETAIL_INVESTING_AND_SECONDARY_MARKETS	Retail Investing & Secondary Markets		1
+SECTOR	HEDGE_FUNDS	Hedge Funds	hedge-funds	175
+SUBSECTOR	HEDGE_FUNDS/IT_QUANT	IT/Quant		63
+SUBSECTOR	HEDGE_FUNDS/FINANCE_OPERATIONS	Finance Operations		47
+SUBSECTOR	HEDGE_FUNDS/RESEARCH_ANALYSIS	Research Analysis		26
+SUBSECTOR	HEDGE_FUNDS/OTHER	Other		15
+SUBSECTOR	HEDGE_FUNDS/RISK_MANAGEMENT	Risk Management		13
+SUBSECTOR	HEDGE_FUNDS/SALES_MARKETING	Sales & Marketing		10
+SUBSECTOR	HEDGE_FUNDS/TRADING	Trading		10
+SUBSECTOR	HEDGE_FUNDS/PORTFOLIO_MANAGER	Portfolio Manager		5
+SUBSECTOR	HEDGE_FUNDS/PRIME_BROKERAGE	Prime Brokerage		2
+SUBSECTOR	HEDGE_FUNDS/STRUCTURING	Structuring		1
+SECTOR	INVESTOR_RELATIONS_PR	Investor Relations & PR	investor-relations-pr	148
+SUBSECTOR	INVESTOR_RELATIONS_PR/COMMUNICATIONS_PR	Communications & PR		92
+SUBSECTOR	INVESTOR_RELATIONS_PR/OTHER	Other		41
+SUBSECTOR	INVESTOR_RELATIONS_PR/INVESTOR_RELATIONS	Investor Relations		24
+SECTOR	CREDIT	Credit	credit	143
+SECTOR	EQUITIES	Equities	equities	138
+SUBSECTOR	EQUITIES/OTHER	Other		71
+SUBSECTOR	EQUITIES/RESEARCH	Research		26
+SUBSECTOR	EQUITIES/TRADING	Trading		20
+SUBSECTOR	EQUITIES/SALES_TRADING	Sales-Trading		13
+SUBSECTOR	EQUITIES/SALES	Sales		11
+SECTOR	CAPITAL_MARKETS	Capital Markets	capital-markets	104
+SUBSECTOR	CAPITAL_MARKETS/OTHER	Other		67
+SUBSECTOR	CAPITAL_MARKETS/ORIGINATION	Origination		15
+SUBSECTOR	CAPITAL_MARKETS/EXECUTION	Execution		14
+SUBSECTOR	CAPITAL_MARKETS/DOCUMENTATION_STRUCTURING	Documentation Structuring		7
+SUBSECTOR	CAPITAL_MARKETS/SECURITISATION	Securitisation		4
+SUBSECTOR	CAPITAL_MARKETS/SYNDICATION	Syndication		4
+SECTOR	COMMODITIES	Commodities	commodities	104
+SUBSECTOR	COMMODITIES/ENERGY	Energy		64
+SUBSECTOR	COMMODITIES/TRADING	Trading		20
+SUBSECTOR	COMMODITIES/OTHER	Other		19
+SUBSECTOR	COMMODITIES/SALES	Sales		11
+SUBSECTOR	COMMODITIES/RESEARCH	Research		3
+SECTOR	DEBT_FIXED_INCOME	Debt/Fixed Income	debt-fixed-income	94
+SUBSECTOR	DEBT_FIXED_INCOME/OTHER	Other		42
+SUBSECTOR	DEBT_FIXED_INCOME/SALES	Sales		28
+SUBSECTOR	DEBT_FIXED_INCOME/TRADING	Trading		11
+SUBSECTOR	DEBT_FIXED_INCOME/RESEARCH	Research		10
+SUBSECTOR	DEBT_FIXED_INCOME/SALES_TRADING	Sales-Trading		4
+SECTOR	RESEARCH	Research	research	86
+SECTOR	FX_MONEY_MARKETS	FX & Money Markets	fx-money-markets	76
+SUBSECTOR	FX_MONEY_MARKETS/OTHER	Other		41
+SUBSECTOR	FX_MONEY_MARKETS/SALES_TRADING	Sales-Trading		15
+SUBSECTOR	FX_MONEY_MARKETS/TRADING	Trading		12
+SUBSECTOR	FX_MONEY_MARKETS/SALES	Sales		7
+SUBSECTOR	FX_MONEY_MARKETS/RESEARCH	Research		2
+SECTOR	DERIVATIVES	Derivatives	derivatives	68
+SUBSECTOR	DERIVATIVES/OTHER	Other		33
+SUBSECTOR	DERIVATIVES/TRADING	Trading		22
+SUBSECTOR	DERIVATIVES/STRUCTURING	Structuring		8
+SUBSECTOR	DERIVATIVES/SALES_MARKETING	Sales & Marketing		5
+SUBSECTOR	DERIVATIVES/RESEARCH	Research		4
+SECTOR	INVESTMENT_CONSULTING	Investment Consulting	investment-consulting	63
+SECTOR	GLOBAL_CUSTODY	Global Custody	global-custody	47
+SUBSECTOR	GLOBAL_CUSTODY/CLIENT_SERVICES	Client Services		19
+SUBSECTOR	GLOBAL_CUSTODY/SALES_MARKETING	Sales & Marketing		15
+SUBSECTOR	GLOBAL_CUSTODY/RELATIONSHIP_MANAGEMENT	Relationship Management		6
+SUBSECTOR	GLOBAL_CUSTODY/OTHER	Other		5
+SUBSECTOR	GLOBAL_CUSTODY/PRODUCT_DEVELOPMENT_MANAGEMENT	Product Development Management		2
+SUBSECTOR	GLOBAL_CUSTODY/SETTLEMENTS	Settlements		1
+SECTOR	INDUSTRY_COMMERCE	Industry & Commerce	industry-commerce	30
+SECTOR	PUBLIC_SECTOR	Public Sector	public-sector	17
+SECTOR	ISLAMIC_FINANCE	Islamic Finance	islamic-finance	1
+PLACE	Europe/United Kingdom	United Kingdom	GB	11538
+CITY	London, United Kingdom	London	GB	7549
+CITY	Manchester, United Kingdom	Manchester	GB	388
+CITY	Bristol, United Kingdom	Bristol	GB	299
+CITY	Birmingham, United Kingdom	Birmingham	GB	286
+CITY	Glasgow, United Kingdom	Glasgow	GB	246
+CITY	Belfast, United Kingdom	Belfast	GB	222
+CITY	Edinburgh, United Kingdom	Edinburgh	GB	198
+CITY	Leeds, United Kingdom	Leeds	GB	194
+CITY	Liverpool, United Kingdom	Liverpool	GB	78
+CITY	United Kingdom	United Kingdom	GB	75
+CITY	Cardiff, United Kingdom	Cardiff	GB	72
+CITY	Wroughton, United Kingdom	Wroughton	GB	62
+CITY	Newcastle upon Tyne, United Kingdom	Newcastle upon Tyne	GB	61
+CITY	Derby, United Kingdom	Derby	GB	58
+CITY	Norwich, United Kingdom	Norwich	GB	52
+CITY	Bolton, United Kingdom	Bolton	GB	51
+CITY	Bournemouth, United Kingdom	Bournemouth	GB	51
+CITY	Milton Keynes, United Kingdom	Milton Keynes	GB	51
+CITY	Southampton, United Kingdom	Southampton	GB	43
+CITY	York, United Kingdom	York	GB	41
+CITY	Portsmouth, United Kingdom	Portsmouth	GB	40
+CITY	Sheffield, United Kingdom	Sheffield	GB	37
+CITY	Nottingham, United Kingdom	Nottingham	GB	35
+CITY	Reading, United Kingdom	Reading	GB	35
+CITY	Brighton and Hove, United Kingdom	Brighton and Hove	GB	33
+CITY	Guildford, United Kingdom	Guildford	GB	33
+CITY	Cambridge, United Kingdom	Cambridge	GB	30
+CITY	Preston, United Kingdom	Preston	GB	29
+CITY	Corby, United Kingdom	Corby	GB	24
+CITY	Crawley, United Kingdom	Crawley	GB	24
+CITY	Stratford-upon-Avon, United Kingdom	Stratford-upon-Avon	GB	23
+CITY	Carnforth, United Kingdom	Carnforth	GB	22
+CITY	Maidstone, United Kingdom	Maidstone	GB	22
+CITY	Cirencester, United Kingdom	Cirencester	GB	21
+CITY	Aberdeen, United Kingdom	Aberdeen	GB	19
+CITY	Chelmsford, United Kingdom	Chelmsford	GB	19
+CITY	Leicester, United Kingdom	Leicester	GB	19
+CITY	Orton Longueville, United Kingdom	Orton Longueville	GB	19
+CITY	Colchester, United Kingdom	Colchester	GB	18
+CITY	Cheltenham, United Kingdom	Cheltenham	GB	17
+CITY	Exeter, United Kingdom	Exeter	GB	17
+CITY	Holyhead, United Kingdom	Holyhead	GB	17
+CITY	Barrow-in-Furness, United Kingdom	Barrow-in-Furness	GB	16
+CITY	Mitcham, United Kingdom	Mitcham	GB	16
+CITY	Rochester, United Kingdom	Rochester	GB	16
+CITY	Gloucester, United Kingdom	Gloucester	GB	15
+CITY	Ipswich, United Kingdom	Ipswich	GB	15
+CITY	Eastleigh, United Kingdom	Eastleigh	GB	14
+CITY	Northampton, United Kingdom	Northampton	GB	14
+CITY	Pitsea, United Kingdom	Pitsea	GB	14
+CITY	Keynsham, United Kingdom	Keynsham	GB	13
+CITY	Lanark, United Kingdom	Lanark	GB	13
+CITY	Winchester, United Kingdom	Winchester	GB	13
+CITY	Carlisle, United Kingdom	Carlisle	GB	12
+CITY	Hampton in Arden, United Kingdom	Hampton in Arden	GB	12
+CITY	Leatherhead, United Kingdom	Leatherhead	GB	12
+CITY	Renfrew, United Kingdom	Renfrew	GB	12
+CITY	Stirling, United Kingdom	Stirling	GB	12
+CITY	Durham, United Kingdom	Durham	GB	11
+CITY	Stoke-on-Trent, United Kingdom	Stoke-on-Trent	GB	11
+CITY	Swansea, United Kingdom	Swansea	GB	11
+CITY	Windsor, United Kingdom	Windsor	GB	11
+CITY	Alton, United Kingdom	Alton	GB	10
+CITY	Skipton, United Kingdom	Skipton	GB	10
+CITY	Bury, United Kingdom	Bury	GB	9
+CITY	Kendal, United Kingdom	Kendal	GB	9
+CITY	Lancaster, United Kingdom	Lancaster	GB	9
+CITY	Taunton, United Kingdom	Taunton	GB	9
+CITY	Halifax, United Kingdom	Halifax	GB	8
+CITY	Perth, United Kingdom	Perth	GB	8
+CITY	Plymouth, United Kingdom	Plymouth	GB	8
+CITY	Stockport, United Kingdom	Stockport	GB	8
+CITY	Tamworth, United Kingdom	Tamworth	GB	8
+CITY	Wrexham, United Kingdom	Wrexham	GB	8
+CITY	Birkenhead, United Kingdom	Birkenhead	GB	7
+CITY	Chatham, United Kingdom	Chatham	GB	7
+CITY	Chichester, United Kingdom	Chichester	GB	7
+CITY	Fareham, United Kingdom	Fareham	GB	7
+CITY	Hardingstone, United Kingdom	Hardingstone	GB	7
+CITY	Newport, United Kingdom	Newport	GB	7
+CITY	Northallerton, United Kingdom	Northallerton	GB	7
+CITY	Redhill, United Kingdom	Redhill	GB	7
+CITY	Truro, United Kingdom	Truro	GB	7
+CITY	Witham, United Kingdom	Witham	GB	7
+CITY	Yeovil, United Kingdom	Yeovil	GB	7
+CITY	Basingstoke, United Kingdom	Basingstoke	GB	6
+CITY	Bathampton, United Kingdom	Bathampton	GB	6
+CITY	Bradford, United Kingdom	Bradford	GB	6
+CITY	Coventry, United Kingdom	Coventry	GB	6
+CITY	Dundee, United Kingdom	Dundee	GB	6
+CITY	Lewes, United Kingdom	Lewes	GB	6
+CITY	Pontypool, United Kingdom	Pontypool	GB	6
+CITY	Poole, United Kingdom	Poole	GB	6
+CITY	Wolverhampton, United Kingdom	Wolverhampton	GB	6
+CITY	Worthing, United Kingdom	Worthing	GB	6
+CITY	Banbury, United Kingdom	Banbury	GB	5
+CITY	Blackpool, United Kingdom	Blackpool	GB	5
+CITY	Chester, United Kingdom	Chester	GB	5
+CITY	Chorley, United Kingdom	Chorley	GB	5
+CITY	Ditton, United Kingdom	Ditton	GB	5
+CITY	Dorking, United Kingdom	Dorking	GB	5
+CITY	Harrogate, United Kingdom	Harrogate	GB	5
+CITY	Henley-on-Thames, United Kingdom	Henley-on-Thames	GB	5
+CITY	Hertford, United Kingdom	Hertford	GB	5
+CITY	Oxford, United Kingdom	Oxford	GB	5
+CITY	Rugby, United Kingdom	Rugby	GB	5
+CITY	Salisbury, United Kingdom	Salisbury	GB	5
+CITY	Tadworth, United Kingdom	Tadworth	GB	5
+CITY	Trowbridge, United Kingdom	Trowbridge	GB	5
+CITY	Warrington, United Kingdom	Warrington	GB	5
+CITY	Weybridge, United Kingdom	Weybridge	GB	5
+CITY	Worcester, United Kingdom	Worcester	GB	5
+CITY	Andover, United Kingdom	Andover	GB	4
+CITY	Aylesbury, United Kingdom	Aylesbury	GB	4
+CITY	Balsall Common, United Kingdom	Balsall Common	GB	4
+CITY	Bodmin, United Kingdom	Bodmin	GB	4
+CITY	Bromsgrove, United Kingdom	Bromsgrove	GB	4
+CITY	Christchurch, United Kingdom	Christchurch	GB	4
+CITY	Dudley, United Kingdom	Dudley	GB	4
+CITY	Eastbourne, United Kingdom	Eastbourne	GB	4
+CITY	Frimley, United Kingdom	Frimley	GB	4
+CITY	Gatwick, United Kingdom	Gatwick	GB	4
+CITY	Inverness, United Kingdom	Inverness	GB	4
+CITY	Kettering, United Kingdom	Kettering	GB	4
+CITY	Luton, United Kingdom	Luton	GB	4
+CITY	Shrewsbury, United Kingdom	Shrewsbury	GB	4
+CITY	Stretford, United Kingdom	Stretford	GB	4
+CITY	Uckfield, United Kingdom	Uckfield	GB	4
+CITY	Woking, United Kingdom	Woking	GB	4
+CITY	Addlestone, United Kingdom	Addlestone	GB	3
+CITY	Bedford, United Kingdom	Bedford	GB	3
+CITY	Burnley, United Kingdom	Burnley	GB	3
+CITY	Canterbury, United Kingdom	Canterbury	GB	3
+CITY	Chesterfield, United Kingdom	Chesterfield	GB	3
+CITY	Clevedon, United Kingdom	Clevedon	GB	3
+CITY	Cosham, United Kingdom	Cosham	GB	3
+CITY	Doncaster, United Kingdom	Doncaster	GB	3
+CITY	Droitwich Spa, United Kingdom	Droitwich Spa	GB	3
+CITY	Dumfries, United Kingdom	Dumfries	GB	3
+CITY	East Horsley, United Kingdom	East Horsley	GB	3
+CITY	Egham, United Kingdom	Egham	GB	3
+CITY	Farnham, United Kingdom	Farnham	GB	3
+CITY	Forfar, United Kingdom	Forfar	GB	3
+CITY	Haywards Heath, United Kingdom	Haywards Heath	GB	3
+CITY	Hexham, United Kingdom	Hexham	GB	3
+CITY	Horsforth, United Kingdom	Horsforth	GB	3
+CITY	Horsham, United Kingdom	Horsham	GB	3
+CITY	Kingston upon Hull, United Kingdom	Kingston upon Hull	GB	3
+CITY	Knaresborough, United Kingdom	Knaresborough	GB	3
+CITY	Leiston, United Kingdom	Leiston	GB	3
+PLACE	Europe/Germany	Germany	DE	9974
+CITY	Berlin, Germany	Berlin	DE	1191
+CITY	Frankfurt am Main, Germany	Frankfurt am Main	DE	1105
+CITY	Munich, Germany	Munich	DE	835
+CITY	Düsseldorf, Germany	Düsseldorf	DE	632
+CITY	Hamburg, Germany	Hamburg	DE	484
+CITY	Hanover, Germany	Hanover	DE	207
+CITY	Stuttgart, Germany	Stuttgart	DE	195
+CITY	Kronberg, Germany	Kronberg	DE	155
+CITY	Köln, Germany	Köln	DE	151
+CITY	Wiesbaden, Germany	Wiesbaden	DE	151
+CITY	Heidelberg, Germany	Heidelberg	DE	142
+CITY	Nuremberg, Germany	Nuremberg	DE	114
+CITY	Ulm, Germany	Ulm	DE	106
+CITY	Germany	Germany	DE	101
+CITY	Essen, Germany	Essen	DE	94
+CITY	Dresden, Germany	Dresden	DE	91
+CITY	Bremen, Germany	Bremen	DE	89
+CITY	Leipzig, Germany	Leipzig	DE	84
+CITY	Bayreuth, Germany	Bayreuth	DE	80
+CITY	Würzburg, Germany	Würzburg	DE	79
+CITY	Dortmund, Germany	Dortmund	DE	77
+CITY	Ludwigsburg, Germany	Ludwigsburg	DE	72
+CITY	Karlsruhe, Germany	Karlsruhe	DE	71
+CITY	Cologne, Germany	Cologne	DE	67
+CITY	Aachen, Germany	Aachen	DE	60
+CITY	Kiel, Germany	Kiel	DE	57
+CITY	Augsburg, Germany	Augsburg	DE	50
+CITY	Bad Homburg, Germany	Bad Homburg	DE	46
+CITY	Freiburg im Breisgau, Germany	Freiburg im Breisgau	DE	46
+CITY	Potsdam, Germany	Potsdam	DE	46
+CITY	Bad Neuenahr-Ahrweiler, Germany	Bad Neuenahr-Ahrweiler	DE	45
+CITY	Koblenz, Germany	Koblenz	DE	44
+CITY	Ludwigshafen, Germany	Ludwigshafen	DE	43
+CITY	Regensburg, Germany	Regensburg	DE	43
+CITY	Siegen, Germany	Siegen	DE	41
+CITY	Bonn, Germany	Bonn	DE	39
+CITY	Mönchengladbach, Germany	Mönchengladbach	DE	39
+CITY	Oldenburg, Germany	Oldenburg	DE	39
+CITY	Mainz, Germany	Mainz	DE	36
+CITY	Kassel, Germany	Kassel	DE	34
+CITY	Osnabrück, Germany	Osnabrück	DE	34
+CITY	Homburg, Germany	Homburg	DE	33
+CITY	Darmstadt, Germany	Darmstadt	DE	30
+CITY	Rostock, Germany	Rostock	DE	30
+CITY	Saarbrücken, Germany	Saarbrücken	DE	30
+CITY	Bochum, Germany	Bochum	DE	28
+CITY	Duisburg, Germany	Duisburg	DE	28
+CITY	Heilbronn, Germany	Heilbronn	DE	28
+CITY	Erfurt, Germany	Erfurt	DE	27
+CITY	Baden-Baden, Germany	Baden-Baden	DE	22
+CITY	Bielefeld, Germany	Bielefeld	DE	21
+CITY	Lüneburg, Germany	Lüneburg	DE	21
+CITY	Braunschweig, Germany	Braunschweig	DE	20
+CITY	Magdeburg, Germany	Magdeburg	DE	19
+CITY	Passau, Germany	Passau	DE	18
+CITY	Rosenheim, Germany	Rosenheim	DE	18
+CITY	Krefeld, Germany	Krefeld	DE	17
+CITY	Mayen, Germany	Mayen	DE	17
+CITY	Wuppertal, Germany	Wuppertal	DE	17
+CITY	Bitburg, Germany	Bitburg	DE	16
+CITY	Paderborn, Germany	Paderborn	DE	16
+CITY	Göttingen, Germany	Göttingen	DE	15
+CITY	Halle, Germany	Halle	DE	15
+CITY	Andernach, Germany	Andernach	DE	14
+CITY	Böblingen, Germany	Böblingen	DE	14
+CITY	Chemnitz, Germany	Chemnitz	DE	14
+CITY	Gelsenkirchen, Germany	Gelsenkirchen	DE	14
+CITY	Landshut, Germany	Landshut	DE	14
+CITY	Neuss, Germany	Neuss	DE	14
+CITY	Schwanau, Germany	Schwanau	DE	14
+CITY	Schweinfurt, Germany	Schweinfurt	DE	14
+CITY	Cham, Germany	Cham	DE	13
+CITY	Gera, Germany	Gera	DE	13
+CITY	Villingen-Schwenningen, Germany	Villingen-Schwenningen	DE	13
+CITY	Deggendorf, Germany	Deggendorf	DE	12
+CITY	Eisenhüttenstadt, Germany	Eisenhüttenstadt	DE	12
+CITY	Fürth, Germany	Fürth	DE	12
+CITY	Holzminden, Germany	Holzminden	DE	12
+CITY	Kempten, Germany	Kempten	DE	12
+CITY	Münster, Germany	Münster	DE	12
+CITY	Eppingen, Germany	Eppingen	DE	11
+CITY	Giessen, Germany	Giessen	DE	11
+CITY	Nagold, Germany	Nagold	DE	11
+CITY	Offenburg, Germany	Offenburg	DE	11
+CITY	Rheine, Germany	Rheine	DE	11
+CITY	Schwäbisch Hall, Germany	Schwäbisch Hall	DE	11
+CITY	Sindelfingen, Germany	Sindelfingen	DE	11
+CITY	Arnsberg, Germany	Arnsberg	DE	10
+CITY	Aschheim, Germany	Aschheim	DE	10
+CITY	Bamberg, Germany	Bamberg	DE	10
+CITY	Burgstädt, Germany	Burgstädt	DE	10
+CITY	Halle (Saale), Germany	Halle (Saale)	DE	10
+CITY	Jena, Germany	Jena	DE	10
+CITY	Kaiserslautern, Germany	Kaiserslautern	DE	10
+CITY	Lorsch, Germany	Lorsch	DE	10
+CITY	Minden, Germany	Minden	DE	10
+CITY	Mülheim, Germany	Mülheim	DE	10
+CITY	Schwerin, Germany	Schwerin	DE	10
+CITY	Trier, Germany	Trier	DE	10
+CITY	Cottbus, Germany	Cottbus	DE	9
+CITY	Düren, Germany	Düren	DE	9
+CITY	Ehingen, Germany	Ehingen	DE	9
+CITY	Iserlohn, Germany	Iserlohn	DE	9
+CITY	Leverkusen, Germany	Leverkusen	DE	9
+CITY	Limburg, Germany	Limburg	DE	9
+CITY	Magstadt, Germany	Magstadt	DE	9
+CITY	Moers, Germany	Moers	DE	9
+CITY	Neustadt an der Weinstraße, Germany	Neustadt an der Weinstraße	DE	9
+CITY	Offenbach, Germany	Offenbach	DE	9
+CITY	Recklinghausen, Germany	Recklinghausen	DE	9
+CITY	Stade, Germany	Stade	DE	9
+CITY	Stadtoldendorf, Germany	Stadtoldendorf	DE	9
+CITY	Weimar, Germany	Weimar	DE	9
+CITY	Wetzlar, Germany	Wetzlar	DE	9
+CITY	Berg, Germany	Berg	DE	8
+CITY	Borken, Germany	Borken	DE	8
+CITY	Dachau, Germany	Dachau	DE	8
+CITY	Daun, Germany	Daun	DE	8
+CITY	Gräfelfing, Germany	Gräfelfing	DE	8
+CITY	Hildesheim, Germany	Hildesheim	DE	8
+CITY	Ingolstadt, Germany	Ingolstadt	DE	8
+CITY	Lingen, Germany	Lingen	DE	8
+CITY	Neu-Ulm, Germany	Neu-Ulm	DE	8
+CITY	Oberhausen, Germany	Oberhausen	DE	8
+CITY	Olpe, Germany	Olpe	DE	8
+CITY	Pforzheim, Germany	Pforzheim	DE	8
+CITY	Ratingen, Germany	Ratingen	DE	8
+CITY	Remscheid, Germany	Remscheid	DE	8
+CITY	Reutlingen, Germany	Reutlingen	DE	8
+CITY	Sundern, Germany	Sundern	DE	8
+CITY	Wolfenbüttel, Germany	Wolfenbüttel	DE	8
+CITY	Bad Oldesloe, Germany	Bad Oldesloe	DE	7
+CITY	Bautzen, Germany	Bautzen	DE	7
+CITY	Celle, Germany	Celle	DE	7
+CITY	Detmold, Germany	Detmold	DE	7
+CITY	Eschborn, Germany	Eschborn	DE	7
+CITY	Hamm, Germany	Hamm	DE	7
+CITY	Herne, Germany	Herne	DE	7
+CITY	Herrenberg, Germany	Herrenberg	DE	7
+CITY	Hilden, Germany	Hilden	DE	7
+CITY	Holzgerlingen, Germany	Holzgerlingen	DE	7
+CITY	Kleve, Germany	Kleve	DE	7
+CITY	Konstanz, Germany	Konstanz	DE	7
+CITY	Lörrach, Germany	Lörrach	DE	7
+CITY	Penzberg, Germany	Penzberg	DE	7
+CITY	Schleswig, Germany	Schleswig	DE	7
+CITY	Starnberg, Germany	Starnberg	DE	7
+CITY	Traunstein, Germany	Traunstein	DE	7
+CITY	Tübingen, Germany	Tübingen	DE	7
+CITY	Aalen, Germany	Aalen	DE	6
+PLACE	Europe/France	France	FR	9066
+CITY	Paris, France	Paris	FR	3400
+CITY	Montrouge, France	Montrouge	FR	456
+CITY	Vélizy-Villacoublay, France	Vélizy-Villacoublay	FR	275
+CITY	Lyon, France	Lyon	FR	268
+CITY	Nantes, France	Nantes	FR	224
+CITY	Toulouse, France	Toulouse	FR	186
+CITY	Puteaux, France	Puteaux	FR	170
+CITY	La Garenne-Colombes, France	La Garenne-Colombes	FR	163
+CITY	Issy-les-Moulineaux, France	Issy-les-Moulineaux	FR	162
+CITY	Strasbourg, France	Strasbourg	FR	131
+CITY	Aix-en-Provence, France	Aix-en-Provence	FR	124
+CITY	Lille, France	Lille	FR	115
+CITY	Marseille, France	Marseille	FR	90
+CITY	Colomiers, France	Colomiers	FR	86
+CITY	Vitrolles, France	Vitrolles	FR	81
+CITY	Bordeaux, France	Bordeaux	FR	72
+CITY	Guyancourt, France	Guyancourt	FR	70
+CITY	Rennes, France	Rennes	FR	68
+CITY	Sèvres, France	Sèvres	FR	57
+CITY	Levallois-Perret, France	Levallois-Perret	FR	56
+CITY	Niort, France	Niort	FR	55
+CITY	Angers, France	Angers	FR	54
+CITY	Saint-Herblain, France	Saint-Herblain	FR	52
+CITY	Montpellier, France	Montpellier	FR	50
+CITY	Colombes, France	Colombes	FR	49
+CITY	Metz, France	Metz	FR	49
+CITY	Brest, France	Brest	FR	48
+CITY	Le Relecq-Kerhuon, France	Le Relecq-Kerhuon	FR	47
+CITY	Charenton-le-Pont, France	Charenton-le-Pont	FR	46
+CITY	Mhère, France	Mhère	FR	45
+CITY	Annecy, France	Annecy	FR	42
+CITY	Manosque, France	Manosque	FR	40
+CITY	Nice, France	Nice	FR	38
+CITY	Tours, France	Tours	FR	38
+CITY	Coudekerque-Branche, France	Coudekerque-Branche	FR	36
+CITY	Orléans, France	Orléans	FR	36
+CITY	Saint-Martin-le-Vinoux, France	Saint-Martin-le-Vinoux	FR	36
+CITY	Roubaix, France	Roubaix	FR	34
+CITY	Blagnac, France	Blagnac	FR	32
+CITY	France	France	FR	32
+CITY	Fontenay-sous-Bois, France	Fontenay-sous-Bois	FR	30
+CITY	Mérignac, France	Mérignac	FR	30
+CITY	Rouen, France	Rouen	FR	30
+CITY	Nanterre, France	Nanterre	FR	27
+CITY	Villeneuve-d'Ascq, France	Villeneuve-d'Ascq	FR	26
+CITY	Villeurbanne, France	Villeurbanne	FR	25
+CITY	Fontaine-lès-Dijon, France	Fontaine-lès-Dijon	FR	24
+CITY	Maisons-Alfort, France	Maisons-Alfort	FR	24
+CITY	Ollioules, France	Ollioules	FR	24
+CITY	Massy, France	Massy	FR	23
+CITY	Nancy, France	Nancy	FR	23
+CITY	Dardilly, France	Dardilly	FR	22
+CITY	Garches, France	Garches	FR	20
+CITY	Laval, France	Laval	FR	20
+CITY	Le Mans, France	Le Mans	FR	20
+CITY	Meudon, France	Meudon	FR	20
+CITY	Cesson-Sévigné, France	Cesson-Sévigné	FR	19
+CITY	Pierrelatte, France	Pierrelatte	FR	18
+CITY	Schiltigheim, France	Schiltigheim	FR	18
+CITY	Le Creusot, France	Le Creusot	FR	17
+CITY	Saint-Grégoire, France	Saint-Grégoire	FR	16
+CITY	Valence, France	Valence	FR	16
+CITY	Florange, France	Florange	FR	15
+CITY	Valbonne, France	Valbonne	FR	15
+CITY	Bois-Guillaume, France	Bois-Guillaume	FR	14
+CITY	Caen, France	Caen	FR	14
+CITY	Limoges, France	Limoges	FR	14
+CITY	Arras, France	Arras	FR	13
+CITY	Balma, France	Balma	FR	13
+CITY	La Rochelle, France	La Rochelle	FR	13
+CITY	Meyzieu, France	Meyzieu	FR	13
+CITY	Reims, France	Reims	FR	13
+CITY	Avignon, France	Avignon	FR	12
+CITY	Lorient, France	Lorient	FR	12
+CITY	Roquebrune-Cap-Martin, France	Roquebrune-Cap-Martin	FR	12
+CITY	Saint-Denis, France	Saint-Denis	FR	12
+CITY	Amiens, France	Amiens	FR	11
+CITY	Besançon, France	Besançon	FR	11
+CITY	Clermont-Ferrand, France	Clermont-Ferrand	FR	11
+CITY	Guipavas, France	Guipavas	FR	11
+CITY	Neuilly-sur-Seine, France	Neuilly-sur-Seine	FR	11
+CITY	Poitiers, France	Poitiers	FR	11
+CITY	Audun-le-Tiche, France	Audun-le-Tiche	FR	10
+CITY	Biot, France	Biot	FR	10
+CITY	Cholet, France	Cholet	FR	10
+CITY	Croix, France	Croix	FR	10
+CITY	Guebwiller, France	Guebwiller	FR	10
+CITY	Montargis, France	Montargis	FR	10
+CITY	Rodez, France	Rodez	FR	10
+CITY	Toulon, France	Toulon	FR	10
+CITY	Vannes, France	Vannes	FR	10
+CITY	Cannes, France	Cannes	FR	9
+CITY	Cherbourg-en-Cotentin, France	Cherbourg-en-Cotentin	FR	9
+CITY	La Flèche, France	La Flèche	FR	9
+CITY	La Madeleine, France	La Madeleine	FR	9
+CITY	Montigny-le-Bretonneux, France	Montigny-le-Bretonneux	FR	9
+CITY	Nogent-sur-Marne, France	Nogent-sur-Marne	FR	9
+CITY	Pons, France	Pons	FR	9
+CITY	Dieppe, France	Dieppe	FR	8
+CITY	Le Haillan, France	Le Haillan	FR	8
+CITY	Montataire, France	Montataire	FR	8
+CITY	Rueil-Malmaison, France	Rueil-Malmaison	FR	8
+CITY	Saint-Germain-du-Puy, France	Saint-Germain-du-Puy	FR	8
+CITY	Alençon, France	Alençon	FR	7
+CITY	Beauvais, France	Beauvais	FR	7
+CITY	Cergy, France	Cergy	FR	7
+CITY	Chalon-sur-Saône, France	Chalon-sur-Saône	FR	7
+CITY	Chartres, France	Chartres	FR	7
+CITY	La Roche-sur-Yon, France	La Roche-sur-Yon	FR	7
+CITY	Lunéville, France	Lunéville	FR	7
+CITY	Malakoff, France	Malakoff	FR	7
+CITY	Mulhouse, France	Mulhouse	FR	7
+CITY	Orvault, France	Orvault	FR	7
+CITY	Saint-Maur-des-Fossés, France	Saint-Maur-des-Fossés	FR	7
+CITY	Saint-Étienne, France	Saint-Étienne	FR	7
+CITY	Vesoul, France	Vesoul	FR	7
+CITY	Épernon, France	Épernon	FR	7
+CITY	Ambérieu-en-Bugey, France	Ambérieu-en-Bugey	FR	6
+CITY	Bayonne, France	Bayonne	FR	6
+CITY	Bruz, France	Bruz	FR	6
+CITY	Calais, France	Calais	FR	6
+CITY	Chambéry, France	Chambéry	FR	6
+CITY	Compiègne, France	Compiègne	FR	6
+CITY	Gradignan, France	Gradignan	FR	6
+CITY	La Chapelle-sur-Erdre, France	La Chapelle-sur-Erdre	FR	6
+CITY	Le Havre, France	Le Havre	FR	6
+CITY	Ploërmel, France	Ploërmel	FR	6
+CITY	Quimper, France	Quimper	FR	6
+CITY	Saint-Estève, France	Saint-Estève	FR	6
+CITY	Saint-Orens-de-Gameville, France	Saint-Orens-de-Gameville	FR	6
+CITY	Vienne, France	Vienne	FR	6
+CITY	Amboise, France	Amboise	FR	5
+CITY	Angoulême, France	Angoulême	FR	5
+CITY	Bourg-en-Bresse, France	Bourg-en-Bresse	FR	5
+CITY	Bourges, France	Bourges	FR	5
+CITY	Brunoy, France	Brunoy	FR	5
+CITY	Castres, France	Castres	FR	5
+CITY	Lentilly, France	Lentilly	FR	5
+CITY	Noisiel, France	Noisiel	FR	5
+CITY	Orthez, France	Orthez	FR	5
+CITY	Pau, France	Pau	FR	5
+CITY	Plouzané, France	Plouzané	FR	5
+CITY	Thionville, France	Thionville	FR	5
+CITY	Versailles, France	Versailles	FR	5
+CITY	Wasquehal, France	Wasquehal	FR	5
+CITY	Albertville, France	Albertville	FR	4
+CITY	Argenteuil, France	Argenteuil	FR	4
+CITY	Avallon, France	Avallon	FR	4
+CITY	Bayeux, France	Bayeux	FR	4
+CITY	Bures-sur-Yvette, France	Bures-sur-Yvette	FR	4
+PLACE	Europe/Netherlands	Netherlands	NL	2235
+CITY	Amsterdam, Netherlands	Amsterdam	NL	1101
+CITY	Amstelveen, Netherlands	Amstelveen	NL	182
+CITY	The Hague, Netherlands	The Hague	NL	137
+CITY	Utrecht, Netherlands	Utrecht	NL	135
+CITY	Rotterdam, Netherlands	Rotterdam	NL	124
+CITY	Eindhoven, Netherlands	Eindhoven	NL	88
+CITY	Nieuwegein, Netherlands	Nieuwegein	NL	50
+CITY	's-Hertogenbosch, Netherlands	's-Hertogenbosch	NL	40
+CITY	Netherlands	Netherlands	NL	33
+CITY	Woudenberg, Netherlands	Woudenberg	NL	29
+CITY	Maastricht, Netherlands	Maastricht	NL	25
+CITY	Zwolle, Netherlands	Zwolle	NL	24
+CITY	Groningen, Netherlands	Groningen	NL	19
+CITY	Barendrecht, Netherlands	Barendrecht	NL	17
+CITY	Bladel, Netherlands	Bladel	NL	15
+CITY	Gouda, Netherlands	Gouda	NL	14
+CITY	Hilversum, Netherlands	Hilversum	NL	13
+CITY	Venlo, Netherlands	Venlo	NL	12
+CITY	Noordwijk, Netherlands	Noordwijk	NL	11
+CITY	Nijmegen, Netherlands	Nijmegen	NL	10
+CITY	Sliedrecht, Netherlands	Sliedrecht	NL	10
+CITY	Breda, Netherlands	Breda	NL	9
+CITY	Almelo, Netherlands	Almelo	NL	8
+CITY	Arnhem, Netherlands	Arnhem	NL	8
+CITY	Goes, Netherlands	Goes	NL	8
+CITY	Roermond, Netherlands	Roermond	NL	8
+CITY	IJsselstein, Netherlands	IJsselstein	NL	7
+CITY	Tilburg, Netherlands	Tilburg	NL	7
+CITY	Valkenswaard, Netherlands	Valkenswaard	NL	7
+CITY	Hoofddorp, Netherlands	Hoofddorp	NL	6
+CITY	Lelystad, Netherlands	Lelystad	NL	6
+CITY	Roosendaal, Netherlands	Roosendaal	NL	6
+CITY	Aalsmeer, Netherlands	Aalsmeer	NL	5
+CITY	Opmeer, Netherlands	Opmeer	NL	5
+CITY	Landsmeer, Netherlands	Landsmeer	NL	4
+CITY	Alkmaar, Netherlands	Alkmaar	NL	3
+CITY	Amersfoort, Netherlands	Amersfoort	NL	3
+CITY	Capelle aan den IJssel, Netherlands	Capelle aan den IJssel	NL	3
+CITY	Leiden, Netherlands	Leiden	NL	3
+CITY	Middelharnis, Netherlands	Middelharnis	NL	3
+CITY	Delft, Netherlands	Delft	NL	2
+CITY	Doetinchem, Netherlands	Doetinchem	NL	2
+CITY	Dordrecht, Netherlands	Dordrecht	NL	2
+CITY	Enschede, Netherlands	Enschede	NL	2
+CITY	Geldermalsen, Netherlands	Geldermalsen	NL	2
+CITY	Gorinchem, Netherlands	Gorinchem	NL	2
+CITY	's-Gravenzande, Netherlands	's-Gravenzande	NL	1
+CITY	Almere, Netherlands	Almere	NL	1
+CITY	Breukelen, Netherlands	Breukelen	NL	1
+CITY	Den Helder, Netherlands	Den Helder	NL	1
+CITY	Deurne, Netherlands	Deurne	NL	1
+CITY	Deventer, Netherlands	Deventer	NL	1
+CITY	Diemen, Netherlands	Diemen	NL	1
+CITY	Drachten, Netherlands	Drachten	NL	1
+CITY	Elst, Netherlands	Elst	NL	1
+CITY	Enkhuizen, Netherlands	Enkhuizen	NL	1
+CITY	Heerhugowaard, Netherlands	Heerhugowaard	NL	1
+CITY	Heerlen, Netherlands	Heerlen	NL	1
+CITY	Hoogezand, Netherlands	Hoogezand	NL	1
+CITY	Hoorn, Netherlands	Hoorn	NL	1
+CITY	Huizen, Netherlands	Huizen	NL	1
+CITY	Leimuiden, Netherlands	Leimuiden	NL	1
+CITY	Middelburg, Netherlands	Middelburg	NL	1
+CITY	Nuenen, Netherlands	Nuenen	NL	1
+CITY	Oud-Beijerland, Netherlands	Oud-Beijerland	NL	1
+CITY	Sassenheim, Netherlands	Sassenheim	NL	1
+CITY	Veendam, Netherlands	Veendam	NL	1
+CITY	Veghel, Netherlands	Veghel	NL	1
+CITY	Venray, Netherlands	Venray	NL	1
+CITY	Weesp, Netherlands	Weesp	NL	1
+CITY	Zutphen, Netherlands	Zutphen	NL	1
+PLACE	Europe/Poland	Poland	PL	1561
+CITY	Warsaw, Poland	Warsaw	PL	905
+CITY	Kraków, Poland	Kraków	PL	295
+CITY	Dąbrowa Górnicza, Poland	Dąbrowa Górnicza	PL	68
+CITY	Gdańsk, Poland	Gdańsk	PL	63
+CITY	Wrocław, Poland	Wrocław	PL	62
+CITY	Katowice, Poland	Katowice	PL	48
+CITY	Poznań, Poland	Poznań	PL	32
+CITY	Łódź, Poland	Łódź	PL	32
+CITY	Gdynia, Poland	Gdynia	PL	26
+CITY	Zdzieszowice, Poland	Zdzieszowice	PL	6
+CITY	Gliwice, Poland	Gliwice	PL	4
+CITY	Szczecin, Poland	Szczecin	PL	4
+CITY	Białystok, Poland	Białystok	PL	2
+CITY	Lublin, Poland	Lublin	PL	2
+CITY	Rzeszów, Poland	Rzeszów	PL	2
+CITY	Sochaczew, Poland	Sochaczew	PL	2
+CITY	Sosnowiec, Poland	Sosnowiec	PL	2
+CITY	Brzeg, Poland	Brzeg	PL	1
+CITY	Góra, Poland	Góra	PL	1
+CITY	Jelenia Góra, Poland	Jelenia Góra	PL	1
+CITY	Mielec, Poland	Mielec	PL	1
+CITY	Płock, Poland	Płock	PL	1
+CITY	Świętochłowice, Poland	Świętochłowice	PL	1
+PLACE	Europe/Ireland	Ireland	IE	1499
+CITY	Dublin, Ireland	Dublin	IE	1038
+CITY	Cork, Ireland	Cork	IE	84
+CITY	Letterkenny, Ireland	Letterkenny	IE	70
+CITY	Limerick, Ireland	Limerick	IE	55
+CITY	Wicklow, Ireland	Wicklow	IE	30
+CITY	Kilkenny, Ireland	Kilkenny	IE	29
+CITY	Kildare, Ireland	Kildare	IE	28
+CITY	Tralee, Ireland	Tralee	IE	20
+CITY	Galway, Ireland	Galway	IE	18
+CITY	Navan, Ireland	Navan	IE	14
+CITY	Castlebar, Ireland	Castlebar	IE	13
+CITY	Monaghan, Ireland	Monaghan	IE	12
+CITY	Carlow, Ireland	Carlow	IE	8
+CITY	Cavan, Ireland	Cavan	IE	8
+CITY	Enniscorthy, Ireland	Enniscorthy	IE	8
+CITY	Mullingar, Ireland	Mullingar	IE	8
+CITY	Waterford, Ireland	Waterford	IE	8
+CITY	Ennis, Ireland	Ennis	IE	6
+CITY	Sligo, Ireland	Sligo	IE	6
+CITY	Thurles, Ireland	Thurles	IE	6
+CITY	Nenagh, Ireland	Nenagh	IE	5
+CITY	Killarney, Ireland	Killarney	IE	4
+CITY	Longford, Ireland	Longford	IE	4
+CITY	Portlaoise, Ireland	Portlaoise	IE	4
+CITY	Bray, Ireland	Bray	IE	3
+CITY	Tullamore, Ireland	Tullamore	IE	3
+CITY	Athlone, Ireland	Athlone	IE	2
+CITY	Dundalk, Ireland	Dundalk	IE	2
+CITY	Derry, Ireland	Derry	IE	1
+CITY	Shannon, Ireland	Shannon	IE	1
+CITY	Swords, Ireland	Swords	IE	1
+PLACE	Europe/Switzerland	Switzerland	CH	1462
+CITY	Zürich, Switzerland	Zürich	CH	624
+CITY	Geneva, Switzerland	Geneva	CH	249
+CITY	Bern, Switzerland	Bern	CH	137
+CITY	Basel, Switzerland	Basel	CH	45
+CITY	Zug, Switzerland	Zug	CH	43
+CITY	Lausanne, Switzerland	Lausanne	CH	32
+CITY	Bellinzona, Switzerland	Bellinzona	CH	28
+CITY	Gland, Switzerland	Gland	CH	26
+CITY	Lancy, Switzerland	Lancy	CH	23
+CITY	St. Gallen, Switzerland	St. Gallen	CH	22
+CITY	Aarau, Switzerland	Aarau	CH	15
+CITY	Neuchâtel, Switzerland	Neuchâtel	CH	12
+CITY	Lucerne, Switzerland	Lucerne	CH	11
+CITY	Solothurn, Switzerland	Solothurn	CH	10
+CITY	Biel/Bienne, Switzerland	Biel/Bienne	CH	9
+CITY	Freienbach, Switzerland	Freienbach	CH	9
+CITY	Fribourg, Switzerland	Fribourg	CH	9
+CITY	Lugano, Switzerland	Lugano	CH	9
+CITY	Frauenfeld, Switzerland	Frauenfeld	CH	8
+CITY	Renens, Switzerland	Renens	CH	8
+CITY	Carouge, Switzerland	Carouge	CH	7
+CITY	Schwyz, Switzerland	Schwyz	CH	7
+CITY	Chiasso, Switzerland	Chiasso	CH	5
+CITY	Schaffhausen, Switzerland	Schaffhausen	CH	5
+CITY	Visp, Switzerland	Visp	CH	5
+CITY	Wallisellen, Switzerland	Wallisellen	CH	5
+CITY	Baden, Switzerland	Baden	CH	4
+CITY	Dübendorf, Switzerland	Dübendorf	CH	4
+CITY	Muttenz, Switzerland	Muttenz	CH	4
+CITY	Nyon, Switzerland	Nyon	CH	4
+CITY	Sion, Switzerland	Sion	CH	4
+CITY	Thun, Switzerland	Thun	CH	4
+CITY	Wil, Switzerland	Wil	CH	4
+CITY	Glarus, Switzerland	Glarus	CH	3
+CITY	Meilen, Switzerland	Meilen	CH	3
+CITY	Opfikon, Switzerland	Opfikon	CH	3
+CITY	Sirnach, Switzerland	Sirnach	CH	3
+CITY	Steinhausen, Switzerland	Steinhausen	CH	3
+CITY	Uster, Switzerland	Uster	CH	3
+CITY	Zollikon, Switzerland	Zollikon	CH	3
+CITY	Hünenberg, Switzerland	Hünenberg	CH	2
+CITY	Kriens, Switzerland	Kriens	CH	2
+CITY	Mendrisio, Switzerland	Mendrisio	CH	2
+CITY	Meyrin, Switzerland	Meyrin	CH	2
+CITY	Monthey, Switzerland	Monthey	CH	2
+CITY	Morges, Switzerland	Morges	CH	2
+CITY	Oberkirch, Switzerland	Oberkirch	CH	2
+CITY	Olten, Switzerland	Olten	CH	2
+CITY	Rüti, Switzerland	Rüti	CH	2
+CITY	Stans, Switzerland	Stans	CH	2
+CITY	Thalwil, Switzerland	Thalwil	CH	2
+CITY	Weinfelden, Switzerland	Weinfelden	CH	2
+CITY	Aarburg, Switzerland	Aarburg	CH	1
+CITY	Adliswil, Switzerland	Adliswil	CH	1
+CITY	Allschwil, Switzerland	Allschwil	CH	1
+CITY	Ascona, Switzerland	Ascona	CH	1
+CITY	Baar, Switzerland	Baar	CH	1
+CITY	Biberist, Switzerland	Biberist	CH	1
+CITY	Buchrain, Switzerland	Buchrain	CH	1
+CITY	Buchs, Switzerland	Buchs	CH	1
+CITY	Bülach, Switzerland	Bülach	CH	1
+CITY	Chur, Switzerland	Chur	CH	1
+CITY	Emmen, Switzerland	Emmen	CH	1
+CITY	Horgen, Switzerland	Horgen	CH	1
+CITY	Liestal, Switzerland	Liestal	CH	1
+CITY	Locarno, Switzerland	Locarno	CH	1
+CITY	Massagno, Switzerland	Massagno	CH	1
+CITY	Minusio, Switzerland	Minusio	CH	1
+CITY	Rheinfelden, Switzerland	Rheinfelden	CH	1
+CITY	Richterswil, Switzerland	Richterswil	CH	1
+CITY	Ruswil, Switzerland	Ruswil	CH	1
+CITY	Sarnen, Switzerland	Sarnen	CH	1
+CITY	Untersiggenthal, Switzerland	Untersiggenthal	CH	1
+CITY	Urdorf, Switzerland	Urdorf	CH	1
+CITY	Walenstadt, Switzerland	Walenstadt	CH	1
+CITY	Windisch, Switzerland	Windisch	CH	1
+CITY	Yverdon-les-Bains, Switzerland	Yverdon-les-Bains	CH	1
+CITY	Zollikofen, Switzerland	Zollikofen	CH	1
+PLACE	Europe/Luxembourg	Luxembourg	LU	1050
+CITY	Luxembourg	Luxembourg	LU	915
+CITY	Esch-sur-Alzette, Luxembourg	Esch-sur-Alzette	LU	71
+CITY	Grevenmacher, Luxembourg	Grevenmacher	LU	51
+CITY	Differdange, Luxembourg	Differdange	LU	7
+CITY	Ettelbruck, Luxembourg	Ettelbruck	LU	3
+CITY	Bertrange, Luxembourg	Bertrange	LU	2
+CITY	Echternach, Luxembourg	Echternach	LU	1
+PLACE	Europe/Belgium	Belgium	BE	775
+CITY	Brussels, Belgium	Brussels	BE	469
+CITY	Antwerp, Belgium	Antwerp	BE	103
+CITY	Zaventem, Belgium	Zaventem	BE	69
+CITY	Ghent, Belgium	Ghent	BE	50
+CITY	Machelen, Belgium	Machelen	BE	20
+CITY	Charleroi, Belgium	Charleroi	BE	17
+CITY	Liège, Belgium	Liège	BE	15
+CITY	Genk, Belgium	Genk	BE	4
+CITY	Ronse, Belgium	Ronse	BE	4
+CITY	Aalst, Belgium	Aalst	BE	2
+CITY	Bruges, Belgium	Bruges	BE	2
+CITY	Namur, Belgium	Namur	BE	2
+CITY	Roeselare, Belgium	Roeselare	BE	2
+CITY	Tervuren, Belgium	Tervuren	BE	2
+CITY	Tubize, Belgium	Tubize	BE	2
+CITY	Wommelgem, Belgium	Wommelgem	BE	2
+CITY	Bastogne, Belgium	Bastogne	BE	1
+CITY	Beerse, Belgium	Beerse	BE	1
+CITY	Braine-l'Alleud, Belgium	Braine-l'Alleud	BE	1
+CITY	Hasselt, Belgium	Hasselt	BE	1
+CITY	Kapellen, Belgium	Kapellen	BE	1
+CITY	Kortrijk, Belgium	Kortrijk	BE	1
+CITY	Leuven, Belgium	Leuven	BE	1
+CITY	Lier, Belgium	Lier	BE	1
+CITY	Londerzeel, Belgium	Londerzeel	BE	1
+CITY	Saint-Nicolas, Belgium	Saint-Nicolas	BE	1
+PLACE	Europe/Austria	Austria	AT	546
+CITY	Vienna, Austria	Vienna	AT	450
+CITY	Graz, Austria	Graz	AT	20
+CITY	Salzburg, Austria	Salzburg	AT	13
+CITY	Innsbruck, Austria	Innsbruck	AT	9
+CITY	Feldkirch, Austria	Feldkirch	AT	7
+CITY	Feldkirchen an der Donau, Austria	Feldkirchen an der Donau	AT	7
+CITY	Linz, Austria	Linz	AT	6
+CITY	Waidhofen an der Thaya, Austria	Waidhofen an der Thaya	AT	6
+CITY	Waidhofen an der Ybbs, Austria	Waidhofen an der Ybbs	AT	4
+CITY	Bregenz, Austria	Bregenz	AT	3
+CITY	Klagenfurt am Wörthersee, Austria	Klagenfurt am Wörthersee	AT	3
+CITY	Wels, Austria	Wels	AT	3
+CITY	Wiener Neustadt, Austria	Wiener Neustadt	AT	2
+CITY	Dornbirn, Austria	Dornbirn	AT	1
+CITY	Eisenstadt, Austria	Eisenstadt	AT	1
+CITY	Fürstenfeld, Austria	Fürstenfeld	AT	1
+CITY	Gmunden, Austria	Gmunden	AT	1
+CITY	Hartberg, Austria	Hartberg	AT	1
+CITY	Kremsmünster, Austria	Kremsmünster	AT	1
+CITY	Mistelbach, Austria	Mistelbach	AT	1
+CITY	Saint Pölten, Austria	Saint Pölten	AT	1
+CITY	Saint Valentin, Austria	Saint Valentin	AT	1
+CITY	Schwechat, Austria	Schwechat	AT	1
+CITY	Steyr, Austria	Steyr	AT	1
+CITY	Villach, Austria	Villach	AT	1
+CITY	Wiener Neudorf, Austria	Wiener Neudorf	AT	1
+PLACE	Europe/Italy	Italy	IT	116
+CITY	Milan, Italy	Milan	IT	30
+CITY	Rome, Italy	Rome	IT	16
+CITY	Bologna, Italy	Bologna	IT	8
+CITY	Florence, Italy	Florence	IT	4
+CITY	Italy	Italy	IT	4
+CITY	Vicenza, Italy	Vicenza	IT	4
+CITY	Genoa, Italy	Genoa	IT	3
+CITY	Brescia, Italy	Brescia	IT	2
+CITY	Cinisello Balsamo, Italy	Cinisello Balsamo	IT	2
+CITY	Meldola, Italy	Meldola	IT	2
+CITY	Modena, Italy	Modena	IT	2
+CITY	Padua, Italy	Padua	IT	2
+CITY	Varese, Italy	Varese	IT	2
+CITY	Vercelli, Italy	Vercelli	IT	2
+CITY	Assago, Italy	Assago	IT	1
+CITY	Bergamo, Italy	Bergamo	IT	1
+CITY	Bresso, Italy	Bresso	IT	1
+CITY	Crema, Italy	Crema	IT	1
+CITY	Curtarolo, Italy	Curtarolo	IT	1
+CITY	Fermo, Italy	Fermo	IT	1
+CITY	Ferrara, Italy	Ferrara	IT	1
+CITY	Foggia, Italy	Foggia	IT	1
+CITY	Forli, Italy	Forli	IT	1
+CITY	Formello, Italy	Formello	IT	1
+CITY	Gallarate, Italy	Gallarate	IT	1
+CITY	Lainate, Italy	Lainate	IT	1
+CITY	Livorno, Italy	Livorno	IT	1
+CITY	Monza, Italy	Monza	IT	1
+CITY	Palermo, Italy	Palermo	IT	1
+CITY	Pero, Italy	Pero	IT	1
+CITY	Pescara, Italy	Pescara	IT	1
+CITY	Pioltello, Italy	Pioltello	IT	1
+CITY	Pisa, Italy	Pisa	IT	1
+CITY	Poggibonsi, Italy	Poggibonsi	IT	1
+CITY	Reggio Emilia, Italy	Reggio Emilia	IT	1
+CITY	Rimini, Italy	Rimini	IT	1
+CITY	Rivoli, Italy	Rivoli	IT	1
+CITY	Rovereto, Italy	Rovereto	IT	1
+CITY	Rozzano, Italy	Rozzano	IT	1
+CITY	San Miniato, Italy	San Miniato	IT	1
+CITY	Segrate, Italy	Segrate	IT	1
+CITY	Sumirago, Italy	Sumirago	IT	1
+CITY	Tolmezzo, Italy	Tolmezzo	IT	1
+CITY	Treviso, Italy	Treviso	IT	1
+CITY	Udine, Italy	Udine	IT	1
+CITY	Venice, Italy	Venice	IT	1
+CITY	Verona, Italy	Verona	IT	1
+PLACE	Europe/Romania	Romania	RO	55
+CITY	Bucharest, Romania	Bucharest	RO	38
+CITY	Cluj-Napoca, Romania	Cluj-Napoca	RO	17
+PLACE	Europe/Jersey	Jersey	JE	41
+CITY	Saint Helier, Jersey	Saint Helier	JE	41
+PLACE	Europe/Slovakia	Slovakia	SK	25
+CITY	Bratislava, Slovakia	Bratislava	SK	15
+CITY	Košice, Slovakia	Košice	SK	10
+PLACE	Europe/Spain	Spain	ES	15
+CITY	Barcelona, Spain	Barcelona	ES	9
+CITY	Madrid, Spain	Madrid	ES	6
+PLACE	Europe/Bulgaria	Bulgaria	BG	14
+CITY	Sofia, Bulgaria	Sofia	BG	14
+PLACE	Europe/Sweden	Sweden	SE	8
+CITY	Stockholm, Sweden	Stockholm	SE	7
+CITY	Timrå, Sweden	Timrå	SE	1
+PLACE	Europe/Guernsey	Guernsey	GG	7
+CITY	Guernsey, Guernsey	Guernsey	GG	7
+PLACE	Europe/Czechia	Czechia	CZ	6
+CITY	Prague, Czechia	Prague	CZ	5
+CITY	Nýrsko, Czechia	Nýrsko	CZ	1
+PLACE	Europe/Denmark	Denmark	DK	6
+CITY	Copenhagen, Denmark	Copenhagen	DK	6
+PLACE	Europe/Liechtenstein	Liechtenstein	LI	4
+CITY	Vaduz, Liechtenstein	Vaduz	LI	3
+CITY	Liechtenstein	Liechtenstein	LI	1
+PLACE	Europe/Cyprus	Cyprus	CY	2
+CITY	Limassol, Cyprus	Limassol	CY	1
+CITY	Nicosia, Cyprus	Nicosia	CY	1
+PLACE	Europe/Portugal	Portugal	PT	2
+CITY	Lisbon, Portugal	Lisbon	PT	1
+CITY	Olival Basto, Portugal	Olival Basto	PT	1
+PLACE	Europe/Türkiye	Türkiye	TR	2
+CITY	Türkiye	Türkiye	TR	2
+PLACE	Europe/Finland	Finland	FI	1
+CITY	Helsinki, Finland	Helsinki	FI	1
+PLACE	Europe/Greece	Greece	GR	1
+CITY	Athens, Greece	Athens	GR	1
+PLACE	Europe/Hungary	Hungary	HU	1
+CITY	Budapest, Hungary	Budapest	HU	1
+PLACE	Europe/Norway	Norway	NO	1
+CITY	Oslo, Norway	Oslo	NO	1
+PLACE	Europe/Slovenia	Slovenia	SI	1
+CITY	Zagorje ob Savi, Slovenia	Zagorje ob Savi	SI	1
+PLACE	North America/United States	United States	US	18671
+CITY	New York, United States	New York	US	3925
+CITY	Chicago, United States	Chicago	US	1217
+CITY	San Francisco, United States	San Francisco	US	739
+CITY	Boston, United States	Boston	US	541
+CITY	Atlanta, United States	Atlanta	US	465
+CITY	Dallas, United States	Dallas	US	438
+CITY	Los Angeles, United States	Los Angeles	US	368
+CITY	Washington, United States	Washington	US	347
+CITY	Charlotte, United States	Charlotte	US	315
+CITY	Austin, United States	Austin	US	293
+CITY	Houston, United States	Houston	US	286
+CITY	Tampa, United States	Tampa	US	276
+CITY	Denver, United States	Denver	US	247
+CITY	Philadelphia, United States	Philadelphia	US	239
+CITY	Hoboken, United States	Hoboken	US	203
+CITY	Seattle, United States	Seattle	US	196
+CITY	Miami, United States	Miami	US	184
+CITY	Reston, United States	Reston	US	170
+CITY	Kansas City, United States	Kansas City	US	168
+CITY	Phoenix, United States	Phoenix	US	152
+CITY	Columbus, United States	Columbus	US	151
+CITY	Wilmington, United States	Wilmington	US	134
+CITY	Plano, United States	Plano	US	130
+CITY	Quincy, United States	Quincy	US	123
+CITY	Hartford, United States	Hartford	US	122
+CITY	Nashville, United States	Nashville	US	122
+CITY	Milwaukee, United States	Milwaukee	US	112
+CITY	Northfield, United States	Northfield	US	107
+CITY	St. Louis, United States	St. Louis	US	107
+CITY	Birmingham, United States	Birmingham	US	103
+CITY	Bellevue, United States	Bellevue	US	101
+CITY	Minneapolis, United States	Minneapolis	US	94
+CITY	Richmond, United States	Richmond	US	94
+CITY	Arlington, United States	Arlington	US	88
+CITY	Burlington, United States	Burlington	US	87
+CITY	Portland, United States	Portland	US	85
+CITY	McLean, United States	McLean	US	83
+CITY	Newport Beach, United States	Newport Beach	US	83
+CITY	Salt Lake City, United States	Salt Lake City	US	79
+CITY	San Diego, United States	San Diego	US	79
+CITY	Alpharetta, United States	Alpharetta	US	78
+CITY	Foster City, United States	Foster City	US	70
+CITY	Orlando, United States	Orlando	US	60
+CITY	Mount Laurel Township, United States	Mount Laurel Township	US	59
+CITY	Las Vegas, United States	Las Vegas	US	58
+CITY	Bedford, United States	Bedford	US	57
+CITY	Newark, United States	Newark	US	57
+CITY	Tempe, United States	Tempe	US	56
+CITY	Sunnyvale, United States	Sunnyvale	US	54
+CITY	Menlo Park, United States	Menlo Park	US	52
+CITY	Irvine, United States	Irvine	US	50
+CITY	Camas, United States	Camas	US	49
+CITY	Baltimore, United States	Baltimore	US	48
+CITY	Greenwich, United States	Greenwich	US	44
+CITY	Indianapolis, United States	Indianapolis	US	44
+CITY	Springfield, United States	Springfield	US	44
+CITY	Berkeley Heights, United States	Berkeley Heights	US	43
+CITY	Detroit, United States	Detroit	US	43
+CITY	Omaha, United States	Omaha	US	43
+CITY	Sacramento, United States	Sacramento	US	43
+CITY	Cleveland, United States	Cleveland	US	42
+CITY	La Plata, United States	La Plata	US	42
+CITY	Chattanooga, United States	Chattanooga	US	41
+CITY	Frisco, United States	Frisco	US	40
+CITY	Pasadena, United States	Pasadena	US	40
+CITY	Troy, United States	Troy	US	39
+CITY	El Monte, United States	El Monte	US	38
+CITY	Fort Lauderdale, United States	Fort Lauderdale	US	36
+CITY	Jacksonville, United States	Jacksonville	US	36
+CITY	Mountain View, United States	Mountain View	US	36
+CITY	San Antonio, United States	San Antonio	US	36
+CITY	Albuquerque, United States	Albuquerque	US	35
+CITY	Charleston, United States	Charleston	US	35
+CITY	Fort Worth, United States	Fort Worth	US	35
+CITY	Greenwood Village, United States	Greenwood Village	US	35
+CITY	Louisville, United States	Louisville	US	35
+CITY	Berkeley, United States	Berkeley	US	34
+CITY	Pittsburgh, United States	Pittsburgh	US	34
+CITY	Madison, United States	Madison	US	32
+CITY	Oklahoma City, United States	Oklahoma City	US	32
+CITY	Billings, United States	Billings	US	31
+CITY	Portsmouth, United States	Portsmouth	US	31
+CITY	Scottsdale, United States	Scottsdale	US	31
+CITY	Walnut Creek, United States	Walnut Creek	US	31
+CITY	Brea, United States	Brea	US	30
+CITY	Allen, United States	Allen	US	29
+CITY	Stamford, United States	Stamford	US	29
+CITY	Greenville, United States	Greenville	US	27
+CITY	Overland Park, United States	Overland Park	US	27
+CITY	Raleigh, United States	Raleigh	US	27
+CITY	Norcross, United States	Norcross	US	26
+CITY	Des Moines, United States	Des Moines	US	25
+CITY	Milpitas, United States	Milpitas	US	25
+CITY	Lancaster, United States	Lancaster	US	24
+CITY	Little Rock, United States	Little Rock	US	23
+CITY	Morristown, United States	Morristown	US	23
+CITY	Saint Paul, United States	Saint Paul	US	23
+CITY	Alexandria, United States	Alexandria	US	22
+CITY	Brentwood, United States	Brentwood	US	22
+CITY	El Segundo, United States	El Segundo	US	22
+CITY	Sterling Heights, United States	Sterling Heights	US	22
+CITY	Wallingford, United States	Wallingford	US	22
+CITY	West Palm Beach, United States	West Palm Beach	US	22
+CITY	Woodbridge Township, United States	Woodbridge Township	US	22
+CITY	Princeton, United States	Princeton	US	21
+CITY	San Jose, United States	San Jose	US	21
+CITY	Southfield, United States	Southfield	US	21
+CITY	Tewksbury, United States	Tewksbury	US	21
+CITY	Westport, United States	Westport	US	21
+CITY	Conshohocken, United States	Conshohocken	US	20
+CITY	New Orleans, United States	New Orleans	US	20
+CITY	Akron, United States	Akron	US	19
+CITY	Ashburn, United States	Ashburn	US	19
+CITY	Newport, United States	Newport	US	19
+CITY	Radnor, United States	Radnor	US	19
+CITY	Ridgecrest, United States	Ridgecrest	US	19
+CITY	Appleton, United States	Appleton	US	18
+CITY	Boise, United States	Boise	US	18
+CITY	St. Petersburg, United States	St. Petersburg	US	18
+CITY	Wellesley, United States	Wellesley	US	18
+CITY	Clifton, United States	Clifton	US	17
+CITY	Dayton, United States	Dayton	US	17
+CITY	Lexington, United States	Lexington	US	17
+CITY	Diamond Bar, United States	Diamond Bar	US	16
+CITY	Downers Grove, United States	Downers Grove	US	16
+CITY	Hillsboro, United States	Hillsboro	US	16
+CITY	Jackson, United States	Jackson	US	16
+CITY	Aliso Viejo, United States	Aliso Viejo	US	15
+CITY	Franklin, United States	Franklin	US	15
+CITY	Irving, United States	Irving	US	15
+CITY	Leawood, United States	Leawood	US	15
+CITY	Manchester, United States	Manchester	US	15
+CITY	Melville, United States	Melville	US	15
+CITY	Richardson, United States	Richardson	US	15
+CITY	Aberdeen, United States	Aberdeen	US	14
+CITY	Colorado Springs, United States	Colorado Springs	US	14
+CITY	Columbia City, United States	Columbia City	US	14
+CITY	Evansville, United States	Evansville	US	14
+CITY	Glendale, United States	Glendale	US	14
+CITY	Honolulu, United States	Honolulu	US	14
+CITY	Memphis, United States	Memphis	US	14
+CITY	Sioux Falls, United States	Sioux Falls	US	14
+CITY	Wichita, United States	Wichita	US	14
+CITY	Bloomington, United States	Bloomington	US	13
+CITY	Carmel-by-the-Sea, United States	Carmel-by-the-Sea	US	13
+CITY	Fort Wayne, United States	Fort Wayne	US	13
+CITY	King of Prussia, United States	King of Prussia	US	13
+CITY	Latham, United States	Latham	US	13
+CITY	Metairie, United States	Metairie	US	13
+CITY	Norfolk, United States	Norfolk	US	13
+PLACE	North America/Canada	Canada	CA	23
+CITY	Montreal, Canada	Montreal	CA	13
+CITY	Toronto, Canada	Toronto	CA	6
+CITY	Mississauga, Canada	Mississauga	CA	2
+CITY	Estevan, Canada	Estevan	CA	1
+CITY	Ottawa, Canada	Ottawa	CA	1
+PLACE	North America/Mexico	Mexico	MX	4
+CITY	Mexico City, Mexico	Mexico City	MX	4
+PLACE	North America/Puerto Rico	Puerto Rico	PR	4
+CITY	Cataño, Puerto Rico	Cataño	PR	4
+PLACE	North America/Costa Rica	Costa Rica	CR	3
+CITY	Heredia, Costa Rica	Heredia	CR	3
+PLACE	North America/British Virgin Islands	British Virgin Islands	VG	2
+CITY	Road Town, British Virgin Islands	Road Town	VG	2
+PLACE	Asia/India	India	IN	2862
+CITY	Bengaluru, India	Bengaluru	IN	878
+CITY	Hyderabad, India	Hyderabad	IN	401
+CITY	Mumbai, India	Mumbai	IN	390
+CITY	Bangarde, India	Bangarde	IN	342
+CITY	New Delhi, India	New Delhi	IN	282
+CITY	Gurugram, India	Gurugram	IN	180
+CITY	Noida, India	Noida	IN	133
+CITY	Chennai, India	Chennai	IN	101
+CITY	Chandigarh, India	Chandigarh	IN	40
+CITY	Bhubaneswar, India	Bhubaneswar	IN	29
+CITY	Jaipur, India	Jaipur	IN	23
+CITY	Navi Mumbai, India	Navi Mumbai	IN	20
+CITY	Coimbatore, India	Coimbatore	IN	12
+CITY	Nagpur, India	Nagpur	IN	11
+CITY	Kolkata, India	Kolkata	IN	10
+CITY	Bhopal, India	Bhopal	IN	2
+CITY	Alampur, India	Alampur	IN	1
+CITY	Delhi, India	Delhi	IN	1
+CITY	Durgapur, India	Durgapur	IN	1
+CITY	Gandhinagar, India	Gandhinagar	IN	1
+CITY	Hoskote, India	Hoskote	IN	1
+CITY	Jamshedpur, India	Jamshedpur	IN	1
+CITY	Kochi, India	Kochi	IN	1
+CITY	Morbi, India	Morbi	IN	1
+PLACE	Asia/Hong Kong	Hong Kong	HK	2539
+CITY	Hong Kong	Hong Kong	HK	2537
+CITY	Mongkok, Hong Kong	Mongkok	HK	2
+PLACE	Asia/Singapore	Singapore	SG	2152
+CITY	Singapore	Singapore	SG	2151
+CITY	Singapore, Singapore	Singapore	SG	1
+PLACE	Asia/Philippines	Philippines	PH	727
+CITY	Manila, Philippines	Manila	PH	277
+CITY	Makati City, Philippines	Makati City	PH	202
+CITY	Philippines	Philippines	PH	102
+CITY	Cebu City, Philippines	Cebu City	PH	56
+CITY	Pasig, Philippines	Pasig	PH	43
+CITY	Milagros, Philippines	Milagros	PH	14
+CITY	Iloilo City, Philippines	Iloilo City	PH	12
+CITY	City of Santiago, Philippines	City of Santiago	PH	7
+CITY	Quezon, Philippines	Quezon	PH	6
+CITY	San Pedro, Philippines	San Pedro	PH	5
+CITY	Mandaluyong City, Philippines	Mandaluyong City	PH	2
+CITY	Santol, Philippines	Santol	PH	1
+PLACE	Asia/Malaysia	Malaysia	MY	545
+CITY	Kuala Lumpur, Malaysia	Kuala Lumpur	MY	410
+CITY	Putrajaya, Malaysia	Putrajaya	MY	57
+CITY	Petaling Jaya, Malaysia	Petaling Jaya	MY	17
+CITY	Shah Alam, Malaysia	Shah Alam	MY	10
+CITY	George Town, Malaysia	George Town	MY	9
+CITY	Balingian, Malaysia	Balingian	MY	7
+CITY	Johor Bahru, Malaysia	Johor Bahru	MY	6
+CITY	Bukit Mertajam, Malaysia	Bukit Mertajam	MY	4
+CITY	Klang, Malaysia	Klang	MY	4
+CITY	Butterworth, Malaysia	Butterworth	MY	3
+CITY	Malaysia	Malaysia	MY	3
+CITY	Puchong, Malaysia	Puchong	MY	3
+CITY	Ipoh, Malaysia	Ipoh	MY	2
+CITY	Kota Kinabalu, Malaysia	Kota Kinabalu	MY	2
+CITY	Sandakan, Malaysia	Sandakan	MY	2
+CITY	Alor Setar, Malaysia	Alor Setar	MY	1
+CITY	Kluang, Malaysia	Kluang	MY	1
+CITY	Muar, Malaysia	Muar	MY	1
+CITY	Seremban, Malaysia	Seremban	MY	1
+CITY	Serendah, Malaysia	Serendah	MY	1
+CITY	Sungai Petani, Malaysia	Sungai Petani	MY	1
+PLACE	Asia/Japan	Japan	JP	440
+CITY	Tokyo, Japan	Tokyo	JP	391
+CITY	Yokohama, Japan	Yokohama	JP	24
+CITY	Hiratsuka, Japan	Hiratsuka	JP	13
+CITY	Osaka, Japan	Osaka	JP	4
+CITY	Nanae, Japan	Nanae	JP	3
+CITY	Kawasaki, Japan	Kawasaki	JP	1
+CITY	Kobe, Japan	Kobe	JP	1
+CITY	Nagoya, Japan	Nagoya	JP	1
+CITY	Sapporo, Japan	Sapporo	JP	1
+CITY	Yokosuka, Japan	Yokosuka	JP	1
+PLACE	Asia/Israel	Israel	IL	132
+CITY	Tel Aviv-Yafo, Israel	Tel Aviv-Yafo	IL	96
+CITY	Jerusalem, Israel	Jerusalem	IL	28
+CITY	Giv'atayim, Israel	Giv'atayim	IL	5
+CITY	Ness Ziona, Israel	Ness Ziona	IL	2
+CITY	Herzliya, Israel	Herzliya	IL	1
+PLACE	Asia/Indonesia	Indonesia	ID	68
+CITY	Jakarta, Indonesia	Jakarta	ID	66
+CITY	Denpasar, Indonesia	Denpasar	ID	2
+PLACE	Asia/China	China	CN	62
+CITY	Shanghai, China	Shanghai	CN	42
+CITY	Beijing, China	Beijing	CN	12
+CITY	Shenzhen, China	Shenzhen	CN	8
+PLACE	Asia/Vietnam	Vietnam	VN	41
+CITY	Ho Chi Minh City, Vietnam	Ho Chi Minh City	VN	27
+CITY	Hanoi, Vietnam	Hanoi	VN	13
+CITY	Vietnam	Vietnam	VN	1
+PLACE	Asia/Sri Lanka	Sri Lanka	LK	33
+CITY	Colombo, Sri Lanka	Colombo	LK	33
+PLACE	Asia/Afghanistan	Afghanistan	AF	24
+CITY	Kabul, Afghanistan	Kabul	AF	13
+CITY	Afghanistan	Afghanistan	AF	9
+CITY	Darzab Rural District, Afghanistan	Darzab Rural District	AF	2
+PLACE	Asia/Taiwan	Taiwan	TW	12
+CITY	Taiwan	Taiwan	TW	12
+PLACE	Asia/South Korea	South Korea	KR	10
+CITY	South Korea	South Korea	KR	8
+CITY	Incheon, South Korea	Incheon	KR	1
+CITY	Wanju-gun, South Korea	Wanju-gun	KR	1
+PLACE	Asia/Maldives	Maldives	MV	4
+CITY	Malé, Maldives	Malé	MV	4
+PLACE	Asia/Macao	Macao	MO	1
+CITY	Macao	Macao	MO	1
+PLACE	Asia/Thailand	Thailand	TH	1
+CITY	Bangkok, Thailand	Bangkok	TH	1
+PLACE	Australasia/Australia	Australia	AU	1214
+CITY	Sydney, Australia	Sydney	AU	680
+CITY	Melbourne, Australia	Melbourne	AU	218
+CITY	Australia	Australia	AU	105
+CITY	Brisbane, Australia	Brisbane	AU	83
+CITY	Adelaide, Australia	Adelaide	AU	45
+CITY	Canberra, Australia	Canberra	AU	12
+CITY	Gold Coast, Australia	Gold Coast	AU	8
+CITY	Newcastle, Australia	Newcastle	AU	7
+CITY	Ballarat Central, Australia	Ballarat Central	AU	5
+CITY	Hobart, Australia	Hobart	AU	5
+CITY	Rockingham, Australia	Rockingham	AU	5
+CITY	Wagga Wagga, Australia	Wagga Wagga	AU	5
+CITY	Eveleigh, Australia	Eveleigh	AU	4
+CITY	Southport, Australia	Southport	AU	4
+CITY	Freshwater, Australia	Freshwater	AU	3
+CITY	Busselton, Australia	Busselton	AU	2
+CITY	Geraldton, Australia	Geraldton	AU	2
+CITY	Griffith, Australia	Griffith	AU	2
+CITY	Leeton, Australia	Leeton	AU	2
+CITY	Wollongong, Australia	Wollongong	AU	2
+CITY	Albany, Australia	Albany	AU	1
+CITY	Albury, Australia	Albury	AU	1
+CITY	Bowral, Australia	Bowral	AU	1
+CITY	Campbelltown, Australia	Campbelltown	AU	1
+CITY	Darwin, Australia	Darwin	AU	1
+CITY	Fremantle, Australia	Fremantle	AU	1
+CITY	Geelong, Australia	Geelong	AU	1
+CITY	Gympie, Australia	Gympie	AU	1
+CITY	Mildura, Australia	Mildura	AU	1
+CITY	Nowra, Australia	Nowra	AU	1
+CITY	Orange, Australia	Orange	AU	1
+CITY	Port Lincoln, Australia	Port Lincoln	AU	1
+CITY	Saint Albans, Australia	Saint Albans	AU	1
+CITY	Southbank, Australia	Southbank	AU	1
+CITY	Sunbury, Australia	Sunbury	AU	1
+PLACE	Australasia/New Zealand	New Zealand	NZ	1
+CITY	Wellington, New Zealand	Wellington	NZ	1
+PLACE	Gulf/United Arab Emirates	United Arab Emirates	AE	539
+CITY	Dubai, United Arab Emirates	Dubai	AE	352
+CITY	Abu Dhabi, United Arab Emirates	Abu Dhabi	AE	187
+PLACE	Gulf/Saudi Arabia	Saudi Arabia	SA	186
+CITY	Riyadh, Saudi Arabia	Riyadh	SA	173
+CITY	Jeddah, Saudi Arabia	Jeddah	SA	11
+CITY	Al Khobar, Saudi Arabia	Al Khobar	SA	1
+CITY	Madinah, Saudi Arabia	Madinah	SA	1
+PLACE	Gulf/Qatar	Qatar	QA	34
+CITY	Doha, Qatar	Doha	QA	34
+PLACE	Gulf/Bahrain	Bahrain	BH	21
+CITY	Manama, Bahrain	Manama	BH	21
+PLACE	Gulf/Kuwait	Kuwait	KW	12
+CITY	Kuwait City, Kuwait	Kuwait City	KW	12
+PLACE	Africa/South Africa	South Africa	ZA	8
+CITY	Cape Town, South Africa	Cape Town	ZA	7
+CITY	De Aar, South Africa	De Aar	ZA	1
+PLACE	Africa/Egypt	Egypt	EG	7
+CITY	Cairo, Egypt	Cairo	EG	7
+PLACE	Africa/Algeria	Algeria	DZ	6
+CITY	Algiers, Algeria	Algiers	DZ	6
+PLACE	Africa/Mauritius	Mauritius	MU	3
+CITY	Port Louis, Mauritius	Port Louis	MU	3
+PLACE	Africa/Réunion	Réunion	RE	1
+CITY	Réunion	Réunion	RE	1
+PLACE	Africa/Tunisia	Tunisia	TN	1
+CITY	Tunis, Tunisia	Tunis	TN	1
+PLACE	South America/Brazil	Brazil	BR	1
+CITY	São Paulo, Brazil	São Paulo	BR	1

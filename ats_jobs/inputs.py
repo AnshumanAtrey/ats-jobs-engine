@@ -21,7 +21,7 @@ from importlib import resources
 from urllib.parse import parse_qs, urlparse
 
 from . import places
-from .rows import classify_place, country_code
+from .rows import classify_place, country_code, plain
 
 DEFAULT_MAX_JOBS = 100
 MAX_JOBS_CAP = 100_000             # our guard: more than every open job on one platform we read
@@ -166,15 +166,18 @@ def _place_names() -> tuple[frozenset[str], frozenset[str]]:
 
 def _is_place(words: list[str], bare: bool, platform=None) -> bool:
     """A place, by the job boards' lists and the platform's own (Platform.place_names: a site outside India names its
-    towns, such as Welcome to the Jungle's Paris, Lyon and London)."""
+    towns, such as Welcome to the Jungle's Paris, Lyon and London or eFinancialCareers' Zurich), whose names are
+    also tried with their accents dropped (Zürich, Zurich)."""
     text = ' '.join(words)
     name = places.key(text)
     if not name:
         return False
     every, major = _place_names()
     own_every, own_major = platform.place_names() if platform is not None else (frozenset(), frozenset())
-    return (name in (major if bare else every) or name in (own_major if bare else own_every) or name in places.REGIONS
-            or country_code(text, allow_codes=False) is not None)
+    own = own_major if bare else own_every
+    return (name in (major if bare else every) or name in places.REGIONS
+            or country_code(text, allow_codes=False) is not None
+            or name in own or places.key(plain(text)) in own)
 
 
 def _place_text(words: list[str]) -> str:

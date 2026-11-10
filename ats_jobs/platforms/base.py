@@ -79,8 +79,9 @@ class Platform:
         return False
 
     def place_names(self) -> tuple[frozenset[str], frozenset[str]]:
-        """(every place name this platform's jobs use, the ones common enough to read alone at the end of a search
-        entry), in places.key form, beside the engine's lists, so "data analyst in Lyon" reads Lyon as the place."""
+        """(every place name this platform's jobs use, read after in, at or near; the ones common enough to read alone at
+        the end of a search entry), in places.key form with or without accents, beside the engine's lists, so "data
+        analyst in Lyon" and "risk manager in Zurich" read the place (inputs.read_place_words). None by default."""
         return frozenset(), frozenset()
 
     def aliases(self, board: Board) -> list[str]:
