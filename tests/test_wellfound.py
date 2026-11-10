@@ -258,6 +258,51 @@ class Jobs(unittest.TestCase):
         self.assertTrue(Place('India').matches(job_area(job)))
 
 
+class Filters(unittest.TestCase):
+    def test_minimum_pay_as_people_type_it(self):
+        notes = []
+        read = lambda value: wellfound.read_pay(value, notes.append)
+        self.assertEqual(read('120k USD'), (120000, 'USD'))
+        self.assertEqual(read('20L INR'), (2000000, 'INR'))
+        self.assertEqual(read('€60k'), (60000, 'EUR'))
+        self.assertEqual(read('$150,000'), (150000, 'USD'))
+        self.assertEqual(notes, [])
+        self.assertEqual(read(120000), (120000, None))
+        self.assertEqual(read('120000'), (120000, 'USD'))
+        self.assertIn('US dollars', notes[-1])
+        self.assertIsNone(read('lots'))
+        self.assertIn('Could not read minSalary', notes[-1])
+        self.assertIsNone(read(''))
+
+    def test_company_stages_as_people_type_them(self):
+        notes = []
+        self.assertEqual(wellfound.read_stages(['Early Stage', 'seed', 'growth'], notes.append), ['early', 'growth'])
+        self.assertEqual(wellfound.read_stages('late, IPO', notes.append), ['scale', 'public'])
+        self.assertEqual(wellfound.read_stages(['early', 'growth', 'scale', 'public'], notes.append), [])
+        self.assertEqual(wellfound.read_stages(['unicorn'], notes.append), [])
+        self.assertIn('companyStage has no option unicorn', notes[-1])
+
+    def test_pay_and_stage_are_checked_on_every_job_and_named_when_they_leave_all_out(self):
+        jobs = [listing(1, 2, pay='$150k – $200k'), listing(2, 3, pay='₹30L – ₹40L'), listing(3, 4, pay='No equity'),
+                listing(4, 5, pay='$90k – $110k')]
+        startups = [('Acme', jobs[:2]), ('Bolt', jobs[2:])]
+        site = FakeSite({'role/software-engineer': startups})
+        run = run_of(Wellfound(), site, {'searchTerms': ['software engineer'], 'minSalary': '120k USD'})
+        self.assertEqual([r['jobId'] for r in run.delivery.rows_out], ['1'])
+        self.assertEqual(run.output('done')['settings']['minSalary'], {'amount': 120000.0, 'currency': 'USD'})
+        site = FakeSite({'role/software-engineer': startups})
+        run = run_of(Wellfound(), site, {'searchTerms': ['software engineer'], 'minSalary': '500k USD'})
+        self.assertEqual(run.delivery.rows, 0)
+        self.assertIn('the pay alone left out 4', run.message())
+        site = FakeSite({'role/software-engineer': startups})
+        run = run_of(Wellfound(), site, {'searchTerms': ['software engineer'], 'companyStage': ['growth']})
+        self.assertEqual(run.delivery.rows, 0)
+        self.assertIn('company stage', run.message())
+        site = FakeSite({'role/software-engineer': startups})
+        run = run_of(Wellfound(), site, {'searchTerms': ['software engineer'], 'companyStage': ['early']})
+        self.assertEqual(run.delivery.rows, 4)
+
+
 class Plans(unittest.TestCase):
     def test_a_title_reads_its_role_and_a_longer_one_the_role_inside_it(self):
         _, _, queries = plan_of({'searchTerms': ['data scientist']}, site_with('role/data-scientist'))
@@ -367,6 +412,25 @@ class Reading(unittest.TestCase):
         self.assertGreater(run.delivery.rows, 0)
         self.assertEqual(run.status(), 'partial')
         self.assertIn('Cloudflare check refused this address', run.message())
+
+    def test_cloudflares_429_challenge_is_a_refusal_too(self):
+        # send() retries a 429 by itself and then raises; the run must still wait, slow down and keep what it read
+        from ats_jobs import http as http_module
+        startups = [(f'Startup {i}', [listing(i, i + 1)]) for i in range(60)]
+
+        class Limited(FakeSite):
+            async def request(self, method, url, follow_redirects=False, headers=None, params=None):
+                if len(self.calls) >= 2:
+                    self.calls.append('limited')
+                    return Response(429, 'Security Check', {'cf-mitigated': 'challenge'})
+                return await super().request(method, url, follow_redirects, headers, params)
+        platform = Wellfound()
+        with patch.object(wellfound, 'REFUSAL_WAITS', (0, 0)), patch.object(http_module, 'BACKOFF_S', (0, 0, 0)):
+            run = run_of(platform, Limited({'role/software-engineer': startups}), {'searchTerms': ['software engineer']})
+        self.assertGreater(run.delivery.rows, 0)
+        self.assertEqual(run.status(), 'partial')
+        self.assertIn('refused this address (HTTP 429)', run.message())
+        self.assertLess(platform.pace.rate, 10_000.0)
 
     def test_a_page_that_cannot_be_read_costs_only_its_jobs(self):
         startups = [(f'Startup {i}', [listing(i, i + 1)]) for i in range(60)]

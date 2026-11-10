@@ -271,6 +271,51 @@ def compensation(text: str | None) -> dict:
     return out
 
 
+STAGES = ('early', 'growth', 'scale', 'public')      # Wellfound's company stage badges, measured 2026-11-10
+CODES = {'usd', 'inr', 'eur', 'gbp', 'cad', 'aud', 'sgd', 'aed', 'chf', 'jpy', 'brl', 'mxn', 'pln', 'sek', 'nok', 'dkk',
+         'ils', 'hkd', 'nzd', 'zar', 'ngn', 'php', 'idr', 'myr', 'thb', 'vnd', 'krw', 'try', 'czk', 'sar', 'qar', 'kes',
+         'pkr', 'egp', 'cny', 'twd', 'uah', 'ron', 'huf', 'bdt', 'lkr', 'npr', 'cop', 'clp', 'ars', 'pen'}
+
+
+def read_pay(value, note) -> tuple[float, str | None] | None:
+    """minSalary as people type it -> (yearly amount, currency): 120000, '120k', '$120k', '20L INR', '60000 EUR', '€60k'.
+    A number with no currency is US dollars, the currency of most pay on Wellfound, with a note: compared with jobs in
+    every currency, ₹1.2L (about $1,400) would pass 120k."""
+    if value is None or value == '' or isinstance(value, bool):
+        return None
+    if isinstance(value, (int, float)):
+        return (float(value), None) if value > 0 else None
+    text = str(value).strip()
+    code = next((w.upper() for w in re.findall(r'[A-Za-z]{3}', text) if w.lower() in CODES), None)
+    number, sign = amount(re.sub(r'\b[A-Za-z]{3}\b', ' ', text) if code else text)
+    if not number or number <= 0:
+        note(f'Could not read minSalary "{value}" as a yearly amount such as 120000 USD, 120k or 20L INR, so pay was '
+             f'not filtered.')
+        return None
+    currency = code or SIGNS.get(sign or '')
+    if not currency:
+        note(f'Read minSalary "{value}" as US dollars a year; type a currency after it for another, such as 20L INR.')
+    return number, currency or 'USD'
+
+
+def read_stages(value, note) -> list[str]:
+    """companyStage -> Wellfound's stages asked for: 'Early Stage', 'seed' (early), 'growth', 'late' (scale), 'public'."""
+    items = value if isinstance(value, list) else [value] if isinstance(value, str) else []
+    words_of = [w for item in items if isinstance(item, str) for w in re.split(r'[,;\n]+', item) if w.strip()]
+    aliases = {'seed': 'early', 'startup': 'early', 'late': 'scale', 'scaleup': 'scale', 'ipo': 'public', 'listed': 'public'}
+    out, unknown = [], []
+    for raw in words_of:
+        word = raw.strip().lower().replace(' stage', '').replace('-stage', '').strip()
+        stage = word if word in STAGES else aliases.get(word)
+        if stage and stage not in out:
+            out.append(stage)
+        elif not stage:
+            unknown.append(raw.strip())
+    if unknown:
+        note(f'companyStage has no option {", ".join(unknown)}: its options are {", ".join(STAGES)}.')
+    return [] if len(out) == len(STAGES) else out
+
+
 def work_type(remote: bool, kind: str | None, flexible: bool | None) -> str:
     """In office with work-from-home flexibility is hybrid; a job Wellfound marks remote (remote only, onsite or remote,
     or remote with no policy) is remote; anything else is onsite."""
@@ -323,6 +368,8 @@ class Wellfound(Platform):
     job_example = 'https://wellfound.com/jobs/4965854-software-engineer'
     concurrency = CONCURRENCY
     server_filters = True        # a typed place goes to Wellfound's own place pages
+    filter_words = {'minSalary': ('pay', 'type a lower minSalary, another currency, or clear it'),
+                    'companyStage': ('company stage', 'pick more stages in companyStage or clear it')}
     never = ('department', 'team', 'expiresAt', 'reference')
     extra = ('salaryMin', 'salaryMax', 'salaryCurrency', 'salaryPeriod', 'offersEquity', 'equityMin', 'equityMax',
              'experienceMin', 'experienceMax', 'remoteIn', 'remotePolicy', 'role', 'companySize', 'companyStage',
@@ -334,6 +381,8 @@ class Wellfound(Platform):
 
     def __init__(self):
         self.cfg = None
+        self.min_pay: tuple[float, str | None] | None = None    # minSalary: (yearly amount, currency or None)
+        self.stages: list[str] = []                               # companyStage: early, growth, scale, public
         self.queries: list[Query] = []          # the run's searches, for its notes and settings
         self.firsts: dict[str, dict | None] = {}   # path -> its first page, read once (None: no such search)
         self.seen: set[str] = set()             # job ids already handed to the engine
@@ -411,9 +460,26 @@ class Wellfound(Platform):
             cfg.job_types = [t for t in cfg.job_types if t != 'temporary']
             self.note('Wellfound has no temporary job type, so it was left out. Its types are full-time, part-time, '
                       'contract, intern and cofounder.')
+        self.min_pay = read_pay(raw.get('minSalary'), self.note)
+        self.stages = read_stages(raw.get('companyStage'), self.note)
+
+    def fits(self, job):
+        """Wellfound's own filters, on every job whose words match: the top of its yearly pay reaches minSalary in that
+        currency (a job that shows no pay, or pay in another currency, does not), and its company is at a stage asked
+        for (a company with no stage badge is not)."""
+        if self.min_pay:
+            low, currency = self.min_pay
+            top = job.get('salaryMax') or job.get('salaryMin')
+            if not top or top < low or job.get('salaryCurrency') != currency:
+                return 'minSalary'
+        if self.stages and (job.get('companyStage') or '').split(' ')[0].lower() not in self.stages:
+            return 'companyStage'
+        return True
 
     def settings(self):
-        return {'wellfoundSearches': [{'page': f'{ORIGIN}/{q.path}', 'jobsListed': q.total, 'pages': q.pages}
+        return {'minSalary': {'amount': self.min_pay[0], 'currency': self.min_pay[1]} if self.min_pay else None,
+                'companyStage': self.stages or None,
+                'wellfoundSearches': [{'page': f'{ORIGIN}/{q.path}', 'jobsListed': q.total, 'pages': q.pages}
                                       for q in self.queries] or None,
                 'proxy': True if self._proxy_input else None}
 
@@ -454,15 +520,25 @@ class Wellfound(Platform):
 
     async def get(self, http, path: str, follow: bool = False):
         """One page in its turn; a search page without following redirects (303 is the end of a search). Cloudflare's
-        refusal (403 or 429) makes every call wait and try again; through a proxy it moves the run to a fresh address."""
+        refusal makes every call wait, slows the pace and tries again; through a proxy it moves the run to a fresh
+        address. A refusal is 403, or 429 with a challenge, which send() retries 3 times on its own first: on
+        2026-11-10 this laptop met 429 on every page after about 1,500 pages in 15 minutes (two whole-site reads 6
+        minutes apart)."""
         tries = 0
         while True:
             via = await self.route(http)
             await self.pace.turn()
-            response = await send(via, 'GET', f'{ORIGIN}/{path.lstrip("/")}', follow_redirects=follow,
-                                  headers={'Accept': 'text/html,application/xhtml+xml'})
-            if response.status_code not in (403, 429):
+            try:
+                response = await send(via, 'GET', f'{ORIGIN}/{path.lstrip("/")}', follow_redirects=follow,
+                                      headers={'Accept': 'text/html,application/xhtml+xml'})
+                status, mitigated = response.status_code, response.headers.get('cf-mitigated')
+            except BoardError as exc:
+                if str(exc) != 'HTTP 429':
+                    raise
+                status, mitigated = 429, None
+            if status not in (403, 429):
                 return response
+            self.pace.slow()
             if self._proxy_input and self._rotations < ROTATIONS:
                 if via is self._via:
                     self._rotations += 1
@@ -472,7 +548,7 @@ class Wellfound(Platform):
                 self.pace.hold(REFUSAL_WAITS[tries])
                 tries += 1
                 continue
-            why = f'HTTP {response.status_code}' + (' with a challenge' if response.headers.get('cf-mitigated') else '')
+            why = f'HTTP {status}' + (' with a challenge' if mitigated else '')
             later = ('the proxy\'s addresses were refused too' if self._proxy_input else
                      'run again later, or turn on Apify Proxy in Connection (proxyConfiguration)')
             self.note(f'Wellfound\'s Cloudflare check refused this address ({why}) after {self._pages_read:,} pages, so '
@@ -579,6 +655,7 @@ class Wellfound(Platform):
     async def _plan(self, http) -> list[Query]:
         cfg = self.cfg
         roles: list[Role] = []
+        unmatched: list[str] = []            # typed titles no role fits: matched by title in whatever is read
         everything = not cfg.search_terms
         for term in cfg.search_terms:
             found, how = self.roles_for(term)
@@ -590,15 +667,18 @@ class Wellfound(Platform):
                     continue
                 if not found or len(found) > MAX_ROLES:
                     everything = True
-                    self.note(f'Wellfound has no role for "{term}"' + (f' (it is in {len(found)} of its roles)' if found
-                                                                        else '') +
-                              ', so every job on Wellfound was read and matched by title.')
+                    unmatched.append(f'"{term}"' + (f' (it is in {len(found)} of its roles)' if found else ''))
                     continue
             roles += [r for r in found if r not in roles]
             if how != 'exact':
                 self.note(f'Read "{term}" through Wellfound\'s role{"s" if len(found) > 1 else ""} '
                           f'{", ".join(bare(r.name) for r in found)}; jobs are kept by their titles.')
         role_slugs = [] if everything else list(dict.fromkeys(r.slug for r in roles))
+        if unmatched:
+            read = ('every remote job on Wellfound' if cfg.work_types == ['remote'] else
+                    'the jobs of the places you typed' if cfg.locations else 'every job on Wellfound')
+            self.note(f'Wellfound has no role for {", ".join(unmatched)}, so {read} '
+                      f'{"was" if read.startswith("every") else "were"} read and matched by title.')
         paths: list[tuple[str, list]] = []
         if cfg.work_types == ['remote']:         # remote jobs only, anywhere they hire: the remote searches
             paths = [(f'role/r/{s}', []) for s in role_slugs] or [('remote', [])]
@@ -719,10 +799,15 @@ class Wellfound(Platform):
 
     def cap_note(self) -> None:
         listed, shown = sum(q.total for q in self.queries), len(self.seen)
-        if listed > shown:
-            self.note(f'Wellfound lists {listed:,} jobs for {"this search" if len(self.queries) == 1 else "these searches"}'
-                      f' and shows visitors at most {SHOWN} of each startup: the run read the {shown:,} it shows.',
-                      key='cap')
+        if listed <= shown:
+            return
+        if len(self.queries) == 1:
+            self.note(f'Wellfound lists {listed:,} jobs for this search and shows visitors at most {SHOWN} of each '
+                      f'startup: the run read the {shown:,} it shows.', key='cap')
+        else:
+            self.note(f'Wellfound\'s {len(self.queries)} searches list {listed:,} jobs, a job in two of them counted twice, '
+                      f'and show visitors at most {SHOWN} of each startup in each: the run read the {shown:,} different '
+                      f'jobs they show.', key='cap')
 
     def job(self, record: dict, startup: dict, data: dict, tag: list) -> dict:
         names = unique(record.get('locationNames'))
@@ -797,9 +882,11 @@ class Wellfound(Platform):
 
 
 class Pace:
-    """Calls in their turn: BURST at once, then RATE a second; after a refusal every call waits."""
+    """Calls in their turn: BURST at once, then rate a second (RATE, halved after each refusal down to one a second);
+    after a refusal every call waits."""
 
     def __init__(self):
+        self.rate = RATE
         self.tokens, self.at, self.until = float(BURST), time.monotonic(), 0.0
         self.lock = asyncio.Lock()
 
@@ -809,15 +896,18 @@ class Pace:
             if self.until > now:
                 await asyncio.sleep(self.until - now)
                 now = time.monotonic()
-            self.tokens = min(BURST, self.tokens + (now - self.at) * RATE)
+            self.tokens = min(BURST, self.tokens + (now - self.at) * self.rate)
             self.at = now
             if self.tokens < 1:
-                await asyncio.sleep((1 - self.tokens) / RATE)
+                await asyncio.sleep((1 - self.tokens) / self.rate)
                 self.tokens, self.at = 1.0, time.monotonic()
             self.tokens -= 1
 
     def hold(self, seconds: float) -> None:
         self.until = max(self.until, time.monotonic() + seconds)
+
+    def slow(self) -> None:
+        self.rate = max(1.0, self.rate / 2)
 
 
 @lru_cache(maxsize=512)
