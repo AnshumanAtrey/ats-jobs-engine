@@ -100,7 +100,7 @@ SLOW_GAP_S = 10.0                         # after a 429 without a proxy: at 2 s 
                                           # and 100 calls 10 s apart met none (2026-11-10)
 PROXY_GAP_S = 0.5                         # through a proxy, where the address changes every CALLS_PER_ADDRESS calls
 CALLS_PER_ADDRESS = 30
-ROTATIONS = 12                            # fresh proxy addresses a run takes after challenges before it gives up
+ROTATIONS = 12                            # fresh proxy addresses challenged in a row before a run gives up
 WAITS = (60, 120, 180)                    # without a proxy, seconds a 429 is waited out (the block lasted 5 to 6 minutes)
 TRIES = 6                                 # tries of one call: errors, server trouble, challenges
 EXPAND_PAGES = 25                         # pages of one employer's own list a search reads: 1,000 jobs
@@ -389,6 +389,8 @@ class Connection:
                 await self.sleep(1 + 2 * attempt)
                 continue
             if not challenged(response) or response.status_code in expect:
+                if not challenged(response):
+                    self.rotations = 0    # ROTATIONS counts challenged addresses in a row, not in the whole run
                 return response
             self.counts['challenges'] += 1
             STATS['retries'][f'{response.status_code} challenge'] += 1

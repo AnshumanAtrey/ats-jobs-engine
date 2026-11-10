@@ -690,6 +690,19 @@ class Connection(unittest.TestCase):
         self.assertEqual(len(proxy.sessions), hc.ROTATIONS + 1)
         self.assertEqual(len(set(proxy.sessions)), len(proxy.sessions))
 
+    def test_only_challenges_in_a_row_use_up_the_fresh_addresses(self):
+        # run SmrcF2oyqzzC6uRTu (2026-11-10): 21 challenges spread over 66 calls used up the 12 fresh addresses, so 9
+        # of 50 jobs lost their details; an answer that gets through starts the count again
+        platform = made()
+        proxy = Proxy()
+        connected(platform, [challenge(), Response(200, {})] * (hc.ROTATIONS + 3), proxy)
+
+        async def many():
+            for _ in range(hc.ROTATIONS + 2):
+                self.assertEqual((await platform.conn.get('https://hiringcafe.com/x')).status_code, 200)
+        run(many())
+        self.assertEqual(platform.conn.rotations, 0)
+
     def test_a_proxy_address_rests_after_its_share_of_calls(self):
         platform = made()
         proxy = Proxy()
