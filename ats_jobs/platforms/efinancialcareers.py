@@ -786,8 +786,11 @@ class EFinancialCareers(Platform):
                 return
 
     def window(self, params: dict, total: int) -> None:
+        """One note for every search that reached the window, with its total: a newest-first search read as its PAID and
+        UNPAID lists counts both."""
         self.incomplete = True
-        self.windows[params.get('q') or params.get('location') or 'every job'] = total
+        what = params.get('q') or params.get('location') or 'every job'
+        self.windows[what] = self.windows.get(what, 0) + total if 'filters.jobPaymentType' in params else total
         listed = ', '.join(f'{what} had {count:,}' for what, count in self.windows.items())
         self.note(f'eFinancialCareers shows the {WINDOW:,} first jobs of one search: {listed}, so the rest were not '
                   f'reached. Narrow it by place, sector or seniority to reach them.', key='window')

@@ -439,6 +439,13 @@ class Calls(unittest.TestCase):
         self.assertTrue(platform.incomplete)
         self.assertTrue(any('shows the 10,000 first jobs of one search: every job had 10,005' in n for n in cfg.notes))
 
+    def test_a_search_read_as_its_paid_and_unpaid_lists_counts_both_in_the_window_note(self):
+        platform, cfg = platform_for({})
+        platform.window({**efc.search_params(), 'filters.jobPaymentType': 'PAID'}, 13005)
+        platform.window({**efc.search_params(), 'filters.jobPaymentType': 'UNPAID'}, 57402)
+        self.assertTrue(any('every job had 70,407' in n for n in cfg.notes))
+        self.assertEqual(sum('shows the 10,000 first jobs' in n for n in cfg.notes), 1)
+
     def test_a_place_the_site_does_not_know_reads_the_newest_jobs_only(self):
         platform, cfg = platform_for({'location': ['Atlantis']})
         site = Site([record(str(i), f'Job {i}', i) for i in range(3000)], totals={'Atlantis': 3000})
