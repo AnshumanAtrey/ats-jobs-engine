@@ -42,6 +42,8 @@ class Platform:
     count_is_floor = False   # set during a run: matches may hide among records the platform did not open, so the count
                              # says "at least" (Instahyre: a range of years, which its own search cannot take)
     progress: str | None = None       # set by a platform that works a while before its first page: the status line
+    searched_nothing = False # set by a platform that ended before any search call (a typed place its own list lacks):
+                             # its note says why, and the run's message gives no near-miss hint
     job_types: tuple = ()    # employment types this platform states besides the engine's five, which the employmentType
                              # input then offers too (Welcome to the Jungle: apprenticeship, work-study)
     job_type_aliases: dict = {}       # their everyday words, and this platform's words for the engine's types (cdd)

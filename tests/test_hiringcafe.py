@@ -864,6 +864,7 @@ class EngineRun(unittest.TestCase):
         self.assertEqual(len(run_.platform.conn.session.calls), 1)            # the place lookup, no search page
         self.assertIn('Koramangala is not on HiringCafe\'s list of places, so nothing was searched: type the city, '
                       'state or country it is in.', run_.message())
+        self.assertNotIn('has no job with your words', run_.message())      # nothing was searched: no near-miss hint
 
     def test_a_search_keeps_only_what_matches(self):
         run_, delivery = self.go({'searchTerms': ['software engineer'], 'location': ['United Kingdom'],

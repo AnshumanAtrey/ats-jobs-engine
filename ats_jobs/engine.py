@@ -522,6 +522,8 @@ class Run:
         """Why a search found nothing, from the near misses: the jobs that had the words, the filter that alone left
         them out, and how to loosen it. Without words, the filter that left out the most jobs."""
         cfg = self.cfg
+        if self.platform.searched_nothing:
+            return ''
         names = {**FILTER_NAMES, **{k: v[0] for k, v in self.platform.filter_words.items()}}
         fixes = {**FILTER_FIXES, **{k: v[1] for k, v in self.platform.filter_words.items()}}
         if not self.near_misses:

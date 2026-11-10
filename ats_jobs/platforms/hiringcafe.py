@@ -1005,7 +1005,7 @@ class HiringCafe(Platform):
             else:
                 unknown.append(text)
         if unknown and not found:
-            self.nowhere = True
+            self.nowhere = self.searched_nothing = True
             self.note(f'{", ".join(unknown)} {"is" if len(unknown) == 1 else "are"} not on HiringCafe\'s list of '
                       f'places, so nothing was searched: type the city, state or country '
                       f'{"it is" if len(unknown) == 1 else "they are"} in.', 'unknown')
