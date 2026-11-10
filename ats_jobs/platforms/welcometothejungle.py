@@ -49,6 +49,7 @@ immobilier" 18 times in Paris over three months) and store chains' openings in o
 import asyncio
 import json
 import re
+import sys
 import time
 from dataclasses import dataclass
 from functools import lru_cache
@@ -77,6 +78,7 @@ SLUG = re.compile(r'^[a-z0-9][a-z0-9-]*$')
 SLUG_PLACE = re.compile(r'^[^_]+_([a-z0-9-]+)')    # the place after the title: bi-engineer_lille_SKIIL_dr9y6Oa
 EVERYONE = Board('*', 'Welcome to the Jungle')     # every job of every company at once
 MANY_PLACES = 200                                    # more place values than this and places are checked here only
+OFFICE_KEYS = ('city', 'state', 'country', 'country_code', 'district', 'local_city', 'local_district', 'local_state')
 ATTRIBUTES = ['name', 'slug', 'wk_reference', 'published_at', 'published_at_timestamp', 'language',
               'contract_type', 'contract_duration_minimum', 'contract_duration_maximum', 'remote', 'salary_minimum',
               'salary_maximum', 'salary_currency', 'salary_period', 'experience_level_minimum', 'education_level',
@@ -276,6 +278,7 @@ class WelcomeToTheJungle(Platform):
         self.numbers: list[list[str]] = []       # its numeric filters
         self.places_local = False                # a typed place is not on the list: places are checked here only
         self.told: set[str] = set()
+        self._shared: dict = {}                   # one object for equal offices, perks and industries (share)
 
     # ---------- boards, links and settings ----------
 
@@ -299,6 +302,15 @@ class WelcomeToTheJungle(Platform):
         if self.cfg is not None and (key or text) not in self.told:
             self.told.add(key or text)
             self.cfg.notes.append(text)
+
+    def share(self, key, make):
+        """The object made for this key the first time it was met: a company's jobs repeat its offices, perks and
+        industries, and a run that keeps every job held 81,442 of them in 590 MB at the peak before (2026-11-10). Shared
+        values are never changed, by this adapter or the engine."""
+        found = self._shared.get(key)
+        if found is None:
+            found = self._shared[key] = make()
+        return found
 
     def read_link(self, text):
         """A Welcome to the Jungle link -> (company slug, 'company/job slug'): a job page names both, a company page the
@@ -659,7 +671,8 @@ class WelcomeToTheJungle(Platform):
         org = hit.get('organization') or {}
         company_slug, slug = clean(org.get('slug')) or None, clean(hit.get('slug')) or None
         offices = [o for o in hit.get('offices') or [] if isinstance(o, dict)]
-        found, shown = self.places(offices)
+        found, shown = self.share(('offices', *(tuple(o.get(k) for k in OFFICE_KEYS) for o in offices)),
+                                  lambda: self.places(offices))
         low, high = (v if isinstance(v, (int, float)) and not isinstance(v, bool) and v > 0 else None
                      for v in (hit.get('salary_minimum'), hit.get('salary_maximum')))
         currency = clean(hit.get('salary_currency')) or None
@@ -668,13 +681,18 @@ class WelcomeToTheJungle(Platform):
         level = hit.get('experience_level_minimum')
         level = float(level) if isinstance(level, (int, float)) and not isinstance(level, bool) else None
         profession = hit.get('new_profession') or {}
-        sectors = [s for s in hit.get('sectors') or [] if isinstance(s, dict)]
+        sectors = self.share(('sectors', *((s.get('name'), s.get('parent_name')) for s in hit.get('sectors') or []
+                                           if isinstance(s, dict))),
+                             lambda: [(clean(s.get('name')), clean(s.get('parent_name'))) for s in hit.get('sectors') or []
+                                      if isinstance(s, dict)])
+        perks = [clean(b) for b in hit.get('benefits') or [] if clean(b)]
+        perks = self.share(('benefits', *perks), lambda: perks) if perks else None
         url = JOB_PAGE.format(org=company_slug, job=slug) if company_slug and slug else None
         logo = (org.get('logo') or {}).get('url') if isinstance(org.get('logo'), dict) else None
         return {
             'id': f'{company_slug}/{slug}' if company_slug and slug else hit.get('objectID'),
-            'company': clean(org.get('name')) or None,
-            'companySlug': company_slug,
+            'company': _intern(clean(org.get('name'))),
+            'companySlug': _intern(company_slug),
             'companyWebsite': None,
             'title': clean(hit.get('name')),
             'location': shown[0] if shown else None,
@@ -682,7 +700,7 @@ class WelcomeToTheJungle(Platform):
             'places': found,
             'workType': REMOTE.get(hit.get('remote')),
             'employmentType': CONTRACT.get(hit.get('contract_type')),
-            'department': clean(profession.get('sub_category_name')) or None,
+            'department': _intern(clean(profession.get('sub_category_name'))),
             'salary': shown_pay,
             'salaryMin': low if shown_pay else None,
             'salaryMax': high if shown_pay else None,
@@ -699,21 +717,21 @@ class WelcomeToTheJungle(Platform):
             'contractDurationMax': hit.get('contract_duration_maximum'),
             'remotePolicy': REMOTE_POLICY.get(hit.get('remote')),
             'education': EDUCATION.get(hit.get('education_level')),
-            'jobLanguage': hit.get('language') or None,
-            'role': clean(profession.get('pivot_name')) or None,
-            'roleCategory': clean(profession.get('category_name')) or None,
-            'industry': ', '.join(dict.fromkeys(clean(s.get('name')) for s in sectors if clean(s.get('name')))) or None,
+            'jobLanguage': _intern(hit.get('language')),
+            'role': _intern(clean(profession.get('pivot_name'))),
+            'roleCategory': _intern(clean(profession.get('category_name'))),
+            'industry': _intern(', '.join(dict.fromkeys(name for name, _ in sectors if name))),
             'companySize': org.get('nb_employees') if isinstance(org.get('nb_employees'), int) else None,
             'companyFounded': org.get('creation_year') if isinstance(org.get('creation_year'), int) else None,
-            'companyLogo': logo or None,
+            'companyLogo': _intern(logo),
             'summary': clean(hit.get('summary')) or None,
             'keyMissions': [clean(m) for m in hit.get('key_missions') or [] if clean(m)] or None,
-            'benefits': [clean(b) for b in hit.get('benefits') or [] if clean(b)] or None,
+            'benefits': perks,
             'skills': None,
             'tools': None,
             'startDate': None,
             '_slugPlace': slug_place(slug),
-            '_sectors': [(clean(s.get('name')), clean(s.get('parent_name'))) for s in sectors],
+            '_sectors': sectors,
         }
 
     def fits(self, job):
@@ -788,7 +806,7 @@ class WelcomeToTheJungle(Platform):
             return 'not found', None
         if record.get('status') != 'published':
             org = record.get('organization') or {}
-            return 'closed', {'company': clean(org.get('name')) or None, 'companySlug': clean(org.get('slug')) or None,
+            return 'closed', {'company': _intern(clean(org.get('name'))), 'companySlug': clean(org.get('slug')) or None,
                               'companyWebsite': clean(org.get('media_website_url')) or None}
         return 'open', self.from_detail(record)
 
@@ -828,6 +846,11 @@ class WelcomeToTheJungle(Platform):
 def encode(params: dict) -> str:
     """Search parameters -> Algolia's params string (lists, objects and booleans as JSON)."""
     return urlencode({k: json.dumps(v) if isinstance(v, (list, dict, bool)) else v for k, v in params.items()})
+
+
+def _intern(text) -> str | None:
+    """A text met on many jobs, kept once in memory (company names, categories, logos)."""
+    return sys.intern(text) if isinstance(text, str) and text else None
 
 
 def _items(value) -> list[str]:
