@@ -12,7 +12,8 @@ from .naukri import Naukri
 from .smartrecruiters import SmartRecruiters
 from .workable import Workable
 from .workday import Workday
+from .ycombinator import YCombinator
 
 PLATFORMS = {p.key: p for p in (Cornerstone, Cutshort, Deel, Foundit, Greenhouse, Hirist, Instahyre, Lever, Naukri,
-                                SmartRecruiters, Workable, Workday)}
+                                SmartRecruiters, Workable, Workday, YCombinator)}
 __all__ = ['Board', 'PLATFORMS', 'Platform']
