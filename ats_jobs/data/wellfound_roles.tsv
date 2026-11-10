@@ -1,0 +1,520 @@
+# Wellfound roles, updated 2026-11-10: 518 roles in 13 groups, from https://wellfound.com/browse/tech-jobs.
+# Columns: slug (wellfound.com/role/<slug>), name, group. Rebuilt by scripts/refresh_wellfound.py.
+.net-developer	.NET Developer	Engineering
+3d-artist	3D Artist	Design
+3d-designer	3D Designer	Design
+access-developer	Access Developer	Engineering
+account-director	Account Director	Sales
+account-executive	Account Executive	Sales
+account-manager	Account Manager	Sales
+account-relationship-manager	Account Relationship Manager	Sales
+accountant	Accountant	Finance / Legal
+accounting-data-analyst	Accounting Data Analyst	Data and Analytics
+admin	Admin	Operations
+administrative-assistant	Administrative Assistant	Other
+aem-developer	AEM Developer	Engineering
+affiliate-manager	Affiliate Manager	Marketing
+affiliate-marketing	Affiliate Marketing	Marketing
+agile-developer	Agile Developer	Engineering
+agile-project-manager	Agile Project Manager	Business and project management
+ai-engineer	AI Engineer	Engineering
+algorithm-engineer	Algorithm Engineer	Engineering
+alteryx-developer	Alteryx Developer	Engineering
+analytics-director	Analytics Director	Data and Analytics
+analytics-engineer	Analytics Engineer	Engineering
+analytics-manager	Analytics Manager	Data and Analytics
+android-developer	Android Developer	Engineering
+angular-developer	Angular Developer	Engineering
+animation-designer	Animation Designer	Design
+anti-money-laundering	Anti Money Laundering (AML)	Other
+apache-kafka	Apache Kafka	Engineering
+api-developer	API Developer	Engineering
+api-testing	API Testing	Other
+app-developer	App Developer	Engineering
+app-testing	App Testing	Other
+application-designer	Application Designer	Design
+application-developer	Application Developer	Engineering
+application-development-manager	Application Development Manager	Other
+application-engineer	Application Engineer	Engineering
+application-security-engineer	Application Security Engineer	Engineering
+application-support	Application Support	Operations
+application-support-analyst	Application Support Analyst	Operations
+ar-developer	AR Developer	Engineering
+art-director	Art Director	Design
+artificial-intelligence-engineer	Artificial Intelligence Engineer (AI)	Engineering
+asp.net-developer	ASP.NET Developer	Engineering
+augmented-reality	Augmented Reality	Other
+automation-engineer	Automation Engineer	Engineering
+aws-cloud-engineer	AWS Cloud Engineer	Engineering
+aws-developer	AWS Developer	Engineering
+aws-devops	AWS DevOps	Engineering
+azure-developer	Azure Developer	Engineering
+azure-devops-engineer	Azure DevOps Engineer	Engineering
+backend-developer	Backend Developer	Engineering
+backend-engineer	Backend Engineer	Engineering
+backend-web-developer	Backend Web Developer	Engineering
+beta-testing	Beta Testing	Other
+big-data	Big Data	Data and Analytics
+big-data-analyst	Big Data Analyst	Data and Analytics
+big-data-engineer	Big Data Engineer	Engineering
+bitcoin	Bitcoin	Other
+blockchain	Blockchain	Other
+blockchain-analyst	Blockchain Analyst	Data and Analytics
+blockchain-business-development	Blockchain Business Development	Business and project management
+blockchain-developer	Blockchain Developer	Engineering
+blockchain-engineer	Blockchain Engineer	Engineering
+blockchain-sales	Blockchain Sales	Sales
+bootstrap	Bootstrap	Engineering
+brand-ambassador	Brand Ambassador	Other
+brand-designer	Brand Designer	Design
+brand-director	Brand Director	Marketing
+brand-manager	Brand Manager	Marketing
+business-account-executive	Business Account Executive	Business and project management
+business-analyst	Business Analyst	Data and Analytics
+business-consultant	Business Consultant	Business and project management
+business-development-manager	Business Development Manager	Business and project management
+business-intelligence	Business Intelligence	Business and project management
+business-intelligence-developer	Business Intelligence Developer	Engineering
+business-operations-manager	Business Operations Manager	Operations
+business-systems-analyst	Business Systems Analyst	Other
+c-developer	C Developer	Engineering
+campaign-manager	Campaign Manager	Marketing
+ceo	Chief Executive Officer (CEO)	Business and project management
+cfo	CFO	Business and project management
+chatbot-developer	Chatbot Developer	Engineering
+chief-commercial-officer	Chief Commercial Officer (CCO)	Business and project management
+chief-financial-officer	Chief Financial Officer (CFO)	Finance / Legal
+chief-information-officer	Chief Information Officer (CIO)	Engineering
+chief-information-security-officer	Chief Information Security Officer (CISO)	Other
+chief-investment-officer	Chief Investment Officer	Finance / Legal
+chief-marketing-officer	Chief Marketing Officer (CMO)	Business and project management
+chief-of-staff	Chief of Staff	Business and project management
+chief-operating-officer	Chief Operating Officer (COO)	Operations
+chief-strategy-officer	Chief Strategy Officer (CSO)	Business and project management
+chief-technical-officer	Chief Technical Officer (CTO)	Engineering
+client-relationship-manager	Client Relationship Manager	Sales
+client-success-manager	Client Success Manager	Operations
+client-success-specialist	Client Success Specialist	Operations
+cloud-architect	Cloud Architect	Engineering
+cloud-computing-engineer	Cloud Computing Engineer	Engineering
+cloud-consultant	Cloud Consultant	Other
+cloud-developer	Cloud Developer	Engineering
+cloud-engineer	Cloud Engineer	Engineering
+cloud-infrastructure-architect	Cloud Infrastructure Architect	Engineering
+cloud-product-manager	Cloud Product Manager	Product
+cloud-security-engineer	Cloud Security Engineer	Engineering
+cloud-services-developer	Cloud Services Developer	Engineering
+cloud-system-administrator	Cloud System Administrator	Other
+cloud-systems-engineer	Cloud Systems Engineer	Engineering
+cofounder	Co-founder	Data and Analytics
+communications-manager	Communications Manager	Marketing
+computer-and-information-research-manager	Computer and Information Research Manager	Other
+computer-and-information-research-scientist	Computer and Information Research Scientist	Other
+computer-data-scientist	Computer Data Scientist	Data and Analytics
+computer-network-specialist	Computer Network Specialist	Other
+computer-operator	Computer Operator	Operations
+computer-programmer	Computer Programmer	Engineering
+computer-support-technician	Computer Support Technician	Operations
+computer-systems-analyst	Computer Systems Analyst	Other
+computer-technician	Computer Technician	Operations
+computer-vision	Computer Vision	Engineering
+content-editor	Content Editor	Content
+content-manager	Content Manager	Content
+content-strategist	Content Strategist	Content
+copywriter	Copywriter	Content
+cordova	Cordova	Engineering
+corporate-attorney	Corporate Attorney	Finance / Legal
+cplusplus-developer	C++ Developer	Engineering
+creative-director	Creative Director	Design
+crm	CRM	Other
+crypto-analyst	Crypto Analyst	Data and Analytics
+crypto-compliance	Crypto Compliance	Other
+crypto-developer	Crypto Developer	Engineering
+crypto-marketing	Crypto Marketing	Marketing
+crypto-sales	Crypto Sales	Sales
+crypto-trading	Crypto Trading	Other
+cryptocurrency-sales	Cryptocurrency Sales	Sales
+csharp-developer	C# Developer	Engineering
+customer-relationship-management	Customer Relationship Manager	Sales
+customer-service-manager	Customer Service Manager	Operations
+customer-success-specialist	Customer Success Specialist	Operations
+customer-support	Customer Support	Operations
+cyber-security-analyst	Cyber Security Analyst	Other
+cyber-security-manager	Cyber Security Manager	Other
+cyber-security-specialist	Cyber Security Specialist	Other
+cybersecurity	Cybersecurity	Engineering
+cybersecurity-engineer	Cybersecurity Engineer	Engineering
+d3-js-developer	D3 JS Developer	Engineering
+dao	DAO	Engineering
+data-analysis-manager	Data Analysis Manager	Data and Analytics
+data-analyst	Data Analyst	Data and Analytics
+data-architect	Data Architect	Data and Analytics
+data-engineer	Data Engineer	Engineering
+data-manager	Data Manager	Data and Analytics
+data-modeler	Data Modeler	Data and Analytics
+data-quality-manager	Data Quality Manager	Data and Analytics
+data-science	Data Science	Data and Analytics
+data-science-manager	Data Science Manager	Data and Analytics
+data-scientist	Data Scientist	Data and Analytics
+data-visualization-engineer	Data Visualization Engineer	Engineering
+database-administrator	Database Administrator	Data and Analytics
+database-analyst	Database Analyst	Data and Analytics
+database-coordinator	Database Coordinator	Data and Analytics
+database-developer	Database Developer	Engineering
+database-engineer	Database Engineer	Engineering
+database-manager	Database Manager	Data and Analytics
+database-specialist	Database Specialist	Data and Analytics
+deep-learning	Deep Learning	Engineering
+defi	DeFi	Other
+demand-generation-manager	Demand Generation Manager	Marketing
+design-director	Design Director	Design
+design-manager	Design Manager	Design
+designer	Designer	Design
+desktop-support-specialist	Desktop Support Specialist	Operations
+developer	Developer	Engineering
+devops-engineer	Devops Engineer	Engineering
+digital-marketing	Digital Marketing	Marketing
+digital-marketing-director	Digital Marketing Director	Marketing
+digital-marketing-manager	Digital Marketing Manager	Marketing
+director-of-finance	Director of Finance	Finance / Legal
+director-of-marketing	Marketing Director	Marketing
+director-of-operations	Director of Operations	Operations
+director-of-people-operations	Director of People Operations	HR and recruiting
+director-of-product-design	Director of Product Design	Design
+director-of-technology	Director of Technology	Engineering
+distributed-systems	Distributed Systems	Other
+django-developer	Django Developer	Engineering
+docker-engineer	Docker Engineer	Engineering
+drupal-developer	Drupal Developer	Engineering
+ecommerce-developer	Ecommerce Developer	Engineering
+email-marketing-specialist	Email Marketing Specialist	Marketing
+embedded-software-engineer	Embedded Software Engineer	Engineering
+embedded-systems-engineer	Embedded Systems Engineer	Engineering
+engineer	Engineer	Engineering
+engineering-manager	Engineering Manager	Engineering
+enterprise-architect	Enterprise Architect	Engineering
+erlang-developer	Erlang Developer	Engineering
+ethereum	Ethereum	Other
+ethereum-developer	Ethereum Developer	Engineering
+ethical-hacker	Ethical Hacker	Engineering
+etl-developer	ETL Developer	Engineering
+etl-testing	ETL Testing	Other
+executive	Executive	Business and project management
+executive-assistant	Executive Assistant	Business and project management
+executive-director	Executive Director	Business and project management
+finance-manager	Finance Manager	Finance / Legal
+financial-analyst	Financial Analyst	Finance / Legal
+firebase-developer	Firebase Developer	Engineering
+flask-developer	Flask Developer	Engineering
+flutter-developer	Flutter Developer	Engineering
+fpga-design-engineer	FPGA Design Engineer	Engineering
+fpga-engineer	FPGA Engineer	Engineering
+front-end-designer	Front-end Designer	Design
+front-end-developer	Front-end Developer (UI)	Engineering
+front-end-engineer	Front End Engineer	Engineering
+front-end-web-developer	Front End Web Developer	Engineering
+frontend-engineer	Frontend Engineer	Engineering
+full-stack-developer	Full Stack Developer	Engineering
+full-stack-engineer	Full Stack Engineer	Engineering
+full-stack-java-developer	Full Stack Java Developer	Engineering
+full-stack-software-engineer	Full Stack Software Engineer	Engineering
+full-stack-web-developer	Full Stack Web Developer	Engineering
+game-designer	Game Designer	Design
+game-developer	Game Developer	Engineering
+game-engineer	Game Engineer	Engineering
+game-producer	Game Producer	Product
+game-programmer	Game Programmer	Engineering
+gatsby-developer	Gatsby Developer	Engineering
+gcp-developer	GCP Developer	Engineering
+gis-developer	GIS Developer	Engineering
+go-developer	Go Developer	Engineering
+golang-developer	Golang Developer	Engineering
+graphic-designer	Graphic Designer	Design
+graphql-developer	GraphQL Developer	Engineering
+growth-hacker	Growth Hacker	Marketing
+growth-manager	Growth Manager	Business and project management
+growth-marketer	Growth Marketer	Marketing
+growth-officer	Growth Officer	Business and project management
+hadoop-developer	Hadoop Developer	Engineering
+hardware-engineer	Hardware Engineer	Engineering
+haskell-developer	Haskell Developer	Engineering
+head-of-product	Head of Product	Product
+head-of-product-marketing	Head of Product Marketing	Marketing
+help-desk-analyst	Help Desk Analyst	Operations
+help-desk-support	Help Desk Support	Operations
+hr-business-partner	HR Business Partner	HR and recruiting
+hr-manager	HR Manager	HR and recruiting
+hr-recruiter	HR Recruiter	HR and recruiting
+html-css	HTML CSS	Other
+html-developer	HTML Developer	Engineering
+html-email-developer	HTML Email Developer	Other
+image-processing	Image Processing	Other
+informatica-developer	Informatica Developer	Engineering
+information-architect	Information Architect	Data and Analytics
+information-security-analyst	Information Security Analyst	Other
+information-security-consultant	Information Security Consultant	Other
+information-security-engineer	Information Security Engineer	Other
+information-security-manager	Information Security Manager	Other
+information-security-program-manager	Information Security Program Manager	Other
+information-security-project-manager	Information Security Project Manager	Other
+information_security_analysts_infosec	Information Security Analysts (InfoSec)	Other
+infrastructure-engineer	Infrastructure Engineer	Engineering
+insight-analyst	Insight Analyst	Data and Analytics
+ionic	Ionic	Engineering
+ios-developer	iOS Developer	Engineering
+ios-engineer	iOS Engineer	Engineering
+iot	IoT	Other
+iot-developer	IoT Developer	Engineering
+it-assistant	IT Assistant	Operations
+it-consultant	IT Consultant	Other
+it-coordinator	IT Coordinator	Operations
+it-director	IT Director	Engineering
+it-manager	IT Manager	Engineering
+it-operations-manager	IT Operations Manager	Operations
+it-project-manager	IT Project Manager	Engineering
+it-recruiter	IT Recruiter	HR and recruiting
+it-sales-director	IT Sales Director	Sales
+it-sales-executive	IT Sales Executive	Sales
+it-security-analyst	IT Security Analyst	Other
+it-support-specialist	IT Support Specialist	Operations
+it-technician	IT Technician	Operations
+java-backend-developer	Java Backend Developer	Engineering
+java-developer	Java Developer	Engineering
+java-full-stack-developer	Java Full Stack Developer	Engineering
+java-j2ee-developer	Java J2EE Developer	Engineering
+javascript-developer	JavaScript Developer	Engineering
+jquery-developer	jQuery Developer	Engineering
+kotlin	Kotlin	Engineering
+kotlin-developer	Kotlin Developer	Engineering
+kubernetes	Kubernetes	Engineering
+lamp-developer	LAMP Developer	Engineering
+laravel-developer	Laravel Developer	Engineering
+lead-engineer	Lead Engineer	Engineering
+lead-programmer	Lead Programmer	Engineering
+leadership	Leadership	Sales
+linux-developer	Linux Developer	Engineering
+linux-engineer	Linux Engineer	Engineering
+looker-developer	Looker Developer	Engineering
+machine-learning-engineer	Machine Learning Engineer	Engineering
+machine-learning-scientist	Machine Learning Scientist	Engineering
+magento-developer	Magento Developer	Engineering
+mainframe-developer	Mainframe Developer	Engineering
+management-information-director	Management Information Director	Other
+managing-director	Managing Director	Business and project management
+manual-software-testing	Manual Software Testing	Other
+manual-testing	Manual Testing	Other
+marketing-analyst	Marketing Analyst	Marketing
+marketing-analytics-manager	Marketing Analytics Manager	Marketing
+marketing-assistant	Marketing Assistant	Marketing
+marketing-associate	Marketing Associate	Marketing
+marketing-communications	Marketing Communications	Marketing
+marketing-consultant	Marketing Consultant	Marketing
+marketing-manager	Marketing Manager	Marketing
+marketing-operations	Marketing Operations	Marketing
+marketing-research-analyst	Marketing Research Analyst	Marketing
+marklogic-developer	Marklogic Developer	Engineering
+mean-stack-developer	MEAN Stack Developer	Engineering
+mechanical-design-engineer	Mechanical Design Engineer	Engineering
+media-buyer	Media Buyer	Marketing
+media-director	Media Director	Marketing
+mern-stack-developer	MERN Stack Developer	Engineering
+metaverse	Metaverse	Other
+metaverse-developer	Metaverse Developer	Engineering
+microservices	Microservices	Other
+mobile-engineer	Mobile Engineer	Engineering
+mobile-game-testing	Mobile Game Testing	Other
+mobile-ux-designer	Mobile UX Designer	Design
+motion-graphic-designer	Motion Graphic Designer	Design
+mulesoft-developer	MuleSoft Developer	Engineering
+mvc-developer	MVC Developer	Engineering
+mysql	MySQL	Other
+natural-language-processing	Natural Language Processing (NLP)	Engineering
+netsuite	Netsuite	Other
+network-administrator	Network Administrator	Other
+network-analyst	Network Analyst	Other
+network-architect	Network Architect	Other
+network-engineer	Network Engineer	Engineering
+network-infrastructure-specialist	Network Infrastructure Specialist	Other
+network-manager	Network Manager	Other
+network-operations-engineer	Network Operations Engineer	Engineering
+network-reliability-engineer	Network Reliability Engineer	Engineering
+network-security-engineer	Network Security Engineer	Other
+network-technician	Network Technician	Other
+nft	NFT	Other
+nft-artist	NFT Artist	Other
+node-js-developer	Node JS Developer	Engineering
+objective-c	Objective C	Engineering
+office-manager	Office Manager	Operations
+online-marketing	Online Marketing	Marketing
+online-product-testing	Online Product Testing	Other
+opencv	OpenCV	Engineering
+opengl	OpenGL	Engineering
+openshift	OpenShift	Engineering
+operations-analyst	Operations Analyst	Operations
+operations-manager	Operations Manager	Operations
+oracle-dba	Oracle DBA	Engineering
+oracle-pl-sql-developer	Oracle PL SQL Developer	Engineering
+pega-developer	Pega Developer	Engineering
+people-operations	People Operations	HR and recruiting
+perl-developer	Perl Developer	Engineering
+php-developer	PHP Developer	Engineering
+postgresql-developer	PostgreSQL Developer	Engineering
+power-bi-developer	Power BI Developer	Engineering
+ppc-manager	PPC Manager	Marketing
+ppc-marketing	PPC Marketing	Marketing
+ppc-specialist	PPC Specialist	Marketing
+principal-engineer	Principal Engineer	Engineering
+problem-manager	Problem Manager	Operations
+product-analyst	Product Analyst	Product
+product-designer	Product Designer	Design
+product-manager	Product Manager	Product
+product-marketing-manager	Product Marketing Manager	Marketing
+product-owner	Product Owner	Product
+product-testing	Product Testing	Other
+program-manager	Program Manager	Business and project management
+project-coordinator	Project Coordinator	Business and project management
+project-manager	Project Manager	Business and project management
+public-relations-manager	Public Relations Manager	Marketing
+python-developer	Python Developer	Engineering
+qa-automation-engineer	QA Automation Engineer	Engineering
+qa-engineer	QA Engineer	Engineering
+qa-manager	QA Manager	Engineering
+qa-manual-testing	QA Manual Testing	Other
+qa-tester	QA Tester	Other
+qt-developer	Qt Developer	Engineering
+quality-assurance	Quality Assurance	Other
+quality-assurance-engineer	Quality Assurance Engineer	Engineering
+quality-assurance-manager	Quality Assurance Manager	Engineering
+quality-engineer	Quality Engineer	Engineering
+react-developer	React Developer	Engineering
+react-native	React Native	Engineering
+recruiting-coordinator	Recruiting Coordinator	HR and recruiting
+recruitment-manager	Recruitment Manager	HR and recruiting
+relationship-manager	Relationship Manager	Marketing
+retention-specialist	Retention Specialist	Marketing
+reverse-engineering	Reverse Engineering	Engineering
+risk-analyst	Risk Analyst	Data and Analytics
+robotic-process-automation	Robotic Process Automation (RPA)	Engineering
+rpa-developer	RPA Developer	Engineering
+ruby-developer	Ruby Developer	Engineering
+ruby-on-rails	Ruby on Rails	Engineering
+ruby-on-rails-developer	Ruby on Rails Developer	Engineering
+rust-developer	Rust Developer	Engineering
+rust-programming	Rust Programming	Engineering
+saas-developer	SaaS Developer	Engineering
+sales-development	Sales Development	Sales
+sales-director	Sales Director	Sales
+sales-engineer	Sales Engineer	Engineering
+sales-manager	Sales Manager	Sales
+sales-operations	Sales Operations	Sales
+sales-representative	Sales Representative	Sales
+salesforce-administrator	Salesforce Administrator	Other
+salesforce-developer	Salesforce Developer	Engineering
+scala-developer	Scala Developer	Engineering
+scrum-master	Scrum Master	Business and project management
+sdet	SDET	Engineering
+security-engineer	Security Engineer	Engineering
+selenium	Selenium	Engineering
+sem-director	SEM Director	Marketing
+sem-manager	SEM Manager	Marketing
+sem-specialist	SEM Specialist	Marketing
+seo-analyst	SEO Analyst	Marketing
+seo-director	SEO Director	Marketing
+seo-manager	SEO Manager	Marketing
+seo-marketing	SEO Marketing	Marketing
+seo-specialist	SEO Specialist	Marketing
+seo-strategist	SEO Strategist	Marketing
+servicenow-developer	ServiceNow Developer	Engineering
+sharepoint-developer	SharePoint Developer	Engineering
+shopify-developer	Shopify Developer	Engineering
+signal-processing	Signal Processing	Engineering
+signal-processing-engineer	Signal Processing Engineer	Engineering
+site-reliability-engineer	Site Reliability Engineer	Engineering
+smart-contract	Smart Contract	Other
+smart-contract-developer	Smart contract Developer	Engineering
+snowflake-developer	Snowflake Developer	Engineering
+soc-analyst	SOC Analyst	Data and Analytics
+social-media-manager	Social Media Manager (SMM)	Marketing
+software-architect	Software Architect	Engineering
+software-developer	Software Developer	Engineering
+software-development-engineer	Software Development Engineer	Engineering
+software-development-manager	Software Development Manager	Engineering
+software-engineer	Software Engineer	Engineering
+software-quality-assurance	Software Quality Assurance	Engineering
+software-test-automation-engineer	Software Test Automation Engineer	Engineering
+software-test-engineer	Software Test Engineer	Engineering
+software-testing	Software Testing	Other
+solana	Solana	Other
+solana-developer	Solana Developer	Engineering
+solidity	Solidity	Engineering
+solidity-developer	Solidity Developer	Engineering
+solidity-programming	Solidity Programming	Engineering
+solutions-architect	Solutions Architect	Operations
+solutions-engineer	Solutions Engineer	Engineering
+spark-developer	Spark Developer	Engineering
+spring-boot	Spring Boot	Engineering
+sql-dba	SQL DBA	Engineering
+sql-developer	SQL Developer	Engineering
+support-specialist	Support Specialist	Operations
+swift-developer	Swift Developer	Engineering
+system-administrator	System Administrator	Other
+systems-administrator	Systems Administrator	Operations
+systems-analyst	Systems Analyst	Operations
+systems-designer	Systems Designer	Operations
+systems-engineer	Systems Engineer	Engineering
+tableau-developer	Tableau Developer	Engineering
+talent-acquisition-director	Talent Acquisition Director	HR and recruiting
+talent-acquisition-manager	Talent Acquisition Manager	HR and recruiting
+technical-account-manager	Technical Account Manager	Other
+technical-assistance-specialist	Technical Assistance Specialist	Operations
+technical-co-founder	Technical Co-Founder	Business and project management
+technical-lead	Technical Lead	Engineering
+technical-product-manager	Technical Product Manager	Product
+technical-program-manager	Technical Program Manager	Business and project management
+technical-project-manager	Technical Project Manager	Business and project management
+technical-recruiter	Technical Recruiter	HR and recruiting
+technical-sales	Technical Sales	Sales
+technical-specialist	Technical Specialist	Operations
+technical-support	Technical Support	Operations
+technology-assistant	Technology Assistant	Other
+technology-manager	Technology Manager	Other
+technology-specialist	Technology Specialist	Other
+tensorflow	Tensorflow	Engineering
+testing	Testing	Other
+testing-engineer	Testing Engineer	Engineerings
+typescript-developer	TypeScript Developer	Engineering
+ui-designer	UI Designer (User Interface)	Design
+ui-developer	UI Developer	Engineering
+ui-ux-designer	UI/UX Designer	Design
+unity-3d-developer	Unity 3D Developer	Engineering
+unity-developer	Unity Developer	Engineering
+user-testing	User Testing	Other
+ux-designer	UX Designer (User Experience)	Design
+ux-engineer	UX Engineer	Engineering
+ux-researcher	UX Researcher	Other
+venture-capital	Venture Capital (VC)	Other
+venture-capital-analyst	Venture Capital Analyst	Data and Analytics
+video-game-developer	Video Game Developer	Engineering
+video-game-testing	Video Game Testing	Other
+visual-basic	Visual Basic	Other
+voip	VoIP	Engineering
+vp-of-engineering	VP of Engineering	Engineering
+vp-of-finance	VP of Finance	Finance / Legal
+vp-of-human-resources	VP of Human Resources	HR and recruiting
+vp-of-marketing	VP of Marketing	Marketing
+vp-of-operations	VP of Operations	Operations
+vp-of-product	VP of Product	Product
+vp-of-sales	VP of Sales	Sales
+vp-of-strategy	VP of Strategy	Business and project management
+vr-designer	VR Designer	Design
+vr-developer	VR Developer	Engineering
+vue-js-developer	Vue JS Developer	Engineering
+web-analytics	Web Analytics	Marketing
+web-designer	Web Designer	Design
+web-developer	Web Developer	Engineering
+web3-developer	Web3 Developer	Engineering
+web3-marketing	Web3 Marketing	Marketing
+website-developer	Website Developer	Engineering
+website-testing	Website Testing	Other
+wordpress-developer	WordPress Developer	Engineering
+xamarin-developer	Xamarin Developer	Engineering

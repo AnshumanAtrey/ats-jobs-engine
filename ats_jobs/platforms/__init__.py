@@ -10,9 +10,10 @@ from .instahyre import Instahyre
 from .lever import Lever
 from .naukri import Naukri
 from .smartrecruiters import SmartRecruiters
+from .wellfound import Wellfound
 from .workable import Workable
 from .workday import Workday
 
 PLATFORMS = {p.key: p for p in (Cornerstone, Cutshort, Deel, Foundit, Greenhouse, Hirist, Instahyre, Lever, Naukri,
-                                SmartRecruiters, Workable, Workday)}
+                                SmartRecruiters, Wellfound, Workable, Workday)}
 __all__ = ['Board', 'PLATFORMS', 'Platform']
