@@ -12,10 +12,12 @@ from .lever import Lever
 from .naukri import Naukri
 from .smartrecruiters import SmartRecruiters
 from .welcometothejungle import WelcomeToTheJungle
+from .wellfound import Wellfound
 from .workable import Workable
 from .workday import Workday
 from .ycombinator import YCombinator
 
 PLATFORMS = {p.key: p for p in (Cornerstone, Cutshort, Deel, EFinancialCareers, Foundit, Greenhouse, Hirist, Instahyre,
-                                Lever, Naukri, SmartRecruiters, WelcomeToTheJungle, Workable, Workday, YCombinator)}
+                                Lever, Naukri, SmartRecruiters, WelcomeToTheJungle, Wellfound, Workable, Workday,
+                                YCombinator)}
 __all__ = ['Board', 'PLATFORMS', 'Platform']
