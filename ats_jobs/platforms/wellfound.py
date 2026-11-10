@@ -38,8 +38,10 @@ visitors who are not logged in. No login, no key, no browser. Measured from this
   currency and period, the company's website and markets; and in its HTML the remote policy, where it hires remotely,
   preferred time zones, visa sponsorship, relocation, skills, the company's headquarters and its funding. 80 KB, 16 KB
   over the wire, cached. A job taken down still answers 200, with "taken down" and no JobPosting markup.
-- No limit was met from this laptop: 1,300 pages in 40 minutes at up to 1,149 a minute, 8 at once (Cloudflare's cache
-  answered many of them: other readers keep the popular searches warm). Apify's addresses are untested here.
+- Cloudflare limits an address by its pace: from this laptop 1,300 pages in 40 minutes (up to 1,149 a minute, 8 at
+  once) passed, but about 1,500 in 15 minutes (two whole-site reads 6 minutes apart) met 429 with a challenge on every
+  page for 6 to 8 minutes, and about 120 pages soon after it lifted brought it back for 3 to 6 more. One whole-site read
+  (578 pages) stays under it. Apify's addresses are untested here.
 
 Pay and equity come from the text Wellfound shows ("$175k – $215k • 0.5% – 1%"). Its markup calls every amount yearly,
 even an employer's ₹20,000 – ₹25,000, so salaryPeriod is year as Wellfound states it. liveStartAt is when the job went
