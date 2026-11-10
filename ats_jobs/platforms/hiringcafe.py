@@ -47,8 +47,10 @@ Cloudflare in front challenges a caller (403, or 429 past its rate, with cf-miti
   first challenge to the proxy the user set, else (on Apify) to Apify Proxy's RESIDENTIAL group, a fresh address for
   each challenge. About 700 bytes a job on the wire: $0.0056 per 1,000 jobs at Apify's $8 per GB.
 - by rate: one address got 40 calls in a row (13 a second, after 5 quiet minutes) and then a challenge on every call,
-  the search too, for 5 to 6 minutes; 60 calls at one every 2 s passed. So calls from one address wait GAP_S, and through
-  a proxy the run takes a fresh address every CALLS_PER_ADDRESS calls.
+  the search too, for 5 to 6 minutes. At one call every 2 s a 429 came after about 80 calls, and after each wait (1 to 2
+  minutes) again after about 25; at one every 5 s, on an address busy minutes before, after about 70; 100 calls 10 s
+  apart met none. So direct calls wait GAP_S, SLOW_GAP_S once a 429 was waited out (WAITS), and through a proxy the run
+  takes a fresh address every CALLS_PER_ADDRESS calls.
 
 A job: HiringCafe's AI reading of the posting (v5_processed_job_data: places, remote or office, job types, seniority,
 the least years of experience asked, pay in every period, tools, requirements, visa sponsorship), the company as it
@@ -57,7 +59,10 @@ applicant tracking system it came from. Pay is given only when the employer publ
 66 of 475 jobs read, the 66 that had amounts). estimated_publish_date is the posting time; whole days come at midnight
 (Zoho Recruit, Workday, Phenom) or noon (TalentBrew) UTC, so those are dated by the day. HiringCafe folds copies of one
 job itself (dedup_alternates); one employer's two boards can still list the same job twice (T. Rowe Price), which the
-engine keeps once.
+engine keeps once. Its job types are the engine's five and Volunteer (Platform.job_types; Seasonal reads as temporary).
+
+A place typed with the job title ("nurse in California") is read by the cities and states HiringCafe's newest jobs name
+(data/hiringcafe_places.tsv, rebuilt by scripts/refresh_hiringcafe.py; Platform.place_names).
 """
 import asyncio
 import base64
@@ -67,12 +72,14 @@ import re
 import secrets
 import time
 from datetime import datetime, timedelta, timezone
+from functools import lru_cache
+from importlib import resources
 from urllib.parse import parse_qs, unquote, urlparse
 
 from .. import places as regions
 from ..http import STATS, BoardError
 from ..inputs import IS_URL, _clean, _items, _links_whole
-from ..rows import WORD, Filters, classify_place, fold, state_names, words
+from ..rows import WORD, Filters, classify_place, fold, plain, state_names, words
 from .base import Board, Platform
 from .cornerstone import text_of
 from .workable import country_name, pay_text
@@ -87,7 +94,9 @@ BUILD_PAGE = ORIGIN + '/talent-network'   # the smallest page found whose __NEXT
 EVERYONE = Board('hiringcafe', 'HiringCafe', ORIGIN)      # every job on HiringCafe; also the board of every job link
 LAST_PAGE = 249                           # page 250 answers empty: 10,000 employers a search
 PER_GROUP = 4                             # an employer's jobs in one search
-GAP_S = 2.0                               # seconds between calls from one address: 30 a minute (40 in a row drew 429)
+GAP_S = 2.0                               # seconds between calls from one address (40 in a row at once drew a 429)
+SLOW_GAP_S = 10.0                         # after a 429 without a proxy: at 2 s blocks then came every 25 calls or so,
+                                          # and 100 calls 10 s apart met none (2026-11-10)
 PROXY_GAP_S = 0.5                         # through a proxy, where the address changes every CALLS_PER_ADDRESS calls
 CALLS_PER_ADDRESS = 30
 ROTATIONS = 12                            # fresh proxy addresses a run takes after challenges before it gives up
@@ -96,6 +105,8 @@ TRIES = 6                                 # tries of one call: errors, server tr
 SCAN_PAGES = 8                            # pages read for a place HiringCafe does not know, checked here by its name
 EXPAND_PAGES = 25                         # pages of one employer's own list a search reads: 1,000 jobs
 MAX_PLACES = 40                           # place objects one search sends
+BARE_PLACE_JOBS = 40                      # jobs of the place census naming a city or state for it to read alone at
+                                          # an entry's end: 0.3% of 14,134, as Welcome to the Jungle's 300 of 84,831
 YEARS_CAP = 20                            # the most years HiringCafe's experience filter takes (20 is 20 or more)
 SPLIT_MIN = 7                             # a typed word this long is also looked for split in two (frontend, Front-End)
 MAX_QUERY = 3000                          # characters of a title query; a longer one leaves out the split readings
@@ -107,7 +118,7 @@ SITE_WORK_TYPES = {'remote': ['Remote'], 'hybrid': ['Hybrid'], 'onsite': ['Onsit
 JOB_TYPE = {'Full Time': 'full-time', 'Part Time': 'part-time', 'Contract': 'contract', 'Internship': 'intern',
             'Temporary': 'temporary', 'Seasonal': 'temporary', 'Volunteer': 'volunteer'}
 SITE_JOB_TYPES = {'full-time': ['Full Time'], 'part-time': ['Part Time'], 'contract': ['Contract'],
-                  'intern': ['Internship'], 'temporary': ['Temporary', 'Seasonal']}
+                  'intern': ['Internship'], 'temporary': ['Temporary', 'Seasonal'], 'volunteer': ['Volunteer']}
 SPECIFIC = ('intern', 'contract', 'temporary', 'part-time', 'volunteer', 'full-time')   # one type for a job of several
 PERIODS = {'Yearly': 'year', 'Monthly': 'month', 'Bi-Weekly': 'two weeks', 'Weekly': 'week', 'Daily': 'day',
            'Hourly': 'hour'}
@@ -214,6 +225,24 @@ def years(value) -> int | None:
     return int(value) if isinstance(value, (int, float)) and not isinstance(value, bool) and value >= 0 else None
 
 
+@lru_cache(maxsize=1)
+def place_names() -> tuple[frozenset[str], frozenset[str]]:
+    """The cities and states HiringCafe's jobs name (data/hiringcafe_places.tsv), in places.key form with and without
+    accents: (every one, read after in, at or near; those BARE_PLACE_JOBS jobs or more name, read alone at the end of a
+    search entry too, since a small town's name can be a word of a job title)."""
+    every, major = set(), set()
+    text = resources.files('ats_jobs').joinpath('data/hiringcafe_places.tsv').read_text(encoding='utf-8')
+    for line in text.splitlines():
+        parts = line.split('\t')
+        if line.startswith('#') or len(parts) < 4 or parts[1] not in ('city', 'state') or not parts[3].isdigit():
+            continue
+        keys = {regions.key(parts[0]), regions.key(plain(parts[0]))} - {''}
+        every |= keys
+        if int(parts[3]) >= BARE_PLACE_JOBS:
+            major |= keys
+    return frozenset(every), frozenset(major)
+
+
 def place_entry(text: str) -> dict | None:
     """'Bengaluru, Karnataka, IN' -> {'name': 'Bengaluru, Karnataka, India', 'city': ..., 'region': ..., 'country':
     'India'}; 'Karnataka, IN' -> the state; 'IN' -> the country."""
@@ -255,7 +284,8 @@ class Connection:
     anything else. Direct, or through the proxy the user set from the first call. At a challenge a direct run moves to
     a proxy (the user's, else Apify Proxy's RESIDENTIAL group when the run is on Apify), and a run on a proxy takes a
     fresh address, ROTATIONS times at most; it also takes one every CALLS_PER_ADDRESS calls, before Cloudflare's rate
-    is reached. With no proxy a 429 is waited out (WAITS) and a 403 ends the reading, with a note."""
+    is reached. With no proxy a 429 is waited out (WAITS) and the calls go on SLOW_GAP_S apart, and a 403 ends the
+    reading, with a note."""
 
     def __init__(self, platform):
         self.platform = platform
@@ -268,6 +298,7 @@ class Connection:
         self.rotations = 0            # fresh addresses taken after a challenge
         self.waited = 0               # 429s waited out without a proxy
         self.pace = Pace()
+        self.gap = GAP_S              # seconds between direct calls, SLOW_GAP_S once HiringCafe asked to slow down
         self.sleep = asyncio.sleep    # the wait between tries (instant in the tests)
         self.build_id: str | None = None
         self.counts = {'calls': 0, 'challenges': 0, 'proxyAddresses': 0}
@@ -317,7 +348,7 @@ class Connection:
         for attempt in range(TRIES + ROTATIONS + len(WAITS)):
             if self.proxy_url and self.address_calls >= CALLS_PER_ADDRESS:
                 await self.rotate()
-            await self.pace.turn(PROXY_GAP_S if self.proxy_url else GAP_S)
+            await self.pace.turn(PROXY_GAP_S if self.proxy_url else self.gap)
             started = time.monotonic()
             try:
                 response = await self.client().get(url, params=params, proxy=self.proxy_url)
@@ -355,6 +386,7 @@ class Connection:
             if response.status_code == 429 and self.waited < len(WAITS):
                 wait = WAITS[self.waited]
                 self.waited += 1
+                self.gap = SLOW_GAP_S
                 self.pace.hold(wait)
                 self.platform.note('HiringCafe asked this address to slow down (HTTP 429), so the run waited.', 'slow')
                 continue
@@ -408,6 +440,8 @@ class HiringCafe(Platform):
     server_filters = True         # places, period, work and job types, experience and its own filters go to it
     newest_first = True           # sortBy date, also with words; a page's employers in the order of their newest job
     never = ('team', 'offersEquity', 'expiresAt', 'reference')   # reference: the ATS's job id is atsJobId on every row
+    job_types = ('volunteer',)    # HiringCafe's Volunteer commitment, a job type of its own on the site
+    job_type_aliases = {'volunteer': 'volunteer', 'volunteers': 'volunteer', 'volunteering': 'volunteer'}
     filter_words = {
         'seniority': ('seniority', 'pick more seniority levels or clear Seniority'),
         'minSalary': ('minimum pay', 'type a lower Minimum pay or leave it empty'),
@@ -437,6 +471,10 @@ class HiringCafe(Platform):
         self.expand_failed: str | None = None  # why an employer's list could not be read; no more are opened then
 
     # ---------- notes, boards, links ----------
+
+    def place_names(self):
+        """HiringCafe's cities and states for the engine's reading of a search entry ("nurse in California")."""
+        return place_names()
 
     def note(self, text: str, key: str | None = None) -> None:
         """A note for the run's message and OUTPUT, once."""

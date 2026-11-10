@@ -261,6 +261,17 @@ class SearchState(unittest.TestCase):
                          (90000.0, 'GBP', 'Yearly'))
         self.assertTrue(state['restrictJobsToTransparentSalaries'])
 
+    def test_volunteer_is_a_job_type_of_its_own(self):
+        platform = made({'employmentType': ['volunteering', 'full-time']})
+        self.assertEqual(platform.cfg.job_types, ['volunteer', 'full-time'])
+        self.assertEqual([n for n in platform.cfg.notes if 'employmentType' in n],
+                         ['Read "volunteering" in employmentType as volunteer.'])
+        state = self.state({'employmentType': ['volunteer']})
+        self.assertEqual(state['commitmentTypes'], ['Volunteer'])
+        job = platform.job({**hits('world_newest')[0], 'v5_processed_job_data': {
+            **hits('world_newest')[0]['v5_processed_job_data'], 'commitment': ['Volunteer']}})
+        self.assertEqual(job['employmentType'], 'volunteer')
+
     def test_five_or_more_years_and_twenty_plus(self):
         self.assertEqual(self.state({'experienceYears': '5+'})['roleYoeRange'], [0, 20])
         self.assertEqual(self.state({'experienceYears': '30'})['roleYoeRange'], [0, 20])
@@ -316,6 +327,22 @@ class Places(unittest.TestCase):
         self.assertEqual(found, [])
         self.assertTrue(platform.scan)
         self.assertTrue(any('Atlantis' in n for n in platform.cfg.notes))
+
+    def test_the_search_box_reads_hiringcafes_cities_and_states(self):
+        cases = {'nurse in California': ('nurse', ['California']), 'data analyst in London': ('data analyst', ['London']),
+                 'software engineer texas': ('software engineer', ['texas']),
+                 'python developer in pune': ('python developer', ['pune']),
+                 'engineer in training': ('engineer in training', [])}
+        for text, (words, places) in cases.items():
+            cfg = parse_input({'searchTerms': [text]}, hc.HiringCafe())
+            self.assertEqual((cfg.search_terms, cfg.locations), ([words], places), text)
+
+    def test_place_names_come_from_the_census_with_and_without_accents(self):
+        every, bare = hc.place_names()
+        self.assertLessEqual(bare, every)
+        self.assertLessEqual({'california', 'texas', 'london', 'new york'}, bare)
+        self.assertIn('zurich', every)                          # Zürich, as the census lists it
+        self.assertIn('sao paulo', every)
 
     def test_worldwide_or_remote_sends_no_place(self):
         for typed in (['Worldwide'], ['Remote']):
@@ -648,6 +675,7 @@ class Connection(unittest.TestCase):
         session = connected(platform, [challenge(429), challenge(429), Response(200, {})])
         self.assertEqual(run(platform.conn.get('https://hiringcafe.com/x')).status_code, 200)
         self.assertTrue(any('slow down' in n for n in platform.cfg.notes))
+        self.assertEqual(platform.conn.gap, hc.SLOW_GAP_S)
         platform = made()
         connected(platform, [challenge(403)])
         with self.assertRaises(hc.Refused) as caught:

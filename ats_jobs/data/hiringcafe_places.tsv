@@ -1,0 +1,1669 @@
+# HiringCafe workplace places, updated 2026-11-10: 14,134 jobs, the newest of every kind its search shows, read by scripts/refresh_hiringcafe.py; a name kept when 3 or more jobs name it
+# name	kind (city or state)	country code	jobs	state of the city
+England	state	GB	1049	
+California	state	US	527	
+London	city	GB	411	England
+Texas	state	US	345	
+Île-de-France	state	FR	325	
+New York	state	US	269	
+Bavaria	state	DE	230	
+North Rhine-Westphalia	state	DE	222	
+Florida	state	US	214	
+New South Wales	state	AU	214	
+Paris	city	FR	177	Île-de-France
+Shanghai	city	CN	177	Shanghai
+Shanghai	state	CN	177	
+Baden-Württemberg	state	DE	175	
+Victoria	state	AU	170	
+Berlin	state	DE	167	
+Berlin	city	DE	165	Berlin
+New York City	city	US	150	New York
+Illinois	state	US	147	
+Queensland	state	AU	141	
+Dubai	city	AE	140	Dubai
+Dubai	state	AE	140	
+Ohio	state	US	127	
+Karnataka	state	IN	126	
+North Carolina	state	US	126	
+Georgia	state	US	125	
+Ontario	state	CA	121	
+North Holland	state	NL	120	
+Massachusetts	state	US	119	
+Munich	city	DE	118	Bavaria
+Beijing	city	CN	114	Beijing
+Beijing	state	CN	114	
+Pennsylvania	state	US	111	
+Arizona	state	US	110	
+Scotland	state	GB	108	
+Virginia	state	US	108	
+Hamburg	state	DE	107	
+Washington	state	US	107	
+Hamburg	city	DE	106	Hamburg
+New Jersey	state	US	105	
+Hesse	state	DE	104	
+Guangdong	state	CN	98	
+Maharashtra	state	IN	96	
+Auvergne-Rhône-Alpes	state	FR	94	
+Catalonia	state	ES	94	
+Sydney	city	AU	91	New South Wales
+Tennessee	state	US	88	
+Michigan	state	US	87	
+Stockholm County	state	SE	87	
+Provence-Alpes-Côte d'Azur	state	FR	86	
+Zuid-Holland	state	NL	86	
+Amsterdam	city	NL	84	North Holland
+San Francisco	city	US	84	California
+Tokyo	state	JP	82	
+Telangana	state	IN	81	
+Colorado	state	US	80	
+Community of Madrid	state	ES	80	
+Wales	state	GB	78	
+Bengaluru	city	IN	75	Karnataka
+Minnesota	state	US	75	
+Abu Dhabi	state	AE	72	
+Hyderabad	city	IN	71	Telangana
+Metro Manila	state	PH	71	
+Indiana	state	US	70	
+Lower Saxony	state	DE	70	
+Western Australia	state	AU	68	
+Abu Dhabi	city	AE	67	Abu Dhabi
+Chicago	city	US	67	Illinois
+Barcelona	city	ES	66	Catalonia
+Lombardy	state	IT	66	
+Noord-Holland	state	NL	66	
+Oregon	state	US	66	
+Missouri	state	US	65	
+Gelderland	state	NL	64	
+Melbourne	city	AU	63	Victoria
+Leinster	state	IE	63	
+Maryland	state	US	63	
+Madrid	city	ES	62	Community of Madrid
+Alabama	state	US	62	
+Tokyo	city	JP	61	Tokyo
+Northern Ireland	state	GB	60	
+Tel Aviv District	state	IL	60	
+Shenzhen	city	CN	58	Guangdong
+Stockholm	city	SE	58	Stockholm County
+Alberta	state	CA	58	
+Tamil Nadu	state	IN	58	
+Haryana	state	IN	56	
+Houston	city	US	55	Texas
+North Brabant	state	NL	55	
+Saxony	state	DE	53	
+Riyadh	city	SA	52	Riyadh Province
+Riyadh Province	state	SA	52	
+South Holland	state	NL	52	
+Brisbane	city	AU	51	Queensland
+Stuttgart	city	DE	51	Baden-Württemberg
+Toronto	city	CA	50	Ontario
+Utrecht	state	NL	50	
+Chennai	city	IN	49	Tamil Nadu
+Atlanta	city	US	48	Georgia
+Manchester	city	GB	48	England
+Warsaw	city	PL	48	Masovian Voivodeship
+Masovian Voivodeship	state	PL	48	
+South Carolina	state	US	48	
+Wisconsin	state	US	48	
+Gurugram	city	IN	47	Haryana
+Phoenix	city	US	47	Arizona
+Hauts-de-France	state	FR	46	
+Nouvelle-Aquitaine	state	FR	46	
+Bangalore	city	IN	45	Karnataka
+Pune	city	IN	45	Maharashtra
+Gauteng	state	ZA	44	
+Occitanie	state	FR	44	
+Jiangsu	state	CN	43	
+Austin	city	US	42	Texas
+Dublin	city	IE	42	Leinster
+Attica	state	GR	42	
+British Columbia	state	CA	42	
+Hong Kong	state	HK	42	
+Cologne	city	DE	41	North Rhine-Westphalia
+Lisbon	state	PT	41	
+Louisiana	state	US	41	
+Oklahoma	state	US	41	
+Amsterdam	city	NL	40	Noord-Holland
+Seoul	city	KR	40	Seoul
+Connecticut	state	US	40	
+District of Columbia	state	US	40	
+Jakarta	state	ID	40	
+Seoul	state	KR	40	
+Düsseldorf	city	DE	39	North Rhine-Westphalia
+Washington	city	US	39	District of Columbia
+Cairo Governorate	state	EG	39	
+Western Cape	state	ZA	39	
+Tampa	city	US	38	Florida
+Grand Est	state	FR	38	
+West Midlands	state	GB	38	
+Boston	city	US	37	Massachusetts
+Los Angeles	city	US	37	California
+Utah	state	US	37	
+Uusimaa	state	FI	37	
+Mumbai	city	IN	36	Maharashtra
+Zhejiang	state	CN	36	
+Nevada	state	US	35	
+Overijssel	state	NL	35	
+Cairo	city	EG	34	Cairo Governorate
+Milan	city	IT	34	Lombardy
+Seattle	city	US	34	Washington
+Vienna	city	AT	34	Vienna
+Andalusia	state	ES	34	
+Rhineland-Palatinate	state	DE	34	
+Vienna	state	AT	34	
+Bristol	city	GB	33	England
+Edinburgh	city	GB	33	Scotland
+Jakarta	city	ID	33	Jakarta
+Capital Region of Denmark	state	DK	33	
+Normandy	state	FR	33	
+Glasgow	city	GB	32	Scotland
+Hong Kong	city	HK	32	Hong Kong
+San Diego	city	US	32	California
+Hawaii	state	US	32	
+Iowa	state	US	32	
+Madrid	state	ES	32	
+Leeds	city	GB	31	England
+Quebec	state	CA	31	
+Schleswig-Holstein	state	DE	31	
+Skåne County	state	SE	31	
+Bangkok	city	TH	30	Bangkok
+Birmingham	city	GB	30	England
+Bangkok	state	TH	30	
+Saxony-Anhalt	state	DE	30	
+Singapore	state	SG	30	
+Dallas	city	US	29	Texas
+Singapore	city	SG	29	Singapore
+São Paulo	state	BR	29	
+Cincinnati	city	US	28	Ohio
+Belfast	city	GB	27	Northern Ireland
+Denver	city	US	27	Colorado
+Frankfurt	city	DE	27	Hesse
+Limburg	state	NL	27	
+Nebraska	state	US	27	
+Uttar Pradesh	state	IN	27	
+Bucharest	city	RO	26	Bucharest
+Cardiff	city	GB	26	Wales
+Orlando	city	US	26	Florida
+Portland	city	US	26	Oregon
+Bucharest	state	RO	26	
+Kansas	state	US	26	
+Noord-Brabant	state	NL	26	
+Pays de la Loire	state	FR	26	
+Selangor	state	MY	26	
+Taipei	state	TW	26	
+Zurich	state	CH	26	
+Edmonton	city	CA	25	Alberta
+Lisbon	city	PT	25	Lisbon
+Arkansas	state	US	25	
+Centre-Val de Loire	state	FR	25	
+Kentucky	state	US	25	
+Munster	state	IE	25	
+Hangzhou	city	CN	24	Zhejiang
+Perth	city	AU	24	Western Australia
+KwaZulu-Natal	state	ZA	24	
+Veneto	state	IT	24	
+Cape Town	city	ZA	23	Western Cape
+Helsinki	city	FI	23	Uusimaa
+Manila	city	PH	23	Metro Manila
+Noida	city	IN	23	Uttar Pradesh
+Sofia	city	BG	23	Sofia City Province
+Brandenburg	state	DE	23	
+Capital Region	state	DK	23	
+Sofia City Province	state	BG	23	
+Indianapolis	city	US	22	Indiana
+Johannesburg	city	ZA	22	Gauteng
+Taipei	city	TW	22	Taipei
+Tel Aviv	city	IL	22	Tel Aviv District
+Emilia-Romagna	state	IT	22	
+Kuala Lumpur	state	MY	22	
+Prague	state	CZ	22	
+Västra Götaland	state	SE	22	
+Budapest	city	HU	21	Budapest
+Guangzhou	city	CN	21	Guangdong
+Las Vegas	city	US	21	Nevada
+Prague	city	CZ	21	Prague
+Zurich	city	CH	21	Zurich
+Budapest	state	HU	21	
+South Australia	state	AU	21	
+Athens	city	GR	20	Attica
+Bremen	city	DE	20	Bremen
+Kuala Lumpur	city	MY	20	Kuala Lumpur
+Miami	city	US	20	Florida
+Bremen	state	DE	20	
+Lesser Poland Voivodeship	state	PL	20	
+Mexico City	state	MX	20	
+Birmingham	city	GB	19	West Midlands
+Copenhagen	city	DK	19	Capital Region
+Dortmund	city	DE	19	North Rhine-Westphalia
+Leipzig	city	DE	19	Saxony
+Madrid	city	ES	19	Madrid
+Rotterdam	city	NL	19	Zuid-Holland
+Brittany	state	FR	19	
+Brussels-Capital Region	state	BE	19	
+Ho Chi Minh City (HCMC)	state	VN	19	
+Mecklenburg-Vorpommern	state	DE	19	
+New Hampshire	state	US	19	
+Frankfurt am Main	city	DE	18	Hesse
+Ho Chi Minh City	city	VN	18	Ho Chi Minh City (HCMC)
+Mexico City	city	MX	18	Mexico City
+San Antonio	city	US	18	Texas
+San Jose	city	US	18	California
+Utrecht	city	NL	18	Utrecht
+Vilnius	city	LT	18	Vilnius County
+Zagreb	city	HR	18	Zagreb
+Antwerp	state	BE	18	
+Australian Capital Territory	state	AU	18	
+Central District	state	IL	18	
+South Dakota	state	US	18	
+Vaud	state	CH	18	
+Vilnius County	state	LT	18	
+Zagreb	state	HR	18	
+Bordeaux	city	FR	17	Nouvelle-Aquitaine
+Charlotte	city	US	17	North Carolina
+Honolulu	city	US	17	Hawaii
+Huntsville	city	US	17	Alabama
+Nice	city	FR	17	Provence-Alpes-Côte d'Azur
+Santa Clara	city	US	17	California
+The Hague	city	NL	17	South Holland
+Vilnius	city	LT	17	Vilnius
+York	city	GB	17	England
+Delaware	state	US	17	
+Greater London	state	GB	17	
+Lazio	state	IT	17	
+Maine	state	US	17	
+Porto	state	PT	17	
+Surrey	state	GB	17	
+Vilnius	state	LT	17	
+West Virginia	state	US	17	
+Bonn	city	DE	16	North Rhine-Westphalia
+Brussels	city	BE	16	Brussels-Capital Region
+Fort Worth	city	US	16	Texas
+Nanjing	city	CN	16	Jiangsu
+Delhi	state	IN	16	
+Idaho	state	US	16	
+West Sussex	state	GB	16	
+Doha	city	QA	15	Baladiyat ad Dawhah
+Limassol	city	CY	15	Limassol
+Louisville	city	US	15	Kentucky
+Nuremberg	city	DE	15	Bavaria
+Richmond	city	US	15	Virginia
+Riga	city	LV	15	Riga
+Tallinn	city	EE	15	Harjumaa
+Wilmington	city	US	15	North Carolina
+Aichi	state	JP	15	
+Baladiyat ad Dawhah	state	QA	15	
+Balearic Islands	state	ES	15	
+Geneva	state	CH	15	
+Hampshire	state	GB	15	
+Harjumaa	state	EE	15	
+Istanbul	state	TR	15	
+Limassol	state	CY	15	
+Riga	state	LV	15	
+Styria	state	AT	15	
+Valencia	state	ES	15	
+Västra Götaland County	state	SE	15	
+West Bengal	state	IN	15	
+West Yorkshire	state	GB	15	
+Adelaide	city	AU	14	South Australia
+Auckland	city	NZ	14	Auckland
+Dresden	city	DE	14	Saxony
+Geneva	city	CH	14	Geneva
+Liverpool	city	GB	14	England
+Lyon	city	FR	14	Auvergne-Rhône-Alpes
+Montreal	city	CA	14	Quebec
+Philadelphia	city	US	14	Pennsylvania
+Portsmouth	city	GB	14	England
+Rome	city	IT	14	Lazio
+Silberhütte	city	DE	14	Saxony-Anhalt
+Auckland	state	NZ	14	
+Bern	state	CH	14	
+Hertfordshire	state	GB	14	
+Saskatchewan	state	CA	14	
+South Aegean	state	GR	14	
+Suffolk	state	GB	14	
+Tasmania	state	AU	14	
+Clichy	city	FR	13	Île-de-France
+Essen	city	DE	13	North Rhine-Westphalia
+Kansas City	city	US	13	Missouri
+Raleigh	city	US	13	North Carolina
+Salt Lake City	city	US	13	Utah
+Suzhou	city	CN	13	Jiangsu
+Tel Aviv-Yafo	city	IL	13	Tel Aviv District
+Wiesbaden	city	DE	13	Hesse
+Cairo	state	EG	13	
+London	state	GB	13	
+Luxembourg	state	LU	13	
+Mississippi	state	US	13	
+National Capital Region	state	PH	13	
+Penang	state	MY	13	
+Puerto Rico	state	US	13	
+Sindh	state	PK	13	
+Beaumont	city	US	12	Texas
+Calgary	city	CA	12	Alberta
+Cambridge	city	GB	12	England
+Canberra	city	AU	12	Australian Capital Territory
+Darmstadt	city	DE	12	Hesse
+Durban	city	ZA	12	KwaZulu-Natal
+Graz	city	AT	12	Styria
+Istanbul	city	TR	12	Istanbul
+Karachi	city	PK	12	Sindh
+Kraków	city	PL	12	Lesser Poland Voivodeship
+London	city	GB	12	Greater London
+Málaga	city	ES	12	Andalusia
+Nashville	city	US	12	Tennessee
+Oslo	city	NO	12	Oslo
+Parramatta	city	AU	12	New South Wales
+Porto	city	PT	12	Porto
+Swansea	city	GB	12	Wales
+Bourgogne-Franche-Comté	state	FR	12	
+Bretagne	state	FR	12	
+Center District	state	IL	12	
+Central Denmark Region	state	DK	12	
+Flemish Brabant	state	BE	12	
+Lower Austria	state	AT	12	
+New Mexico	state	US	12	
+Nova Scotia	state	CA	12	
+Oslo	state	NO	12	
+Stockholm	state	SE	12	
+Thuringia	state	DE	12	
+Baltimore	city	US	11	Maryland
+Cork	city	IE	11	Munster
+Hannover	city	DE	11	Lower Saxony
+Herzliya	city	IL	11	Tel Aviv District
+Jacksonville	city	US	11	Florida
+Lille	city	FR	11	Hauts-de-France
+Petaling Jaya	city	MY	11	Selangor
+Scottsdale	city	US	11	Arizona
+Toulouse	city	FR	11	Occitanie
+Alaska	state	US	11	
+Cambridgeshire	state	GB	11	
+Central Serbia	state	RS	11	
+Crete	state	GR	11	
+Fujian	state	CN	11	
+Kaunas County	state	LT	11	
+Manitoba	state	CA	11	
+Norfolk	state	GB	11	
+Rhode Island	state	US	11	
+Uppsala County	state	SE	11	
+Wyoming	state	US	11	
+Zürich	state	CH	11	
+Belgrade	city	RS	10	Central Serbia
+Courbevoie	city	FR	10	Île-de-France
+Edmond	city	US	10	Oklahoma
+Kaunas	city	LT	10	Kaunas County
+Kuala Lumpur	city	MY	10	Federal Territory of Kuala Lumpur
+Kyiv	city	UA	10	Kyiv City
+Long Beach	city	US	10	California
+Marseille	city	FR	10	Provence-Alpes-Côte d'Azur
+New Delhi	city	IN	10	Delhi
+Nijmegen	city	NL	10	Gelderland
+Oklahoma City	city	US	10	Oklahoma
+Oxford	city	GB	10	England
+Pasig	city	PH	10	Metro Manila
+São Paulo	city	BR	10	São Paulo
+Tucson	city	US	10	Arizona
+Bay of Plenty	state	NZ	10	
+Campania	state	IT	10	
+Federal Territory of Kuala Lumpur	state	MY	10	
+Gloucestershire	state	GB	10	
+Kyiv City	state	UA	10	
+Lower Silesian Voivodeship	state	PL	10	
+Montana	state	US	10	
+New Brunswick	state	CA	10	
+Punjab	state	PK	10	
+Region of Southern Denmark	state	DK	10	
+West Flanders	state	BE	10	
+Bangor	city	GB	9	Wales
+Bellevue	city	US	9	Washington
+Bogotá	city	CO	9	Bogotá D.C.
+Cheltenham	city	GB	9	England
+Chengdu	city	CN	9	Sichuan
+Coventry	city	GB	9	England
+Eindhoven	city	NL	9	Noord-Brabant
+Everett	city	US	9	Washington
+Fayetteville	city	US	9	North Carolina
+Geelong	city	AU	9	Victoria
+Glashütte	city	DE	9	Saxony
+Hanoi	city	VN	9	Hanoi
+Hengelo	city	NL	9	Overijssel
+Karlsruhe	city	DE	9	Baden-Württemberg
+Kolkata	city	IN	9	West Bengal
+Lahore	city	PK	9	Punjab
+Lausanne	city	CH	9	Vaud
+Luxembourg	city	LU	9	Luxembourg
+Makati City	city	PH	9	Metro Manila
+Milwaukee	city	US	9	Wisconsin
+Mountain View	city	US	9	California
+Preston	city	GB	9	England
+San Mateo	city	US	9	California
+Sunnyvale	city	US	9	California
+Uppsala	city	SE	9	Uppsala County
+Anhui	state	CN	9	
+Basque Country	state	ES	9	
+Bogotá D.C.	state	CO	9	
+Casablanca-Settat	state	MA	9	
+Cheshire	state	GB	9	
+Drenthe	state	NL	9	
+Greater Manchester	state	GB	9	
+Greater Poland Voivodeship	state	PL	9	
+Groningen	state	NL	9	
+Hainaut	state	BE	9	
+Hanoi	state	VN	9	
+Lancashire	state	GB	9	
+Makkah Province	state	SA	9	
+Saarland	state	DE	9	
+Sichuan	state	CN	9	
+Sicily	state	IT	9	
+Somerset	state	GB	9	
+Valencian Community	state	ES	9	
+Warwickshire	state	GB	9	
+Western Province	state	LK	9	
+Aix-en-Provence	city	FR	8	Provence-Alpes-Côte d'Azur
+Amman	city	JO	8	Amman
+Aurora	city	US	8	Colorado
+Bologna	city	IT	8	Emilia-Romagna
+Casablanca	city	MA	8	Casablanca-Settat
+Cheadle	city	GB	8	England
+Columbus	city	US	8	Ohio
+Dayton	city	US	8	Ohio
+Deizisau	city	DE	8	Baden-Württemberg
+Des Moines	city	US	8	Iowa
+Eindhoven	city	NL	8	North Brabant
+Gothenburg	city	SE	8	Västra Götaland
+Greensboro	city	US	8	North Carolina
+Haarlem	city	NL	8	North Holland
+Lakeland	city	US	8	Florida
+Lansing	city	US	8	Michigan
+Leiden	city	NL	8	Zuid-Holland
+London	city	GB	8	London
+Marousi	city	GR	8	Attica
+Minneapolis	city	US	8	Minnesota
+Münster	city	DE	8	North Rhine-Westphalia
+New Brunswick	city	US	8	New Jersey
+New Orleans	city	US	8	Louisiana
+Ramat Gan	city	IL	8	Tel Aviv District
+Rowville	city	AU	8	Victoria
+Spokane	city	US	8	Washington
+St. Louis	city	US	8	Missouri
+Stockholm	city	SE	8	Stockholm
+Swindon	city	GB	8	England
+Torrance	city	US	8	California
+Valencia	city	ES	8	Valencia
+Vanves	city	FR	8	Île-de-France
+Victoria	city	CA	8	British Columbia
+Westminster	city	US	8	Colorado
+Winston-Salem	city	US	8	North Carolina
+Xi'an	city	CN	8	Shaanxi
+Amman	state	JO	8	
+Buenos Aires	state	AR	8	
+East Flanders	state	BE	8	
+East Sussex	state	GB	8	
+Flanders	state	BE	8	
+Flemish Region	state	BE	8	
+Friesland	state	NL	8	
+Gujarat	state	IN	8	
+Kanagawa	state	JP	8	
+Kent	state	GB	8	
+North Dakota	state	US	8	
+Shaanxi	state	CN	8	
+Södermanland County	state	SE	8	
+Ticino	state	CH	8	
+Apeldoorn	city	NL	7	Gelderland
+Bakersfield	city	US	7	California
+Ballerup	city	DK	7	Capital Region of Denmark
+Baton Rouge	city	US	7	Louisiana
+Clarksville	city	US	7	Tennessee
+Colorado Springs	city	US	7	Colorado
+Detroit	city	US	7	Michigan
+Duisburg	city	DE	7	North Rhine-Westphalia
+Durham	city	US	7	North Carolina
+Ede	city	NL	7	Gelderland
+Espoo	city	FI	7	Uusimaa
+Fort Myers	city	US	7	Florida
+Foshan	city	CN	7	Guangdong
+Fremont	city	US	7	California
+Giza	city	EG	7	Giza
+Grenoble	city	FR	7	Auvergne-Rhône-Alpes
+Haarlem	city	NL	7	Noord-Holland
+Jeddah	city	SA	7	Makkah Province
+Jersey City	city	US	7	New Jersey
+Kaunas	city	LT	7	Kaunas
+Kiel	city	DE	7	Schleswig-Holstein
+Knoxville	city	US	7	Tennessee
+Kochi	city	IN	7	Kerala
+Kuala Lumpur	city	MY	7	Wilayah Persekutuan Kuala Lumpur
+La Porte	city	US	7	Texas
+Leeds	city	GB	7	West Yorkshire
+Levallois-Perret	city	FR	7	Île-de-France
+Lima	city	PE	7	Lima
+Luleå	city	SE	7	Norrbotten County
+Lviv	city	UA	7	Lviv Oblast
+Magdeburg	city	DE	7	Saxony-Anhalt
+Malmö	city	SE	7	Skåne County
+Manila	city	PH	7	National Capital Region
+Memphis	city	US	7	Tennessee
+Modesto	city	US	7	California
+Nairobi	city	KE	7	Nairobi County
+Nantes	city	FR	7	Pays de la Loire
+Oakland	city	US	7	California
+Omaha	city	US	7	Nebraska
+Ontario	city	US	7	California
+Oswestry	city	GB	7	England
+Potsdam	city	DE	7	Brandenburg
+Quezon City	city	PH	7	Metro Manila
+Santa Rosa	city	US	7	California
+Sheffield	city	GB	7	England
+Sofia	city	BG	7	Sofia
+Subang Jaya	city	MY	7	Selangor
+Tauranga	city	NZ	7	Bay of Plenty
+Townsville	city	AU	7	Queensland
+Twickenham	city	GB	7	England
+Veenendaal	city	NL	7	Utrecht
+Vicenza	city	IT	7	Veneto
+Winnipeg	city	CA	7	Manitoba
+Wrocław	city	PL	7	Lower Silesian Voivodeship
+Yokohama	city	JP	7	Kanagawa
+Antioquia	state	CO	7	
+Assam	state	IN	7	
+Braga	state	PT	7	
+Bratislava Region	state	SK	7	
+Buckinghamshire	state	GB	7	
+Canary Islands	state	ES	7	
+Dalarna County	state	SE	7	
+Flevoland	state	NL	7	
+Free State	state	ZA	7	
+Galicia	state	ES	7	
+Giza	state	EG	7	
+Johor	state	MY	7	
+Jönköping County	state	SE	7	
+Kaunas	state	LT	7	
+Kerala	state	IN	7	
+Lagos	state	NG	7	
+Liaoning	state	CN	7	
+Lima	state	PE	7	
+Lviv Oblast	state	UA	7	
+Nairobi County	state	KE	7	
+Norrbotten County	state	SE	7	
+Northamptonshire	state	GB	7	
+Otago	state	NZ	7	
+Pomeranian Voivodeship	state	PL	7	
+Querétaro	state	MX	7	
+Region Zealand	state	DK	7	
+Santiago Metropolitan Region	state	CL	7	
+Silesian Voivodeship	state	PL	7	
+Sofia	state	BG	7	
+Tyrol	state	AT	7	
+Upper Austria	state	AT	7	
+Vermont	state	US	7	
+Wilayah Persekutuan Kuala Lumpur	state	MY	7	
+Wiltshire	state	GB	7	
+Akron	city	US	6	Ohio
+Al Ain	city	AE	6	Abu Dhabi
+Albstadt	city	DE	6	Baden-Württemberg
+Alexandria	city	US	6	Virginia
+Alpharetta	city	US	6	Georgia
+Annecy	city	FR	6	Auvergne-Rhône-Alpes
+Antwerp	city	BE	6	Antwerp
+Arnhem	city	NL	6	Gelderland
+Bangui	city	CF	6	Bangui
+Bayan Lepas	city	MY	6	Penang
+Bern	city	CH	6	Bern
+Beverly Hills	city	US	6	California
+Boise	city	US	6	Idaho
+Bratislava	city	SK	6	Bratislava Region
+Broderstorf	city	DE	6	Mecklenburg-Vorpommern
+Burlington	city	CA	6	Ontario
+Cairo	city	EG	6	Cairo
+Campbelltown	city	AU	6	New South Wales
+Cary	city	US	6	North Carolina
+Chattanooga	city	US	6	Tennessee
+Clackamas	city	US	6	Oregon
+Colombo	city	LK	6	Western Province
+Columbia	city	US	6	Missouri
+Compton	city	US	6	California
+Croydon	city	GB	6	England
+Daytona Beach	city	US	6	Florida
+Delhi	city	IN	6	Delhi
+Dongguan	city	CN	6	Guangdong
+Fresno	city	US	6	California
+Gainesville	city	US	6	Georgia
+Gothenburg	city	SE	6	Västra Götaland County
+Great Yarmouth	city	GB	6	Norfolk
+Gurgaon	city	IN	6	Haryana
+Hamilton	city	CA	6	Ontario
+Hefei	city	CN	6	Anhui
+Hounslow	city	GB	6	England
+Ibiza	city	ES	6	Balearic Islands
+Irvine	city	US	6	California
+Irving	city	US	6	Texas
+Ismaning	city	DE	6	Bavaria
+Issy-les-Moulineaux	city	FR	6	Île-de-France
+Kirkland	city	US	6	Washington
+Krakow	city	PL	6	Lesser Poland Voivodeship
+Kyiv	city	UA	6	Kyiv
+La Vergne	city	US	6	Tennessee
+Lehi	city	US	6	Utah
+Leicester	city	GB	6	England
+Mainz	city	DE	6	Rhineland-Palatinate
+Mesa	city	US	6	Arizona
+Midland	city	US	6	Michigan
+Milton Keynes	city	GB	6	England
+Nairobi	city	KE	6	Nairobi
+Naples	city	IT	6	Campania
+Neuburg an der Donau	city	DE	6	Bavaria
+Newark	city	US	6	New Jersey
+Noblesville	city	US	6	Indiana
+Oldenburg	city	DE	6	Lower Saxony
+Pasig City	city	PH	6	Metro Manila
+Penang	city	MY	6	Penang
+Plano	city	US	6	Texas
+Reston	city	US	6	Virginia
+Rijssen	city	NL	6	Overijssel
+Rochester	city	US	6	Minnesota
+Roseville	city	US	6	Michigan
+Rotterdam	city	NL	6	South Holland
+Saginaw	city	US	6	Michigan
+San Carlos	city	US	6	California
+Santa Clarita	city	US	6	California
+Sevierville	city	US	6	Tennessee
+Shinagawa	city	JP	6	Tokyo
+Solna	city	SE	6	Stockholm County
+St. Cloud	city	US	6	Minnesota
+Strasbourg	city	FR	6	Grand Est
+Stratford-upon-Avon	city	GB	6	England
+Sugar Land	city	US	6	Texas
+Swords	city	IE	6	Leinster
+Taguig	city	PH	6	Metro Manila
+Tbilisi	city	GE	6	Tbilisi
+Tempe	city	US	6	Arizona
+Thunder Bay	city	CA	6	Ontario
+Toowoomba	city	AU	6	Queensland
+Vancouver	city	CA	6	British Columbia
+Venray	city	NL	6	Limburg
+Vienna	city	US	6	Virginia
+Villeneuve-d'Ascq	city	FR	6	Hauts-de-France
+Warrington	city	GB	6	England
+Winterthur	city	CH	6	Zürich
+Aargau	state	CH	6	
+Bangui	state	CF	6	
+Berkshire	state	GB	6	
+Devon	state	GB	6	
+Hubei	state	CN	6	
+Jerusalem District	state	IL	6	
+Kanagawa Prefecture	state	JP	6	
+Kyiv	state	UA	6	
+Laguna	state	PH	6	
+Leicestershire	state	GB	6	
+Liguria	state	IT	6	
+Limburg	state	BE	6	
+Marche	state	IT	6	
+Nairobi	state	KE	6	
+Northern Territory	state	AU	6	
+Osaka Prefecture	state	JP	6	
+Shandong	state	CN	6	
+South Yorkshire	state	GB	6	
+Tbilisi	state	GE	6	
+Tel Aviv	state	IL	6	
+Waikato	state	NZ	6	
+West Java	state	ID	6	
+Östergötland	state	SE	6	
+Aarhus	city	DK	5	Central Denmark Region
+Albany	city	US	5	Oregon
+Albuquerque	city	US	5	New Mexico
+Amarillo	city	US	5	Texas
+Amersfoort	city	NL	5	Utrecht
+Astana	city	KZ	5	Astana
+Backnang	city	DE	5	Baden-Württemberg
+Bath	city	GB	5	Somerset
+Bergschenhoek	city	NL	5	Zuid-Holland
+Boulder	city	US	5	Colorado
+Bourges	city	FR	5	Centre-Val de Loire
+Braunschweig	city	DE	5	Lower Saxony
+Bridgwater	city	GB	5	England
+Brighton	city	GB	5	East Sussex
+Brighton	city	GB	5	England
+Brno	city	CZ	5	South Moravian
+Buenos Aires	city	AR	5	Buenos Aires
+Buffalo	city	US	5	New York
+Cabuyao	city	PH	5	Laguna
+Cairns	city	AU	5	Queensland
+Carlsbad	city	US	5	California
+Cartersville	city	US	5	Georgia
+Chandler	city	US	5	Arizona
+Chemnitz	city	DE	5	Saxony
+Chongqing	city	CN	5	Chongqing
+Clayton	city	AU	5	Victoria
+Cleveland	city	US	5	Ohio
+Cluj-Napoca	city	RO	5	Cluj
+Coburg	city	DE	5	Bavaria
+Decatur	city	US	5	Alabama
+Delft	city	NL	5	Zuid-Holland
+Den Bosch	city	NL	5	North Brabant
+Den Dolder	city	NL	5	Utrecht
+Deventer	city	NL	5	Overijssel
+Doetinchem	city	NL	5	Gelderland
+Dover	city	US	5	Delaware
+Dulles	city	US	5	Virginia
+Dunedin	city	NZ	5	Otago
+Erie	city	US	5	Pennsylvania
+Eugene	city	US	5	Oregon
+Falls Church	city	US	5	Virginia
+Frisco	city	US	5	Texas
+Gladstone	city	AU	5	Queensland
+Grand Rapids	city	US	5	Michigan
+Greenville	city	US	5	South Carolina
+Greenwich	city	US	5	Connecticut
+Grimsby	city	GB	5	England
+Groningen	city	NL	5	Groningen
+Hamilton	city	NZ	5	Waikato
+Hendersonville	city	US	5	Tennessee
+Hillsboro	city	US	5	Oregon
+Huntington Beach	city	US	5	California
+Ipswich	city	GB	5	Suffolk
+Jamaica	city	US	5	New York
+Johor Bahru	city	MY	5	Johor
+Jönköping	city	SE	5	Jönköping County
+Katowice	city	PL	5	Silesian Voivodeship
+Kongens Lyngby	city	DK	5	Capital Region of Denmark
+Lagos	city	NG	5	Lagos
+Las Palmas de Gran Canaria	city	ES	5	Canary Islands
+Leicester	city	GB	5	Leicestershire
+Limerick	city	IE	5	Munster
+Ludwigsburg	city	DE	5	Baden-Württemberg
+Markham	city	CA	5	Ontario
+Mechelen	city	BE	5	Antwerp
+Medellín	city	CO	5	Antioquia
+Merthyr Tydfil	city	GB	5	Wales
+Miami Beach	city	US	5	Florida
+Muggensturm	city	DE	5	Baden-Württemberg
+Mölndal	city	SE	5	Västra Götaland
+Nagoya	city	JP	5	Aichi
+Nanterre	city	FR	5	Île-de-France
+Newcastle upon Tyne	city	GB	5	England
+Newport Beach	city	US	5	California
+Nieuwegein	city	NL	5	Utrecht
+Normal	city	US	5	Illinois
+Nottingham	city	GB	5	England
+Novato	city	US	5	California
+Palma	city	ES	5	Balearic Islands
+Palo Alto	city	US	5	California
+Papillion	city	US	5	Nebraska
+Plymouth	city	US	5	Massachusetts
+Poperinge	city	BE	5	West Flanders
+Raanana	city	IL	5	Central District
+Rancho Cordova	city	US	5	California
+Reims	city	FR	5	Grand Est
+Rennes	city	FR	5	Brittany
+Rhodes	city	GR	5	South Aegean
+Rochester	city	US	5	New York
+Roissy-en-France	city	FR	5	Île-de-France
+Round Rock	city	US	5	Texas
+Saarbrücken	city	DE	5	Saarland
+San Juan	city	US	5	Puerto Rico
+Saskatoon	city	CA	5	Saskatchewan
+Seville	city	ES	5	Andalusia
+Sharjah	city	AE	5	Sharjah
+Skopje	city	MK	5	Grad Skopje
+Slough	city	GB	5	England
+South San Francisco	city	US	5	California
+Stockton	city	US	5	California
+Stoke-on-Trent	city	GB	5	England
+Surrey	city	CA	5	British Columbia
+Szeged	city	HU	5	Csongrád
+Tarragona	city	ES	5	Catalonia
+Tilburg	city	NL	5	Noord-Brabant
+Tulsa	city	US	5	Oklahoma
+Uxbridge	city	GB	5	England
+Vitrolles	city	FR	5	Provence-Alpes-Côte d'Azur
+Waco	city	US	5	Texas
+Waghäusel	city	DE	5	Baden-Württemberg
+Wellington	city	NZ	5	Wellington
+Whitehorse	city	CA	5	Yukon
+Worthington	city	US	5	Minnesota
+Würzburg	city	DE	5	Bavaria
+Xiamen	city	CN	5	Fujian
+Zwolle	city	NL	5	Overijssel
+Akershus	state	NO	5	
+Astana	state	KZ	5	
+Bahia	state	BR	5	
+Castile-La Mancha	state	ES	5	
+Chiba	state	JP	5	
+Chongqing	state	CN	5	
+Cluj	state	RO	5	
+Cornwall	state	GB	5	
+County Cork	state	IE	5	
+Csongrád	state	HU	5	
+Eastern Province	state	SA	5	
+Grad Skopje	state	MK	5	
+Gyeonggi-do	state	KR	5	
+Halland	state	SE	5	
+Jalisco	state	MX	5	
+Lincolnshire	state	GB	5	
+Lucerne	state	CH	5	
+Middlesex	state	GB	5	
+Mpumalanga	state	ZA	5	
+Normandie	state	FR	5	
+Nuevo León	state	MX	5	
+Oxfordshire	state	GB	5	
+Paraná	state	BR	5	
+Piedmont	state	IT	5	
+Punjab	state	IN	5	
+Rajasthan	state	IN	5	
+Saitama	state	JP	5	
+Sharjah	state	AE	5	
+Sibiu	state	RO	5	
+South Moravian	state	CZ	5	
+Southern District	state	IL	5	
+Taiwan	state	TW	5	
+Vorarlberg	state	AT	5	
+Västmanland County	state	SE	5	
+Wellington	state	NZ	5	
+Worcestershire	state	GB	5	
+Yukon	state	CA	5	
+Östergötland County	state	SE	5	
+Aachen	city	DE	4	North Rhine-Westphalia
+Aarhus	city	DK	4	Region Midtjylland
+Aberdeen	city	GB	4	Scotland
+Abilene	city	US	4	Texas
+Afton	city	US	4	Texas
+Albany	city	US	4	New York
+Alexandria	city	AU	4	New South Wales
+Alexandria	city	US	4	Louisiana
+Almere	city	NL	4	Flevoland
+Amadora	city	PT	4	Lisbon
+Amman	city	JO	4	Amman Governorate
+Anaheim	city	US	4	California
+Antrim	city	GB	4	Northern Ireland
+Antwerp	city	BE	4	Flanders
+Arlington	city	US	4	Virginia
+Assen	city	NL	4	Drenthe
+Athens	city	US	4	Tennessee
+Augsburg	city	DE	4	Bavaria
+Avignon	city	FR	4	Provence-Alpes-Côte d'Azur
+Baden	city	CH	4	Aargau
+Bainbridge	city	US	4	Georgia
+Balingen	city	DE	4	Baden-Württemberg
+Bandung	city	ID	4	West Java
+Barking	city	GB	4	England
+Berea	city	US	4	Ohio
+Beresfield	city	AU	4	New South Wales
+Bethany	city	US	4	Oklahoma
+Bilbao	city	ES	4	Basque Country
+Bismarck	city	US	4	North Dakota
+Blackpool	city	GB	4	England
+Blagnac	city	FR	4	Occitanie
+Bloemfontein	city	ZA	4	Free State
+Bloomington	city	US	4	Minnesota
+Bogota	city	CO	4	Bogota
+Boulogne-Billancourt	city	FR	4	Île-de-France
+Box Hill	city	AU	4	Victoria
+Brandon	city	US	4	Florida
+Breda	city	NL	4	North Brabant
+Bremerton	city	US	4	Washington
+Bridgeton	city	US	4	New Jersey
+Brighton	city	US	4	New York
+Bronx	city	US	4	New York
+Brooklyn	city	US	4	New York
+Brownsville	city	US	4	Texas
+Brussels	city	BE	4	Brussels
+Bulle	city	CH	4	Fribourg
+Bunbury	city	AU	4	Western Australia
+Burbank	city	US	4	California
+Burton Latimer	city	GB	4	England
+Camaçari	city	BR	4	Bahia
+Camberley	city	GB	4	England
+Campinas	city	BR	4	São Paulo
+Carol Stream	city	US	4	Illinois
+Carson City	city	US	4	Nevada
+Chantilly	city	US	4	Virginia
+Chard	city	GB	4	England
+Chichester	city	GB	4	West Sussex
+Chicopee	city	US	4	Massachusetts
+Christchurch	city	NZ	4	Canterbury
+Cinisello Balsamo	city	IT	4	Lombardy
+Cleveland Heights	city	US	4	Ohio
+Coimbatore	city	IN	4	Tamil Nadu
+Copenhagen	city	DK	4	Capital Region of Denmark
+Costa Mesa	city	US	4	California
+Crawley	city	GB	4	England
+Crestview	city	US	4	Florida
+Da Nang	city	VN	4	Da Nang City
+Dandenong	city	AU	4	Victoria
+Darlington	city	GB	4	England
+Darwin	city	AU	4	Northern Territory
+Deer Park	city	US	4	Texas
+Dhaka	city	BD	4	Dhaka Division
+Dongen	city	NL	4	North Brabant
+Doral	city	US	4	Florida
+Dordrecht	city	NL	4	Zuid-Holland
+Dusseldorf	city	DE	4	North Rhine-Westphalia
+El Centro	city	US	4	California
+El Paso	city	US	4	Texas
+El Segundo	city	US	4	California
+Emmen	city	NL	4	Drenthe
+Epping	city	AU	4	Victoria
+Escanaba	city	US	4	Michigan
+Fairfax	city	US	4	Virginia
+Fontana	city	US	4	California
+Foxborough	city	US	4	Massachusetts
+Fremantle	city	AU	4	Western Australia
+Fuzhou	city	CN	4	Fujian
+Fürth	city	DE	4	Bavaria
+Galway	city	IE	4	Galway
+Gennevilliers	city	FR	4	Île-de-France
+Geretsried	city	DE	4	Bavaria
+Giltner	city	US	4	Nebraska
+Groton	city	US	4	Connecticut
+Guadalajara	city	MX	4	Jalisco
+Gualala	city	US	4	California
+Guildford	city	GB	4	England
+Hagen	city	DE	4	North Rhine-Westphalia
+Hagerstown	city	US	4	Maryland
+Hamden	city	US	4	Connecticut
+Hanford	city	US	4	California
+Harrow	city	GB	4	Middlesex
+Hatfield	city	GB	4	England
+Helsingborg	city	SE	4	Skåne County
+Hesperia	city	US	4	California
+Hilversum	city	NL	4	Noord-Holland
+Hinwil	city	CH	4	Zurich
+Ho Chi Minh City	city	VN	4	Ho Chi Minh City
+Hoboken	city	US	4	New Jersey
+Holbæk	city	DK	4	Region Zealand
+Holywood	city	GB	4	Northern Ireland
+Homer	city	US	4	Alaska
+Hong Kong	city	HK	4	Hong Kong Island
+Horsham	city	GB	4	West Sussex
+Hyères	city	FR	4	Provence-Alpes-Côte d'Azur
+Iasi	city	RO	4	Iasi
+Irthlingborough	city	GB	4	Northamptonshire
+Islamabad	city	PK	4	Islamabad Capital Territory
+Izegem	city	BE	4	West Flanders
+Jakarta Selatan	city	ID	4	Jakarta
+Kariya	city	JP	4	Aichi
+Kfar Saba	city	IL	4	Center District
+Kilmore	city	AU	4	Victoria
+Kingston upon Thames	city	GB	4	England
+Kirchheim	city	DE	4	Baden-Württemberg
+Kleve	city	DE	4	North Rhine-Westphalia
+Koropi	city	GR	4	Attica
+Koudekerk aan den Rijn	city	NL	4	Zuid-Holland
+Kägiswil	city	CH	4	Obwalden
+Lacock	city	GB	4	England
+Lago Vista	city	US	4	Texas
+Lake Ozark	city	US	4	Missouri
+Las Condes	city	CL	4	Santiago Metropolitan Region
+Laurel	city	US	4	Maryland
+Leawood	city	US	4	Kansas
+Lee	city	US	4	Massachusetts
+Lewes	city	US	4	Delaware
+Lexington	city	US	4	Massachusetts
+Lieshout	city	NL	4	North Brabant
+Lincoln University	city	US	4	Pennsylvania
+Linville	city	US	4	North Carolina
+Lititz	city	US	4	Pennsylvania
+Lokeren	city	BE	4	East Flanders
+Lubbock	city	US	4	Texas
+Lund	city	SE	4	Skåne County
+Lübeck	city	DE	4	Schleswig-Holstein
+Maastricht	city	NL	4	Limburg
+Macon	city	US	4	Georgia
+Malmö	city	SE	4	Skåne
+Malsfeld	city	DE	4	Hesse
+Manchester	city	US	4	Tennessee
+Manila	city	US	4	Arkansas
+Marlow	city	GB	4	England
+Masham	city	GB	4	England
+Massy	city	FR	4	Île-de-France
+McLean	city	US	4	Virginia
+Meinerzhagen	city	DE	4	North Rhine-Westphalia
+Menifee	city	US	4	California
+Metz	city	FR	4	Grand Est
+Milatos	city	GR	4	Crete
+Mission	city	US	4	South Dakota
+Monterey	city	US	4	California
+Montgomery	city	US	4	Alabama
+Montpellier	city	FR	4	Occitanie
+Montrose	city	GB	4	Scotland
+Monza	city	IT	4	Lombardy
+Moscow	city	RU	4	Moscow
+Moulton	city	US	4	Alabama
+Mount Gambier	city	AU	4	South Australia
+Mount Pleasant	city	US	4	Michigan
+Murrieta	city	US	4	California
+Mérignac	city	FR	4	Nouvelle-Aquitaine
+Nagpur	city	IN	4	Maharashtra
+Nassau	city	DE	4	Rhineland-Palatinate
+Navi Mumbai	city	IN	4	Maharashtra
+Newcastle	city	AU	4	New South Wales
+Newport	city	US	4	New Hampshire
+Niederbipp	city	CH	4	Bern
+Nieuw-Vennep	city	NL	4	North Holland
+Nijverdal	city	NL	4	Overijssel
+Ningbo	city	CN	4	Zhejiang
+Norwich	city	GB	4	England
+Norwich	city	GB	4	Norfolk
+Oak Brook	city	US	4	Illinois
+Ochsenhausen	city	DE	4	Baden-Württemberg
+Odense	city	DK	4	Region of Southern Denmark
+Odessa	city	US	4	Texas
+Oia	city	GR	4	South Aegean
+Ottawa	city	CA	4	Ontario
+Painesville	city	US	4	Ohio
+Pasay City	city	PH	4	Metro Manila
+Payette	city	US	4	Idaho
+Peterborough	city	GB	4	Cambridgeshire
+Pfatter	city	DE	4	Bavaria
+Pijnacker-Nootdorp	city	NL	4	Zuid-Holland
+Point Mugu	city	US	4	California
+Poznań	city	PL	4	Greater Poland Voivodeship
+Princeton	city	US	4	New Jersey
+Pulheim	city	DE	4	North Rhine-Westphalia
+Puttershoek	city	NL	4	Zuid-Holland
+Qingdao	city	CN	4	Shandong
+Quarry Bay	city	HK	4	Hong Kong
+Quebec City	city	CA	4	Quebec
+Reading	city	GB	4	England
+Regina	city	CA	4	Saskatchewan
+Richmond	city	AU	4	Victoria
+Riyadh	city	SA	4	Riyadh
+Rock Hill	city	US	4	South Carolina
+Rockford	city	US	4	Illinois
+Romford	city	GB	4	England
+Roquebrune-Cap-Martin	city	FR	4	Provence-Alpes-Côte d'Azur
+Rosebel Gold Mines Site	city	SR	4	Brokopondo
+Rosenheim	city	DE	4	Bavaria
+Rostock	city	DE	4	Mecklenburg-Vorpommern
+Rotorua	city	NZ	4	Bay of Plenty
+Rugby	city	GB	4	Warwickshire
+Saint-Rémy-lès-Chevreuse	city	FR	4	Île-de-France
+Sainte-Catherine	city	CA	4	Quebec
+Salford	city	GB	4	Greater Manchester
+San Benedetto del Tronto	city	IT	4	Marche
+San Bernardino	city	US	4	California
+San Luis Potosí	city	MX	4	San Luis Potosí
+Santa Monica	city	US	4	California
+Saxonburg	city	US	4	Pennsylvania
+Schenefeld	city	DE	4	Schleswig-Holstein
+Schramberg	city	DE	4	Baden-Württemberg
+Schweinfurt	city	DE	4	Bavaria
+Schwerin	city	DE	4	Mecklenburg-Vorpommern
+Selby	city	US	4	South Dakota
+Seri Kembangan	city	MY	4	Selangor
+Sevenum	city	NL	4	Limburg
+Sewell	city	US	4	New Jersey
+Shafter	city	US	4	California
+Shenyang	city	CN	4	Liaoning
+Sibiu	city	RO	4	Sibiu
+Singen	city	DE	4	Baden-Württemberg
+Sittard-Geleen	city	NL	4	Limburg
+Snohomish	city	US	4	Washington
+Soignies	city	BE	4	Hainaut
+Solihull	city	GB	4	West Midlands
+Somerset West	city	ZA	4	Western Cape
+South Yarra	city	AU	4	Victoria
+St Pete Beach	city	US	4	Florida
+St. Florian	city	AT	4	Upper Austria
+Stockton-on-Tees	city	GB	4	England
+Stratford-upon-Avon	city	GB	4	Warwickshire
+Sulphur	city	US	4	Louisiana
+Taipei	city	TW	4	Taipei City
+Tamworth	city	GB	4	England
+Ternat	city	BE	4	Flemish Brabant
+The Hague	city	NL	4	Zuid-Holland
+Tidworth	city	GB	4	England
+Tilburg	city	NL	4	North Brabant
+Tirana	city	AL	4	Tirana
+Toledo	city	US	4	Ohio
+Toms River	city	US	4	New Jersey
+Toyoyama	city	JP	4	Aichi
+Tumba	city	SE	4	Stockholm County
+Tunkhannock	city	US	4	Pennsylvania
+Umhlanga	city	ZA	4	KwaZulu-Natal
+Valence	city	FR	4	Auvergne-Rhône-Alpes
+Veghel	city	NL	4	North Brabant
+Vence	city	FR	4	Provence-Alpes-Côte d'Azur
+Viladecans	city	ES	4	Catalonia
+Virginia Beach	city	US	4	Virginia
+Voorhees	city	US	4	New Jersey
+Wakefield	city	GB	4	England
+Walsall	city	GB	4	West Midlands
+Wan Chai	city	HK	4	Hong Kong
+Warrington	city	GB	4	Cheshire
+Weingarten	city	DE	4	Baden-Württemberg
+West Hollywood	city	US	4	California
+Westborough	city	US	4	Massachusetts
+Westerville	city	US	4	Ohio
+Wilmington	city	US	4	Delaware
+Winchester	city	GB	4	England
+Woodland	city	US	4	California
+Worthing	city	GB	4	West Sussex
+Wrexham	city	GB	4	Wrexham
+Wuhan	city	CN	4	Hubei
+Wuppertal	city	DE	4	North Rhine-Westphalia
+Yangon	city	MM	4	Yangon Region
+Yokohama	city	JP	4	Kanagawa Prefecture
+Zephyrhills	city	US	4	Florida
+Ōta	city	JP	4	Tokyo
+Aichi Prefecture	state	JP	4	
+Al Asimah	state	KW	4	
+Alajuela	state	CR	4	
+Amman Governorate	state	JO	4	
+Basel-Landschaft	state	CH	4	
+Bogota	state	CO	4	
+Brokopondo	state	SR	4	
+Brussels	state	BE	4	
+Canterbury	state	NZ	4	
+Cluj County	state	RO	4	
+County of Osijek-Baranja	state	HR	4	
+Cundinamarca	state	CO	4	
+Da Nang City	state	VN	4	
+Derbyshire	state	GB	4	
+Dhaka Division	state	BD	4	
+Eastern Cape	state	ZA	4	
+Essex	state	GB	4	
+Fribourg	state	CH	4	
+Galway	state	IE	4	
+Gotland County	state	SE	4	
+Gyeonggi	state	KR	4	
+Hessen	state	DE	4	
+Himachal Pradesh	state	IN	4	
+Ho Chi Minh City	state	VN	4	
+Hong Kong Island	state	HK	4	
+Iasi	state	RO	4	
+Islamabad Capital Territory	state	PK	4	
+Kyiv Oblast	state	UA	4	
+Liège	state	BE	4	
+Moka	state	MU	4	
+Moscow	state	RU	4	
+Murcia	state	ES	4	
+Nottinghamshire	state	GB	4	
+Obwalden	state	CH	4	
+Odisha	state	IN	4	
+Pays-de-la-Loire	state	FR	4	
+Phra Nakhon Si Ayutthaya	state	TH	4	
+Region Midtjylland	state	DK	4	
+Riyadh	state	SA	4	
+Salzburg	state	AT	4	
+San Luis Potosí	state	MX	4	
+Setúbal	state	PT	4	
+Skåne	state	SE	4	
+South Denmark	state	DK	4	
+Taipei City	state	TW	4	
+Terengganu	state	MY	4	
+Thessaloniki	state	GR	4	
+Tirana	state	AL	4	
+Trenčín Region	state	SK	4	
+Tuscany	state	IT	4	
+Tyne and Wear	state	GB	4	
+Ulster	state	IE	4	
+Wrexham	state	GB	4	
+Yangon Region	state	MM	4	
+Ajman	city	AE	3	Ajman
+Alcobendas	city	ES	3	Community of Madrid
+Alicante	city	ES	3	Valencian Community
+Alice Springs	city	AU	3	Northern Territory
+Allen	city	US	3	Texas
+Almaty	city	KZ	3	Almaty
+Alton	city	GB	3	England
+Ambt Delden	city	NL	3	Overijssel
+Amersham	city	GB	3	England
+Amstelveen	city	NL	3	North Holland
+Appleton	city	US	3	Wisconsin
+Arbuckle	city	US	3	California
+Aschheim	city	DE	3	Bavaria
+Ashbourne	city	IE	3	Leinster
+Athens	city	US	3	Georgia
+Athlone	city	IE	3	Leinster
+Auburn	city	US	3	Washington
+Bad Kreuznach	city	DE	3	Rhineland-Palatinate
+Banbridge	city	GB	3	Northern Ireland
+Bangor	city	US	3	Maine
+Barendrecht	city	NL	3	Zuid-Holland
+Batam	city	ID	3	Riau Islands
+Bayamón	city	US	3	Puerto Rico
+Beaufort	city	US	3	North Carolina
+Beavercreek	city	US	3	Ohio
+Bentelo	city	NL	3	Overijssel
+Bethesda	city	US	3	Maryland
+Beverwijk	city	NL	3	Noord-Holland
+Birmingham	city	US	3	Alabama
+Bleiswijk	city	NL	3	Zuid-Holland
+Blois	city	FR	3	Centre-Val de Loire
+Bloomington	city	US	3	Indiana
+Bolton	city	GB	3	England
+Boone	city	US	3	North Carolina
+Borlänge	city	SE	3	Dalarna County
+Bovolone	city	IT	3	Veneto
+Bowling Green	city	US	3	Virginia
+Bowling Green	city	US	3	Kentucky
+Brake	city	DE	3	Lower Saxony
+Bratislava	city	SK	3	Bratislavský kraj
+Bremerhaven	city	DE	3	Bremen
+Brest	city	FR	3	Bretagne
+Brisbane City	city	AU	3	Queensland
+Brno	city	CZ	3	South Moravian Region
+Broadmeadows	city	AU	3	Victoria
+Brockport	city	US	3	New York
+Bromley	city	GB	3	England
+Bromsgrove	city	GB	3	England
+Brookvale	city	AU	3	New South Wales
+Buccinasco	city	IT	3	Lombardy
+Buffalo Grove	city	US	3	Illinois
+Bundoora	city	AU	3	Victoria
+Burr Ridge	city	US	3	Illinois
+Busto Arsizio	city	IT	3	Lombardy
+Calpe	city	ES	3	Valencian Community
+Camarillo	city	US	3	California
+Cambridge	city	US	3	Massachusetts
+Camden	city	US	3	New Jersey
+Canby	city	US	3	Oregon
+Canyon	city	US	3	Texas
+Cape Coral	city	US	3	Florida
+Carregado	city	PT	3	Lisbon
+Castleford	city	GB	3	England
+Cergy	city	FR	3	Île-de-France
+Cernusco sul Naviglio	city	IT	3	Lombardy
+Chelmsford	city	GB	3	England
+Chelsea	city	US	3	Massachusetts
+Chester	city	GB	3	Cheshire
+Cheyenne	city	US	3	Wyoming
+Chita	city	JP	3	Aichi
+Clarks Summit	city	US	3	Pennsylvania
+Clearwater	city	US	3	Florida
+Clermont-Ferrand	city	FR	3	Auvergne-Rhône-Alpes
+Cluj-Napoca	city	RO	3	Cluj County
+Cluses	city	FR	3	Auvergne-Rhône-Alpes
+Columbia	city	US	3	South Carolina
+Columbus	city	US	3	Georgia
+Compiègne	city	FR	3	Hauts-de-France
+Cotabato City	city	PH	3	Bangsamoro Autonomous Region in Muslim Mindanao
+Cotati	city	US	3	California
+Craigieburn	city	AU	3	Victoria
+Córdoba	city	ES	3	Andalusia
+Damendorf	city	DE	3	Schleswig-Holstein
+Dammam	city	SA	3	Eastern Province
+Dartmouth	city	CA	3	Nova Scotia
+Dayton	city	US	3	Tennessee
+Derby	city	GB	3	England
+Derry	city	GB	3	Northern Ireland
+Diemen	city	NL	3	Noord-Holland
+Dieppe	city	CA	3	New Brunswick
+Diest	city	BE	3	Flemish Brabant
+Dijon	city	FR	3	Bourgogne-Franche-Comté
+Docklands	city	AU	3	Victoria
+Doorn	city	NL	3	Utrecht
+Dopiewo	city	PL	3	Greater Poland Voivodeship
+Dordrecht	city	NL	3	South Holland
+Duiven	city	NL	3	Gelderland
+Dundee	city	GB	3	Scotland
+Düren	city	DE	3	North Rhine-Westphalia
+Dąbrówka	city	PL	3	Wielkopolskie
+Echavarri-Viña	city	ES	3	Álava
+El Marqués	city	MX	3	Querétaro
+Elbeuf	city	FR	3	Normandy
+Elgin	city	US	3	Illinois
+Elkhart	city	US	3	Indiana
+Enschede	city	NL	3	Overijssel
+Erfurt	city	DE	3	Thuringia
+Eschborn	city	DE	3	Hesse
+Eskilstuna	city	SE	3	Södermanland County
+Fall River	city	US	3	Massachusetts
+Fargo	city	US	3	North Dakota
+Fenouillet	city	FR	3	Occitanie
+Fishers	city	US	3	Indiana
+Forrestfield	city	AU	3	Western Australia
+Fort Washington	city	US	3	Pennsylvania
+Fort Wayne	city	US	3	Indiana
+Franschhoek	city	ZA	3	Western Cape
+Fredericksburg	city	US	3	Virginia
+Freehold	city	US	3	New Jersey
+Freiburg	city	DE	3	Baden-Württemberg
+Fulton	city	US	3	Mississippi
+Funchal	city	PT	3	Madeira
+Garching bei München	city	DE	3	Bavaria
+Gdańsk	city	PL	3	Pomeranian Voivodeship
+Genoa	city	IT	3	Liguria
+Ghent	city	BE	3	East Flanders
+Gießen	city	DE	3	Hesse
+Gloucester	city	GB	3	Gloucestershire
+Gold Coast	city	AU	3	Queensland
+Goldsboro	city	US	3	North Carolina
+Goor	city	NL	3	Overijssel
+Green Bay	city	US	3	Wisconsin
+Groves	city	US	3	Texas
+Gumpoldskirchen	city	AT	3	Lower Austria
+Göttingen	city	DE	3	Lower Saxony
+Halifax	city	CA	3	Nova Scotia
+Halmstad	city	SE	3	Halland
+Hanover	city	DE	3	Lower Saxony
+Hanover	city	US	3	Maryland
+Hastings	city	US	3	Nebraska
+Hattiesburg	city	US	3	Mississippi
+Hazelmere	city	AU	3	Western Australia
+Heidelberg	city	DE	3	Baden-Württemberg
+Hellerup	city	DK	3	Capital Region of Denmark
+Henderson	city	AU	3	Western Australia
+Hilmar	city	US	3	California
+Hilversum	city	NL	3	North Holland
+Hitech City	city	IN	3	Telangana
+Ho Chi Minh City	city	VN	3	Ho Chi Minh
+Howard Lake	city	US	3	Minnesota
+Huizhou	city	CN	3	Guangdong
+Hyannis	city	US	3	Massachusetts
+Hürth	city	DE	3	North Rhine-Westphalia
+Itasca	city	US	3	Illinois
+Ivry-sur-Seine	city	FR	3	Île-de-France
+Jaipur	city	IN	3	Rajasthan
+Jammu	city	IN	3	Jammu and Kashmir
+Jasper	city	US	3	Indiana
+Jeffersonville	city	US	3	Georgia
+Jerusalem	city	IL	3	Jerusalem District
+Kaiserslautern	city	DE	3	Rhineland-Palatinate
+Kansas City	city	US	3	Kansas
+Kelowna	city	CA	3	British Columbia
+Kerteh	city	MY	3	Terengganu
+Kew	city	AU	3	Victoria
+Kfar Saba	city	IL	3	Central District
+Kidderminster	city	GB	3	England
+Kiel	city	US	3	Wisconsin
+Kingston	city	US	3	Rhode Island
+Kirchlengern	city	DE	3	North Rhine-Westphalia
+Kloten	city	CH	3	Zürich
+Kolding	city	DK	3	Region of Southern Denmark
+Kuwait City	city	KW	3	Al Asimah
+Kyiv	city	UA	3	Kyiv Oblast
+Lafayette	city	US	3	Louisiana
+Lanka	city	IN	3	Assam
+Launceston	city	AU	3	Tasmania
+Le Mans	city	FR	3	Pays de la Loire
+Leander	city	US	3	Texas
+Leesburg	city	US	3	Florida
+Leeuwarden	city	NL	3	Friesland
+Leganés	city	ES	3	Community of Madrid
+Leiden	city	NL	3	South Holland
+Leinfelden-Echterdingen	city	DE	3	Baden-Württemberg
+Lenexa	city	US	3	Kansas
+Lesquin	city	FR	3	Hauts-de-France
+Lihue	city	US	3	Hawaii
+Limenas Chersonisou	city	GR	3	Crete
+Lincoln	city	GB	3	England
+Linköping	city	SE	3	Östergötland
+Linz	city	AT	3	Upper Austria
+Lippstadt	city	DE	3	North Rhine-Westphalia
+Little Rock	city	US	3	Arkansas
+Ljubljana	city	SI	3	Ljubljana
+Lommel	city	BE	3	Limburg
+Lousado	city	PT	3	Braga
+Lucerne	city	CH	3	Lucerne
+Lucknow	city	IN	3	Uttar Pradesh
+Lynge	city	DK	3	Capital Region of Denmark
+Mackay	city	AU	3	Queensland
+Madison	city	US	3	Alabama
+Madison	city	US	3	Wisconsin
+Magny-Vernois	city	FR	3	Bourgogne-Franche-Comté
+Maidstone	city	GB	3	England
+Maisach	city	DE	3	Bavaria
+Manhattan	city	US	3	Kansas
+Manhattan Beach	city	US	3	California
+Mannheim	city	DE	3	Baden-Württemberg
+Mansfield	city	US	3	Texas
+Marburg	city	DE	3	Hesse
+Markelo	city	NL	3	Overijssel
+Marks Tey	city	GB	3	England
+Marlborough	city	US	3	Massachusetts
+McKinney	city	US	3	Texas
+Meadowbrook	city	US	3	Pennsylvania
+Meise	city	BE	3	Flemish Region
+Mevaseret Zion	city	IL	3	Jerusalem District
+Mississauga	city	CA	3	Ontario
+Miyazaki	city	JP	3	Miyazaki Prefecture
+Moncton	city	CA	3	New Brunswick
+Montrouge	city	FR	3	Île-de-France
+Mortara	city	IT	3	Lombardy
+Muscat	city	OM	3	Muscat Governorate
+Mühlheim an der Donau	city	DE	3	Baden-Württemberg
+Nagaokakyo	city	JP	3	Kyoto Prefecture
+Nancy	city	FR	3	Grand Est
+Napa	city	US	3	California
+Naples	city	US	3	Florida
+Nasr City	city	EG	3	Cairo Governorate
+Neihu	city	TW	3	Taipei
+Nembro	city	IT	3	Lombardy
+Ness Ziona	city	IL	3	Center District
+Neu Wulmstorf	city	DE	3	Lower Saxony
+New Cairo	city	EG	3	Cairo
+Niort	city	FR	3	Nouvelle-Aquitaine
+Nogent-sur-Vernisson	city	FR	3	Centre-Val de Loire
+Norcross	city	US	3	Georgia
+Norfolk	city	US	3	Virginia
+Norrköping	city	SE	3	Östergötland
+North Bay	city	CA	3	Ontario
+North Prince George	city	US	3	Virginia
+North Sydney	city	AU	3	New South Wales
+North York	city	CA	3	Ontario
+Nottingham	city	GB	3	Nottinghamshire
+Novi	city	US	3	Michigan
+Noyelles-lès-Seclin	city	FR	3	Hauts-de-France
+Nyköping	city	SE	3	Södermanland County
+Oberhausen	city	DE	3	North Rhine-Westphalia
+Obertshausen	city	DE	3	Hesse
+Obu	city	JP	3	Aichi
+Odebolt	city	US	3	Iowa
+Offenburg	city	DE	3	Baden-Württemberg
+Oosterhout	city	NL	3	Gelderland
+Osaka	city	JP	3	Osaka Prefecture
+Osborne Park	city	AU	3	Western Australia
+Panchkula	city	IN	3	Haryana
+Papendrecht	city	NL	3	Zuid-Holland
+Perrysburg	city	US	3	Ohio
+Peterborough	city	GB	3	England
+Petershagen	city	DE	3	Brandenburg
+Phnom Penh	city	KH	3	Phnom Penh
+Pittsburgh	city	US	3	Pennsylvania
+Poole	city	GB	3	England
+Port Angeles	city	US	3	Washington
+Port Augusta	city	AU	3	South Australia
+Port Kembla	city	AU	3	New South Wales
+Port Lincoln	city	AU	3	South Australia
+Port Moresby	city	PG	3	National Capital
+Porto	city	PT	3	Porto District
+Poway	city	US	3	California
+Preston	city	AU	3	Victoria
+Preston	city	GB	3	Lancashire
+Puyallup	city	US	3	Washington
+Pylos	city	GR	3	Peloponnese
+Querétaro	city	MX	3	Querétaro
+Radebeul	city	DE	3	Saxony
+Raipur	city	IN	3	Chhattisgarh
+Randwick	city	AU	3	New South Wales
+Ravenna	city	IT	3	Emilia-Romagna
+Redmond	city	US	3	Washington
+Redstone Arsenal	city	US	3	Alabama
+Redwood City	city	US	3	California
+Regensburg	city	DE	3	Bavaria
+Reggio Emilia	city	IT	3	Emilia-Romagna
+Reno	city	US	3	Nevada
+Reutlingen	city	DE	3	Baden-Württemberg
+Rho	city	IT	3	Lombardy
+Richardson	city	US	3	Texas
+Ridgecrest	city	US	3	California
+Rock Island	city	US	3	Illinois
+Rock Rapids	city	US	3	Iowa
+Rockhampton	city	AU	3	Queensland
+Rockingham	city	US	3	North Carolina
+Roermond	city	NL	3	Limburg
+Roosendaal	city	NL	3	Noord-Brabant
+Rosemead	city	US	3	California
+Rozenburg	city	NL	3	Zuid-Holland
+Ruislip	city	GB	3	England
+Sacramento	city	US	3	California
+Saint-Ouen-sur-Seine	city	FR	3	Île-de-France
+Saint-Thibault-des-Vignes	city	FR	3	Île-de-France
+Salford	city	GB	3	England
+Salzkotten	city	DE	3	North Rhine-Westphalia
+San Angelo	city	US	3	Texas
+San Bruno	city	US	3	California
+San Sebastián de los Reyes	city	ES	3	Community of Madrid
+Sandy	city	US	3	Utah
+Sant Cugat del Vallès	city	ES	3	Catalonia
+Santiago	city	CL	3	Santiago Metropolitan Region
+Sao Paulo	city	BR	3	Sao Paulo
+Saratoga Springs	city	US	3	New York
+Savannah	city	US	3	Georgia
+Sayreville	city	US	3	New Jersey
+Schenectady	city	US	3	New York
+Schiphol	city	NL	3	North Holland
+Schöningen	city	DE	3	Lower Saxony
+Sesto San Giovanni	city	IT	3	Lombardy
+Seven Hills	city	AU	3	New South Wales
+Shaoxing	city	CN	3	Zhejiang
+Sheffield	city	GB	3	South Yorkshire
+Shreveport	city	US	3	Louisiana
+Shrewsbury	city	GB	3	Shropshire
+Sindelfingen	city	DE	3	Baden-Württemberg
+Sioux Falls	city	US	3	South Dakota
+Skövde	city	SE	3	Västra Götaland
+Sliedrecht	city	NL	3	South Holland
+Slough	city	GB	3	Berkshire
+Southbridge	city	US	3	Massachusetts
+Southlake	city	US	3	Texas
+Southport	city	AU	3	Queensland
+St Julian's	city	MT	3	Saint Julian's
+St. Albert	city	CA	3	Alberta
+St. Charles	city	US	3	Missouri
+Stirling	city	GB	3	Scotland
+Stockport	city	GB	3	England
+Studio City	city	US	3	California
+Sussex	city	US	3	Wisconsin
+Syracuse	city	US	3	New York
+Tai Po	city	HK	3	Tai Po
+Talence	city	FR	3	Nouvelle-Aquitaine
+Tampere	city	FI	3	Pirkanmaa
+Temperance	city	US	3	Michigan
+Tewkesbury	city	GB	3	Gloucestershire
+Thane	city	IN	3	Maharashtra
+Thornleigh	city	AU	3	New South Wales
+Tokai	city	JP	3	Aichi
+Tonawanda	city	US	3	New York
+Toulon	city	FR	3	Provence-Alpes-Côte d'Azur
+Tours	city	FR	3	Centre-Val de Loire
+Toyoake	city	JP	3	Aichi
+Tres Cantos	city	ES	3	Community of Madrid
+Trezzano sul Naviglio	city	IT	3	Lombardy
+Trollhättan	city	SE	3	Västra Götaland
+Tsukuba	city	JP	3	Ibaraki
+Tunis	city	TN	3	Tunis
+Vaasa	city	FI	3	Ostrobothnia
+Vaduz	city	LI	3	Vaduz
+Vaux-le-Pénil	city	FR	3	Île-de-France
+Veen	city	NL	3	North Brabant
+Victoria	city	AR	3	Buenos Aires
+Villaviciosa de Odón	city	ES	3	Madrid
+Visby	city	SE	3	Gotland County
+Visp	city	CH	3	Valais
+Volvic	city	FR	3	Auvergne-Rhône-Alpes
+Västerås	city	SE	3	Västmanland
+Västerås	city	SE	3	Västmanland County
+Waldenbuch	city	DE	3	Baden-Württemberg
+Washburn	city	US	3	Maine
+Waterlooville	city	GB	3	Hampshire
+Watford	city	GB	3	England
+Wembley	city	GB	3	England
+Wesley Chapel	city	US	3	Florida
+West Newton	city	US	3	Pennsylvania
+West Perth	city	AU	3	Western Australia
+Westmead	city	AU	3	New South Wales
+Wexford	city	IE	3	Wexford
+Whakatane	city	NZ	3	Bay of Plenty
+Whangarei	city	NZ	3	Northland
+Wichita	city	US	3	Kansas
+Wijgmaal	city	BE	3	Flemish Region
+Wilkes-Barre	city	US	3	Pennsylvania
+Windlesham	city	GB	3	England
+Witham	city	GB	3	England
+Wollongong	city	AU	3	New South Wales
+Wolverhampton	city	GB	3	West Midlands
+Wrexham	city	GB	3	Wales
+Wuxi	city	CN	3	Jiangsu
+Yerevan	city	AM	3	Yerevan
+Yonkers	city	US	3	New York
+York	city	US	3	Pennsylvania
+Zoetermeer	city	NL	3	South Holland
+Zoetermeer	city	NL	3	Zuid-Holland
+Zutphen	city	NL	3	Gelderland
+uMhlanga	city	ZA	3	KwaZulu-Natal
+Ajman	state	AE	3	
+Al Ahmadi Governorate	state	KW	3	
+Alexandria	state	EG	3	
+Alicante	state	ES	3	
+Almaty	state	KZ	3	
+Asturias	state	ES	3	
+Baja California	state	MX	3	
+Bangsamoro Autonomous Region in Muslim Mindanao	state	PH	3	
+Binh Duong	state	VN	3	
+Bratislavský kraj	state	SK	3	
+Carinthia	state	AT	3	
+Castellón	state	ES	3	
+Castile and León	state	ES	3	
+Chhattisgarh	state	IN	3	
+Chiba Prefecture	state	JP	3	
+Ciudad de México	state	MX	3	
+Cumbria	state	GB	3	
+Dublin	state	IE	3	
+East Java	state	ID	3	
+Fife	state	GB	3	
+Giza Governorate	state	EG	3	
+Guam	state	GU	3	
+Guanajuato	state	MX	3	
+Ho Chi Minh	state	VN	3	
+Hà Nam	state	VN	3	
+Ibaraki	state	JP	3	
+Jammu and Kashmir	state	IN	3	
+Jiangxi	state	CN	3	
+Kowloon	state	HK	3	
+Kronoberg County	state	SE	3	
+Kyoto Prefecture	state	JP	3	
+Limpopo	state	ZA	3	
+Ljubljana	state	SI	3	
+Madeira	state	PT	3	
+Malacca	state	MY	3	
+Maranhão	state	BR	3	
+Merseyside	state	GB	3	
+Midtjylland	state	DK	3	
+Miyazaki Prefecture	state	JP	3	
+Muscat Governorate	state	OM	3	
+National Capital	state	PG	3	
+New Territories	state	HK	3	
+Newfoundland and Labrador	state	CA	3	
+Nordland	state	NO	3	
+Nordrhein-Westfalen	state	DE	3	
+Northland	state	NZ	3	
+Ostrobothnia	state	FI	3	
+Peloponnese	state	GR	3	
+Phnom Penh	state	KH	3	
+Pirkanmaa	state	FI	3	
+Portalegre	state	PT	3	
+Porto District	state	PT	3	
+Riau Islands	state	ID	3	
+Saint Julian's	state	MT	3	
+Sao Paulo	state	BR	3	
+Shropshire	state	GB	3	
+South East	state	GB	3	
+South Moravian Region	state	CZ	3	
+St Helier	state	JE	3	
+St. Gallen	state	CH	3	
+Tai Po	state	HK	3	
+Trentino-Alto Adige	state	IT	3	
+Tunis	state	TN	3	
+Vaduz	state	LI	3	
+Valais	state	CH	3	
+Västernorrland County	state	SE	3	
+Västmanland	state	SE	3	
+Wallonia	state	BE	3	
+West Pomeranian Voivodeship	state	PL	3	
+Wexford	state	IE	3	
+Wielkopolskie	state	PL	3	
+Yerevan	state	AM	3	
+Zeeland	state	NL	3	
+Álava	state	ES	3	
+Łódź Voivodeship	state	PL	3	
