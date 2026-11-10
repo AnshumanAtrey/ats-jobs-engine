@@ -1,0 +1,5422 @@
+# Welcome to the Jungle office places, updated 2026-11-10: 84,831 open jobs read by scripts/refresh_welcometothejungle.py
+# value	field (city, district, state, country)	country code	jobs	other names	region of the city (when one)	offices of the city with no region
+Paris	city	FR	10738		Ile-de-France	510
+New York	city	US	3879		New York	3723
+London	city	GB	3873		England	3170
+San Francisco	city	US	2789		California	2758
+Lyon	city	FR	1601		Auvergne-Rhone-Alpes	60
+Toulouse	city	FR	1384		Occitanie	139
+Courbevoie	city	FR	994		Ile-de-France	18
+Bordeaux	city	FR	869		Nouvelle-Aquitaine	26
+Nantes	city	FR	774		Loire Region	36
+Austin	city	US	761		Texas	720
+Nanterre	city	FR	729		Ile-de-France	66
+Lille	city	FR	717		Hauts-de-France	14
+Berlin	city	DE	708		Berlin	634
+Puteaux	city	FR	696		Ile-de-France	10
+Toronto	city	CA	683		Ontario	653
+Chicago	city	US	649		Illinois	640
+Marseille	city	FR	625		Provence-Alpes-Cote d'Azur	19
+Boston	city	US	601		Massachusetts	587
+Mountain View, CA	city	US	591		California	591
+Issy-les-Moulineaux	city	FR	482		Ile-de-France	4
+Barcelona	city	ES	459		Catalonia	206
+Los Angeles	city	US	453		California	440
+Strasbourg	city	FR	450		Grand Est	15
+Boulogne-Billancourt	city	FR	435		Ile-de-France	153
+Aix-en-Provence	city	FR	431		Provence-Alpes-Cote d'Azur	7
+Le Plessis-Robinson	city	FR	427		Ile-de-France
+Amsterdam	city	NL	399		North Holland	364
+Denver	city	US	396		Colorado	393
+Grenoble	city	FR	365		Auvergne-Rhone-Alpes	40
+Rennes	city	FR	364		Brittany	21
+Sunnyvale	city	US	361			361
+San Mateo, CA	city	US	348		California	348
+Levallois-Perret	city	FR	337		Ile-de-France	52
+Vélizy-Villacoublay	city	FR	329		Ile-de-France
+Montpellier	city	FR	312		Occitanie	5
+Élancourt	city	FR	306		Ile-de-France
+San Jose	city	US	305			306
+Palo Alto	city	US	302		California	278
+Neuilly-sur-Seine	city	FR	300		Ile-de-France
+Montrouge	city	FR	298		Ile-de-France	5
+Brest	city	FR	288		Brittany	20
+Pantin	city	FR	271		Ile-de-France	1
+Saint-Denis	city	FR	267		Ile-de-France	2
+Massy	city	FR	255			6
+Santa Clara, CA	city	US	246		California	246
+Rouen	city	FR	239		Normandy	2
+Nice	city	FR	234		Provence-Alpes-Cote d'Azur	1
+Villeneuve-d'Ascq	city	FR	222		Hauts-de-France	4
+Ashington	city	GB	218		England	239
+Gennevilliers	city	FR	217		Ile-de-France	1
+Orleans	city	FR	208	Orléans	Centre-Val de Loire
+Madrid	city	ES	203		Community of Madrid	105
+Tours	city	FR	194		Centre-Val de Loire	4
+Limours	city	FR	192		Ile-de-France
+Villeurbanne	city	FR	192		Auvergne-Rhone-Alpes	2
+Ottawa	city	CA	185		Ontario	179
+Dijon	city	FR	184		Bourgogne-Franche-Comte	6
+Corbeil-Essonnes	city	FR	181		Ile-de-France	4
+Metz	city	FR	180		Grand Est	4
+New-York	city	US	180			180
+Angers	city	FR	179		Loire Region	10
+Cannes	city	FR	177		Provence-Alpes-Cote d'Azur	3
+Bourges	city	FR	176		Centre-Val de Loire	12
+Annecy	city	FR	174		Auvergne-Rhone-Alpes	4
+Vancouver	city	CA	172		British Columbia	162
+Milan	city	IT	162	Milano	Lombardy	7
+Nancy	city	FR	158		Grand Est	2
+Rueil-Malmaison	city	FR	157		Ile-de-France	1
+Bois-Colombes	city	FR	155		Ile-de-France
+Cergy	city	FR	150		Ile-de-France
+Le Mans	city	FR	146		Loire Region
+Niort	city	FR	144		Nouvelle-Aquitaine	2
+Blagnac	city	FR	142		Occitanie	1
+La Défense	city	FR	141	Courbevoie,Puteaux	Ile-de-France	1
+Mérignac	city	FR	140		Nouvelle-Aquitaine	6
+Reims	city	FR	139		Grand Est	4
+Saint-Herblain	city	FR	139		Loire Region	4
+Seattle	city	US	139		Washington	137
+Clichy	city	FR	138		Ile-de-France	2
+Moissy-Cramayel	city	FR	137		Ile-de-France	1
+Cambridge	city	GB	136		England	128
+Casablanca	city	MA	135	الدار البيضاء	Casablanca - Settat
+Cherbourg-en-Cotentin	city	FR	135		Normandy	13
+Dublin	city	IE	135			135
+Toulon	city	FR	134		Provence-Alpes-Cote d'Azur	4
+Foster City, CA	city	US	133		California	133
+Menlo Park, CA	city	US	132		California	132
+Munich	city	DE	131	München	Bavaria	59
+Guyancourt	city	FR	129		Ile-de-France	2
+Redwood City	city	US	124			124
+Clermont-Ferrand	city	FR	123		Auvergne-Rhone-Alpes	1
+El Segundo	city	US	122			122
+Cholet	city	FR	120		Loire Region	11
+Long Beach, CA	city	US	120		California	120
+Brussels	city	BE	118	Brussel	Brussels
+Colomiers	city	FR	117		Occitanie
+Manchester	city	GB	117		England	112
+Ollioules	city	FR	116		Provence-Alpes-Cote d'Azur
+Créteil	city	FR	115		Ile-de-France	1
+Saint-Etienne	city	FR	115	Saint-Étienne	Auvergne-Rhone-Alpes
+Valence	city	FR	115			3
+Poitiers	city	FR	114		Nouvelle-Aquitaine	3
+Roissy-en-France	city	FR	112		Ile-de-France
+Warsaw	city	PL	112	Warszawa	Woj. Mazowieckie	48
+Caen	city	FR	110		Normandy	2
+La Ferté-Saint-Aubin	city	FR	110		Centre-Val de Loire
+Fontenay-sous-Bois	city	FR	109		Ile-de-France	22
+Versailles	city	FR	108		Ile-de-France	6
+Vitrolles	city	FR	108		Provence-Alpes-Cote d'Azur	30
+Lorient	city	FR	104		Brittany	4
+Amiens	city	FR	103		Hauts-de-France	3
+Marcq-en-Baroeul	city	FR	102		Hauts-de-France
+Dover	city	US	100		Delaware	95
+Limoges	city	FR	100		Nouvelle-Aquitaine	1
+Montreal	city	CA	98	Montréal	Quebec
+Châtillon	city	FR	97		Ile-de-France
+Rungis	city	FR	97		Ile-de-France
+Miami	city	US	96	Doral	Florida	87
+Chalon-sur-Saône	city	FR	93		Bourgogne-Franche-Comte
+Santa Monica	city	US	92			92
+Shreveport	city	US	92			92
+Somerville	city	US	91			91
+Cesson-Sévigné	city	FR	90		Brittany
+Villejuif	city	FR	90		Ile-de-France
+Sophia-Antipolis	city	FR	89	Antibes,Biot	Provence-Alpes-Cote d'Azur
+Dallas	city	US	87		Texas	80
+Meudon	city	FR	87		Ile-de-France
+Plaisir	city	FR	87		Ile-de-France	3
+Suresnes	city	FR	86		Ile-de-France
+Torrance	city	US	86			86
+Bordes	city	FR	85			2
+Avignon	city	FR	82		Provence-Alpes-Cote d'Azur	1
+Baton Rouge	city	US	82			82
+Jeumont	city	FR	82		Hauts-de-France
+Montreuil	city	FR	82
+San Diego	city	US	82		California	77
+Beauvais	city	FR	81		Hauts-de-France	4
+Bristol	city	GB	81		England	80
+Pau	city	FR	81		Nouvelle-Aquitaine	4
+Hyderabad	city	IN	80		Telangana	17
+La Rochelle	city	FR	79		Nouvelle-Aquitaine	27
+Saint-Nazaire	city	FR	79			7
+Besancon	city	FR	78	Besançon	Bourgogne-Franche-Comte
+Londres	city	GB	76			76
+Malakoff	city	FR	76		Ile-de-France
+Tallinn	city	EE	76			76
+Montigny-le-Bretonneux	city	FR	75		Ile-de-France
+Balma	city	FR	74		Occitanie	2
+Le Creusot	city	FR	74		Bourgogne-Franche-Comte	2
+Lincoln	city	US	74			74
+Sydney	city	AU	72		New South Wales	47
+Bagnols-sur-Cèze	city	FR	71		Occitanie
+Colombes	city	FR	71		Ile-de-France	1
+Dunkirk	city	FR	71	Dunkerque	Hauts-de-France
+Le Havre	city	FR	71		Normandy	1
+Valbonne	city	FR	71		Provence-Alpes-Cote d'Azur	17
+Livingston	city	GB	70			70
+Marquette-lez-Lille	city	FR	70		Hauts-de-France	52
+Pierrelatte	city	FR	70		Auvergne-Rhone-Alpes	3
+Quimper	city	FR	69		Brittany
+Evansville	city	US	68			68
+Châtellerault	city	FR	67		Nouvelle-Aquitaine
+Chambery	city	FR	66	Chambéry	Auvergne-Rhone-Alpes
+Compiègne	city	FR	66		Hauts-de-France	3
+Antibes	city	FR	65		Provence-Alpes-Cote d'Azur
+Belfort	city	FR	65		Bourgogne-Franche-Comte	22
+Laval	city	FR	65		Loire Region	8
+Poissy	city	FR	65		Ile-de-France	4
+Évry-Courcouronnes	city	FR	65		Ile-de-France	4
+Annemasse	city	FR	64		Auvergne-Rhone-Alpes
+Benfeld	city	FR	64		Grand Est
+Mulhouse	city	FR	64		Grand Est	4
+Bron	city	FR	63		Auvergne-Rhone-Alpes	16
+Oakland	city	US	63			63
+Romans-sur-Isère	city	FR	63		Auvergne-Rhone-Alpes	1
+Roubaix	city	FR	63		Hauts-de-France
+Stateline	city	US	63			63
+Budapest	city	HU	62		Budapest	6
+Noisy-le-Grand	city	FR	62		Ile-de-France	8
+Tel Aviv	city	IL	62			62
+Évian-les-Bains	city	FR	62		Auvergne-Rhone-Alpes
+Bayonne	city	FR	61		Nouvelle-Aquitaine	2
+Erfurt	city	DE	61		Thuringia
+Oullins-Pierre-Bénite	city	FR	61		Auvergne-Rhone-Alpes
+La Ciotat	city	FR	60		Provence-Alpes-Cote d'Azur
+Saint-Marcel	city	FR	60
+Brive-la-Gaillarde	city	FR	59		Nouvelle-Aquitaine	4
+Issoudun	city	FR	59		Centre-Val de Loire	2
+Ivry-sur-Seine	city	FR	59		Ile-de-France
+Maisons-Alfort	city	FR	59		Ile-de-France
+Asnières-sur-Seine	city	FR	58		Ile-de-France	7
+Palaiseau	city	FR	58		Ile-de-France	1
+Saint-Priest	city	FR	58		Auvergne-Rhone-Alpes	2
+Colmar	city	FR	56		Grand Est	1
+Angoulême	city	FR	55		Nouvelle-Aquitaine	3
+Gonfreville-l'Orcher	city	FR	55		Normandy
+Nimes	city	FR	55	Nîmes	Occitanie
+Singapore	city	SG	55			55
+Vert-le-Grand	city	FR	55		Ile-de-France
+Vannes	city	FR	54		Brittany
+Eybens	city	FR	53		Auvergne-Rhone-Alpes	1
+Saint-Ouen-sur-Seine	city	FR	53		Ile-de-France	11
+Sao Paulo	city	BR	53	São Paulo	Sao Paulo
+Bourg-en-Bresse	city	FR	52		Auvergne-Rhone-Alpes	2
+Luxembourg	city	LU	52			52
+Charenton-le-Pont	city	FR	51		Ile-de-France
+Melun	city	FR	51		Ile-de-France	1
+Rock Island	city	US	51			51
+Étrelles	city	FR	51		Brittany	6
+Gif-sur-Yvette	city	FR	50		Ile-de-France
+Irvine	city	US	48		California	45
+Burnaby	city	CA	47		British Columbia	46
+Cestas	city	FR	47		Nouvelle-Aquitaine
+Fremont, CA	city	US	47		California	47
+Glasgow	city	GB	47		Scotland	34
+Pessac	city	FR	47		Nouvelle-Aquitaine	11
+Épinal	city	FR	47		Grand Est
+Orvault	city	FR	46		Loire Region
+Rome	city	IT	46	Roma	Latium	10
+Birmingham	city	GB	45		England	30
+Fos-sur-Mer	city	FR	45		Provence-Alpes-Cote d'Azur
+Gap	city	FR	45		Provence-Alpes-Cote d'Azur
+Joinville	city	FR	45		Grand Est
+Nouaceur	city	MA	45	النواصر	Casablanca - Settat	1
+Redondo Beach	city	US	45			45
+Aubagne	city	FR	44		Provence-Alpes-Cote d'Azur
+Edinburgh	city	GB	44		Scotland	43
+Les Ulis	city	FR	44		Ile-de-France	3
+Narbonne	city	FR	44		Occitanie
+Prague	city	CZ	44	Praha	Prague	6
+Atlanta	city	US	43		Georgia	36
+Décines-Charpieu	city	FR	43		Auvergne-Rhone-Alpes
+Rochefort	city	FR	43		Nouvelle-Aquitaine	4
+Saumur	city	FR	43		Loire Region
+Sèvres	city	FR	43		Ile-de-France	28
+Villefranche-sur-Saône	city	FR	43		Auvergne-Rhone-Alpes
+Black Hawk	city	US	42			42
+Réau	city	FR	42		Ile-de-France
+Schiltigheim	city	FR	42		Grand Est	1
+Tarnos	city	FR	42		Nouvelle-Aquitaine
+Auxerre	city	FR	41		Bourgogne-Franche-Comte	1
+Cardiff	city	GB	41			41
+Cognac	city	FR	41		Nouvelle-Aquitaine
+Gonesse	city	FR	41		Ile-de-France
+Valenciennes	city	FR	41		Hauts-de-France	11
+Kansas City	city	US	40			40
+Porto	city	PT	40			40
+Argenteuil	city	FR	39		Ile-de-France
+Charleville-Mézières	city	FR	39		Grand Est
+Chartres	city	FR	39		Centre-Val de Loire	2
+Cracow	city	PL	39	Kraków	Lesser Poland Voivodeship
+Leeds	city	GB	39		England	34
+Pittsburgh	city	US	39			39
+Saint-Jacques-de-la-Lande	city	FR	39		Brittany
+Vitré	city	FR	39		Brittany	1
+Carquefou	city	FR	38		Loire Region	1
+Le Relecq-Kerhuon	city	FR	38		Brittany
+Saint-Brieuc	city	FR	38		Brittany
+Saint-Malo	city	FR	38		Brittany
+Échirolles	city	FR	38		Auvergne-Rhone-Alpes	3
+Albertville	city	FR	37		Auvergne-Rhone-Alpes
+Châteauroux	city	FR	37		Centre-Val de Loire	1
+Limeil-Brévannes	city	FR	37		Ile-de-France
+Singapour	city	SG	37			37
+Albi	city	FR	36		Occitanie
+Biot	city	FR	36		Provence-Alpes-Cote d'Azur	1
+Lézignan-Corbières	city	FR	36		Occitanie
+Mâcon	city	FR	36		Bourgogne-Franche-Comte
+Saint-Grégoire	city	FR	36		Brittany
+Bagneux	city	FR	35
+La Hague	city	FR	35		Normandy
+Pont-à-Mousson	city	FR	35		Grand Est
+Salon-de-Provence	city	FR	35		Provence-Alpes-Cote d'Azur
+Aubervilliers	city	FR	34		Ile-de-France
+Bezons	city	FR	34		Ile-de-France	2
+Maisons-Laffitte	city	FR	34		Ile-de-France
+Manhattan	city	US	34		New York	14
+Meaux	city	FR	34		Ile-de-France	3
+Melbourne	city	AU	34		Victoria	7
+Orange	city	FR	34		Provence-Alpes-Cote d'Azur
+Perpignan	city	FR	34		Occitanie
+Rambouillet	city	FR	34		Ile-de-France
+Tokyo	city	JP	34			34
+Écully	city	FR	34		Auvergne-Rhone-Alpes	5
+Boulder, CO	city	US	33		Colorado	33
+Brooklyn	city	US	33		New York	31
+Carcassonne	city	FR	33		Occitanie	1
+Dieppe	city	FR	33		Normandy
+La Garde	city	FR	33		Provence-Alpes-Cote d'Azur	1
+Montauban	city	FR	33		Occitanie
+Saint-André-de-Cubzac	city	FR	33		Nouvelle-Aquitaine
+Saint-Quentin	city	FR	33		Hauts-de-France
+Senlis	city	FR	33		Hauts-de-France
+Tarbes	city	FR	33		Occitanie
+Vénissieux	city	FR	33		Auvergne-Rhone-Alpes	3
+Arras	city	FR	32		Hauts-de-France	1
+Bois-Guillaume	city	FR	32		Normandy
+Douai	city	FR	32		Hauts-de-France	2
+Jersey City	city	US	32		New Jersey	31
+La Roche-sur-Yon	city	FR	32		Loire Region
+Le Bourg-d'Oisans	city	FR	32		Auvergne-Rhone-Alpes
+Vincennes	city	FR	32		Ile-de-France
+Calais	city	FR	31		Hauts-de-France
+Châteaufort	city	FR	31		Ile-de-France
+Gémenos	city	FR	31		Provence-Alpes-Cote d'Azur
+Lisbonne	city	PT	31			31
+Montélimar	city	FR	31		Auvergne-Rhone-Alpes	2
+Roche-la-Molière	city	FR	31		Auvergne-Rhone-Alpes
+Saint-Lô	city	FR	31		Normandy
+Blois	city	FR	30		Centre-Val de Loire	1
+Bry-sur-Marne	city	FR	30		Ile-de-France
+Columbus	city	US	30			30
+East St. Louis	city	US	30			30
+Haguenau	city	FR	30		Grand Est
+Lanester	city	FR	30		Brittany
+Neufchâteau	city	FR	30		Grand Est	1
+Orly	city	FR	30		Ile-de-France
+Salt	city	ES	30		Catalonia	27
+Valencia	city	ES	30		Valencian Community	9
+Vienne	city	FR	30		Auvergne-Rhone-Alpes	2
+Waltham, MA	city	US	30		Massachusetts	30
+Antony	city	FR	29		Ile-de-France	4
+Aulnay-sous-Bois	city	FR	29		Ile-de-France
+Beverly Hills	city	US	29		California	21
+Epagny Metz-Tessy	city	FR	29		Auvergne-Rhone-Alpes
+Flamanville	city	FR	29		Normandy
+Labège	city	FR	29		Occitanie
+Limonest	city	FR	29		Auvergne-Rhone-Alpes
+Pont-Audemer	city	FR	29		Normandy
+Thionville	city	FR	29		Grand Est
+Warrington	city	GB	29		England	11
+Bruges	city	FR	28		Nouvelle-Aquitaine
+Cayenne	city	GF	28		Guyane
+Fontaine-lès-Dijon	city	FR	28		Bourgogne-Franche-Comte
+Grasse	city	FR	28		Provence-Alpes-Cote d'Azur
+Hong Kong	city	HK	28		Hong Kong SAR	8
+Marignane	city	FR	28		Provence-Alpes-Cote d'Azur	1
+Shanghai	city	CN	28			28
+Solliès-Pont	city	FR	28		Provence-Alpes-Cote d'Azur	1
+Talence	city	FR	28		Nouvelle-Aquitaine
+Tiverton	city	US	28			28
+Vicksburg	city	US	28			28
+Villebon-sur-Yvette	city	FR	28		Ile-de-France	1
+Bruz	city	FR	27		Brittany
+Caudry	city	FR	27		Hauts-de-France
+Frankfurt	city	DE	27	Frankfurt am Main	Hesse	23
+Lisbon	city	PT	27	Lisboa		30
+Lisieux	city	FR	27		Normandy	1
+Lognes	city	FR	27		Ile-de-France
+Louisville	city	US	27			27
+Mamoudzou	city	YT	27		Mayotte
+Obernai	city	FR	27		Grand Est	1
+Saint-Jean-de-la-Ruelle	city	FR	27		Centre-Val de Loire
+Soissons	city	FR	27		Hauts-de-France
+Sotteville	city	FR	27		Normandy
+Aurillac	city	FR	26		Auvergne-Rhone-Alpes
+Belgrade	city	RS	26	Београд	Centralna Srbija	15
+Digne-les-Bains	city	FR	26		Provence-Alpes-Cote d'Azur
+Draguignan	city	FR	26		Provence-Alpes-Cote d'Azur
+Fréjus	city	FR	26		Provence-Alpes-Cote d'Azur
+Garden Grove, CA	city	US	26		California	26
+La Chapelle-sur-Erdre	city	FR	26		Loire Region	6
+Les Sables-d'Olonne	city	FR	26		Loire Region
+Sofia	city	BG	26	София		26
+São Paulo	city	BR	26			26
+Troyes	city	FR	26		Grand Est
+Wichita	city	US	26		Kansas
+Arles	city	FR	25		Provence-Alpes-Cote d'Azur
+Atlantic City	city	US	25			25
+Beaumont	city	FR	25		Auvergne-Rhone-Alpes
+Bellevue	city	US	25		Washington	20
+Biarritz	city	FR	25		Nouvelle-Aquitaine
+Brisbane	city	AU	25		Queensland	22
+Chambray-lès-Tours	city	FR	25		Centre-Val de Loire
+Dax	city	FR	25		Nouvelle-Aquitaine
+Ghent	city	BE	25	Gent	Flanders	12
+Louviers	city	FR	25		Normandy
+Martigues	city	FR	25		Provence-Alpes-Cote d'Azur
+Miramas	city	FR	25		Provence-Alpes-Cote d'Azur
+Péronne	city	FR	25		Hauts-de-France
+Vendôme	city	FR	25		Centre-Val de Loire	1
+Vesoul	city	FR	25		Bourgogne-Franche-Comte
+Wasquehal	city	FR	25		Hauts-de-France	7
+Évreux	city	FR	25		Normandy
+Bobigny	city	FR	24		Ile-de-France
+Concarneau	city	FR	24		Brittany
+Dinan	city	FR	24		Brittany	1
+Dom-le-Mesnil	city	FR	24		Grand Est
+Gouvieux	city	FR	24		Hauts-de-France
+Lezennes	city	FR	24		Hauts-de-France
+Manosque	city	FR	24		Provence-Alpes-Cote d'Azur
+Mer	city	FR	24		Centre-Val de Loire
+Mumbai	city	IN	24		Maharashtra
+New Delhi	city	IN	24		Delhi	20
+Ploemeur	city	FR	24		Brittany
+Publier	city	FR	24		Auvergne-Rhone-Alpes
+Pérols	city	FR	24		Occitanie
+Roanne	city	FR	24		Auvergne-Rhone-Alpes
+Stockholm	city	SE	24		Stockholm County	15
+Vienna	city	AT	24	Wien	Vienna	4
+Ancenis-Saint-Géréon	city	FR	23		Loire Region	1
+Archamps	city	FR	23		Auvergne-Rhone-Alpes
+Athens	city	GR	23	Αθήνα	Attiki	7
+Belfast	city	GB	23		Northern Ireland	17
+Campbell, CA	city	US	23		California	23
+Chaumont	city	FR	23		Grand Est
+Chevilly-Larue	city	FR	23		Ile-de-France
+Creil	city	FR	23		Hauts-de-France	2
+Croix	city	FR	23		Hauts-de-France
+Dole	city	FR	23		Bourgogne-Franche-Comte
+Friville-Escarbotin	city	FR	23		Hauts-de-France
+Guérande	city	FR	23		Loire Region	1
+Lens	city	FR	23		Hauts-de-France
+Málaga	city	ES	23		Andalucia	9
+Rillieux-la-Pape	city	FR	23		Auvergne-Rhone-Alpes
+Savigny-sur-Orge	city	FR	23		Ile-de-France	20
+Six-Fours-les-Plages	city	FR	23		Provence-Alpes-Cote d'Azur	1
+Tassin-la-Demi-Lune	city	FR	23		Auvergne-Rhone-Alpes
+Ajaccio	city	FR	22		Corsica
+Auch	city	FR	22		Occitanie	1
+Biloxi	city	US	22			22
+Bollène	city	FR	22		Provence-Alpes-Cote d'Azur	1
+Buc	city	FR	22		Ile-de-France
+Chusclan	city	FR	22		Occitanie
+Clermont	city	FR	22		Hauts-de-France
+Corbas	city	FR	22		Auvergne-Rhone-Alpes	6
+Guipavas	city	FR	22		Brittany
+La Seyne-sur-Mer	city	FR	22		Provence-Alpes-Cote d'Azur	1
+Lambersart	city	FR	22		Hauts-de-France
+Lieusaint	city	FR	22		Ile-de-France
+Martignas-sur-Jalle	city	FR	22		Nouvelle-Aquitaine
+Meyreuil	city	FR	22		Provence-Alpes-Cote d'Azur
+Périgueux	city	FR	22		Nouvelle-Aquitaine	1
+Saint-Cyr-sur-Loire	city	FR	22		Centre-Val de Loire
+Saint-Germain-en-Laye	city	FR	22		Ile-de-France
+Saint-Ouen	city	FR	22		Centre-Val de Loire	1
+Salaise-sur-Sanne	city	FR	22		Auvergne-Rhone-Alpes
+Ugine	city	FR	22		Auvergne-Rhone-Alpes
+Vendin-le-Vieil	city	FR	22		Hauts-de-France
+Vindry-sur-Turdine	city	FR	22		Auvergne-Rhone-Alpes
+Bazas	city	FR	21		Nouvelle-Aquitaine
+Bethune	city	FR	21	Béthune	Hauts-de-France
+Bucharest	city	RO	21	București		21
+Cavaillon	city	FR	21		Provence-Alpes-Cote d'Azur
+Chambourcy	city	FR	21		Ile-de-France
+Dubai	city	AE	21	دبي		21
+Faverges-Seythenex	city	FR	21		Auvergne-Rhone-Alpes
+Firminy	city	FR	21		Auvergne-Rhone-Alpes	1
+Hamburg	city	DE	21		Hamburg	17
+Istres	city	FR	21		Provence-Alpes-Cote d'Azur
+Lannion	city	FR	21		Brittany
+Le Pré-Saint-Gervais	city	FR	21		Ile-de-France
+Mont-de-Marsan	city	FR	21		Nouvelle-Aquitaine
+Naples	city	IT	21	Napoli	Campania	9
+Nemours	city	FR	21		Ile-de-France
+Nevers	city	FR	21		Bourgogne-Franche-Comte
+Saran	city	FR	21		Centre-Val de Loire
+Sens	city	FR	21		Bourgogne-Franche-Comte	1
+Shinjuku-ku	city	JP	21	新宿区	Tokyo
+Verdun	city	FR	21		Grand Est
+Aouste-sur-Sye	city	FR	20		Auvergne-Rhone-Alpes
+Aubenas	city	FR	20		Auvergne-Rhone-Alpes
+Bad Homburg vor der Höhe	city	DE	20		Hesse
+Bailleul-Sir-Berthoult	city	FR	20		Hauts-de-France
+Bonneuil-sur-Marne	city	FR	20		Ile-de-France
+Carros	city	FR	20		Provence-Alpes-Cote d'Azur
+Forbach	city	FR	20		Grand Est
+Megève	city	FR	20		Auvergne-Rhone-Alpes
+Montereau-sur-le-Jard	city	FR	20		Ile-de-France
+Montgiscard	city	FR	20		Occitanie
+Oxford	city	GB	20			20
+Pontarlier	city	FR	20		Bourgogne-Franche-Comte
+Pornic	city	FR	20		Loire Region
+Rodez	city	FR	20		Occitanie
+Saint-Gély-du-Fesc	city	FR	20		Occitanie
+Saint-Laurent-du-Var	city	FR	20		Provence-Alpes-Cote d'Azur
+Saint-Sébastien-sur-Loire	city	FR	20		Loire Region
+Seoul	city	KR	20			20
+Serris	city	FR	20		Ile-de-France
+Tourcoing	city	FR	20		Hauts-de-France
+Vertou	city	FR	20		Loire Region
+Beynost	city	FR	19		Auvergne-Rhone-Alpes
+Bonneville	city	FR	19		Auvergne-Rhone-Alpes
+Bourgoin-Jallieu	city	FR	19		Auvergne-Rhone-Alpes
+Bègles	city	FR	19		Nouvelle-Aquitaine
+Béziers	city	FR	19		Occitanie
+Castres	city	FR	19		Occitanie
+Château-Renault	city	FR	19		Centre-Val de Loire	1
+Geneva	city	CH	19	Genève	Geneva	1
+Lattes	city	FR	19		Occitanie
+Malicorne	city	FR	19		Auvergne-Rhone-Alpes
+Roye	city	FR	19		Hauts-de-France
+Saint-Dié-des-Vosges	city	FR	19		Grand Est
+Saint-Jean-d'Angély	city	FR	19		Nouvelle-Aquitaine
+Saint-Martin-d'Hères	city	FR	19		Auvergne-Rhone-Alpes
+Tulle	city	FR	19		Nouvelle-Aquitaine
+Venelles	city	FR	19		Provence-Alpes-Cote d'Azur
+Villenave-d'Ornon	city	FR	19		Nouvelle-Aquitaine
+Villeneuve-Loubet	city	FR	19		Provence-Alpes-Cote d'Azur
+Argentan	city	FR	18		Normandy
+Avoine	city	FR	18		Centre-Val de Loire
+Beaune	city	FR	18		Bourgogne-Franche-Comte
+Belleville-en-Beaujolais	city	FR	18		Auvergne-Rhone-Alpes
+Castets	city	FR	18		Nouvelle-Aquitaine
+Crécy-la-Chapelle	city	FR	18		Ile-de-France
+L'Isle-sur-la-Sorgue	city	FR	18		Provence-Alpes-Cote d'Azur
+La Verrière	city	FR	18		Ile-de-France
+Laxou	city	FR	18		Grand Est
+Meyzieu	city	FR	18		Auvergne-Rhone-Alpes	9
+Montpon-Ménestérol	city	FR	18		Nouvelle-Aquitaine
+Montévrain	city	FR	18		Ile-de-France
+Phoenix	city	US	18		Arizona	17
+Ramonville-Saint-Agne	city	FR	18		Occitanie
+Redon	city	FR	18		Brittany
+Saint-Cyprien	city	FR	18			1
+Saint-Paul-Trois-Châteaux	city	FR	18		Auvergne-Rhone-Alpes	1
+Tremblay-en-France	city	FR	18		Ile-de-France	1
+Vallauris	city	FR	18		Provence-Alpes-Cote d'Azur
+Anglet	city	FR	17		Nouvelle-Aquitaine
+Antwerp	city	BE	17	Antwerpen	Flanders	4
+Arcueil	city	FR	17		Ile-de-France
+Arques	city	FR	17		Hauts-de-France
+Ballan-Miré	city	FR	17		Centre-Val de Loire
+Berck	city	FR	17		Hauts-de-France
+Chartres-de-Bretagne	city	FR	17		Brittany
+Courchevel	city	FR	17		Auvergne-Rhone-Alpes
+Creney-près-Troyes	city	FR	17		Grand Est
+Ennery	city	FR	17		Grand Est
+Field	city	CA	17			17
+Flers	city	FR	17		Normandy
+Genas	city	FR	17		Auvergne-Rhone-Alpes	3
+Illkirch-Graffenstaden	city	FR	17		Grand Est
+La Garenne-Colombes	city	FR	17		Ile-de-France
+Landerneau	city	FR	17		Brittany
+Le Pontet	city	FR	17		Provence-Alpes-Cote d'Azur
+Longwy	city	FR	17		Grand Est
+Magnac-Bourg	city	FR	17		Nouvelle-Aquitaine
+Mexico City	city	MX	17	Ciudad de México	Mexico City	8
+Millau	city	FR	17		Occitanie
+Montluçon	city	FR	17		Auvergne-Rhone-Alpes	2
+Pamiers	city	FR	17		Occitanie
+Saint-Jean-de-Monts	city	FR	17		Loire Region
+Saint-Maur-des-Fossés	city	FR	17		Ile-de-France
+Saint-Paul-lès-Durance	city	FR	17		Provence-Alpes-Cote d'Azur
+Saint-Vallier	city	FR	17
+Sliema	city	MT	17			17
+Somain	city	FR	17		Hauts-de-France
+Tunis	city	TN	17	تونس		17
+Villiers-en-Bière	city	FR	17		Ile-de-France
+Vilnius	city	LT	17		Vilniaus Apskritis	8
+Vire Normandie	city	FR	17		Normandy	2
+Vitry-sur-Seine	city	FR	17		Ile-de-France	1
+Yutz	city	FR	17		Grand Est
+Ébène	city	MU	17			17
+Alicante	city	ES	16		Valencian Community
+Beauchamp	city	FR	16		Ile-de-France	2
+Burlingame, CA	city	US	16		California	16
+Caluire-et-Cuire	city	FR	16		Auvergne-Rhone-Alpes
+Cazères	city	FR	16		Occitanie
+Challans	city	FR	16		Loire Region
+Chalons-en-Champagne	city	FR	16	Châlons-en-Champagne	Grand Est
+Champigny-sur-Marne	city	FR	16		Ile-de-France	1
+Chelles	city	FR	16		Ile-de-France
+Châteaudun	city	FR	16		Centre-Val de Loire	3
+Civaux	city	FR	16		Nouvelle-Aquitaine
+Davézieux	city	FR	16		Auvergne-Rhone-Alpes
+Fontenay-aux-Roses	city	FR	16		Ile-de-France
+Givors	city	FR	16		Auvergne-Rhone-Alpes
+Hampton	city	GB	16		England	5
+Herblay-sur-Seine	city	FR	16		Ile-de-France
+Houston	city	US	16		Texas	14
+Huttenheim	city	FR	16		Grand Est
+Itteville	city	FR	16		Ile-de-France
+La Gorgue	city	FR	16		Hauts-de-France	1
+Laon	city	FR	16		Hauts-de-France	1
+Leicester	city	GB	16		England
+Mantes-la-Jolie	city	FR	16		Ile-de-France
+Meylan	city	FR	16		Auvergne-Rhone-Alpes
+Milton Keynes	city	GB	16		England	4
+Nijmegen	city	NL	16		Gelderland
+Noisy-le-Sec	city	FR	16		Ile-de-France
+Nouméa	city	NC	16		Province Sud
+Osny	city	FR	16		Ile-de-France
+Sully-sur-Loire	city	FR	16		Centre-Val de Loire
+Vernon	city	FR	16		Normandy	1
+Yzosse	city	FR	16		Nouvelle-Aquitaine
+Zagreb	city	HR	16			22
+Épernay	city	FR	16		Grand Est
+Aix-les-Bains	city	FR	15		Auvergne-Rhone-Alpes
+Alès	city	FR	15		Occitanie
+Auckland	city	NZ	15		Auckland	7
+Autun	city	FR	15		Bourgogne-Franche-Comte	1
+Avranches	city	FR	15		Normandy
+Bezannes	city	FR	15		Grand Est
+Bouguenais	city	FR	15		Loire Region
+Brno	city	CZ	15		Jihomoravský kraj	6
+Cluj-Napoca	city	RO	15			15
+Dampierre-en-Burly	city	FR	15		Centre-Val de Loire
+Drancy	city	FR	15		Ile-de-France
+Fougères	city	FR	15		Brittany	7
+Gentilly	city	FR	15		Ile-de-France
+Hanover	city	DE	15	Hannover	Lower-Saxony	13
+Le Chesnay-Rocquencourt	city	FR	15		Ile-de-France
+Le Port	city	RE	15		Réunion
+Livry-Gargan	city	FR	15		Ile-de-France
+Lons	city	FR	15		Nouvelle-Aquitaine	1
+Mainvilliers	city	FR	15		Centre-Val de Loire
+Mondeville	city	FR	15		Normandy
+Montaigu-Vendée	city	FR	15		Loire Region
+Moret-Loing-et-Orvanne	city	FR	15		Ile-de-France
+Orgeval	city	FR	15		Ile-de-France
+Pontivy	city	FR	15		Brittany
+Port	city	FR	15		Auvergne-Rhone-Alpes
+Pélissanne	city	FR	15		Provence-Alpes-Cote d'Azur
+Raleigh	city	US	15		North Carolina	9
+Riom	city	FR	15		Auvergne-Rhone-Alpes
+Romilly-sur-Andelle	city	FR	15		Normandy
+Royan	city	FR	15		Nouvelle-Aquitaine
+Saint-Paul-lès-Dax	city	FR	15		Nouvelle-Aquitaine
+Saintes	city	FR	15		Nouvelle-Aquitaine	2
+Scottsdale	city	US	15			15
+Thouars	city	FR	15		Nouvelle-Aquitaine
+Turin	city	IT	15	Torino	Piedmont
+Vanves	city	FR	15		Ile-de-France
+Vaulx-en-Velin	city	FR	15		Auvergne-Rhone-Alpes
+Villard-de-Lans	city	FR	15		Auvergne-Rhone-Alpes	2
+Ambérieu-en-Bugey	city	FR	14		Auvergne-Rhone-Alpes
+Breuil-le-Sec	city	FR	14		Hauts-de-France
+Brignoles	city	FR	14		Provence-Alpes-Cote d'Azur
+Chasse-sur-Rhône	city	FR	14		Auvergne-Rhone-Alpes
+Christchurch	city	NZ	14			14
+Cugand	city	FR	14		Loire Region
+Feurs	city	FR	14		Auvergne-Rhone-Alpes	1
+Figeac	city	FR	14		Occitanie	2
+Fort-de-France	city	MQ	14		Martinique
+Gradignan	city	FR	14		Nouvelle-Aquitaine
+Gravelines	city	FR	14		Hauts-de-France
+Guilherand-Granges	city	FR	14		Auvergne-Rhone-Alpes
+Hem	city	FR	14		Hauts-de-France	7
+Hyères	city	FR	14		Provence-Alpes-Cote d'Azur
+Labenne	city	FR	14		Nouvelle-Aquitaine
+Le Bouscat	city	FR	14		Nouvelle-Aquitaine
+Le Cendre	city	FR	14		Auvergne-Rhone-Alpes
+Libourne	city	FR	14		Nouvelle-Aquitaine
+Lima	city	PE	14	San Martín de Porres	Lima
+Mandelieu-la-Napoule	city	FR	14		Provence-Alpes-Cote d'Azur
+Marmande	city	FR	14		Nouvelle-Aquitaine
+Menton	city	FR	14		Provence-Alpes-Cote d'Azur
+Moirans	city	FR	14		Auvergne-Rhone-Alpes
+Montargis	city	FR	14		Centre-Val de Loire
+Morteau	city	FR	14		Bourgogne-Franche-Comte
+Nicosia	city	CY	14	Λευκωσία		14
+Nottingham	city	GB	14		England	13
+Nérac	city	FR	14		Nouvelle-Aquitaine
+Rochetaillée-sur-Saône	city	FR	14		Auvergne-Rhone-Alpes
+Roncq	city	FR	14		Hauts-de-France
+Rumilly	city	FR	14		Auvergne-Rhone-Alpes
+Saint-Claude	city	FR	14		Bourgogne-Franche-Comte
+Saint-Genis-Laval	city	FR	14		Auvergne-Rhone-Alpes
+Saint-Ouen-l'Aumône	city	FR	14		Ile-de-France
+Saint-Égrève	city	FR	14		Auvergne-Rhone-Alpes
+Sannois	city	FR	14		Ile-de-France
+Sélestat	city	FR	14		Grand Est
+Tarascon	city	FR	14		Provence-Alpes-Cote d'Azur
+Thiais	city	FR	14		Ile-de-France	1
+Thonon-les-Bains	city	FR	14		Auvergne-Rhone-Alpes
+Verlinghem	city	FR	14		Hauts-de-France
+Ville-la-Grand	city	FR	14		Auvergne-Rhone-Alpes
+Villefontaine	city	FR	14		Auvergne-Rhone-Alpes
+Villeneuve-la-Garenne	city	FR	14		Ile-de-France
+Agde	city	FR	13		Occitanie
+Agen	city	FR	13		Nouvelle-Aquitaine
+Angy	city	FR	13		Hauts-de-France
+Beijing	city	CN	13			13
+Bolbec	city	FR	13		Normandy
+Bourg-Saint-Maurice	city	FR	13		Auvergne-Rhone-Alpes
+Brighton	city	GB	13		England	6
+Cagnes-sur-Mer	city	FR	13		Provence-Alpes-Cote d'Azur
+Cattenom	city	FR	13		Grand Est
+Caveirac	city	FR	13		Occitanie
+Chamonix-Mont-Blanc	city	FR	13		Auvergne-Rhone-Alpes	1
+Charlotte	city	US	13		North Carolina	11
+Chennai	city	IN	13		Tamil Nadu
+Chenôve	city	FR	13		Bourgogne-Franche-Comte
+Chinon	city	FR	13		Centre-Val de Loire
+Clamart	city	FR	13		Ile-de-France
+Cluses	city	FR	13		Auvergne-Rhone-Alpes
+Crouy	city	FR	13		Hauts-de-France
+Cysoing	city	FR	13		Hauts-de-France	1
+Dardilly	city	FR	13		Auvergne-Rhone-Alpes	1
+Ermont	city	FR	13		Ile-de-France
+Florence	city	IT	13	Firenze	Tuscany
+Fontainebleau	city	FR	13		Ile-de-France
+Givet	city	FR	13		Grand Est
+Jonage	city	FR	13		Auvergne-Rhone-Alpes
+La Courneuve	city	FR	13		Ile-de-France
+La Côte-Saint-André	city	FR	13		Auvergne-Rhone-Alpes
+La Teste-de-Buch	city	FR	13		Nouvelle-Aquitaine
+Lardy	city	FR	13		Ile-de-France
+Le Haillan	city	FR	13		Nouvelle-Aquitaine	1
+Le Kremlin-Bicêtre	city	FR	13		Ile-de-France
+Marcoussis	city	FR	13		Ile-de-France
+Mourmelon-le-Grand	city	FR	13		Grand Est
+Neuves-Maisons	city	FR	13		Grand Est
+Notre-Dame-d'Oé	city	FR	13		Centre-Val de Loire
+Opfikon	city	CH	13		Zurich
+Pont-du-Château	city	FR	13		Auvergne-Rhone-Alpes
+Pontoise	city	FR	13		Ile-de-France
+Pornichet	city	FR	13		Loire Region	2
+Remiremont	city	FR	13		Grand Est
+Rezé	city	FR	13		Loire Region
+Romainville	city	FR	13		Ile-de-France
+Rosny-sous-Bois	city	FR	13		Ile-de-France
+Saclay	city	FR	13		Ile-de-France
+Saint-André-lez-Lille	city	FR	13		Hauts-de-France
+Sainte-Luce-sur-Loire	city	FR	13		Loire Region
+Sautron	city	FR	13		Loire Region	1
+Taverny	city	FR	13		Ile-de-France
+Valence-d'Albigeois	city	FR	13		Occitanie
+Varennes-sur-Seine	city	FR	13		Ile-de-France
+Villemomble	city	FR	13		Ile-de-France
+Villers-lès-Nancy	city	FR	13		Grand Est
+Zaragoza	city	ES	13		Aragon
+Étampes	city	FR	13		Ile-de-France
+Aubière	city	FR	12		Auvergne-Rhone-Alpes
+Auray	city	FR	12		Brittany
+Beaumont-de-Lomagne	city	FR	12		Occitanie
+Bedford	city	GB	12		England	9
+Bengaluru	city	IN	12		Karnataka	3
+Boisseuil	city	FR	12		Nouvelle-Aquitaine
+Bologna	city	IT	12		Emilia-Romagna
+Bondoufle	city	FR	12		Ile-de-France
+Boucau	city	FR	12		Nouvelle-Aquitaine
+Brie-Comte-Robert	city	FR	12		Ile-de-France
+Brétigny-sur-Orge	city	FR	12		Ile-de-France
+Buchelay	city	FR	12		Ile-de-France
+Canéjan	city	FR	12		Nouvelle-Aquitaine
+Capbreton	city	FR	12		Nouvelle-Aquitaine
+Carnoux-en-Provence	city	FR	12		Provence-Alpes-Cote d'Azur
+Castelnaudary	city	FR	12		Occitanie
+Chessy	city	FR	12		Ile-de-France	1
+Claye-Souilly	city	FR	12		Ile-de-France
+Cologne	city	DE	12	Köln	North-Rhine-Westphalia	4
+Condom	city	FR	12		Occitanie
+Corbeil	city	FR	12		Grand Est
+Die	city	FR	12		Auvergne-Rhone-Alpes
+Dubaï	city	AE	12			12
+Dusseldorf	city	DE	12	Düsseldorf	North-Rhine-Westphalia
+Entrevaux	city	FR	12		Provence-Alpes-Cote d'Azur
+Ferrières-en-Brie	city	FR	12		Ile-de-France
+Gardanne	city	FR	12		Provence-Alpes-Cote d'Azur
+Georgia	city	US	12			12
+Gex	city	FR	12		Auvergne-Rhone-Alpes
+Golbey	city	FR	12		Grand Est
+Heillecourt	city	FR	12		Grand Est
+Hove	city	GB	12		England
+Lamballe-Armor	city	FR	12		Brittany
+Lambres-lez-Douai	city	FR	12		Hauts-de-France
+Las Palmas of Gran Canaria	city	ES	12	Las Palmas de Gran Canaria	Canary Islands
+Le Touvet	city	FR	12		Auvergne-Rhone-Alpes
+Lisses	city	FR	12		Ile-de-France
+Lormont	city	FR	12		Nouvelle-Aquitaine
+Lunel	city	FR	12		Occitanie
+Luçon	city	FR	12		Loire Region
+Marbella	city	ES	12		Andalucia
+Mende	city	FR	12		Occitanie
+Montataire	city	FR	12		Hauts-de-France
+Montsoult	city	FR	12		Ile-de-France
+Nogent-sur-Seine	city	FR	12		Grand Est
+Oloron-Sainte-Marie	city	FR	12		Nouvelle-Aquitaine
+Padua	city	IT	12	Padova	Veneto
+Paimboeuf	city	FR	12		Loire Region
+Palma	city	ES	12		Balearic Islands
+Passy	city	FR	12		Auvergne-Rhone-Alpes
+Petit-Caux	city	FR	12		Normandy
+Philadelphia	city	US	12		Pennsylvania	7
+Providence	city	US	12			12
+Périgny	city	FR	12		Nouvelle-Aquitaine
+Riga	city	LV	12	Rīga		12
+Saint-Christol-lez-Alès	city	FR	12		Occitanie
+Saint-Crépin-Ibouvillers	city	FR	12		Hauts-de-France
+Saint-Dizier	city	FR	12		Grand Est	3
+Saint-Doulchard	city	FR	12		Centre-Val de Loire
+Saint-Jean-d'Illac	city	FR	12		Nouvelle-Aquitaine
+Saint-Médard-en-Jalles	city	FR	12		Nouvelle-Aquitaine
+Saint-Priest-en-Jarez	city	FR	12		Auvergne-Rhone-Alpes
+Saint-Thibault-des-Vignes	city	FR	12		Ile-de-France
+Saint-Tropez	city	FR	12		Provence-Alpes-Cote d'Azur
+Saint-Étienne-du-Rouvray	city	FR	12		Normandy
+Seville	city	ES	12	Sevilla	Andalucia
+Séné	city	FR	12		Brittany
+Vendargues	city	FR	12		Occitanie
+Ventabren	city	FR	12		Provence-Alpes-Cote d'Azur
+Villeneuve-sur-Lot	city	FR	12		Nouvelle-Aquitaine
+Viry-Châtillon	city	FR	12		Ile-de-France
+Wingles	city	FR	12		Hauts-de-France
+Wroclaw	city	PL	12	Wrocław	Lower Silesian Voivodeship
+Alençon	city	FR	11		Normandy
+Andorra	city	AD	11	Andorra la Vella		13
+Ann Arbor	city	US	11		Michigan	5
+Braga	city	PT	11			11
+Chantepie	city	FR	11		Brittany	1
+Châteaulin	city	FR	11		Brittany
+Châteaurenard	city	FR	11		Provence-Alpes-Cote d'Azur
+Coubert	city	FR	11		Ile-de-France
+Creysse	city	FR	11
+Donzère	city	FR	11		Auvergne-Rhone-Alpes
+Dreux	city	FR	11		Centre-Val de Loire
+Dury	city	FR	11		Hauts-de-France
+Eysines	city	FR	11		Nouvelle-Aquitaine
+Flins-sur-Seine	city	FR	11		Ile-de-France
+Gorron	city	FR	11		Loire Region
+Gray	city	FR	11		Bourgogne-Franche-Comte
+Haubourdin	city	FR	11		Hauts-de-France
+Juvignac	city	FR	11		Occitanie
+La Fare-les-Oliviers	city	FR	11		Provence-Alpes-Cote d'Azur
+La Madeleine	city	FR	11		Hauts-de-France
+Lamorlaye	city	FR	11		Hauts-de-France
+Las Vegas	city	US	11		Nevada	3
+Le Pecq	city	FR	11		Ile-de-France
+Lesquin	city	FR	11		Hauts-de-France
+Longpont-sur-Orge	city	FR	11		Ile-de-France
+Louvres	city	FR	11		Ile-de-France
+Ludres	city	FR	11		Grand Est
+Mississauga	city	CA	11		Ontario	9
+Molsheim	city	FR	11		Grand Est
+Monaco	city	MC	11			12
+Mont-Saint-Martin	city	FR	11		Grand Est
+Montbard	city	FR	11		Bourgogne-Franche-Comte
+Montbonnot-Saint-Martin	city	FR	11		Auvergne-Rhone-Alpes
+Montesson	city	FR	11		Ile-de-France
+Montréal	city	CA	11			11
+Morlaix	city	FR	11		Brittany
+Moyvillers	city	FR	11		Hauts-de-France
+Nashville	city	US	11		Tennessee	9
+Neuvic	city	FR	11		Nouvelle-Aquitaine
+Nogent-le-Rotrou	city	FR	11		Centre-Val de Loire
+Noida	city	IN	11		Uttar Pradesh
+Noyon	city	FR	11		Hauts-de-France
+Plan-les-Ouates	city	CH	11		Geneva
+Pocé-sur-Cisse	city	FR	11		Centre-Val de Loire
+Provins	city	FR	11		Ile-de-France
+Puget-sur-Argens	city	FR	11		Provence-Alpes-Cote d'Azur	1
+Queretaro	city	MX	11	Querétaro	Queretaro
+Romorantin-Lanthenay	city	FR	11		Centre-Val de Loire
+Roquevaire	city	FR	11		Provence-Alpes-Cote d'Azur
+Saint-Julien-en-Genevois	city	FR	11		Auvergne-Rhone-Alpes
+Saint-Martin-de-Crau	city	FR	11		Provence-Alpes-Cote d'Azur
+Saint-Martin-des-Champs	city	FR	11		Brittany
+Saint-Omer	city	FR	11		Hauts-de-France
+Saint-Trivier-de-Courtes	city	FR	11		Auvergne-Rhone-Alpes
+Saint-Vigor-le-Grand	city	FR	11		Normandy
+Saint-Vulbas	city	FR	11		Auvergne-Rhone-Alpes
+Sallanches	city	FR	11		Auvergne-Rhone-Alpes
+Santa Cruz de Tenerife	city	ES	11		Canary Islands	1
+Saratoga, CA	city	US	11		California	11
+Sarralbe	city	FR	11		Grand Est
+Sarrebourg	city	FR	11		Grand Est
+Sarreguemines	city	FR	11		Grand Est
+Souzy	city	FR	11		Auvergne-Rhone-Alpes
+Sète	city	FR	11		Occitanie
+Trégueux	city	FR	11		Brittany
+Vichy	city	FR	11		Auvergne-Rhone-Alpes	1
+Vigo	city	ES	11		Galicia
+Vizille	city	FR	11		Auvergne-Rhone-Alpes
+Abingdon	city	GB	10		England	3
+Alfortville	city	FR	10		Ile-de-France
+Argelès-sur-Mer	city	FR	10		Occitanie
+Bari	city	IT	10		Apulia
+Bastia	city	FR	10		Corsica
+Bessines	city	FR	10		Nouvelle-Aquitaine
+Birkirkara	city	MT	10			10
+Cahors	city	FR	10		Occitanie
+Caudebec-lès-Elbeuf	city	FR	10		Normandy
+Chanay	city	FR	10		Auvergne-Rhone-Alpes
+Chaville	city	FR	10		Ile-de-France
+Château-Gontier-sur-Mayenne	city	FR	10		Loire Region
+Cosne-Cours-sur-Loire	city	FR	10		Bourgogne-Franche-Comte
+Cugnaux	city	FR	10		Occitanie
+Doué-en-Anjou	city	FR	10		Loire Region
+Elven	city	FR	10		Brittany
+Ensuès-la-Redonne	city	FR	10		Provence-Alpes-Cote d'Azur
+Foix	city	FR	10		Occitanie
+Fundão	city	PT	10			10
+Gaillac	city	FR	10		Occitanie
+Granville	city	FR	10		Normandy
+Guer	city	FR	10		Brittany
+Gurugram	city	IN	10		Haryana	7
+Heraklion	city	GR	10	Ηράκλειο	Crete
+Hudson	city	US	10			10
+Iasi	city	RO	10	Iași		10
+Isneauville	city	FR	10		Normandy	5
+Issoire	city	FR	10		Auvergne-Rhone-Alpes
+Jarrie	city	FR	10		Auvergne-Rhone-Alpes
+La Farlède	city	FR	10		Provence-Alpes-Cote d'Azur	1
+La Flèche	city	FR	10		Loire Region
+Lambesc	city	FR	10		Provence-Alpes-Cote d'Azur
+Langon	city	FR	10		Nouvelle-Aquitaine
+Le Bourget-du-Lac	city	FR	10		Auvergne-Rhone-Alpes
+Le Lamentin	city	MQ	10		Martinique
+Le Neubourg	city	FR	10		Normandy
+Le Puy-en-Velay	city	FR	10		Auvergne-Rhone-Alpes
+Le Péage-de-Roussillon	city	FR	10		Auvergne-Rhone-Alpes
+Les Herbiers	city	FR	10		Loire Region
+Les Pennes-Mirabeau	city	FR	10		Provence-Alpes-Cote d'Azur
+Les Ponts-de-Cé	city	FR	10		Loire Region
+Lestrem	city	FR	10		Hauts-de-France
+Leuven	city	BE	10		Flanders
+Limas	city	FR	10		Auvergne-Rhone-Alpes	4
+Livarot-Pays-d'Auge	city	FR	10		Normandy
+Liévin	city	FR	10		Hauts-de-France
+Loriol-sur-Drôme	city	FR	10		Auvergne-Rhone-Alpes
+Machelen	city	BE	10		Flanders
+Marigny-le-Châtel	city	FR	10		Grand Est
+Marzy	city	FR	10		Bourgogne-Franche-Comte
+Meymac	city	FR	10		Nouvelle-Aquitaine
+Mignaloux-Beauvoir	city	FR	10		Nouvelle-Aquitaine
+Mons-en-Baroeul	city	FR	10		Hauts-de-France
+Moûtiers	city	FR	10		Auvergne-Rhone-Alpes
+Noyelles-Godault	city	FR	10		Hauts-de-France
+Oyonnax	city	FR	10		Auvergne-Rhone-Alpes
+Palm Beach	city	US	10		Florida	9
+Pasay City	city	PH	10		National Capital Region
+Richmond	city	US	10			10
+Saint-Cloud	city	FR	10		Ile-de-France	1
+Saint-Estève	city	FR	10		Occitanie
+Saint-Jean-de-Maurienne	city	FR	10		Auvergne-Rhone-Alpes
+Saint-Martin-de-Ré	city	FR	10		Nouvelle-Aquitaine
+Saint-Maximin	city	FR	10		Hauts-de-France
+Saint-Pons	city	FR	10		Auvergne-Rhone-Alpes
+Saint-Quentin-Fallavier	city	FR	10		Auvergne-Rhone-Alpes
+Saint-Raphaël	city	FR	10		Provence-Alpes-Cote d'Azur
+Saint-Thomas-en-Royans	city	FR	10		Auvergne-Rhone-Alpes
+Sainte-Feyre	city	FR	10		Nouvelle-Aquitaine
+Sainte-Geneviève-des-Bois	city	FR	10		Ile-de-France
+Sainte-Marie-des-Champs	city	FR	10		Normandy
+Sartrouville	city	FR	10		Ile-de-France
+Semur-en-Auxois	city	FR	10		Bourgogne-Franche-Comte
+Sequedin	city	FR	10		Hauts-de-France
+Surzur	city	FR	10		Brittany
+Tain-l'Hermitage	city	FR	10		Auvergne-Rhone-Alpes
+Tonneins	city	FR	10		Nouvelle-Aquitaine
+Torcy	city	FR	10
+Trappes	city	FR	10		Ile-de-France
+Trémorel	city	FR	10		Brittany
+Val-de-Reuil	city	FR	10		Normandy
+Vic-en-Bigorre	city	FR	10		Occitanie
+Vierzon	city	FR	10		Centre-Val de Loire
+Volgelsheim	city	FR	10		Grand Est	1
+Waterloo	city	CA	10			10
+Wettolsheim	city	FR	10		Grand Est
+Zurich	city	CH	10	Zürich	Zurich
+Aiguillon	city	FR	9		Nouvelle-Aquitaine
+Albacete	city	ES	9		Castille-La Mancha
+Almería	city	ES	9		Andalucia
+Amilly	city	FR	9		Centre-Val de Loire
+Anzin	city	FR	9		Hauts-de-France
+Bagnères-de-Bigorre	city	FR	9		Occitanie
+Balti	city	MD	9	Bălți	Balti
+Bangkok	city	TH	9	กรุงเทพมหานคร		9
+Banja Luka	city	BA	9		Republika Srpska
+Barentin	city	FR	9		Normandy
+Bergerac	city	FR	9		Nouvelle-Aquitaine
+Bidart	city	FR	9		Nouvelle-Aquitaine
+Bilbao	city	ES	9		Basque Country
+Bitola	city	MK	9	Битола		9
+Bogota, D.C.	city	CO	9	Bogotá, D.C.		9
+Bologne	city	FR	9		Grand Est	1
+Boulogne-sur-Mer	city	FR	9		Hauts-de-France	1
+Bridgwater	city	GB	9		England
+Brissac Loire Aubance	city	FR	9		Loire Region
+Brives-Charensac	city	FR	9		Auvergne-Rhone-Alpes
+Budva	city	ME	9			9
+Burgas	city	BG	9	Бургас		9
+Burgos	city	ES	9		Castilla and Leon
+Cadiz	city	ES	9	Cádiz	Andalucia
+Cahul	city	MD	9		Cahul
+Calgary	city	CA	9		Alberta	5
+Carentan-les-Marais	city	FR	9		Normandy
+Carnac	city	FR	9		Brittany
+Carpentras	city	FR	9		Provence-Alpes-Cote d'Azur
+Carrières-sur-Seine	city	FR	9		Ile-de-France
+Cartagena	city	ES	9		Murcia Region
+Champagnole	city	FR	9		Bourgogne-Franche-Comte
+Champs-sur-Marne	city	FR	9		Ile-de-France
+Chassieu	city	FR	9		Auvergne-Rhone-Alpes
+Chatou	city	FR	9		Ile-de-France
+Chisinau	city	MD	9	Chișinău	Chisinau
+Choisy-le-Roi	city	FR	9		Ile-de-France
+Châtillon-sur-Seine	city	FR	9		Bourgogne-Franche-Comte
+Ciudad de México	city	MX	9			9
+Codolet	city	FR	9		Occitanie
+Coimbra	city	PT	9			9
+Colombelles	city	FR	9		Normandy	1
+Culver City	city	US	9			9
+Daugavpils	city	LV	9			9
+Debrecen	city	HU	9		Hajdú-Bihar
+Dnipro	city	UA	9	Дніпро		9
+Domancy	city	FR	9		Auvergne-Rhone-Alpes
+Donetsk	city	UA	9	Донецьк		9
+Dubrovnik	city	HR	9			9
+Durres	city	AL	9	Durrës		9
+Englos	city	FR	9		Hauts-de-France
+Fenouillet	city	FR	9		Occitanie
+Fontenay-le-Comte	city	FR	9		Loire Region
+Gannat	city	FR	9		Auvergne-Rhone-Alpes
+Garidech	city	FR	9		Occitanie
+Gdansk	city	PL	9	Gdańsk	Pomeranian Voivodeship
+Gibraltar	city	GI	9			9
+Granada	city	ES	9		Andalucia
+Gyumri	city	AM	9	Գյումրի		9
+Hrazdan	city	AM	9	Հրազդան		9
+Jelgava	city	LV	9			9
+Johannesburg	city	ZA	9		Gauteng
+Kaunas	city	LT	9		Kauno Apskritis
+Kiev	city	UA	9	Київ		9
+Klaipeda	city	LT	9	Klaipėda	Klaipėdos Apskritis
+Krautergersheim	city	FR	9		Grand Est
+L'Isle-Jourdain	city	FR	9
+L'Union	city	FR	9		Occitanie
+La Ville-du-Bois	city	FR	9		Ile-de-France
+Larnaca	city	CY	9	Λάρνακα		9
+Le Malesherbois	city	FR	9		Centre-Val de Loire
+Le Pellerin	city	FR	9		Loire Region
+Le Vaudreuil	city	FR	9		Normandy
+Les Cars	city	FR	9		Nouvelle-Aquitaine
+Les Hauts-d'Anjou	city	FR	9		Loire Region
+Les Mureaux	city	FR	9		Ile-de-France
+Liepaja	city	LV	9	Liepāja		9
+Limassol	city	CY	9	Λεμεσός		9
+Longuyon	city	FR	9		Grand Est
+Longvic	city	FR	9		Bourgogne-Franche-Comte
+Lons-le-Saunier	city	FR	9		Bourgogne-Franche-Comte
+Lviv	city	UA	9	Львів		9
+Maubeuge	city	FR	9		Hauts-de-France
+Mauguio	city	FR	9		Occitanie
+Mellac	city	FR	9		Brittany
+Migné-Auxances	city	FR	9		Nouvelle-Aquitaine	1
+Miribel	city	FR	9		Auvergne-Rhone-Alpes
+Monistrol-sur-Loire	city	FR	9		Auvergne-Rhone-Alpes
+Montevideo	city	UY	9			9
+Montmorot	city	FR	9		Bourgogne-Franche-Comte
+Montoir-de-Bretagne	city	FR	9		Loire Region	5
+Mostar	city	BA	9		Federation of Bosnia Herzegovina
+Mougins	city	FR	9		Provence-Alpes-Cote d'Azur
+Moulins	city	FR	9		Auvergne-Rhone-Alpes
+Moëlan-sur-Mer	city	FR	9		Brittany
+Mundolsheim	city	FR	9		Grand Est
+Murcia	city	ES	9		Murcia Region
+Narva	city	EE	9			9
+Neuvillette	city	FR	9		Hauts-de-France
+Newark	city	US	9		New Jersey	6
+Niksic	city	ME	9			9
+Nis	city	RS	9	Ниш	Centralna Srbija
+Nogent-sur-Marne	city	FR	9		Ile-de-France
+Novi Sad	city	RS	9	Нови Сад	Vojvodina
+Oberhaching	city	DE	9		Bavaria
+Odesa	city	UA	9	Одеса		9
+Ohrid	city	MK	9	Охрид		9
+Olivet	city	FR	9		Centre-Val de Loire
+Osijek	city	HR	9			9
+Ostrava	city	CZ	9		Moravskoslezský kraj
+Othis	city	FR	9		Ile-de-France
+Paimpol	city	FR	9		Brittany
+Paluel	city	FR	9		Normandy
+Pamplona	city	ES	9		Chartered Community of Navarre
+Parnu	city	EE	9	Pärnu		9
+Parçay-Meslay	city	FR	9		Centre-Val de Loire
+Patra	city	GR	9	Πάτρα	Dytiki Ellada
+Pecs	city	HU	9	Pécs	Baranya
+Perriers-sur-Andelle	city	FR	9		Normandy
+Petite-Forêt	city	FR	9		Hauts-de-France
+Pilsen	city	CZ	9	Plzeň	Plzeňský kraj
+Pleucadeuc	city	FR	9		Brittany
+Plovdiv	city	BG	9	Пловдив		9
+Podgorica	city	ME	9			9
+Pontfaverger-Moronvilliers	city	FR	9		Grand Est
+Privas	city	FR	9		Auvergne-Rhone-Alpes
+Rijeka	city	HR	9			9
+Rochechouart	city	FR	9		Nouvelle-Aquitaine
+Roquebrune-sur-Argens	city	FR	9		Provence-Alpes-Cote d'Azur
+Saint Julian's	city	MT	9	San Ġiljan		9
+Saint-Aubin	city	FR	9		Ile-de-France
+Saint-Barthélemy-d'Anjou	city	FR	9		Loire Region
+Saint-Jean	city	FR	9		Occitanie
+Saint-Martin-d'Abbat	city	FR	9		Centre-Val de Loire
+Saint-Pierre-du-Mont	city	FR	9		Nouvelle-Aquitaine
+Saint-Sauveur	city	FR	9		Auvergne-Rhone-Alpes
+Sainte-Catherine	city	FR	9		Hauts-de-France
+Santander	city	ES	9		Cantabria
+Sarajevo	city	BA	9		Federation of Bosnia Herzegovina
+Sarcelles	city	FR	9		Ile-de-France
+Seraing	city	BE	9		Wallonia
+Servas	city	FR	9		Auvergne-Rhone-Alpes
+Seyssins	city	FR	9		Auvergne-Rhone-Alpes
+Shkoder	city	AL	9	Shkodër		9
+Siauliai	city	LT	9	Šiauliai	Šiaulių Apskritis
+Skopje	city	MK	9	Скопје		9
+Split	city	HR	9			9
+Subotica	city	RS	9	Суботица	Vojvodina
+Szeged	city	HU	9		Csongrád-Csanád
+Tampa	city	US	9			10
+Tartu	city	EE	9			9
+Templemars	city	FR	9		Hauts-de-France
+Terville	city	FR	9		Grand Est	1
+Tetovo	city	MK	9	Тетово		9
+Thessaloniki	city	GR	9	Θεσσαλονίκη	Kentriki Makedonia
+Thiers	city	FR	9		Auvergne-Rhone-Alpes
+Timisoara	city	RO	9	Timișoara		15
+Tirana	city	AL	9	Tiranë		9
+Toledo	city	ES	9		Castille-La Mancha
+Tournefeuille	city	FR	9		Occitanie
+Tuzla	city	BA	9		Federation of Bosnia Herzegovina
+Ungheni	city	MD	9		Ungheni
+Valladolid	city	ES	9		Castilla and Leon
+Valletta	city	MT	9			9
+Valognes	city	FR	9		Normandy
+Vanadzor	city	AM	9	Վանաձոր		9
+Varennes-Vauzelles	city	FR	9		Bourgogne-Franche-Comte
+Varna	city	BG	9	Варна		9
+Villabé	city	FR	9		Ile-de-France
+Villars	city	FR	9		Auvergne-Rhone-Alpes
+Villeneuve-lès-Béziers	city	FR	9		Occitanie
+Villette-d'Anthon	city	FR	9		Auvergne-Rhone-Alpes
+Vlora	city	AL	9	Vlorë		9
+Wambrechies	city	FR	9		Hauts-de-France
+Wittenheim	city	FR	9		Grand Est
+Yerevan	city	AM	9	Երեւան		9
+Écaillon	city	FR	9		Hauts-de-France
+Épernon	city	FR	9		Centre-Val de Loire
+Aixe-sur-Vienne	city	FR	8		Nouvelle-Aquitaine
+Ambert	city	FR	8		Auvergne-Rhone-Alpes
+Andrézieux-Bouthéon	city	FR	8		Auvergne-Rhone-Alpes
+Arcachon	city	FR	8		Nouvelle-Aquitaine
+Auriol	city	FR	8		Provence-Alpes-Cote d'Azur
+Bandol	city	FR	8		Provence-Alpes-Cote d'Azur
+Bar-le-Duc	city	FR	8		Grand Est
+Beaucouzé	city	FR	8		Loire Region
+Beauvoir-sur-Mer	city	FR	8		Loire Region
+Beauvoir-sur-Niort	city	FR	8		Nouvelle-Aquitaine
+Beauzelle	city	FR	8		Occitanie
+Belleville-sur-Loire	city	FR	8		Centre-Val de Loire
+Bernay	city	FR	8		Normandy
+Bourg-lès-Valence	city	FR	8		Auvergne-Rhone-Alpes	1
+Briec	city	FR	8		Brittany
+Bruguières	city	FR	8		Occitanie
+Busto Garolfo	city	IT	8		Lombardy
+Cabestany	city	FR	8		Occitanie
+Cachan	city	FR	8		Ile-de-France
+Callian	city	FR	8		Provence-Alpes-Cote d'Azur
+Castelnau-le-Lez	city	FR	8		Occitanie
+Chasseneuil-du-Poitou	city	FR	8		Nouvelle-Aquitaine
+Chauny	city	FR	8		Hauts-de-France
+Chilly-Mazarin	city	FR	8		Ile-de-France	2
+Columbia-Shuswap	city	CA	8		British Columbia
+Commercy	city	FR	8		Grand Est
+Coudekerque-Branche	city	FR	8		Hauts-de-France
+Cournon-d'Auvergne	city	FR	8		Auvergne-Rhone-Alpes
+Couëron	city	FR	8		Loire Region
+Essey-lès-Nancy	city	FR	8		Grand Est
+Fismes	city	FR	8		Grand Est
+Fleury-les-Aubrais	city	FR	8		Centre-Val de Loire
+Fontanil-Cornillon	city	FR	8		Auvergne-Rhone-Alpes
+Fort Lauderdale	city	US	8		Florida	7
+Fresnes	city	FR	8		Ile-de-France
+Frontignan	city	FR	8		Occitanie
+Gauchy	city	FR	8		Hauts-de-France
+Gleizé	city	FR	8		Auvergne-Rhone-Alpes	1
+Guichainville	city	FR	8		Normandy
+Guiyang	city	CN	8			8
+Halden	city	NO	8		Ostfold
+Halluin	city	FR	8		Hauts-de-France
+Helsinki	city	DK	8			8
+Heyrieux	city	FR	8		Auvergne-Rhone-Alpes
+Hobøl	city	NO	8		Ostfold
+Huez	city	FR	8		Auvergne-Rhone-Alpes
+Is-sur-Tille	city	FR	8		Bourgogne-Franche-Comte
+Joigny	city	FR	8		Bourgogne-Franche-Comte
+La Baule-Escoublac	city	FR	8		Loire Region	2
+La Chapelle-Longueville	city	FR	8		Normandy
+La Couronne	city	FR	8		Nouvelle-Aquitaine
+La Roche-sur-Foron	city	FR	8		Auvergne-Rhone-Alpes
+Lauzerte	city	FR	8		Occitanie	1
+Le Blanc-Mesnil	city	FR	8		Ile-de-France
+Le Bourget	city	FR	8		Ile-de-France
+Le Cannet	city	FR	8		Provence-Alpes-Cote d'Azur	1
+Lentigny	city	FR	8		Auvergne-Rhone-Alpes
+Lesparre-Médoc	city	FR	8		Nouvelle-Aquitaine
+Linars	city	FR	8		Nouvelle-Aquitaine
+Lugrin	city	FR	8		Auvergne-Rhone-Alpes
+Mauges-sur-Loire	city	FR	8		Loire Region
+Maurepas	city	FR	8		Ile-de-France
+Mayenne	city	FR	8		Loire Region
+Meillonnas	city	FR	8		Auvergne-Rhone-Alpes
+Montbartier	city	FR	8		Occitanie
+Montbeliard	city	FR	8	Montbéliard	Bourgogne-Franche-Comte
+Montélier	city	FR	8		Auvergne-Rhone-Alpes	1
+Ménétrol	city	FR	8		Auvergne-Rhone-Alpes
+Noirétable	city	FR	8		Auvergne-Rhone-Alpes
+Onet-le-Château	city	FR	8		Occitanie
+Oudalle	city	FR	8		Normandy
+Pinsaguel	city	FR	8		Occitanie
+Plouescat	city	FR	8		Brittany
+Ploërmel	city	FR	8		Brittany
+Pontault-Combault	city	FR	8		Ile-de-France
+Rio de Janeiro	city	BR	8		Rio de Janeiro
+Sablé-sur-Sarthe	city	FR	8		Loire Region
+Saint-André-de-Corcy	city	FR	8		Auvergne-Rhone-Alpes
+Saint-Bonnet-de-Mure	city	FR	8		Auvergne-Rhone-Alpes
+Saint-Chamond	city	FR	8		Auvergne-Rhone-Alpes
+Saint-Genis-Pouilly	city	FR	8		Auvergne-Rhone-Alpes
+Saint-Gilles	city	BE	8	Sint-Gillis	Brussels
+Saint-Laurent-Nouan	city	FR	8		Centre-Val de Loire
+Saint-Louis	city	FR	8		Grand Est
+Saint-Mard	city	FR	8		Ile-de-France
+Saint-Maur	city	FR	8		Centre-Val de Loire
+Saint-Paul	city	FR	8		Occitanie
+Saint-Quay-Perros	city	FR	8		Brittany
+Sainte-Foy-lès-Lyon	city	FR	8		Auvergne-Rhone-Alpes
+Seclin	city	FR	8		Hauts-de-France
+Sedan	city	FR	8		Grand Est
+Semécourt	city	FR	8		Grand Est
+Sevran	city	FR	8		Ile-de-France
+Seysses	city	FR	8		Occitanie
+Ségny	city	FR	8		Auvergne-Rhone-Alpes
+Turckheim	city	FR	8		Grand Est
+Valserhône	city	FR	8		Auvergne-Rhone-Alpes
+Vauréal	city	FR	8		Ile-de-France	1
+Vaux-le-Pénil	city	FR	8		Ile-de-France
+Veuzain-sur-Loire	city	FR	8		Centre-Val de Loire
+Villers-Cotterêts	city	FR	8		Hauts-de-France
+Voisins-le-Bretonneux	city	FR	8		Ile-de-France
+Westlake	city	CA	8			8
+Yzeures-sur-Creuse	city	FR	8		Centre-Val de Loire
+Zürich	city	CH	8			8
+Abidjan	city	CI	7		Abidjan
+Ablaincourt-Pressoir	city	FR	7		Hauts-de-France
+Albert	city	FR	7		Hauts-de-France
+Altillac	city	FR	7		Nouvelle-Aquitaine
+Annonay	city	FR	7		Auvergne-Rhone-Alpes	1
+Apprieu	city	FR	7		Auvergne-Rhone-Alpes
+Arequipa	city	PE	7		Arequipa
+Baie-Mahault	city	GP	7		Guadeloupe
+Barr	city	FR	7		Grand Est
+Basse-Ham	city	FR	7		Grand Est
+Bazet	city	FR	7		Occitanie
+Belleville	city	FR	7		Grand Est
+Bourg-la-Reine	city	FR	7		Ile-de-France
+Bressuire	city	FR	7		Nouvelle-Aquitaine
+Buenos Aires City	city	AR	7	Ciudad de Buenos Aires	Buenos Aires Autonomous City
+Cadaujac	city	FR	7		Nouvelle-Aquitaine
+Camon	city	FR	7		Hauts-de-France	1
+Carhaix-Plouguer	city	FR	7		Brittany	1
+Carvin	city	FR	7		Hauts-de-France
+Castanet-Tolosan	city	FR	7		Occitanie
+Cergy-Pontoise	city	FR	7		Ile-de-France
+Chantilly	city	FR	7		Hauts-de-France
+Chazey-Bons	city	FR	7		Auvergne-Rhone-Alpes
+Chevilly	city	FR	7		Centre-Val de Loire
+Châteauneuf-les-Martigues	city	FR	7		Provence-Alpes-Cote d'Azur
+Cluny	city	FR	7		Bourgogne-Franche-Comte
+Colayrac-Saint-Cirq	city	FR	7		Nouvelle-Aquitaine
+Combs-la-Ville	city	FR	7		Ile-de-France
+Compans	city	FR	7		Ile-de-France
+Cordoba	city	AR	7	Córdoba	Cordoba
+Coutances	city	FR	7		Normandy
+Couzeix	city	FR	7		Nouvelle-Aquitaine
+Cruas	city	FR	7		Auvergne-Rhone-Alpes
+Cérences	city	FR	7		Normandy
+Deauville	city	FR	7		Normandy
+Domarin	city	FR	7		Auvergne-Rhone-Alpes
+Douarnenez	city	FR	7		Brittany
+Dourdan	city	FR	7		Ile-de-France
+Dravegny	city	FR	7		Hauts-de-France
+Ennezat	city	FR	7		Auvergne-Rhone-Alpes
+Flers-en-Escrebieux	city	FR	7		Hauts-de-France
+Fleurey-sur-Ouche	city	FR	7		Bourgogne-Franche-Comte
+Frépillon	city	FR	7		Ile-de-France	2
+Gallargues-le-Montueux	city	FR	7		Occitanie
+Garches	city	FR	7		Ile-de-France
+Garges-lès-Gonesse	city	FR	7		Ile-de-France
+Gattières	city	FR	7		Provence-Alpes-Cote d'Azur
+Gerzat	city	FR	7		Auvergne-Rhone-Alpes
+Gien	city	FR	7		Centre-Val de Loire
+Goincourt	city	FR	7		Hauts-de-France
+Grande-Synthe	city	FR	7		Hauts-de-France
+Grigny	city	FR	7
+Gueugnon	city	FR	7		Bourgogne-Franche-Comte
+Hendaye	city	FR	7		Nouvelle-Aquitaine
+Honolulu	city	US	7		Hawaii	1
+Hérouville-Saint-Clair	city	FR	7		Normandy
+Jayat	city	FR	7		Auvergne-Rhone-Alpes
+Joué-lès-Tours	city	FR	7		Centre-Val de Loire
+L'Hay-les-Roses	city	FR	7		Ile-de-France
+La Talaudière	city	FR	7		Auvergne-Rhone-Alpes
+La Trinité	city	FR	7		Provence-Alpes-Cote d'Azur
+La Tronche	city	FR	7		Auvergne-Rhone-Alpes
+Labouheyre	city	FR	7		Nouvelle-Aquitaine
+Landres	city	FR	7		Grand Est
+Les Angles	city	FR	7		Occitanie
+Lexington	city	US	7			7
+Lillebonne	city	FR	7		Normandy
+Lombez	city	FR	7		Occitanie
+Loupes	city	FR	7		Nouvelle-Aquitaine
+Maintenon	city	FR	7		Centre-Val de Loire
+Margny-lès-Compiègne	city	FR	7		Hauts-de-France
+Marin	city	FR	7		Auvergne-Rhone-Alpes
+Markham	city	CA	7		Ontario
+Mennecy	city	FR	7		Ile-de-France
+Montréal-Est	city	CA	7		Quebec
+Morières-lès-Avignon	city	FR	7		Provence-Alpes-Cote d'Azur
+Mouilleron-le-Captif	city	FR	7		Loire Region
+Orlando	city	US	7		Florida	2
+Ormesson-sur-Marne	city	FR	7		Ile-de-France
+Persan	city	FR	7		Ile-de-France
+Plaisance-du-Touch	city	FR	7		Occitanie
+Plonéis	city	FR	7		Brittany
+Plérin	city	FR	7		Brittany	1
+Pont-l'Évêque	city	FR	7		Normandy
+Poznań	city	PL	7			9
+Pune	city	IN	7		Maharashtra
+Pézenas	city	FR	7		Occitanie
+Quetigny	city	FR	7		Bourgogne-Franche-Comte
+Quimperlé	city	FR	7		Brittany
+Quito	city	EC	7		Pichincha	1
+Reux	city	FR	7			7
+Ribérac	city	FR	7		Nouvelle-Aquitaine
+Rzeszow	city	PL	7	Rzeszów	Podkarpackie Voivodeship
+Saint-Avold	city	FR	7		Grand Est
+Saint-Jean-de-Folleville	city	FR	7		Normandy
+Saint-Jean-en-Royans	city	FR	7		Auvergne-Rhone-Alpes
+Saint-Laurent-du-Pont	city	FR	7		Auvergne-Rhone-Alpes
+Saint-Maixent-l'École	city	FR	7		Nouvelle-Aquitaine
+Saint-Mandé	city	FR	7		Ile-de-France
+Saint-Martin-du-Var	city	FR	7		Provence-Alpes-Cote d'Azur
+Sausheim	city	FR	7		Grand Est
+Scionzier	city	FR	7		Auvergne-Rhone-Alpes
+Serres-Castet	city	FR	7		Nouvelle-Aquitaine
+Sisteron	city	FR	7		Provence-Alpes-Cote d'Azur
+Soignolles-en-Brie	city	FR	7		Ile-de-France
+Soisy-sous-Montmorency	city	FR	7		Ile-de-France
+Sotteville-lès-Rouen	city	FR	7		Normandy
+Stuttgart	city	DE	7		Baden-Wurttemberg	1
+São Caetano do Sul	city	BR	7		Sao Paulo
+Tarare	city	FR	7		Auvergne-Rhone-Alpes
+Thoiry	city	FR	7
+Thouaré-sur-Loire	city	FR	7		Loire Region
+Tourville-la-Rivière	city	FR	7		Normandy
+Trélissac	city	FR	7		Nouvelle-Aquitaine
+Uxbridge	city	GB	7			7
+Uzel	city	FR	7		Brittany
+Val de Briey	city	FR	7		Grand Est
+Venette	city	FR	7		Hauts-de-France
+Verniolle	city	FR	7		Occitanie
+Vert-Saint-Denis	city	FR	7		Ile-de-France
+Vic-Fezensac	city	FR	7		Occitanie
+Villefranche-de-Lauragais	city	FR	7		Occitanie
+Yerres	city	FR	7		Ile-de-France
+Zaventem	city	BE	7		Flanders
+Émerainville	city	FR	7		Ile-de-France
+Alexandra	city	ZA	6		Gauteng
+Amersfoort	city	NL	6		Utrecht
+Amou	city	FR	6		Nouvelle-Aquitaine
+Arçonnay	city	FR	6		Loire Region
+Asuncion	city	PY	6	Asunción		6
+Aubusson	city	FR	6		Nouvelle-Aquitaine
+Avelin	city	FR	6		Hauts-de-France
+Barbezieux-Saint-Hilaire	city	FR	6		Nouvelle-Aquitaine
+Barranquilla	city	CO	6			6
+Baume-les-Dames	city	FR	6		Bourgogne-Franche-Comte
+Beaurains	city	FR	6		Hauts-de-France
+Beauvois-en-Cambrésis	city	FR	6		Hauts-de-France
+Bessières	city	FR	6		Occitanie
+Biganos	city	FR	6		Nouvelle-Aquitaine
+Biscarrosse	city	FR	6		Nouvelle-Aquitaine
+Blandainville	city	FR	6		Centre-Val de Loire
+Bonnée	city	FR	6		Centre-Val de Loire
+Bouc-Bel-Air	city	FR	6		Provence-Alpes-Cote d'Azur
+Bresson	city	FR	6		Auvergne-Rhone-Alpes
+Brignais	city	FR	6		Auvergne-Rhone-Alpes	1
+Brossard	city	CA	6		Quebec
+Bruxelles	city	BE	6			6
+Buzançais	city	FR	6		Centre-Val de Loire
+Cali	city	CO	6			6
+Caloocan City North	city	PH	6		National Capital Region
+Cambrai	city	FR	6		Hauts-de-France
+Capestang	city	FR	6		Occitanie
+Cartagena	city	CO	6			6
+Centre Wellington	city	CA	6		Ontario
+Chailles	city	FR	6		Centre-Val de Loire
+Champniers	city	FR	6		Nouvelle-Aquitaine
+Charleroi	city	BE	6		Wallonia	1
+Chooz	city	FR	6		Grand Est
+Chuo-ku	city	JP	6	中央区	Tokyo
+Chécy	city	FR	6		Centre-Val de Loire
+Chéroy	city	FR	6		Bourgogne-Franche-Comte
+City of the East	city	PY	6	Ciudad del Este		6
+Clapiers	city	FR	6		Occitanie
+Combourg	city	FR	6		Brittany
+Coubron	city	FR	6		Ile-de-France
+Coye-la-Forêt	city	FR	6		Hauts-de-France
+Croissy-Beaubourg	city	FR	6		Ile-de-France
+Crépy-en-Valois	city	FR	6		Hauts-de-France
+Cuenca	city	EC	6		Azuay
+Cusco	city	PE	6		Cusco
+Demi-Quartier	city	FR	6		Auvergne-Rhone-Alpes
+Detroit	city	US	6		Michigan	1
+Domont	city	FR	6		Ile-de-France
+Draveil	city	FR	6		Ile-de-France
+Dresden	city	DE	6		Saxony	5
+Encarnación	city	PY	6			6
+Exeter	city	GB	6			6
+Feyzin	city	FR	6		Auvergne-Rhone-Alpes
+Florida	city	US	6			6
+Fontaine	city	FR	6
+Framingham	city	US	6			6
+Funchal	city	PT	6			6
+Genlis	city	FR	6		Bourgogne-Franche-Comte
+Gianyar	city	ID	6			6
+Grand-Couronne	city	FR	6		Normandy
+Groslay	city	FR	6		Ile-de-France
+Guayaquil	city	EC	6		Guayas
+Guéret	city	FR	6		Nouvelle-Aquitaine
+Hâcourt	city	FR	6		Grand Est
+Illiers-Combray	city	FR	6		Centre-Val de Loire
+Izon	city	FR	6		Nouvelle-Aquitaine
+Jacou	city	FR	6		Occitanie
+Joinville-le-Pont	city	FR	6		Ile-de-France
+Josselin	city	FR	6		Brittany
+Juvisy-sur-Orge	city	FR	6		Ile-de-France	1
+Kelowna	city	CA	6		British Columbia
+La Chapelle-Saint-Aubin	city	FR	6		Loire Region
+La Ferté Macé	city	FR	6		Normandy
+La Feuillade	city	FR	6		Nouvelle-Aquitaine
+La Flotte	city	FR	6		Nouvelle-Aquitaine
+La Gacilly	city	FR	6		Brittany
+La Loupe	city	FR	6		Centre-Val de Loire
+La Mure	city	FR	6		Auvergne-Rhone-Alpes
+La Plata	city	AR	6		Buenos Aires
+La Valette-du-Var	city	FR	6		Provence-Alpes-Cote d'Azur
+Labarthe-sur-Lèze	city	FR	6		Occitanie
+Lacroix-Saint-Ouen	city	FR	6		Hauts-de-France
+Langhus	city	NO	6		Akershus
+Lannemezan	city	FR	6		Occitanie	1
+Laval	city	CA	6		Quebec
+Le Châtelet-en-Brie	city	FR	6		Ile-de-France
+Le Croisic	city	FR	6		Loire Region
+Le Sourn	city	FR	6		Brittany	1
+Leers	city	FR	6		Hauts-de-France
+Lescar	city	FR	6		Nouvelle-Aquitaine
+Lièpvre	city	FR	6		Grand Est
+Ljubljana	city	SI	6			6
+Loja	city	EC	6		Loja
+Loos	city	FR	6		Hauts-de-France
+Luque	city	PY	6			6
+Madison	city	US	6			6
+Mamer	city	LU	6			6
+Manta	city	EC	6		Manabí
+Marly-le-Roi	city	FR	6		Ile-de-France	3
+Marsac-sur-l'Isle	city	FR	6		Nouvelle-Aquitaine
+Mauriac	city	FR	6		Auvergne-Rhone-Alpes
+Maxéville	city	FR	6		Grand Est
+Medellin	city	CO	6	Medellín		6
+Mendoza	city	AR	6		Mendoza
+Mers-les-Bains	city	FR	6		Hauts-de-France
+Meung-sur-Loire	city	FR	6		Centre-Val de Loire	1
+Montauban-de-Bretagne	city	FR	6		Brittany
+Montendre	city	FR	6		Nouvelle-Aquitaine
+Montigny-lès-Cormeilles	city	FR	6		Ile-de-France
+Montivilliers	city	FR	6		Normandy
+Montmagny	city	FR	6		Ile-de-France
+Montoire-sur-le-Loir	city	FR	6		Centre-Val de Loire
+Monts	city	FR	6		Centre-Val de Loire
+Muret	city	FR	6		Occitanie
+Méru	city	FR	6		Hauts-de-France
+Neuilly-sur-Marne	city	FR	6		Ile-de-France
+Newcastle upon Tyne	city	GB	6		England	3
+Nivillac	city	FR	6		Brittany	1
+Nontron	city	FR	6		Nouvelle-Aquitaine
+Oran	city	DZ	6	وهران	Oran	1
+Orbey	city	FR	6		Grand Est
+Orchies	city	FR	6		Hauts-de-France
+Pafos	city	CY	6	Πάφος		6
+Paray-Vieille-Poste	city	FR	6		Ile-de-France
+Petit-Bourg	city	GP	6		Guadeloupe
+Petit-Couronne	city	FR	6		Normandy
+Peyrelevade	city	FR	6		Nouvelle-Aquitaine
+Piura	city	PE	6		Piura
+Ploufragan	city	FR	6		Brittany
+Pouzac	city	FR	6		Occitanie
+Puerto Colombia	city	CO	6			6
+Puilboreau	city	FR	6		Nouvelle-Aquitaine
+Retford	city	GB	6		England	1
+Revel	city	FR	6		Occitanie
+Reventin-Vaugris	city	FR	6		Auvergne-Rhone-Alpes
+Roquefort	city	FR	6		Nouvelle-Aquitaine
+Rosario	city	AR	6		Santa Fe
+Rosières	city	FR	6		Auvergne-Rhone-Alpes
+Rosières-en-Santerre	city	FR	6		Hauts-de-France
+Rotterdam	city	NL	6		South Holland	4
+Rousset	city	FR	6		Provence-Alpes-Cote d'Azur
+Ruaudin	city	FR	6		Loire Region
+Râches	city	FR	6		Hauts-de-France
+Saignon	city	FR	6		Provence-Alpes-Cote d'Azur
+Saint-Apollinaire	city	FR	6		Bourgogne-Franche-Comte
+Saint-Gaudens	city	FR	6		Occitanie
+Saint-Gilles	city	FR	6		Occitanie
+Saint-Laurent-Blangy	city	FR	6		Hauts-de-France
+Saint-Marcellin-lès-Vaison	city	FR	6		Provence-Alpes-Cote d'Azur
+Saint-Méen-le-Grand	city	FR	6		Brittany
+Saint-Méloir-des-Ondes	city	FR	6		Brittany
+Saint-Pierre-en-Faucigny	city	FR	6		Auvergne-Rhone-Alpes
+Saint-Vit	city	FR	6		Bourgogne-Franche-Comte
+Saint-Yrieix-la-Perche	city	FR	6		Nouvelle-Aquitaine
+Salamanca	city	MX	6		Guanajuato
+San Lorenzo	city	PY	6			6
+Saverne	city	FR	6		Grand Est
+Selles-Saint-Denis	city	FR	6		Centre-Val de Loire
+Soorts-Hossegor	city	FR	6		Nouvelle-Aquitaine
+Sorgues	city	FR	6		Provence-Alpes-Cote d'Azur
+Sucé-sur-Erdre	city	FR	6		Loire Region
+Taipei City	city	TW	6	台北市		6
+Tallin	city	EE	6			6
+Tavers	city	FR	6		Centre-Val de Loire
+Teaneck, NJ	city	US	6		New Jersey	6
+Teltow	city	DE	6		Brandenburg
+Terrasson-Lavilledieu	city	FR	6		Nouvelle-Aquitaine
+Thiruvananthapuram	city	IN	6			6
+Trets	city	FR	6		Provence-Alpes-Cote d'Azur
+Trujillo	city	PE	6		La Libertad
+Trévoux	city	FR	6		Auvergne-Rhone-Alpes
+Tuam	city	IE	6			6
+Ussel	city	FR	6		Nouvelle-Aquitaine
+Vallet	city	FR	6		Loire Region
+Varces-Allières-et-Risset	city	FR	6		Auvergne-Rhone-Alpes
+Vigneux-sur-Seine	city	FR	6		Ile-de-France
+Villedieu-les-Poêles-Rouffigny	city	FR	6		Normandy
+Wattrelos	city	FR	6		Hauts-de-France
+Évry	city	FR	6		Bourgogne-Franche-Comte
+Abbeville	city	FR	5		Hauts-de-France
+Abu Dhabi	city	AE	5	أبوظبي		5
+Aigues-Mortes	city	FR	5		Occitanie
+Albany	city	US	5			5
+Altkirch	city	FR	5		Grand Est
+Angoulins	city	FR	5		Nouvelle-Aquitaine
+Annot	city	FR	5		Provence-Alpes-Cote d'Azur
+Apt	city	FR	5		Provence-Alpes-Cote d'Azur
+Asnières	city	FR	5		Normandy
+Athis-Mons	city	FR	5		Ile-de-France
+Aureilhan	city	FR	5		Occitanie
+Avon	city	FR	5		Ile-de-France
+Aytré	city	FR	5		Nouvelle-Aquitaine
+Bagnolet	city	FR	5		Ile-de-France
+Balaruc-le-Vieux	city	FR	5		Occitanie
+Baud	city	FR	5		Brittany
+Beaufort-en-Anjou	city	FR	5		Loire Region
+Beaugency	city	FR	5		Centre-Val de Loire
+Beaumont-lès-Valence	city	FR	5		Auvergne-Rhone-Alpes
+Beaupréau-en-Mauges	city	FR	5		Loire Region
+Belleu	city	FR	5		Hauts-de-France
+Bern	city	CH	5		Bern	3
+Beuzeville	city	FR	5		Normandy
+Beychac-et-Caillau	city	FR	5		Nouvelle-Aquitaine
+Bléré	city	FR	5		Centre-Val de Loire
+Bondy	city	FR	5		Ile-de-France
+Braud-et-Saint-Louis	city	FR	5		Nouvelle-Aquitaine
+Briançon	city	FR	5		Provence-Alpes-Cote d'Azur
+Bromont	city	CA	5		Quebec	1
+Brou	city	FR	5		Centre-Val de Loire
+Brumath	city	FR	5		Grand Est
+Buenos Aires	city	AR	5			5
+Bégard	city	FR	5		Brittany
+Cabriès	city	FR	5		Provence-Alpes-Cote d'Azur
+Cambridge	city	US	5		Massachusetts
+Canohès	city	FR	5		Occitanie
+Carbonne	city	FR	5		Occitanie
+Castelnau-d'Estrétefonds	city	FR	5		Occitanie
+Challuy	city	FR	5		Bourgogne-Franche-Comte
+Champagne-au-Mont-d'Or	city	FR	5		Auvergne-Rhone-Alpes
+Champagne-sur-Seine	city	FR	5		Ile-de-France
+Chanas	city	FR	5		Auvergne-Rhone-Alpes
+Changé	city	FR	5		Loire Region
+Chantonnay	city	FR	5		Loire Region
+Chemillé-en-Anjou	city	FR	5		Loire Region
+Chennevières-sur-Marne	city	FR	5		Ile-de-France
+Cherré-Au	city	FR	5		Loire Region
+Chéraute	city	FR	5		Nouvelle-Aquitaine
+Clohars-Carnoët	city	FR	5		Brittany
+Coignières	city	FR	5		Ile-de-France
+Combloux	city	FR	5		Auvergne-Rhone-Alpes
+Condé-sur-Sarthe	city	FR	5		Normandy
+Confolens	city	FR	5		Nouvelle-Aquitaine
+Contamine-sur-Arve	city	FR	5		Auvergne-Rhone-Alpes
+Contrexéville	city	FR	5		Grand Est
+Copenhagen	city	DK	5	København,København V	Capital	2
+Cormeilles-en-Parisis	city	FR	5		Ile-de-France
+Cornillé	city	FR	5		Brittany
+Coulommiers	city	FR	5		Ile-de-France
+Creutzwald	city	FR	5		Grand Est	2
+Crolles	city	FR	5		Auvergne-Rhone-Alpes
+Dammarie-les-Lys	city	FR	5		Ile-de-France
+Delaware	city	US	5			5
+Deneuvre	city	FR	5		Grand Est	1
+Doubs	city	FR	5		Bourgogne-Franche-Comte
+Douvaine	city	FR	5		Auvergne-Rhone-Alpes
+Elbeuf	city	FR	5		Normandy
+Elne	city	FR	5		Occitanie	1
+Eu	city	FR	5		Normandy
+Forcalquier	city	FR	5		Provence-Alpes-Cote d'Azur
+Fosses	city	FR	5		Ile-de-France
+Fountain Valley	city	US	5		California
+Franconville	city	FR	5		Ile-de-France
+Fresnes-lès-Montauban	city	FR	5		Hauts-de-France
+Gavaudun	city	FR	5		Nouvelle-Aquitaine
+Geneston	city	FR	5		Loire Region
+Gisors	city	FR	5		Normandy
+Goose Creek	city	US	5		South Carolina
+Grimaud	city	FR	5		Provence-Alpes-Cote d'Azur	1
+Halle	city	BE	5		Flanders
+Hayange	city	FR	5		Grand Est
+Herbault	city	FR	5		Centre-Val de Loire
+Houdemont	city	FR	5		Grand Est
+Hradec Kralove	city	CZ	5	Hradec Králové	Královéhradecký kraj
+Janzé	city	FR	5		Brittany
+Kingston upon Hull	city	GB	5			5
+Köln	city	DE	5			5
+L'Horme	city	FR	5		Auvergne-Rhone-Alpes
+L'Isle-Adam	city	FR	5		Ile-de-France
+La Barre-de-Monts	city	FR	5		Loire Region
+La Chapelle-Saint-Mesmin	city	FR	5		Centre-Val de Loire
+La Guerche-de-Bretagne	city	FR	5		Brittany
+La Mézière	city	FR	5		Brittany
+La Plaine-sur-Mer	city	FR	5		Loire Region
+La Tremblade	city	FR	5		Nouvelle-Aquitaine
+Lavaur	city	FR	5		Occitanie
+Le Bugue	city	FR	5		Nouvelle-Aquitaine
+Le Controis-en-Sologne	city	FR	5		Centre-Val de Loire
+Le Fay-Saint-Quentin	city	FR	5		Hauts-de-France
+Le Grand-Quevilly	city	FR	5		Normandy
+Le Gua	city	FR	5		Nouvelle-Aquitaine
+Le Rouret	city	FR	5		Provence-Alpes-Cote d'Azur
+Le Sequestre	city	FR	5		Occitanie
+Lectoure	city	FR	5		Occitanie
+Les Sorinières	city	FR	5		Loire Region
+Lessines	city	BE	5		Wallonia
+Lizy-sur-Ourcq	city	FR	5		Ile-de-France
+Loches	city	FR	5		Centre-Val de Loire
+Locoal-Mendon	city	FR	5		Brittany
+Loguivy-Plougras	city	FR	5		Brittany
+Lompret	city	FR	5		Hauts-de-France
+Loudéac	city	FR	5		Brittany
+Lusignan	city	FR	5		Nouvelle-Aquitaine
+Manila	city	PH	5			5
+Marennes-Hiers-Brouage	city	FR	5		Nouvelle-Aquitaine
+Mareuil-lès-Meaux	city	FR	5		Ile-de-France
+Mareuil-sur-Lay-Dissais	city	FR	5		Loire Region
+Martillac	city	FR	5		Nouvelle-Aquitaine
+Matha	city	FR	5		Nouvelle-Aquitaine
+Mehun-sur-Yèvre	city	FR	5		Centre-Val de Loire
+Minneapolis	city	US	5			5
+Mions	city	FR	5		Auvergne-Rhone-Alpes
+Mitry-Mory	city	FR	5		Ile-de-France
+Montceau-les-Mines	city	FR	5		Bourgogne-Franche-Comte
+Montmorency	city	FR	5		Ile-de-France
+Montreuil-Juigné	city	FR	5		Loire Region
+Montreuil-sur-Ille	city	FR	5		Brittany
+Méricourt	city	FR	5		Hauts-de-France
+Méry-sur-Oise	city	FR	5		Ile-de-France	2
+Naucelle	city	FR	5		Occitanie
+Neuilly-Plaisance	city	FR	5		Ile-de-France
+Neuville-en-Ferrain	city	FR	5		Hauts-de-France
+Nogent-sur-Oise	city	FR	5		Hauts-de-France
+Nort-sur-Erdre	city	FR	5		Loire Region
+Nuits-Saint-Georges	city	FR	5		Bourgogne-Franche-Comte
+Nérondes	city	FR	5		Centre-Val de Loire
+Orléans	city	FR	5			5
+Orsay	city	FR	5		Ile-de-France
+Ouarville	city	FR	5		Centre-Val de Loire
+Panazol	city	FR	5		Nouvelle-Aquitaine
+Pithiviers	city	FR	5		Centre-Val de Loire
+Plescop	city	FR	5		Brittany
+Pleurtuit	city	FR	5		Brittany
+Pontacq	city	FR	5		Nouvelle-Aquitaine
+Praz-sur-Arly	city	FR	5		Auvergne-Rhone-Alpes
+Quévert	city	FR	5		Brittany
+Reading	city	GB	5		England	3
+Reus	city	ES	5		Catalonia
+Rieux	city	FR	5		Brittany
+Riorges	city	FR	5		Auvergne-Rhone-Alpes	1
+Ris-Orangis	city	FR	5		Ile-de-France
+Rognes	city	FR	5		Provence-Alpes-Cote d'Azur
+Romanèche-Thorins	city	FR	5		Bourgogne-Franche-Comte
+Rosporden	city	FR	5		Brittany
+Rouillac	city	FR	5		Nouvelle-Aquitaine
+Saint-Agathon	city	FR	5		Brittany
+Saint-Alban	city	FR	5		Occitanie
+Saint-Amand-les-Eaux	city	FR	5		Hauts-de-France
+Saint-Ambroix	city	FR	5		Occitanie
+Saint-Avé	city	FR	5		Brittany
+Saint-Contest	city	FR	5		Normandy
+Saint-Flour	city	FR	5		Auvergne-Rhone-Alpes
+Saint-Fons	city	FR	5		Auvergne-Rhone-Alpes
+Saint-Fraimbault-de-Prières	city	FR	5		Loire Region
+Saint-Jean-de-Bournay	city	FR	5		Auvergne-Rhone-Alpes
+Saint-Junien	city	FR	5		Nouvelle-Aquitaine
+Saint-Léonard	city	FR	5		Grand Est
+Saint-Martin	city	FR	5		Grand Est
+Saint-Nicolas-de-Redon	city	FR	5		Loire Region
+Saint-Pair-sur-Mer	city	FR	5		Normandy
+Saint-Pol-sur-Ternoise	city	FR	5		Hauts-de-France
+Saint-Pée-sur-Nivelle	city	FR	5		Nouvelle-Aquitaine
+Saint-Sever	city	FR	5		Nouvelle-Aquitaine
+Saint-Évarzec	city	FR	5		Brittany
+Santiago	city	CL	5		Region Santiago Metropolitan	4
+Seyssinet-Pariset	city	FR	5		Auvergne-Rhone-Alpes
+Sherbrooke	city	CA	5		Quebec
+Soustons	city	FR	5		Nouvelle-Aquitaine
+Southport	city	GB	5		England
+Staines-upon-Thames	city	GB	5			5
+Stoke-on-Trent	city	GB	5		England	2
+Thyez	city	FR	5		Auvergne-Rhone-Alpes
+Toucy	city	FR	5		Bourgogne-Franche-Comte
+Treignac	city	FR	5		Nouvelle-Aquitaine
+Utrecht	city	NL	5		Utrecht	1
+Vald'Yerre	city	FR	5		Centre-Val de Loire
+Valréas	city	FR	5		Provence-Alpes-Cote d'Azur
+Vern-sur-Seiche	city	FR	5		Brittany
+Verneuil d'Avre et d'Iton	city	FR	5		Normandy
+Verrières-en-Anjou	city	FR	5		Loire Region
+Verson	city	FR	5		Normandy
+Vienne-en-Val	city	FR	5		Centre-Val de Loire
+Vif	city	FR	5		Auvergne-Rhone-Alpes
+Villeneuve-le-Roi	city	FR	5		Ile-de-France
+Villeparisis	city	FR	5		Ile-de-France
+Villepinte	city	FR	5		Ile-de-France
+Vineuil	city	FR	5		Centre-Val de Loire
+Viroflay	city	FR	5		Ile-de-France
+Vémars	city	FR	5		Ile-de-France
+Warwick	city	US	5		Rhode Island	3
+Watermael-Boitsfort	city	BE	5	Watermaal-Bosvoorde	Brussels
+Wellington	city	NZ	5		Wellington	4
+Woippy	city	FR	5		Grand Est
+Yvetot	city	FR	5		Normandy
+Écrouves	city	FR	5		Grand Est
+Épagny	city	FR	5		Bourgogne-Franche-Comte
+Étoile-sur-Rhône	city	FR	5		Auvergne-Rhone-Alpes
+A Coruña	city	ES	4		Galicia
+Ain Attig	city	MA	4	عين عتيق	Rabat - Sale - Kenitra
+Anthy-sur-Léman	city	FR	4		Auvergne-Rhone-Alpes
+Arandon-Passins	city	FR	4		Auvergne-Rhone-Alpes
+Arese	city	IT	4		Lombardy
+Argonay	city	FR	4		Auvergne-Rhone-Alpes
+Arlay	city	FR	4		Bourgogne-Franche-Comte
+Artigues-près-Bordeaux	city	FR	4		Nouvelle-Aquitaine
+Aspach-Michelbach	city	FR	4		Grand Est
+Aspen	city	US	4		Colorado
+Augny	city	FR	4		Grand Est
+Auxi-le-Château	city	FR	4		Hauts-de-France
+Bain-de-Bretagne	city	FR	4		Brittany	3
+Bas-en-Basset	city	FR	4		Auvergne-Rhone-Alpes
+Basingstoke	city	GB	4		England
+Basse-Goulaine	city	FR	4		Loire Region
+Bassens	city	FR	4		Nouvelle-Aquitaine
+Bath	city	GB	4		England	1
+Bayeux	city	FR	4		Normandy
+Bentonville	city	US	4			4
+Betton	city	FR	4		Brittany
+Biron	city	FR	4		Nouvelle-Aquitaine
+Blainville-sur-Orne	city	FR	4		Normandy
+Boissy-le-Cutté	city	FR	4		Ile-de-France
+Bolquère	city	FR	4		Occitanie
+Bondues	city	FR	4		Hauts-de-France
+Bonnat	city	FR	4		Nouvelle-Aquitaine
+Bons-en-Chablais	city	FR	4		Auvergne-Rhone-Alpes
+Bouchemaine	city	FR	4		Loire Region
+Boulay-Moselle	city	FR	4		Grand Est	1
+Boulazac Isle Manoire	city	FR	4		Nouvelle-Aquitaine
+Boën-sur-Lignon	city	FR	4		Auvergne-Rhone-Alpes
+Bremen	city	DE	4			4
+Brennilis	city	FR	4		Brittany
+Bréhan	city	FR	4		Brittany
+Brügg	city	CH	4		Bern
+Bures-sur-Yvette	city	FR	4		Ile-de-France
+Cambo-les-Bains	city	FR	4		Nouvelle-Aquitaine
+Cantaron	city	FR	4		Provence-Alpes-Cote d'Azur
+Carpiquet	city	FR	4		Normandy
+Carrières-sous-Poissy	city	FR	4		Ile-de-France
+Castelsarrasin	city	FR	4		Occitanie
+Cauffry	city	FR	4		Hauts-de-France
+Caumont-sur-Aure	city	FR	4		Normandy
+Caussade	city	FR	4		Occitanie
+Chagny	city	FR	4		Bourgogne-Franche-Comte
+Chalais	city	FR	4		Nouvelle-Aquitaine
+Chalezeule	city	FR	4		Bourgogne-Franche-Comte
+Chamalières	city	FR	4		Auvergne-Rhone-Alpes
+Champforgeuil	city	FR	4		Bourgogne-Franche-Comte
+Champhol	city	FR	4		Centre-Val de Loire
+Chancelade	city	FR	4		Nouvelle-Aquitaine
+Charbonnières-les-Bains	city	FR	4		Auvergne-Rhone-Alpes
+Chauffailles	city	FR	4		Bourgogne-Franche-Comte
+Châteaubriant	city	FR	4		Loire Region
+Châtenay-Malabry	city	FR	4		Ile-de-France
+Châtillon-sur-Chalaronne	city	FR	4		Auvergne-Rhone-Alpes
+Claira	city	FR	4		Occitanie
+Colombiers	city	FR	4		Occitanie
+Conches-en-Ouche	city	FR	4		Normandy
+Condat-sur-Vienne	city	FR	4		Nouvelle-Aquitaine
+Connerré	city	FR	4		Loire Region
+Courpière	city	FR	4		Auvergne-Rhone-Alpes
+Cours	city	FR	4		Auvergne-Rhone-Alpes
+Creys-Mépieu	city	FR	4		Auvergne-Rhone-Alpes
+Crêches-sur-Saône	city	FR	4		Bourgogne-Franche-Comte
+Céret	city	FR	4		Occitanie
+Dayton	city	US	4		Ohio
+Denain	city	FR	4		Hauts-de-France
+Denpasar	city	ID	4			6
+Dommartin-lès-Toul	city	FR	4		Grand Est
+Domérat	city	FR	4		Auvergne-Rhone-Alpes
+Donzenac	city	FR	4		Nouvelle-Aquitaine
+Düsseldorf	city	DE	4			4
+Eckbolsheim	city	FR	4		Grand Est	3
+Elgin	city	US	4			4
+Faches-Thumesnil	city	FR	4		Hauts-de-France
+Ferney-Voltaire	city	FR	4		Auvergne-Rhone-Alpes
+Fleury-sur-Orne	city	FR	4		Normandy
+Florange	city	FR	4		Grand Est
+Forges-les-Eaux	city	FR	4		Normandy
+Fort Worth	city	US	4			4
+Fourmies	city	FR	4		Hauts-de-France	1
+Francheville	city	FR	4		Auvergne-Rhone-Alpes
+Frans	city	FR	4		Auvergne-Rhone-Alpes
+Garancières-en-Beauce	city	FR	4		Centre-Val de Loire
+Gassin	city	FR	4		Provence-Alpes-Cote d'Azur
+Geispolsheim	city	FR	4		Grand Est
+Gevrey-Chambertin	city	FR	4		Bourgogne-Franche-Comte
+Gidy	city	FR	4		Centre-Val de Loire
+Gometz-le-Châtel	city	FR	4		Ile-de-France
+Gretz-Armainvilliers	city	FR	4		Ile-de-France
+Grignan	city	FR	4		Auvergne-Rhone-Alpes
+Grosbliederstroff	city	FR	4		Grand Est
+Guémené-sur-Scorff	city	FR	4		Brittany
+Gérardmer	city	FR	4		Grand Est
+Hauconcourt	city	FR	4		Grand Est
+Haute-Goulaine	city	FR	4		Loire Region	1
+Hauts de Bienne	city	FR	4		Bourgogne-Franche-Comte
+Hazebrouck	city	FR	4		Hauts-de-France
+High Wycombe	city	GB	4		England
+Hénin-Beaumont	city	FR	4		Hauts-de-France
+Héricourt	city	FR	4		Bourgogne-Franche-Comte
+Igny	city	FR	4		Ile-de-France
+Illzach	city	FR	4		Grand Est	1
+Inverness	city	GB	4		Scotland
+Iteuil	city	FR	4		Nouvelle-Aquitaine
+Jouy-aux-Arches	city	FR	4		Grand Est	1
+Juillan	city	FR	4		Occitanie
+Kaohsiung City	city	TW	4	高雄市		4
+Kaysersberg Vignoble	city	FR	4		Grand Est
+Kraków	city	PL	4			4
+L'Isle-d'Abeau	city	FR	4		Auvergne-Rhone-Alpes
+La Bassée	city	FR	4		Hauts-de-France
+La Boisse	city	FR	4		Auvergne-Rhone-Alpes
+La Chapelle-d'Armentières	city	FR	4		Hauts-de-France	2
+La Crau	city	FR	4		Provence-Alpes-Cote d'Azur
+La Gaude	city	FR	4		Provence-Alpes-Cote d'Azur
+La Guerche-sur-l'Aubois	city	FR	4		Centre-Val de Loire
+La Jarrie	city	FR	4		Nouvelle-Aquitaine
+La Montagne	city	FR	4		Loire Region
+La Queue-en-Brie	city	FR	4		Ile-de-France
+La Roche-Posay	city	FR	4		Nouvelle-Aquitaine
+La Verpillière	city	FR	4		Auvergne-Rhone-Alpes
+La Wantzenau	city	FR	4		Grand Est
+Landivisiau	city	FR	4		Brittany
+Languidic	city	FR	4		Brittany
+Lanton	city	FR	4		Nouvelle-Aquitaine
+Le Drennec	city	FR	4		Brittany
+Le Petit-Quevilly	city	FR	4		Normandy
+Le Plessis-Belleville	city	FR	4		Hauts-de-France
+Le Quesnoy	city	FR	4		Hauts-de-France
+Le Rheu	city	FR	4		Brittany
+Le Trait	city	FR	4		Normandy
+Le Vésinet	city	FR	4		Ile-de-France
+Leatherhead	city	GB	4			4
+Liege	city	BE	4	Liège	Wallonia
+Liffré	city	FR	4		Brittany
+Longny les Villages	city	FR	4		Normandy
+Longuenesse	city	FR	4		Hauts-de-France
+Luxeuil-les-Bains	city	FR	4		Bourgogne-Franche-Comte
+Magny-les-Hameaux	city	FR	4		Ile-de-France
+Maidenhead	city	GB	4		England	1
+Mamers	city	FR	4		Loire Region
+Marnaz	city	FR	4		Auvergne-Rhone-Alpes
+Meximieux	city	FR	4		Auvergne-Rhone-Alpes
+Moncel-lès-Lunéville	city	FR	4		Grand Est
+Montagny	city	FR	4		Auvergne-Rhone-Alpes
+Montereau-Fault-Yonne	city	FR	4		Ile-de-France
+Monteux	city	FR	4		Provence-Alpes-Cote d'Azur
+Montgeron	city	FR	4		Ile-de-France
+Montilliers	city	FR	4		Loire Region
+Montirat	city	FR	4		Occitanie
+Montréal	city	FR	4		Occitanie	2
+Mortagne-au-Perche	city	FR	4		Normandy
+Moréac	city	FR	4		Brittany
+Moulins-lès-Metz	city	FR	4		Grand Est
+N'Djamena	city	TD	4			4
+Neuville-sur-Saône	city	FR	4		Auvergne-Rhone-Alpes
+New Orleans, LA	city	US	4		Louisiana	4
+Nueil-les-Aubiers	city	FR	4		Nouvelle-Aquitaine
+Oberhausbergen	city	FR	4		Grand Est
+Offemont	city	FR	4		Bourgogne-Franche-Comte
+Offranville	city	FR	4		Normandy
+Ormes	city	FR	4		Centre-Val de Loire
+Pacé	city	FR	4		Brittany
+Pernes-les-Fontaines	city	FR	4		Provence-Alpes-Cote d'Azur
+Pertuis	city	FR	4		Provence-Alpes-Cote d'Azur
+Picton	city	NZ	4		Marlborough
+Pineuilh	city	FR	4		Nouvelle-Aquitaine
+Plaisance	city	FR	4		Occitanie
+Plomodiern	city	FR	4		Brittany
+Plouay	city	FR	4		Brittany
+Plouézec	city	FR	4		Brittany
+Pompey	city	FR	4		Grand Est
+Pont-Sainte-Marie	city	FR	4		Grand Est
+Pont-Sainte-Maxence	city	FR	4		Hauts-de-France
+Pont-de-Chéruy	city	FR	4		Auvergne-Rhone-Alpes
+Pont-de-Roide-Vermondans	city	FR	4		Bourgogne-Franche-Comte
+Pont-à-Marcq	city	FR	4		Hauts-de-France
+Port-de-Bouc	city	FR	4		Provence-Alpes-Cote d'Azur
+Portland	city	US	4		Oregon	3
+Porto-Vecchio	city	FR	4		Corsica
+Portsmouth	city	GB	4		England	3
+Pueblo	city	US	4		Colorado
+Puiseaux	city	FR	4		Centre-Val de Loire
+Reignac	city	FR	4		Nouvelle-Aquitaine
+Riez	city	FR	4		Provence-Alpes-Cote d'Azur
+Riverside	city	US	4		California	3
+Riyadh	city	SA	4			4
+Rogerville	city	FR	4		Normandy
+Roissy-en-Brie	city	FR	4		Ile-de-France
+Roma	city	IT	4			4
+Rostrenen	city	FR	4		Brittany
+Saint-Brice-sous-Forêt	city	FR	4		Ile-de-France
+Saint-Céré	city	FR	4		Occitanie
+Saint-Denis-lès-Rebais	city	FR	4		Ile-de-France
+Saint-Genis-les-Ollières	city	FR	4		Auvergne-Rhone-Alpes
+Saint-Gérand-Croixanvec	city	FR	4		Brittany
+Saint-Jean-de-Braye	city	FR	4		Centre-Val de Loire
+Saint-Jean-de-Védas	city	FR	4		Occitanie
+Saint-Jeoire	city	FR	4		Auvergne-Rhone-Alpes
+Saint-Lyphard	city	FR	4		Loire Region
+Saint-Mathieu-de-Tréviers	city	FR	4		Occitanie
+Saint-Maurice-de-Lignon	city	FR	4		Auvergne-Rhone-Alpes
+Saint-Maximin-la-Sainte-Baume	city	FR	4		Provence-Alpes-Cote d'Azur
+Saint-Nizier-sous-Charlieu	city	FR	4		Auvergne-Rhone-Alpes
+Saint-Paul-lès-Romans	city	FR	4		Auvergne-Rhone-Alpes
+Saint-Pavace	city	FR	4		Loire Region
+Saint-Pierre-d'Irube	city	FR	4		Nouvelle-Aquitaine
+Saint-Pierre-des-Corps	city	FR	4		Centre-Val de Loire
+Saint-Sulpice-sur-Lèze	city	FR	4		Occitanie
+Saint-Vallier-de-Thiey	city	FR	4		Provence-Alpes-Cote d'Azur
+Saint-Vincent-de-Tyrosse	city	FR	4		Nouvelle-Aquitaine
+Sainte-Maure	city	FR	4		Grand Est
+Sainte-Maxime	city	FR	4		Provence-Alpes-Cote d'Azur
+Sainte-Savine	city	FR	4		Grand Est
+Salles-la-Source	city	FR	4		Occitanie
+San Miguel	city	CL	4		Region Santiago Metropolitan
+Sancoins	city	FR	4		Centre-Val de Loire
+Sarre-Union	city	FR	4		Grand Est
+Savigneux	city	FR	4		Auvergne-Rhone-Alpes
+Sens-de-Bretagne	city	FR	4		Brittany
+Signes	city	FR	4		Provence-Alpes-Cote d'Azur
+Sombernon	city	FR	4		Bourgogne-Franche-Comte
+Sorigny	city	FR	4		Centre-Val de Loire
+Soumoulou	city	FR	4		Nouvelle-Aquitaine
+Surrey	city	CA	4		British Columbia
+Taden	city	FR	4		Brittany
+Taluyers	city	FR	4		Auvergne-Rhone-Alpes
+Texas	city	US	4			4
+Thuir	city	FR	4		Occitanie
+Trith-Saint-Léger	city	FR	4		Hauts-de-France
+Troy	city	US	4		New York
+Trélazé	city	FR	4		Loire Region
+Val d'Erdre-Auxence	city	FR	4		Loire Region
+Varennes-lès-Mâcon	city	FR	4		Bourgogne-Franche-Comte
+Velars-sur-Ouche	city	FR	4		Bourgogne-Franche-Comte
+Ventura	city	US	4		California	1
+Verdun-sur-Garonne	city	FR	4		Occitanie
+Vernouillet	city	FR	4		Centre-Val de Loire
+Villefranche-de-Rouergue	city	FR	4		Occitanie
+Villevieille	city	FR	4		Occitanie
+Viriat	city	FR	4		Auvergne-Rhone-Alpes
+Vitry-le-François	city	FR	4		Grand Est
+Vivoin	city	FR	4		Loire Region
+Voiron	city	FR	4		Auvergne-Rhone-Alpes
+Vétraz-Monthoux	city	FR	4		Auvergne-Rhone-Alpes
+Wissous	city	FR	4		Ile-de-France
+Wittelsheim	city	FR	4		Grand Est
+Woluwé-Saint-Lambert	city	BE	4	Sint-Lambrechts-Woluwe	Brussels
+Yssingeaux	city	FR	4		Auvergne-Rhone-Alpes
+Yvrac	city	FR	4		Nouvelle-Aquitaine
+École-Valentin	city	FR	4		Bourgogne-Franche-Comte
+Éragny	city	FR	4		Ile-de-France
+Évin-Malmaison	city	FR	4		Hauts-de-France
+Aalst	city	BE	3		Flanders
+Achères	city	FR	3		Ile-de-France
+Agneaux	city	FR	3		Normandy
+Aire-sur-la-Lys	city	FR	3		Hauts-de-France
+Aiserey	city	FR	3		Bourgogne-Franche-Comte
+Aix	city	FR	3		Nouvelle-Aquitaine
+Aizenay	city	FR	3		Loire Region
+Al Wakra	city	QA	3	الوكرة		3
+Aléria	city	FR	3		Corsica
+Ambès	city	FR	3		Nouvelle-Aquitaine
+Amplepuis	city	FR	3		Auvergne-Rhone-Alpes
+Anais	city	FR	3		Nouvelle-Aquitaine
+Anzin-Saint-Aubin	city	FR	3		Hauts-de-France
+Aoste	city	FR	3		Auvergne-Rhone-Alpes
+Arbusigny	city	FR	3		Auvergne-Rhone-Alpes
+Argelès-Gazost	city	FR	3		Occitanie
+Ariana	city	TN	3	أريانة		3
+Arlington	city	US	3			3
+Armentières	city	FR	3		Hauts-de-France
+Arpajon	city	FR	3		Ile-de-France
+Artix	city	FR	3		Nouvelle-Aquitaine
+Arès	city	FR	3		Nouvelle-Aquitaine
+Aulnoy-lez-Valenciennes	city	FR	3		Hauts-de-France
+Aulnoye-Aymeries	city	FR	3		Hauts-de-France
+Auneau-Bleury-Saint-Symphorien	city	FR	3		Centre-Val de Loire
+Aussillon	city	FR	3		Occitanie
+Auxonne	city	FR	3		Bourgogne-Franche-Comte
+Avallon	city	FR	3		Bourgogne-Franche-Comte
+Avord	city	FR	3		Centre-Val de Loire
+Azur	city	FR	3		Nouvelle-Aquitaine
+Baisieux	city	FR	3		Hauts-de-France
+Bar-sur-Seine	city	FR	3		Grand Est
+Barjouville	city	FR	3		Centre-Val de Loire
+Bartenheim	city	FR	3		Grand Est
+Beaucaire	city	FR	3		Occitanie
+Beaumont-sur-Oise	city	FR	3		Ile-de-France
+Belin-Béliet	city	FR	3		Nouvelle-Aquitaine
+Bellac	city	FR	3		Nouvelle-Aquitaine
+Bellegarde	city	FR	3		Occitanie
+Bernières-sur-Mer	city	FR	3		Normandy
+Bessines-sur-Gartempe	city	FR	3		Nouvelle-Aquitaine
+Bessoncourt	city	FR	3		Bourgogne-Franche-Comte
+Beuvry	city	FR	3		Hauts-de-France
+Biard	city	FR	3		Nouvelle-Aquitaine
+Bonifacio	city	FR	3		Corsica
+Borgo	city	FR	3		Corsica
+Bouaye	city	FR	3		Loire Region
+Bouliac	city	FR	3		Nouvelle-Aquitaine
+Bouxières-aux-Dames	city	FR	3		Grand Est
+Boves	city	FR	3		Hauts-de-France
+Boé	city	FR	3		Nouvelle-Aquitaine
+Braintree	city	GB	3		England
+Bray-Dunes	city	FR	3		Hauts-de-France
+Bressols	city	FR	3		Occitanie
+Bretenière	city	FR	3		Bourgogne-Franche-Comte
+Brioude	city	FR	3		Auvergne-Rhone-Alpes
+Bussières	city	FR	3		Bourgogne-Franche-Comte
+Bussy-Saint-Georges	city	FR	3		Ile-de-France
+Buxerolles	city	FR	3		Nouvelle-Aquitaine
+Buzet-sur-Tarn	city	FR	3		Occitanie
+Cajarc	city	FR	3		Occitanie
+Canet-en-Roussillon	city	FR	3		Occitanie
+Cardeilhac	city	FR	3		Occitanie
+Carignan	city	CA	3		Quebec	1
+Carignan	city	FR	3		Grand Est
+Ceuta	city	ES	3		Autonomous City of Ceuta	2
+Chambon-sur-Voueize	city	FR	3		Nouvelle-Aquitaine
+Champdieu	city	FR	3		Auvergne-Rhone-Alpes
+Champosoult	city	FR	3		Normandy
+Chaponnay	city	FR	3		Auvergne-Rhone-Alpes	2
+Chaponost	city	FR	3		Auvergne-Rhone-Alpes
+Chatham	city	GB	3			3
+Chauray	city	FR	3		Nouvelle-Aquitaine
+Chazay-d'Azergues	city	FR	3		Auvergne-Rhone-Alpes
+Chazelles-sur-Lyon	city	FR	3		Auvergne-Rhone-Alpes
+Chelmsford	city	GB	3		England	1
+Cheltenham	city	GB	3		England	2
+Château-Chervix	city	FR	3		Nouvelle-Aquitaine
+Château-Thierry	city	FR	3		Hauts-de-France
+Châteauneuf-d'Ille-et-Vilaine	city	FR	3		Brittany
+Châtenoy-en-Bresse	city	FR	3		Bourgogne-Franche-Comte
+Châtillon-sur-Indre	city	FR	3		Centre-Val de Loire
+Cleveland	city	US	3			3
+Clisson	city	FR	3		Loire Region
+Cloyes-les-Trois-Rivières	city	FR	3		Centre-Val de Loire
+Cotonou	city	BJ	3			3
+Coulounieix-Chamiers	city	FR	3		Nouvelle-Aquitaine
+Courcelles-lès-Montbard	city	FR	3		Bourgogne-Franche-Comte
+Cranbrook	city	GB	3			3
+Croissy-sur-Seine	city	FR	3		Ile-de-France
+Crozon	city	FR	3		Brittany
+Cupertino	city	US	3			3
+Cusset	city	FR	3		Auvergne-Rhone-Alpes
+Darnétal	city	FR	3		Normandy
+Denton	city	US	3		Maryland
+Deuil-la-Barre	city	FR	3		Ile-de-France
+Domène	city	FR	3		Auvergne-Rhone-Alpes
+Douains	city	FR	3		Normandy
+Doulcon	city	FR	3		Grand Est
+Douvrin	city	FR	3		Hauts-de-France
+Dumfries	city	GB	3		Scotland
+Durham	city	GB	3			3
+Eastleigh	city	GB	3		England
+Eaubonne	city	FR	3		Ile-de-France
+Emmerin	city	FR	3		Hauts-de-France
+Empa	city	CY	3	Έμπα		3
+Enghien-les-Bains	city	FR	3		Ile-de-France
+Ernée	city	FR	3		Loire Region
+Espalion	city	FR	3		Occitanie
+Essômes-sur-Marne	city	FR	3		Hauts-de-France
+Fameck	city	FR	3		Grand Est
+Feignies	city	FR	3		Hauts-de-France
+Feillens	city	FR	3		Auvergne-Rhone-Alpes
+Feytiat	city	FR	3		Nouvelle-Aquitaine
+Fixin	city	FR	3		Bourgogne-Franche-Comte
+Font-Romeu-Odeillo-Via	city	FR	3		Occitanie
+Fontenay-le-Fleury	city	FR	3		Ile-de-France	1
+Fouesnant	city	FR	3		Brittany
+Fourques	city	FR	3		Occitanie
+Fraisses	city	FR	3		Auvergne-Rhone-Alpes
+Franklin	city	US	3			3
+Freneuse	city	FR	3		Ile-de-France
+Fresnay-l'Évêque	city	FR	3		Centre-Val de Loire
+Freyming-Merlebach	city	FR	3		Grand Est
+Frisco	city	US	3			3
+Gaillard	city	FR	3		Auvergne-Rhone-Alpes
+Gellainville	city	FR	3		Centre-Val de Loire
+Gerrards Cross	city	GB	3		England
+Givry	city	FR	3		Bourgogne-Franche-Comte
+Glandon	city	FR	3		Nouvelle-Aquitaine
+Gothenburg	city	SE	3	Göteborg	Vastra Gotaland County
+Gourin	city	FR	3		Brittany
+Goussainville	city	FR	3		Ile-de-France
+Gramat	city	FR	3		Occitanie
+Gratentour	city	FR	3		Occitanie
+Grésy-sur-Aix	city	FR	3		Auvergne-Rhone-Alpes
+Guingamp	city	FR	3		Brittany
+Guise	city	FR	3		Hauts-de-France
+Génissieux	city	FR	3		Auvergne-Rhone-Alpes
+Gétigné	city	FR	3		Loire Region
+Hagetmau	city	FR	3		Nouvelle-Aquitaine
+Haillicourt	city	FR	3		Hauts-de-France
+Hallbergmoos	city	DE	3		Bavaria
+Hamilton	city	BM	3			3
+Hennebont	city	FR	3		Brittany
+Hitchin	city	GB	3		England
+Héric	city	FR	3		Loire Region
+Invercargill	city	NZ	3		Southland
+Isigny-sur-Mer	city	FR	3		Normandy
+Isles-les-Meldeuses	city	FR	3		Ile-de-France
+Itxassou	city	FR	3		Nouvelle-Aquitaine
+Ixelles	city	BE	3	Elsene	Brussels	1
+Jarny	city	FR	3		Grand Est
+Jaux	city	FR	3		Hauts-de-France
+Jouy-en-Josas	city	FR	3		Ile-de-France
+Katowice	city	PL	3		Silesian Voivodeship	1
+Kingersheim	city	FR	3		Grand Est
+Kuala Lumpur	city	MY	3		Wilayah Persekutuan Kuala Lumpur
+L'Isle-sur-le-Doubs	city	FR	3		Bourgogne-Franche-Comte
+La Cellette	city	FR	3		Auvergne-Rhone-Alpes
+La Clusaz	city	FR	3		Auvergne-Rhone-Alpes
+La Ferté-Bernard	city	FR	3		Loire Region
+La Haye	city	FR	3		Normandy
+La Salvetat-Saint-Gilles	city	FR	3		Occitanie
+La Souterraine	city	FR	3		Nouvelle-Aquitaine
+La Tour-en-Maurienne	city	FR	3		Auvergne-Rhone-Alpes
+Lagnieu	city	FR	3		Auvergne-Rhone-Alpes
+Lagny	city	FR	3		Hauts-de-France
+Lagny-sur-Marne	city	FR	3		Ile-de-France
+Lançon-Provence	city	FR	3		Provence-Alpes-Cote d'Azur
+Le Cellier	city	FR	3		Loire Region
+Le Coudray	city	FR	3		Centre-Val de Loire
+Le Liège	city	FR	3		Centre-Val de Loire	1
+Le Passage	city	FR	3		Nouvelle-Aquitaine
+Le Portel	city	FR	3		Hauts-de-France
+Le Pouliguen	city	FR	3		Loire Region
+Le Pouzin	city	FR	3		Auvergne-Rhone-Alpes	1
+Le Thillot	city	FR	3		Grand Est
+Le Touquet-Paris-Plage	city	FR	3		Hauts-de-France
+Leforest	city	FR	3		Hauts-de-France
+Les Bons Villers	city	BE	3		Wallonia
+Les Paroches	city	FR	3		Grand Est
+Les Villages Vovéens	city	FR	3		Centre-Val de Loire
+Les Villards-sur-Thônes	city	FR	3		Auvergne-Rhone-Alpes
+Lescure-d'Albigeois	city	FR	3		Occitanie
+Lespinasse	city	FR	3		Occitanie
+Lexy	city	FR	3		Grand Est
+Libercourt	city	FR	3		Hauts-de-France
+Ligny-le-Châtel	city	FR	3		Bourgogne-Franche-Comte
+Lillers	city	FR	3		Hauts-de-France
+Limay	city	FR	3		Ile-de-France
+Liverpool	city	GB	3		England
+Lourdes	city	FR	3		Occitanie
+Louvroil	city	FR	3		Hauts-de-France
+Lure	city	FR	3		Bourgogne-Franche-Comte
+Lussac-les-Châteaux	city	FR	3		Nouvelle-Aquitaine
+Léon	city	FR	3			3
+Macau	city	FR	3		Nouvelle-Aquitaine
+Magny-Cours	city	FR	3		Bourgogne-Franche-Comte
+Malay-le-Grand	city	FR	3		Bourgogne-Franche-Comte
+Malemort	city	FR	3		Nouvelle-Aquitaine
+Mallemort	city	FR	3		Provence-Alpes-Cote d'Azur
+Manom	city	FR	3		Grand Est
+Mantes-la-Ville	city	FR	3		Ile-de-France
+Marcy-l'Étoile	city	FR	3		Auvergne-Rhone-Alpes
+Marles-les-Mines	city	FR	3		Hauts-de-France
+Marseillan	city	FR	3		Occitanie
+Maulette	city	FR	3		Ile-de-France
+Mechelen	city	BE	3		Flanders
+Merceuil	city	FR	3		Bourgogne-Franche-Comte
+Mercury	city	FR	3		Auvergne-Rhone-Alpes
+Merville	city	FR	3		Occitanie
+Milhaud	city	FR	3		Occitanie
+Mirepoix	city	FR	3		Occitanie
+Moissac	city	FR	3		Occitanie
+Moka	city	MU	3			3
+Mont-Saint-Aignan	city	FR	3		Normandy
+Montaigu	city	FR	3		Hauts-de-France
+Montguyon	city	FR	3		Nouvelle-Aquitaine
+Montmélian	city	FR	3		Auvergne-Rhone-Alpes
+Morestel	city	FR	3		Auvergne-Rhone-Alpes
+Motherwell	city	GB	3		Scotland
+Muizon	city	FR	3		Grand Est
+Nahr Ibrahim	city	LB	3	نهر ابراهيم	Mount Lebanon
+Nanteuil-le-Haudouin	city	FR	3		Hauts-de-France
+Napier	city	NZ	3		Hawke's Bay
+Nieppe	city	FR	3		Hauts-de-France
+Noeux-les-Mines	city	FR	3		Hauts-de-France
+Noyal-Pontivy	city	FR	3		Brittany
+Noyelles-sous-Lens	city	FR	3		Hauts-de-France
+Noyers-sur-Cher	city	FR	3		Centre-Val de Loire
+Nyon	city	CH	3		Vaud
+Nyons	city	FR	3		Auvergne-Rhone-Alpes
+Névez	city	FR	3		Brittany
+Oncy-sur-École	city	FR	3		Ile-de-France
+Onesse-Laharie	city	FR	3		Nouvelle-Aquitaine
+Orry-la-Ville	city	FR	3		Hauts-de-France
+Ostwald	city	FR	3		Grand Est
+Outreau	city	FR	3		Hauts-de-France
+Papeete	city	PF	3		Îles-du-Vent
+Parma	city	IT	3		Emilia-Romagna
+Parthenay	city	FR	3		Nouvelle-Aquitaine
+Perugia	city	IT	3		Umbria
+Peschadoires	city	FR	3		Auvergne-Rhone-Alpes
+Pleumeleuc	city	FR	3		Brittany
+Ploërdut	city	FR	3		Brittany
+Pont-l'Abbé	city	FR	3		Brittany
+Pontchâteau	city	FR	3		Loire Region
+Porte-de-Savoie	city	FR	3		Auvergne-Rhone-Alpes
+Puiseux-en-France	city	FR	3		Ile-de-France
+Périers	city	FR	3		Normandy
+Querrieu	city	FR	3		Hauts-de-France
+Questembert	city	FR	3		Brittany
+Quiberon	city	FR	3		Brittany
+Rabat	city	MA	3	الرباط	Rabat - Sale - Kenitra
+Richland	city	US	3		Washington
+Rives	city	FR	3		Auvergne-Rhone-Alpes
+Romilly-sur-Seine	city	FR	3		Grand Est
+Roncadelle	city	IT	3		Lombardy
+Roppenheim	city	FR	3		Grand Est
+Rouffach	city	FR	3		Grand Est
+Rouvignies	city	FR	3		Hauts-de-France
+Rue	city	FR	3		Hauts-de-France
+Saint-Aignan-Grandlieu	city	FR	3		Loire Region
+Saint-Alban-Leysse	city	FR	3		Auvergne-Rhone-Alpes
+Saint-André-les-Vergers	city	FR	3		Grand Est
+Saint-Augustin	city	FR	3		Nouvelle-Aquitaine
+Saint-Cyr-sur-Mer	city	FR	3		Provence-Alpes-Cote d'Azur
+Saint-Denis	city	RE	3		Réunion
+Saint-Didier-au-Mont-d'Or	city	FR	3		Auvergne-Rhone-Alpes
+Saint-Germain-du-Puy	city	FR	3		Centre-Val de Loire
+Saint-Gratien	city	FR	3		Ile-de-France
+Saint-Hilaire-Saint-Mesmin	city	FR	3		Centre-Val de Loire
+Saint-Hilaire-les-Andrésis	city	FR	3		Centre-Val de Loire
+Saint-Héand	city	FR	3		Auvergne-Rhone-Alpes
+Saint-Ismier	city	FR	3		Auvergne-Rhone-Alpes
+Saint-Jean-de-Luz	city	FR	3		Nouvelle-Aquitaine
+Saint-Jean-de-Muzols	city	FR	3		Auvergne-Rhone-Alpes
+Saint-Jean-de-Soudain	city	FR	3		Auvergne-Rhone-Alpes
+Saint-Jean-le-Blanc	city	FR	3		Centre-Val de Loire
+Saint-Jory	city	FR	3		Occitanie
+Saint-Laurent-de-Neste	city	FR	3		Occitanie
+Saint-Marcel-Campes	city	FR	3		Occitanie
+Saint-Marcellin	city	FR	3		Auvergne-Rhone-Alpes
+Saint-Martin-Belle-Roche	city	FR	3		Bourgogne-Franche-Comte
+Saint-Martin-sur-le-Pré	city	FR	3		Grand Est
+Saint-Maurice	city	FR	3		Ile-de-France
+Saint-Max	city	FR	3		Grand Est
+Saint-Paul-sur-Save	city	FR	3		Occitanie
+Saint-Philbert-de-Grand-Lieu	city	FR	3		Loire Region
+Saint-Pierre	city	FR	3		Grand Est
+Saint-Pierre-d'Albigny	city	FR	3		Auvergne-Rhone-Alpes
+Saint-Pierre-en-Auge	city	FR	3		Normandy
+Saint-Pierre-lès-Elbeuf	city	FR	3		Normandy
+Saint-Porchaire	city	FR	3		Nouvelle-Aquitaine
+Saint-Privat-des-Vieux	city	FR	3		Occitanie
+Saint-Usage	city	FR	3		Bourgogne-Franche-Comte
+Saint-Victor	city	FR	3		Auvergne-Rhone-Alpes
+Saint-Vite	city	FR	3		Nouvelle-Aquitaine
+Saint-Étienne-de-Montluc	city	FR	3		Loire Region
+Sainte-Eulalie	city	FR	3		Nouvelle-Aquitaine
+Sainte-Livrade-sur-Lot	city	FR	3		Nouvelle-Aquitaine
+Sainte-Marie-aux-Chênes	city	FR	3		Grand Est
+Sainte-Maure-de-Touraine	city	FR	3		Centre-Val de Loire
+Saints-Geosmes	city	FR	3		Grand Est
+Salernes	city	FR	3		Provence-Alpes-Cote d'Azur
+San Antonio	city	US	3			3
+San Pietro Infine	city	IT	3		Campania
+Sankt Anton am Arlberg	city	AT	3		Tyrol
+Sant Cugat del Vallès	city	ES	3			3
+Sant Just Desvern	city	ES	3		Catalonia
+Santa Fe	city	US	3		Texas
+Santes	city	FR	3		Hauts-de-France
+Sarlat-la-Canéda	city	FR	3		Nouvelle-Aquitaine
+Savigné	city	FR	3		Nouvelle-Aquitaine
+Sceaux	city	FR	3		Ile-de-France
+Segonzac	city	FR	3		Nouvelle-Aquitaine
+Segré-en-Anjou Bleu	city	FR	3		Loire Region
+Seichamps	city	FR	3		Grand Est
+Senonches	city	FR	3		Centre-Val de Loire
+Shenzhen	city	CN	3			3
+Short Hills	city	US	3		New Jersey
+Sin-le-Noble	city	FR	3		Hauts-de-France
+Solaize	city	FR	3		Auvergne-Rhone-Alpes
+St-Rémi	city	CA	3		Quebec
+St. Louis	city	US	3			3
+Sucy-en-Brie	city	FR	3		Ile-de-France
+Surgères	city	FR	3		Nouvelle-Aquitaine
+Sébazac-Concourès	city	FR	3		Occitanie
+Talant	city	FR	3		Bourgogne-Franche-Comte
+Taunton	city	GB	3		England
+Telford	city	GB	3		England
+Thimert-Gâtelles	city	FR	3		Centre-Val de Loire
+Thizy-les-Bourgs	city	FR	3		Auvergne-Rhone-Alpes
+Tilloy-lez-Cambrai	city	FR	3		Hauts-de-France
+Tinqueux	city	FR	3		Grand Est
+Tomblaine	city	FR	3		Grand Est
+Tournus	city	FR	3		Bourgogne-Franche-Comte
+Toussieu	city	FR	3		Auvergne-Rhone-Alpes
+Treillières	city	FR	3		Loire Region
+Trie-Château	city	FR	3		Hauts-de-France
+Trébeurden	city	FR	3		Brittany
+Trélévern	city	FR	3		Brittany
+Trévenans	city	FR	3		Bourgogne-Franche-Comte
+Val de Bagnes	city	CH	3		Wallis
+Valençay	city	FR	3		Centre-Val de Loire
+Vandoeuvre-lès-Nancy	city	FR	3		Grand Est
+Vaulx-Milieu	city	FR	3		Auvergne-Rhone-Alpes
+Vauvert	city	FR	3		Occitanie
+Vaux-sur-Mer	city	FR	3		Nouvelle-Aquitaine
+Vedène	city	FR	3		Provence-Alpes-Cote d'Azur
+Vence	city	FR	3		Provence-Alpes-Cote d'Azur
+Vendenheim	city	FR	3		Grand Est
+Vernantes	city	FR	3		Loire Region
+Vigoulet-Auzil	city	FR	3		Occitanie
+Villecresnes	city	FR	3		Ile-de-France
+Villeneuve-lès-Maguelone	city	FR	3		Occitanie
+Villeréal	city	FR	3		Nouvelle-Aquitaine
+Villiers-sur-Marne	city	FR	3		Ile-de-France
+Vittel	city	FR	3		Grand Est	1
+Vouneuil-sous-Biard	city	FR	3		Nouvelle-Aquitaine
+Weyburn	city	CA	3		Saskatchewan
+Wezembeek-Oppem	city	BE	3		Flanders
+Wigan	city	GB	3		England
+Wrocław	city	PL	3			3
+Yumbo	city	CO	3			3
+Échillais	city	FR	3		Nouvelle-Aquitaine
+Égly	city	FR	3		Ile-de-France
+Épinay-sur-Orge	city	FR	3		Ile-de-France
+Épinay-sur-Seine	city	FR	3		Ile-de-France
+Éréac	city	FR	3		Brittany
+Étaples	city	FR	3		Hauts-de-France	1
+Aachen	city	DE	2		North-Rhine-Westphalia	1
+Abondance	city	FR	2		Auvergne-Rhone-Alpes
+Acigné	city	FR	2		Brittany
+Adelaide	city	AU	2		South Australia
+Adé	city	FR	2		Occitanie
+Aime-la-Plagne	city	FR	2		Auvergne-Rhone-Alpes
+Ainay-le-Château	city	FR	2		Auvergne-Rhone-Alpes
+Airaines	city	FR	2		Hauts-de-France
+Alcobendas	city	ES	2		Community of Madrid
+Allonnes	city	FR	2		Loire Region
+Ambazac	city	FR	2		Nouvelle-Aquitaine
+Andance	city	FR	2		Auvergne-Rhone-Alpes
+Andilly	city	FR	2		Ile-de-France
+Andrest	city	FR	2		Occitanie
+Anet	city	FR	2		Centre-Val de Loire
+Argancy	city	FR	2		Grand Est
+Argentat-sur-Dordogne	city	FR	2		Nouvelle-Aquitaine
+Arnas	city	FR	2		Auvergne-Rhone-Alpes
+Ars	city	FR	2		Nouvelle-Aquitaine
+Ars-Laquenexy	city	FR	2		Grand Est
+Astaffort	city	FR	2		Nouvelle-Aquitaine
+Aumetz	city	FR	2		Grand Est
+Aurignac	city	FR	2		Occitanie
+Aurora	city	US	2			2
+Autechaux	city	FR	2		Bourgogne-Franche-Comte
+Avesnelles	city	FR	2		Hauts-de-France
+Avesnes-le-Comte	city	FR	2		Hauts-de-France
+Avesnes-sur-Helpe	city	FR	2		Hauts-de-France
+Baccarat	city	FR	2		Grand Est
+Baillargues	city	FR	2		Occitanie
+Bailleul	city	FR	2		Hauts-de-France
+Baillif	city	GP	2		Guadeloupe
+Bailly-Romainvilliers	city	FR	2		Ile-de-France
+Ballainvilliers	city	FR	2		Ile-de-France
+Banbury	city	GB	2		England
+Bapaume	city	FR	2		Hauts-de-France
+Baratier	city	FR	2		Provence-Alpes-Cote d'Azur
+Barnsley	city	GB	2		England
+Batz-sur-Mer	city	FR	2		Loire Region
+Baulne	city	FR	2		Ile-de-France
+Beaulieu-sur-Layon	city	FR	2		Loire Region
+Beaulon	city	FR	2		Auvergne-Rhone-Alpes
+Beaumont-en-Véron	city	FR	2		Centre-Val de Loire
+Beaurepaire	city	FR	2		Auvergne-Rhone-Alpes
+Belleville	city	US	2		Pennsylvania
+Belley	city	FR	2		Auvergne-Rhone-Alpes
+Bernolsheim	city	FR	2		Grand Est
+Bisbee	city	US	2			2
+Bischwiller	city	FR	2		Grand Est
+Bishop's Stortford	city	GB	2		England
+Bièvres	city	FR	2		Ile-de-France
+Blackburn	city	GB	2			2
+Blackpool	city	GB	2		England
+Blainville-sur-Mer	city	FR	2		Normandy
+Blanzat	city	FR	2		Auvergne-Rhone-Alpes
+Blyes	city	FR	2		Auvergne-Rhone-Alpes
+Bohain-en-Vermandois	city	FR	2		Hauts-de-France
+Bois-de-Haye	city	FR	2		Grand Est
+Boissise-la-Bertrand	city	FR	2		Ile-de-France
+Bonne	city	FR	2		Auvergne-Rhone-Alpes
+Boos	city	FR	2		Normandy
+Bourbourg	city	FR	2		Hauts-de-France
+Bourg-Saint-Andéol	city	FR	2		Auvergne-Rhone-Alpes	1
+Bourgueil	city	FR	2		Centre-Val de Loire
+Bourne End	city	GB	2		England
+Boussy-Saint-Antoine	city	FR	2		Ile-de-France
+Bram	city	FR	2		Occitanie
+Breda	city	NL	2		North Brabant
+Breteuil	city	FR	2		Hauts-de-France
+Bretteville-du-Grand-Caux	city	FR	2		Normandy
+Bruay-la-Buissière	city	FR	2		Hauts-de-France
+Brunstatt-Didenheim	city	FR	2		Grand Est
+Bruyères-le-Châtel	city	FR	2		Ile-de-France
+Brécé	city	FR	2		Brittany
+Bully	city	FR	2		Auvergne-Rhone-Alpes
+Buros	city	FR	2		Nouvelle-Aquitaine
+Bussigny	city	CH	2		Vaud
+Bussy-Saint-Martin	city	FR	2		Ile-de-France
+Bédée	city	FR	2		Brittany
+Cabourg	city	FR	2		Normandy
+Caissargues	city	FR	2		Occitanie
+Callac	city	FR	2		Brittany
+Cannes-Écluse	city	FR	2		Ile-de-France
+Canoga Park	city	US	2		California
+Canteleu	city	FR	2		Normandy
+Cany-Barville	city	FR	2		Normandy
+Capens	city	FR	2		Occitanie
+Carcès	city	FR	2		Provence-Alpes-Cote d'Azur
+Carlisle	city	GB	2		England
+Carmaux	city	FR	2		Occitanie
+Carry-le-Rouet	city	FR	2		Provence-Alpes-Cote d'Azur
+Cassis	city	FR	2		Provence-Alpes-Cote d'Azur
+Casteljaloux	city	FR	2		Nouvelle-Aquitaine
+Castelnau-Chalosse	city	FR	2		Nouvelle-Aquitaine
+Caudan	city	FR	2		Brittany
+Caulnes	city	FR	2		Brittany
+Cenon	city	FR	2		Nouvelle-Aquitaine
+Cesson	city	FR	2		Ile-de-France
+Chablis	city	FR	2		Bourgogne-Franche-Comte
+Chalindrey	city	FR	2		Grand Est
+Chamant	city	FR	2		Hauts-de-France
+Chambly	city	FR	2		Hauts-de-France
+Chambry	city	FR	2		Hauts-de-France
+Champigneulles	city	FR	2		Grand Est
+Chapareillan	city	FR	2		Auvergne-Rhone-Alpes
+Charlton	city	US	2		Massachusetts
+Charnay-lès-Mâcon	city	FR	2		Bourgogne-Franche-Comte
+Chavagne	city	FR	2		Brittany
+Chef-Boutonne	city	FR	2		Nouvelle-Aquitaine
+Cherbourg-En-Cotentin	city	FR	2			2
+Chester	city	GB	2		England
+Chevigny-Saint-Sauveur	city	FR	2		Bourgogne-Franche-Comte
+Chissay-en-Touraine	city	FR	2		Centre-Val de Loire
+Chorges	city	FR	2		Provence-Alpes-Cote d'Azur
+Châteaubourg	city	FR	2		Brittany
+Châteauneuf-sur-Isère	city	FR	2		Auvergne-Rhone-Alpes
+Châteauneuf-sur-Loire	city	FR	2		Centre-Val de Loire
+Châtel	city	FR	2		Auvergne-Rhone-Alpes
+Châtelaillon-Plage	city	FR	2		Nouvelle-Aquitaine
+Châtenoy-le-Royal	city	FR	2		Bourgogne-Franche-Comte
+Cincinnati	city	US	2		Ohio
+Claix	city	FR	2		Auvergne-Rhone-Alpes
+Clamecy	city	FR	2		Bourgogne-Franche-Comte
+Clervaux	city	LU	2			2
+Clichy-sous-Bois	city	FR	2		Ile-de-France
+Cléguérec	city	FR	2		Brittany
+Cogolin	city	FR	2		Provence-Alpes-Cote d'Azur
+Colchester	city	GB	2		England
+Collégien	city	FR	2		Ile-de-France
+Colombier-Saugnieu	city	FR	2		Auvergne-Rhone-Alpes
+Colorado Springs	city	US	2			2
+Commentry	city	FR	2		Auvergne-Rhone-Alpes
+Communay	city	FR	2		Auvergne-Rhone-Alpes
+Condé-sur-l'Escaut	city	FR	2		Hauts-de-France
+Cork	city	IE	2			2
+Cormelles-le-Royal	city	FR	2		Normandy
+Cormontreuil	city	FR	2		Grand Est
+Cornebarrieu	city	FR	2		Occitanie
+Corneville-sur-Risle	city	FR	2		Normandy
+Corquilleroy	city	FR	2		Centre-Val de Loire
+Corsico	city	IT	2		Lombardy
+Cossé-le-Vivien	city	FR	2		Loire Region
+Coupvray	city	FR	2		Ile-de-France
+Courteilles	city	FR	2		Normandy
+Coutras	city	FR	2		Nouvelle-Aquitaine
+Crach	city	FR	2		Brittany
+Craon	city	FR	2		Loire Region
+Craponne	city	FR	2		Auvergne-Rhone-Alpes
+Crawley	city	GB	2		England	1
+Cussac	city	FR	2		Nouvelle-Aquitaine
+Dakar	city	SN	2		Dakar
+Dampierre-en-Graçay	city	FR	2		Centre-Val de Loire
+Delle	city	FR	2		Bourgogne-Franche-Comte
+Dietzenbach	city	DE	2		Hesse
+Dieue-sur-Meuse	city	FR	2		Grand Est
+Digoin	city	FR	2		Bourgogne-Franche-Comte
+Dives-sur-Mer	city	FR	2		Normandy
+Divonne-les-Bains	city	FR	2		Auvergne-Rhone-Alpes
+Diémoz	city	FR	2		Auvergne-Rhone-Alpes
+Doha	city	QA	2			2
+Dol-de-Bretagne	city	FR	2		Brittany
+Domloup	city	FR	2		Brittany
+Dorking	city	GB	2		England
+Dorval	city	CA	2		Quebec
+Douala	city	CM	2			2
+Doullens	city	FR	2		Hauts-de-France
+Dour	city	BE	2		Wallonia
+Drulingen	city	FR	2		Grand Est
+Duclair	city	FR	2		Normandy
+Duisans	city	FR	2		Hauts-de-France
+Durango	city	ES	2		Basque Country
+East Rutherford	city	US	2		New Jersey
+Eclose-Badinières	city	FR	2		Auvergne-Rhone-Alpes
+Eivissa	city	ES	2		Balearic Islands
+Embrun	city	FR	2		Provence-Alpes-Cote d'Azur
+Ennetières-en-Weppes	city	FR	2		Hauts-de-France
+Erdeven	city	FR	2		Brittany
+Espéraza	city	FR	2		Occitanie
+Essen	city	DE	2		North-Rhine-Westphalia	1
+Estancarbon	city	FR	2		Occitanie
+Euralille	city	FR	2	La Madeleine	Hauts-de-France
+Eyguières	city	FR	2		Provence-Alpes-Cote d'Azur
+Fay-de-Bretagne	city	FR	2		Loire Region
+Fayet	city	FR	2		Hauts-de-France
+Ferrières	city	FR	2		Nouvelle-Aquitaine
+Fiumicino	city	IT	2		Latium
+Florac Trois Rivières	city	FR	2		Occitanie
+Fontaine-le-Comte	city	FR	2		Nouvelle-Aquitaine
+Fort Pierce	city	US	2		Florida
+Fourchambault	city	FR	2		Bourgogne-Franche-Comte
+Frontenay-Rohan-Rohan	city	FR	2		Nouvelle-Aquitaine
+Fuveau	city	FR	2		Provence-Alpes-Cote d'Azur
+Fécamp	city	FR	2		Normandy
+Gagny	city	FR	2		Ile-de-France
+Gan	city	FR	2		Nouvelle-Aquitaine
+Gargenville	city	FR	2		Ile-de-France
+Garons	city	FR	2		Occitanie	1
+Gasville-Oisème	city	FR	2		Centre-Val de Loire
+Genay	city	FR	2		Auvergne-Rhone-Alpes
+Gençay	city	FR	2		Nouvelle-Aquitaine
+Gometz-la-Ville	city	FR	2		Ile-de-France
+Gouda	city	NL	2		South Holland
+Gourdon	city	FR	2		Occitanie
+Grandvilliers	city	FR	2		Hauts-de-France
+Graulhet	city	FR	2		Occitanie
+Guern	city	FR	2		Brittany
+Guidel	city	FR	2		Brittany
+Guitrancourt	city	FR	2		Ile-de-France
+Guérigny	city	FR	2		Bourgogne-Franche-Comte
+Hambach	city	FR	2		Grand Est
+Hamilton	city	CA	2		Ontario
+Harrison	city	US	2		New York
+Hereford	city	GB	2		England
+Herserange	city	FR	2		Grand Est
+Hesdin	city	FR	2		Hauts-de-France
+Hirson	city	FR	2		Hauts-de-France
+Homécourt	city	FR	2		Grand Est
+Horley	city	GB	2		England
+Houilles	city	FR	2		Ile-de-France
+Ibos	city	FR	2		Occitanie
+Ingrandes-le-Fresne-sur-Loire	city	FR	2		Loire Region
+Ipswich	city	GB	2		England	1
+Irving	city	US	2		Texas
+Issy-Les-Moulineaux	city	FR	2			2
+Istanbul	city	TR	2	İstanbul		2
+Jakarta Pusat	city	ID	2		JABODETABEK
+Javrezac	city	FR	2		Nouvelle-Aquitaine
+Jaén	city	PE	2		Cajamarca
+Jonzac	city	FR	2		Nouvelle-Aquitaine
+Jossigny	city	FR	2		Ile-de-France
+Kampala	city	UG	2		Kampala
+Kerlaz	city	FR	2		Brittany
+Kettering	city	GB	2		England
+Kiel	city	DE	2		Schleswig-Holstein
+Kolkata	city	IN	2		West Bengal
+L'Aigle	city	FR	2		Normandy
+L'Arbresle	city	FR	2		Auvergne-Rhone-Alpes
+L'Argentière-la-Bessée	city	FR	2		Provence-Alpes-Cote d'Azur
+L'Isle-d'Espagnac	city	FR	2		Nouvelle-Aquitaine
+L'Île-Rousse	city	FR	2		Corsica
+La Biolle	city	FR	2		Auvergne-Rhone-Alpes
+La Bresse	city	FR	2		Grand Est
+La Celle	city	FR	2		Provence-Alpes-Cote d'Azur
+La Chapelle-Launay	city	FR	2		Loire Region
+La Châtre	city	FR	2		Centre-Val de Loire	1
+La Clayette	city	FR	2		Bourgogne-Franche-Comte
+La Destrousse	city	FR	2		Provence-Alpes-Cote d'Azur
+La Devise	city	FR	2		Nouvelle-Aquitaine
+La Ferté-sous-Jouarre	city	FR	2		Ile-de-France
+La Haye	city	NL	2			2
+La Londe-les-Maures	city	FR	2		Provence-Alpes-Cote d'Azur
+La Machine	city	FR	2		Bourgogne-Franche-Comte
+La Riche	city	FR	2		Centre-Val de Loire
+La Roche-Blanche	city	FR	2		Auvergne-Rhone-Alpes
+La Roche-Chalais	city	FR	2		Nouvelle-Aquitaine
+La Rochette	city	FR	2		Ile-de-France
+La Roquette-sur-Siagne	city	FR	2		Provence-Alpes-Cote d'Azur
+La Réunion	city	FR	2		Nouvelle-Aquitaine
+La Sentinelle	city	FR	2		Hauts-de-France
+La Tour-du-Pin	city	FR	2		Auvergne-Rhone-Alpes
+La Veuve	city	FR	2		Grand Est
+La Ville-aux-Dames	city	FR	2		Centre-Val de Loire
+La Voulte-sur-Rhône	city	FR	2		Auvergne-Rhone-Alpes
+Lablachère	city	FR	2		Auvergne-Rhone-Alpes
+Lacanau	city	FR	2		Nouvelle-Aquitaine
+Lacapelle-Marival	city	FR	2		Occitanie
+Lacaussade	city	FR	2		Nouvelle-Aquitaine
+Lake Worth Beach	city	US	2		Florida
+Lalinde	city	FR	2		Nouvelle-Aquitaine
+Lamezia Terme	city	IT	2		Calabria
+Langres	city	FR	2		Grand Est
+Langueux	city	FR	2		Brittany
+Lanta	city	FR	2		Occitanie
+Larbroye	city	FR	2		Hauts-de-France
+Larmor-Plage	city	FR	2		Brittany
+Laroque-des-Albères	city	FR	2		Occitanie
+Lausanne	city	CH	2		Vaud
+Le Blanc	city	FR	2		Centre-Val de Loire
+Le Bosc	city	FR	2		Occitanie
+Le Cannet-des-Maures	city	FR	2		Provence-Alpes-Cote d'Azur
+Le Crotoy	city	FR	2		Hauts-de-France
+Le Fossat	city	FR	2		Occitanie
+Le Lude	city	FR	2		Loire Region
+Le Mesnil-Amelot	city	FR	2		Ile-de-France
+Le Mesnil-Esnard	city	FR	2		Normandy
+Le Perreux-sur-Marne	city	FR	2		Ile-de-France
+Le Pont-de-Claix	city	FR	2		Auvergne-Rhone-Alpes
+Le Puy	city	FR	2		Bourgogne-Franche-Comte
+Leduc County	city	CA	2		Alberta
+Lempdes	city	FR	2		Auvergne-Rhone-Alpes
+Les Abrets en Dauphiné	city	FR	2		Auvergne-Rhone-Alpes
+Les Allues	city	FR	2		Auvergne-Rhone-Alpes
+Les Ancizes-Comps	city	FR	2		Auvergne-Rhone-Alpes
+Les Avenières Veyrins-Thuellin	city	FR	2		Auvergne-Rhone-Alpes
+Les Garennes sur Loire	city	FR	2		Loire Region
+Les Lilas	city	FR	2		Ile-de-France
+Les Mées	city	FR	2		Provence-Alpes-Cote d'Azur
+Les Pavillons-sous-Bois	city	FR	2		Ile-de-France
+Les Rousses	city	FR	2		Bourgogne-Franche-Comte
+Ligny-en-Barrois	city	FR	2		Grand Est
+Linselles	city	FR	2		Hauts-de-France
+Linz	city	AT	2		Upper Austria	1
+Liverdun	city	FR	2		Grand Est
+Loix	city	FR	2		Nouvelle-Aquitaine
+Longjumeau	city	FR	2		Ile-de-France	1
+Longueil-Sainte-Marie	city	FR	2		Hauts-de-France
+Lorette	city	FR	2		Auvergne-Rhone-Alpes
+Lorgues	city	FR	2		Provence-Alpes-Cote d'Azur
+Louannec	city	FR	2		Brittany
+Louargat	city	FR	2		Brittany
+Lucerne	city	CH	2	Luzern	Lucerne
+Luchthaven Schiphol	city	NL	2		North Holland
+Lugo	city	ES	2		Galicia
+Lunéville	city	FR	2		Grand Est
+Luton	city	GB	2			2
+Lys-lez-Lannoy	city	FR	2		Hauts-de-France
+Lécousse	city	FR	2		Brittany
+Léguevin	city	FR	2		Occitanie
+Mably	city	FR	2		Auvergne-Rhone-Alpes
+Magnanville	city	FR	2		Ile-de-France
+Magny-le-Hongre	city	FR	2		Ile-de-France
+Maizières-lès-Metz	city	FR	2		Grand Est
+Malestroit	city	FR	2		Brittany
+Mannheim	city	DE	2		Baden-Wurttemberg	1
+Marcheprime	city	FR	2		Nouvelle-Aquitaine
+Marcianise	city	IT	2		Campania
+Marckolsheim	city	FR	2		Grand Est
+Mareil-sur-Mauldre	city	FR	2		Ile-de-France
+Marguerittes	city	FR	2		Occitanie
+Marignier	city	FR	2		Auvergne-Rhone-Alpes
+Markt Taschendorf	city	DE	2		Bavaria
+Marolles	city	FR	2		Grand Est
+Maromme	city	FR	2		Normandy
+Marquion	city	FR	2		Hauts-de-France
+Maubert-Fontaine	city	FR	2		Grand Est
+Mauchamps	city	FR	2		Ile-de-France
+Maxilly-sur-Léman	city	FR	2		Auvergne-Rhone-Alpes
+Mazamet	city	FR	2		Occitanie
+Maîche	city	FR	2		Bourgogne-Franche-Comte
+Melle	city	FR	2		Nouvelle-Aquitaine
+Milly-la-Forêt	city	FR	2		Ile-de-France
+Mimizan	city	FR	2		Nouvelle-Aquitaine
+Minato City	city	JP	2			2
+Mirande	city	FR	2		Occitanie
+Miserey-Salines	city	FR	2		Bourgogne-Franche-Comte
+Mohammedia	city	MA	2	المحمدية	Casablanca - Settat
+Monastir	city	TN	2	المنستير		2
+Montaren-et-Saint-Médiers	city	FR	2		Occitanie
+Montbrison	city	FR	2		Auvergne-Rhone-Alpes
+Montcuq-en-Quercy-Blanc	city	FR	2		Occitanie
+Montebourg	city	FR	2		Normandy
+Monteils	city	FR	2		Occitanie
+Montereau	city	FR	2		Centre-Val de Loire
+Montfaucon	city	FR	2		Bourgogne-Franche-Comte
+Montgermont	city	FR	2		Brittany
+Montigny-en-Ostrevent	city	FR	2		Hauts-de-France
+Montigny-lès-Metz	city	FR	2		Grand Est
+Montlouis-sur-Loire	city	FR	2		Centre-Val de Loire
+Montrichard Val de Cher	city	FR	2		Centre-Val de Loire
+Morangis	city	FR	2		Ile-de-France
+Morhange	city	FR	2		Grand Est
+Morigny-Champigny	city	FR	2		Ile-de-France
+Morillon	city	FR	2		Auvergne-Rhone-Alpes
+Moustajon	city	FR	2		Occitanie
+Mulsanne	city	FR	2		Loire Region
+Munster	city	FR	2		Grand Est
+Mèze	city	FR	2		Occitanie
+Mériel	city	FR	2		Ile-de-France
+Méry	city	FR	2		Auvergne-Rhone-Alpes
+Nairn	city	GB	2		Scotland
+Nambsheim	city	FR	2		Grand Est
+Needham	city	US	2			2
+Nilvange	city	FR	2		Grand Est
+Nivelles	city	BE	2		Wallonia
+Noidans-le-Ferroux	city	FR	2		Bourgogne-Franche-Comte
+Noisiel	city	FR	2		Ile-de-France
+Noisy-le-Roi	city	FR	2		Ile-de-France
+Oban	city	GB	2		Scotland
+Ombrée d'Anjou	city	FR	2		Loire Region
+Orbec	city	FR	2		Normandy
+Orgon	city	FR	2		Provence-Alpes-Cote d'Azur
+Orthez	city	FR	2		Nouvelle-Aquitaine
+Oslo	city	NO	2		Oslo	1
+Ostheim	city	FR	2		Grand Est
+Ottignies-Louvain-la-Neuve	city	BE	2		Wallonia
+Ottmarsheim	city	FR	2		Grand Est
+Ozoir-la-Ferrière	city	FR	2		Ile-de-France
+Parcey	city	FR	2		Bourgogne-Franche-Comte
+Parentis-en-Born	city	FR	2		Nouvelle-Aquitaine
+Peipin	city	FR	2		Provence-Alpes-Cote d'Azur
+Perros-Guirec	city	FR	2		Brittany
+Perth	city	AU	2		Western Australia
+Pesaro	city	IT	2		Marches
+Peyrehorade	city	FR	2		Nouvelle-Aquitaine
+Phalsbourg	city	FR	2		Grand Est
+Plainfaing	city	FR	2		Grand Est
+Plaintel	city	FR	2		Brittany
+Plassac	city	FR	2		Nouvelle-Aquitaine
+Plateau d'Hauteville	city	FR	2		Auvergne-Rhone-Alpes
+Ploeren	city	FR	2		Brittany
+Plombières-lès-Dijon	city	FR	2		Bourgogne-Franche-Comte
+Plouarzel	city	FR	2		Brittany
+Ploudaniel	city	FR	2		Brittany
+Plouha	city	FR	2		Brittany
+Plouhinec	city	FR	2		Brittany
+Ploulec'h	city	FR	2		Brittany
+Pluvigner	city	FR	2		Brittany
+Plénée-Jugon	city	FR	2		Brittany
+Poisy	city	FR	2		Auvergne-Rhone-Alpes
+Pollestres	city	FR	2		Occitanie
+Pont-Saint-Esprit	city	FR	2		Occitanie
+Pont-Évêque	city	FR	2		Auvergne-Rhone-Alpes
+Pontorson	city	FR	2		Normandy
+Port-Saint-Père	city	FR	2		Loire Region
+Portes-lès-Valence	city	FR	2		Auvergne-Rhone-Alpes
+Portet-sur-Garonne	city	FR	2		Occitanie
+Pouillon	city	FR	2		Nouvelle-Aquitaine
+Poznan	city	PL	2	Poznań	Greater Poland Voivodeship
+Prades	city	FR	2		Occitanie
+Prades-le-Lez	city	FR	2		Occitanie
+Pulnoy	city	FR	2		Grand Est
+Punaauia	city	PF	2		Îles-du-Vent
+Péaule	city	FR	2		Brittany
+Péron	city	FR	2		Auvergne-Rhone-Alpes
+Quebec	city	CA	2	Québec	Quebec
+Quesnoy-sur-Deûle	city	FR	2		Hauts-de-France
+Rang-du-Fliers	city	FR	2		Hauts-de-France
+Replonges	city	FR	2		Auvergne-Rhone-Alpes
+Rians	city	FR	2		Provence-Alpes-Cote d'Azur
+Riantec	city	FR	2		Brittany
+Rimaucourt	city	FR	2		Grand Est
+Rimeize	city	FR	2		Occitanie
+Riom-ès-Montagnes	city	FR	2		Auvergne-Rhone-Alpes
+Rive-de-Gier	city	FR	2		Auvergne-Rhone-Alpes
+Rivesaltes	city	FR	2		Occitanie
+Rochefort-sur-Nenon	city	FR	2		Bourgogne-Franche-Comte
+Roissy-En-France	city	FR	2			2
+Ronchin	city	FR	2		Hauts-de-France
+Roullet-Saint-Estèphe	city	FR	2		Nouvelle-Aquitaine
+Royal Leamington Spa	city	GB	2			2
+Saanen	city	CH	2		Bern
+Saint-Amand-Montrond	city	FR	2		Centre-Val de Loire
+Saint-Aunès	city	FR	2		Occitanie
+Saint-Brice-Courcelles	city	FR	2		Grand Est
+Saint-Calais	city	FR	2		Loire Region
+Saint-Cannat	city	FR	2		Provence-Alpes-Cote d'Azur
+Saint-Clément-de-Rivière	city	FR	2		Occitanie
+Saint-Crépin	city	FR	2		Provence-Alpes-Cote d'Azur
+Saint-Denis-lès-Sens	city	FR	2		Bourgogne-Franche-Comte
+Saint-Didier-sous-Aubenas	city	FR	2		Auvergne-Rhone-Alpes
+Saint-Fargeau-Ponthierry	city	FR	2		Ile-de-France
+Saint-Florentin	city	FR	2		Bourgogne-Franche-Comte
+Saint-Georges-des-Groseillers	city	FR	2		Normandy
+Saint-Geours-de-Maremne	city	FR	2		Nouvelle-Aquitaine
+Saint-Germain-des-Prés	city	FR	2		Occitanie
+Saint-Girons	city	FR	2		Occitanie
+Saint-Jean-Saint-Nicolas	city	FR	2		Provence-Alpes-Cote d'Azur
+Saint-Jouan-des-Guérets	city	FR	2		Brittany
+Saint-Julien-les-Villas	city	FR	2		Grand Est
+Saint-Juéry	city	FR	2		Occitanie
+Saint-Laurent-des-Arbres	city	FR	2		Occitanie
+Saint-Léger-sous-Cholet	city	FR	2		Loire Region
+Saint-Mandrier-sur-Mer	city	FR	2		Provence-Alpes-Cote d'Azur
+Saint-Martin-Boulogne	city	FR	2		Hauts-de-France	1
+Saint-Martory	city	FR	2		Occitanie
+Saint-Maurice-Saint-Germain	city	FR	2		Centre-Val de Loire
+Saint-Méard	city	FR	2		Nouvelle-Aquitaine
+Saint-Nicolas-d'Aliermont	city	FR	2		Normandy
+Saint-Parres-aux-Tertres	city	FR	2		Grand Est
+Saint-Paul-Lez-Durance	city	FR	2			2
+Saint-Pierre	city	RE	2		Réunion
+Saint-Pierre-lès-Nemours	city	FR	2		Ile-de-France
+Saint-Pol-de-Léon	city	FR	2		Brittany
+Saint-Pourçain-sur-Sioule	city	FR	2		Auvergne-Rhone-Alpes
+Saint-Père-en-Retz	city	FR	2		Loire Region
+Saint-Renan	city	FR	2		Brittany
+Saint-Rémy	city	FR	2		Bourgogne-Franche-Comte
+Saint-Rémy-de-Provence	city	FR	2		Provence-Alpes-Cote d'Azur
+Saint-Rémy-lès-Chevreuse	city	FR	2		Ile-de-France
+Saint-Saturnin	city	FR	2		Loire Region
+Saint-Savin	city	FR	2		Nouvelle-Aquitaine
+Saint-Seine-l'Abbaye	city	FR	2		Bourgogne-Franche-Comte
+Saint-Siméon-de-Bressieux	city	FR	2		Auvergne-Rhone-Alpes
+Saint-Vincent-de-Paul	city	FR	2		Nouvelle-Aquitaine
+Saint-Étienne	city	FR	2			2
+Saint-Étienne-de-Maurs	city	FR	2		Auvergne-Rhone-Alpes
+Saint-Étienne-de-Saint-Geoirs	city	FR	2		Auvergne-Rhone-Alpes
+Saint-Étienne-du-Bois	city	FR	2		Auvergne-Rhone-Alpes
+Sainte-Anne-sur-Brivet	city	FR	2		Loire Region
+Sainte-Croix-aux-Mines	city	FR	2		Grand Est
+Sainte-Foy-la-Grande	city	FR	2		Nouvelle-Aquitaine
+Sainte-Hélène	city	FR	2
+Saintes-Maries-de-la-Mer	city	FR	2		Provence-Alpes-Cote d'Azur
+Salamanca	city	ES	2		Castilla and Leon
+Salles-sur-Mer	city	FR	2		Nouvelle-Aquitaine
+San Jose	city	CR	2			2
+Sanary-sur-Mer	city	FR	2		Provence-Alpes-Cote d'Azur
+Sanilhac	city	FR	2		Nouvelle-Aquitaine
+Sarrola-Carcopino	city	FR	2		Corsica
+Sarzeau	city	FR	2		Brittany
+Saulx-les-Chartreux	city	FR	2		Ile-de-France
+Sausset-les-Pins	city	FR	2		Provence-Alpes-Cote d'Azur
+Saverdun	city	FR	2		Occitanie
+Savigny	city	FR	2		Auvergne-Rhone-Alpes
+Schweighouse-sur-Moder	city	FR	2		Grand Est
+Selongey	city	FR	2		Bourgogne-Franche-Comte
+Sesto San Giovanni	city	IT	2		Lombardy
+Sigean	city	FR	2		Occitanie
+Solignac	city	FR	2		Nouvelle-Aquitaine
+Souffelweyersheim	city	FR	2		Grand Est
+Soultz-Haut-Rhin	city	FR	2		Grand Est
+Sousse	city	TN	2			2
+South Shields	city	GB	2		England
+South Yarra	city	AU	2			2
+Soyons	city	FR	2		Auvergne-Rhone-Alpes
+St-Bruno-de-Montarville	city	CA	2		Quebec
+Stains	city	FR	2		Ile-de-France	1
+Stockton-on-Tees	city	GB	2		England
+Strassen	city	LU	2			2
+Sublaines	city	FR	2		Centre-Val de Loire
+Séez	city	FR	2		Auvergne-Rhone-Alpes
+Séméac	city	FR	2		Occitanie	1
+Tadley	city	GB	2		England
+Talange	city	FR	2		Grand Est
+Thiviers	city	FR	2		Nouvelle-Aquitaine
+Thorigny-sur-Marne	city	FR	2		Ile-de-France
+Thônes	city	FR	2		Auvergne-Rhone-Alpes
+Tillé	city	FR	2		Hauts-de-France
+Tremblay-les-Villages	city	FR	2		Centre-Val de Loire
+Trignac	city	FR	2		Loire Region
+Trédrez-Locquémeau	city	FR	2		Brittany
+Tulette	city	FR	2		Auvergne-Rhone-Alpes
+Tôtes	city	FR	2		Normandy
+Třebíč	city	CZ	2		Vysočina
+Urrugne	city	FR	2		Nouvelle-Aquitaine
+Uzerche	city	FR	2		Nouvelle-Aquitaine
+Vabres-l'Abbaye	city	FR	2		Occitanie
+Vaires-sur-Marne	city	FR	2		Ile-de-France
+Vaison-la-Romaine	city	FR	2		Provence-Alpes-Cote d'Azur
+Vaivre-et-Montoille	city	FR	2		Bourgogne-Franche-Comte
+Valdahon	city	FR	2		Bourgogne-Franche-Comte
+Vallon-Pont-d'Arc	city	FR	2		Auvergne-Rhone-Alpes
+Veauche	city	FR	2		Auvergne-Rhone-Alpes
+Velaux	city	FR	2			2
+Vendeville	city	FR	2		Hauts-de-France
+Vernantois	city	FR	2		Bourgogne-Franche-Comte
+Verneuil	city	FR	2		Bourgogne-Franche-Comte
+Verneuil-sur-Vienne	city	FR	2		Nouvelle-Aquitaine
+Verrières-le-Buisson	city	FR	2		Ile-de-France
+Veurne	city	BE	2		Flanders
+Vic-sur-Cère	city	FR	2		Auvergne-Rhone-Alpes
+Vidauban	city	FR	2		Provence-Alpes-Cote d'Azur
+Vielha e Mijaran	city	ES	2		Catalonia
+Villecomtal-sur-Arros	city	FR	2		Occitanie
+Villemagne-l'Argentière	city	FR	2		Occitanie
+Villeneuve-de-Berg	city	FR	2		Auvergne-Rhone-Alpes
+Villequier-Aumont	city	FR	2		Hauts-de-France
+Villerbon	city	FR	2		Centre-Val de Loire
+Villers-Semeuse	city	FR	2		Grand Est
+Villers-la-Montagne	city	FR	2		Grand Est
+Villers-sous-Saint-Leu	city	FR	2		Hauts-de-France
+Villers-sur-Saulnot	city	FR	2		Bourgogne-Franche-Comte
+Villersexel	city	FR	2		Bourgogne-Franche-Comte
+Villerupt	city	FR	2		Grand Est
+Villette-de-Vienne	city	FR	2		Auvergne-Rhone-Alpes
+Vinon-sur-Verdon	city	FR	2		Provence-Alpes-Cote d'Azur
+Vitry-sur-Orne	city	FR	2		Grand Est
+Viviers-du-Lac	city	FR	2		Auvergne-Rhone-Alpes
+Windermere	city	GB	2		England
+Zermatt	city	CH	2		Wallis
+Écommoy	city	FR	2		Loire Region
+Écuisses	city	FR	2		Bourgogne-Franche-Comte
+Éguilles	city	FR	2		Provence-Alpes-Cote d'Azur
+Éperlecques	city	FR	2		Hauts-de-France
+Épron	city	FR	2		Normandy
+Équemauville	city	FR	2		Normandy
+Étauliers	city	FR	2		Nouvelle-Aquitaine
+Étupes	city	FR	2		Bourgogne-Franche-Comte
+'s-Hertogenbosch	city	NL	1		North Brabant
+ABU DHABI	city	AE	1			1
+Aberdare	city	GB	1		Wales
+Achicourt	city	FR	1		Hauts-de-France
+Aigle	city	CH	1		Vaud
+Aigrefeuille-d'Aunis	city	FR	1		Nouvelle-Aquitaine
+Aigueperse	city	FR	1		Auvergne-Rhone-Alpes
+Aigues-Vives	city	FR	1		Occitanie
+Aimargues	city	FR	1		Occitanie
+Aire-sur-l'Adour	city	FR	1		Nouvelle-Aquitaine
+Airvault	city	FR	1		Nouvelle-Aquitaine
+Aix-Noulette	city	FR	1		Hauts-de-France
+Albiès	city	FR	1		Occitanie
+Alby-sur-Chéran	city	FR	1		Auvergne-Rhone-Alpes
+Alexandria	city	EG	1			1
+Alkmaar	city	NL	1		North Holland
+Allaire	city	FR	1		Brittany
+Allauch	city	FR	1		Provence-Alpes-Cote d'Azur
+Allinges	city	FR	1		Auvergne-Rhone-Alpes
+Altamont	city	US	1		Kansas
+Amadora	city	PT	1			1
+Ambala Et Hasimara	city	IN	1			1
+Ambarès-et-Lagrave	city	FR	1		Nouvelle-Aquitaine
+Ambilly	city	FR	1		Auvergne-Rhone-Alpes
+Amblainville	city	FR	1		Hauts-de-France
+Amboise	city	FR	1		Centre-Val de Loire
+Ambrières-les-Vallées	city	FR	1		Loire Region
+Amnéville	city	FR	1		Grand Est
+Amorebieta-Etxano	city	ES	1		Basque Country
+Ampuis	city	FR	1		Auvergne-Rhone-Alpes
+Amstelveen	city	NL	1		North Holland
+Ancerville	city	FR	1		Grand Est
+Andelnans	city	FR	1		Bourgogne-Franche-Comte
+Andelot-Blancheville	city	FR	1		Grand Est
+Anderlecht	city	BE	1		Brussels
+Andernos-les-Bains	city	FR	1		Nouvelle-Aquitaine
+Anduze	city	FR	1		Occitanie
+Angerville	city	FR	1		Ile-de-France
+Angerville-la-Campagne	city	FR	1		Normandy
+Anould	city	FR	1		Grand Est
+Anse	city	FR	1		Auvergne-Rhone-Alpes
+Antequera	city	ES	1		Andalucia
+Anápolis	city	BR	1		Goias
+Aouste-Sur-Sye	city	FR	1			1
+Arbois	city	FR	1		Bourgogne-Franche-Comte
+Arbonne	city	FR	1		Nouvelle-Aquitaine
+Arcangues	city	FR	1		Nouvelle-Aquitaine
+Arches	city	FR	1		Grand Est
+Arcis-sur-Aube	city	FR	1		Grand Est
+Ardoix	city	FR	1		Auvergne-Rhone-Alpes
+Argent-sur-Sauldre	city	FR	1		Centre-Val de Loire
+Argentré-du-Plessis	city	FR	1		Brittany
+Arnage	city	FR	1		Loire Region
+Arroyo de la Encomienda	city	ES	1		Castilla and Leon
+Artenay	city	FR	1		Centre-Val de Loire
+Ashford	city	GB	1		England
+Athies	city	FR	1		Hauts-de-France
+Atton	city	FR	1			1
+Auberchicourt	city	FR	1		Hauts-de-France
+Aubergenville	city	FR	1			1
+Aubin	city	FR	1		Occitanie
+Aubonne	city	CH	1		Vaud
+Aucamville	city	FR	1		Occitanie
+Auchel	city	FR	1		Hauts-de-France
+Auchy-les-Mines	city	FR	1		Hauts-de-France
+Auderghem	city	BE	1	Oudergem	Brussels
+Audierne	city	FR	1		Brittany
+Audruicq	city	FR	1		Hauts-de-France
+Audun-le-Tiche	city	FR	1		Grand Est
+Aurec-sur-Loire	city	FR	1		Auvergne-Rhone-Alpes
+Auvers-sur-Oise	city	FR	1		Ile-de-France
+Auxon	city	FR	1		Grand Est
+Avensan	city	FR	1		Nouvelle-Aquitaine
+Averdon	city	FR	1		Centre-Val de Loire
+Avermes	city	FR	1		Auvergne-Rhone-Alpes
+Avion	city	FR	1		Hauts-de-France
+Avrainville	city	FR	1		Ile-de-France
+Avrillé	city	FR	1		Loire Region
+Badaroux	city	FR	1		Occitanie
+Baden	city	FR	1		Brittany
+Bagneaux-sur-Loing	city	FR	1		Ile-de-France
+Bagshot	city	GB	1		England
+Bahus-Soubiran	city	FR	1		Nouvelle-Aquitaine
+Bailleul-lès-Pernes	city	FR	1		Hauts-de-France
+Baincthun	city	FR	1		Hauts-de-France
+Balaruc-les-Bains	city	FR	1		Occitanie
+Ballancourt-sur-Essonne	city	FR	1		Ile-de-France
+Banassac-Canilhac	city	FR	1		Occitanie
+Bandar Kuala Lumpur	city	MY	1		Wilayah Persekutuan Kuala Lumpur
+Bangalore	city	IN	1			1
+Bar	city	FR	1		Nouvelle-Aquitaine
+Barberà del Vallès	city	ES	1		Catalonia
+Barcelonnette	city	FR	1		Provence-Alpes-Cote d'Azur
+Barcus	city	FR	1		Nouvelle-Aquitaine
+Barenton	city	FR	1		Normandy
+Barjac	city	FR	1		Occitanie
+Barjols	city	FR	1		Provence-Alpes-Cote d'Azur
+Barzun	city	FR	1		Nouvelle-Aquitaine
+Basse-Terre	city	GP	1		Guadeloupe
+Baugé-en-Anjou	city	FR	1		Loire Region
+Baziège	city	FR	1		Occitanie
+Beaumont-sur-Sarthe	city	FR	1		Loire Region
+Beaumontois en Périgord	city	FR	1		Nouvelle-Aquitaine
+Beaune-la-Rolande	city	FR	1		Centre-Val de Loire
+Beausoleil	city	FR	1		Provence-Alpes-Cote d'Azur
+Beautor	city	FR	1		Hauts-de-France
+Beauvallon	city	FR	1		Auvergne-Rhone-Alpes
+Beauvoir-Sur-Niort	city	FR	1			1
+Belcaire	city	FR	1		Occitanie
+Bellerive-sur-Allier	city	FR	1		Auvergne-Rhone-Alpes
+Belleydoux	city	FR	1		Auvergne-Rhone-Alpes
+Belmont-Tramonet	city	FR	1		Auvergne-Rhone-Alpes
+Benet	city	FR	1		Loire Region
+Bergheim	city	FR	1		Grand Est
+Berre-l'Étang	city	FR	1		Provence-Alpes-Cote d'Azur
+Berry-Bouy	city	FR	1		Centre-Val de Loire
+Besançon	city	FR	1			1
+Besse-sur-Issole	city	FR	1		Provence-Alpes-Cote d'Azur
+Bessé-sur-Braye	city	FR	1		Loire Region
+Betting	city	FR	1		Grand Est
+Beynes	city	FR	1		Ile-de-France
+Biars-sur-Cère	city	FR	1		Occitanie
+Bidache	city	FR	1		Nouvelle-Aquitaine
+Biggleswade	city	GB	1		England
+Bignan	city	FR	1		Brittany
+Biguglia	city	FR	1		Corsica
+Billy-Montigny	city	FR	1		Hauts-de-France
+Billère	city	FR	1		Nouvelle-Aquitaine
+Bingen am Rhein	city	DE	1		Rhineland-Palatinate
+Bitche	city	FR	1		Grand Est
+Bizanos	city	FR	1		Nouvelle-Aquitaine
+Blain	city	FR	1		Loire Region
+Blanquefort	city	FR	1		Nouvelle-Aquitaine
+Blanzy	city	FR	1		Bourgogne-Franche-Comte
+Blaydon on Tyne	city	GB	1		England
+Blaye	city	FR	1		Nouvelle-Aquitaine
+Blignicourt	city	FR	1		Grand Est
+Bognor Regis	city	GB	1		England
+Bogny-sur-Meuse	city	FR	1		Grand Est
+Bogotá	city	CO	1			1
+Bois	city	FR	1		Nouvelle-Aquitaine
+Bois-d'Amont	city	FR	1		Bourgogne-Franche-Comte
+Boise	city	US	1		Idaho
+Boissy-Saint-Léger	city	FR	1			1
+Bonchamp-lès-Laval	city	FR	1			1
+Bonneuil-en-France	city	FR	1		Ile-de-France
+Bonneval	city	FR	1		Centre-Val de Loire
+Bonson	city	FR	1		Auvergne-Rhone-Alpes
+Bordon	city	GB	1		England
+Bormes-les-Mimosas	city	FR	1		Provence-Alpes-Cote d'Azur
+Bort-les-Orgues	city	FR	1		Nouvelle-Aquitaine
+Bosmie-l'Aiguille	city	FR	1		Nouvelle-Aquitaine
+Bottrop	city	DE	1		North-Rhine-Westphalia
+Bouafle	city	FR	1		Ile-de-France
+Boulogne-sur-Gesse	city	FR	1		Occitanie
+Bourg	city	FR	1		Nouvelle-Aquitaine
+Bourg-de-Péage	city	FR	1		Auvergne-Rhone-Alpes
+Bousbecque	city	FR	1		Hauts-de-France
+Bouxwiller	city	FR	1		Grand Est
+Bouzonville	city	FR	1		Grand Est
+Bozouls	city	FR	1		Occitanie
+Branges	city	FR	1		Bourgogne-Franche-Comte
+Brasilia	city	BR	1	Brasília	Distrito Federal
+Brazey-en-Plaine	city	FR	1		Bourgogne-Franche-Comte
+Brazil	city	US	1		Indiana
+Brendola	city	IT	1		Veneto
+Brentwood	city	GB	1		England
+Bretagne	city	FR	1		Bourgogne-Franche-Comte
+Breteil	city	FR	1		Brittany
+Bretteville	city	FR	1		Normandy
+Bretteville-sur-Odon	city	FR	1		Normandy
+Briare	city	FR	1		Centre-Val de Loire
+Brides-les-Bains	city	FR	1		Auvergne-Rhone-Alpes
+Bridgewater	city	US	1			1
+Brighouse	city	GB	1		England
+Brindas	city	FR	1		Auvergne-Rhone-Alpes
+Brionne	city	FR	1		Normandy
+Brive-La-Gaillarde	city	FR	1			1
+Brives	city	FR	1		Centre-Val de Loire
+Brières-les-Scellés	city	FR	1			1
+Brooke-Alvinston	city	CA	1		Ontario
+Broons	city	FR	1		Brittany
+Broxbourne	city	GB	1		England
+Brunoy	city	FR	1		Ile-de-France
+Bruyères-sur-Oise	city	FR	1		Ile-de-France
+Bry-Sur-Marne	city	FR	1			1
+Brünzow	city	DE	1		Mecklenburg-Vorpommern
+Bubry	city	FR	1		Brittany
+Bucaramanga	city	CO	1			1
+Buchy	city	FR	1		Normandy
+Buhl	city	FR	1		Grand Est
+Bujumbura	city	BI	1			1
+Bully-les-Mines	city	FR	1		Hauts-de-France
+Bure	city	FR	1		Grand Est
+Bury	city	FR	1		Hauts-de-France
+Bussolengo	city	IT	1		Veneto
+Buwunga	city	UG	1		Bugiri
+Byhalia	city	US	1		Mississippi
+Bédarieux	city	FR	1		Occitanie
+Béligneux	city	FR	1		Auvergne-Rhone-Alpes
+Cagny	city	FR	1		Normandy
+Caille	city	FR	1		Provence-Alpes-Cote d'Azur
+Cairo	city	EG	1	القاهرة		1
+Calmont	city	FR	1		Occitanie
+Calonne-Ricouart	city	FR	1		Hauts-de-France
+Camaret-sur-Aigues	city	FR	1		Provence-Alpes-Cote d'Azur
+Camarès	city	FR	1		Occitanie
+Camberley	city	GB	1		England
+Capdenac	city	FR	1		Occitanie
+Cape Town	city	ZA	1		Western Cape
+Capvern	city	FR	1		Occitanie
+Carla-Bayle	city	FR	1		Occitanie
+Carmarthen	city	GB	1		Wales
+Carnoules	city	FR	1		Provence-Alpes-Cote d'Azur
+Cascais	city	PT	1			1
+Castel San Pietro Terme	city	IT	1		Emilia-Romagna
+Castelculier	city	FR	1		Nouvelle-Aquitaine
+Castelginest	city	FR	1		Occitanie
+Castle Douglas	city	GB	1		Scotland
+Caumont-sur-Durance	city	FR	1		Provence-Alpes-Cote d'Azur
+Cauneille	city	FR	1		Nouvelle-Aquitaine
+Cazaubon	city	FR	1		Occitanie
+Cedar Rapids	city	US	1		Iowa
+Celle	city	DE	1		Lower-Saxony
+Celles-sur-Belle	city	FR	1		Nouvelle-Aquitaine
+Cercy-la-Tour	city	FR	1		Bourgogne-Franche-Comte
+Cernay	city	FR	1		Grand Est
+Chabris	city	FR	1		Centre-Val de Loire
+Chalamont	city	FR	1		Auvergne-Rhone-Alpes
+Challes-les-Eaux	city	FR	1			1
+Chamberet	city	FR	1		Nouvelle-Aquitaine
+Chambéry	city	FR	1			1
+Champ-le-Duc	city	FR	1		Grand Est
+Champagne-sur-Oise	city	FR	1		Ile-de-France
+Champagné	city	FR	1		Loire Region
+Champlan	city	FR	1		Ile-de-France
+Champs	city	FR	1		Auvergne-Rhone-Alpes
+Chappes	city	FR	1		Auvergne-Rhone-Alpes
+Charancieu	city	FR	1		Auvergne-Rhone-Alpes
+Charavines	city	FR	1		Auvergne-Rhone-Alpes
+Chargé	city	FR	1		Centre-Val de Loire
+Charleville	city	FR	1		Grand Est
+Charlieu	city	FR	1		Auvergne-Rhone-Alpes
+Charmeil	city	FR	1		Auvergne-Rhone-Alpes
+Charmes	city	FR	1		Grand Est
+Charmes-sur-Rhône	city	FR	1		Auvergne-Rhone-Alpes
+Charvieu-Chavagneux	city	FR	1		Auvergne-Rhone-Alpes
+Chatte	city	FR	1		Auvergne-Rhone-Alpes
+Chaumontel	city	FR	1		Ile-de-France
+Chauvoncourt	city	FR	1		Grand Est
+Chavanay	city	FR	1		Auvergne-Rhone-Alpes
+Chavenay	city	FR	1		Ile-de-France
+Cheptainville	city	FR	1			1
+Chertsey	city	GB	1		England
+Chuzelles	city	FR	1		Auvergne-Rhone-Alpes
+Châlons-en-Champagne	city	FR	1			1
+Châlus	city	FR	1		Nouvelle-Aquitaine
+Château-Renard	city	FR	1		Centre-Val de Loire
+Château-la-Vallière	city	FR	1		Centre-Val de Loire
+Châteaubernard	city	FR	1		Nouvelle-Aquitaine
+Châteaugiron	city	FR	1		Brittany
+Châteauneuf-sur-Cher	city	FR	1		Centre-Val de Loire
+Châtenois	city	FR	1		Grand Est
+Cierp-Gaud	city	FR	1		Occitanie
+Circourt	city	FR	1		Grand Est
+Ciudad Real	city	ES	1		Castille-La Mancha
+Civrieux-d'Azergues	city	FR	1		Auvergne-Rhone-Alpes
+Clairoix	city	FR	1		Hauts-de-France
+Claremorris	city	IE	1			1
+Clermont-l'Hérault	city	FR	1		Occitanie
+Clouange	city	FR	1		Grand Est
+Cluis	city	FR	1		Centre-Val de Loire
+Clémont	city	FR	1		Centre-Val de Loire
+Clérac	city	FR	1		Nouvelle-Aquitaine
+Cléry-Saint-André	city	FR	1		Centre-Val de Loire
+Coarraze	city	FR	1		Nouvelle-Aquitaine
+Cohade	city	FR	1		Auvergne-Rhone-Alpes
+Collegno	city	IT	1		Piedmont
+Collias	city	FR	1		Occitanie
+Collonges-la-Rouge	city	FR	1		Nouvelle-Aquitaine
+Cologne	city	FR	1		Occitanie
+Colombier	city	FR	1		Bourgogne-Franche-Comte
+Colombo	city	LK	1		Western
+Combronde	city	FR	1		Auvergne-Rhone-Alpes
+Conakry	city	GN	1		Conakry
+Condette	city	FR	1		Hauts-de-France
+Condé-en-Normandie	city	FR	1		Normandy
+Condé-sur-Vire	city	FR	1		Normandy
+Conflans-Sainte-Honorine	city	FR	1		Ile-de-France
+Constance	city	DE	1	Konstanz	Baden-Wurttemberg
+Coquelles	city	FR	1		Hauts-de-France
+Coral Gables	city	US	1		Florida
+Corbenay	city	FR	1		Bourgogne-Franche-Comte
+Corby	city	GB	1			1
+Cordes-sur-Ciel	city	FR	1		Occitanie
+Cornas	city	FR	1		Auvergne-Rhone-Alpes
+Cornimont	city	FR	1		Grand Est
+Coron	city	FR	1		Loire Region
+Corpeau	city	FR	1		Bourgogne-Franche-Comte
+Corps	city	FR	1		Auvergne-Rhone-Alpes
+Cortaillod	city	CH	1		Neuchatel
+Corte	city	FR	1		Corsica
+Costa Mesa, CA	city	US	1		California	1
+Coulanges-lès-Nevers	city	FR	1		Bourgogne-Franche-Comte
+Coulans-sur-Gée	city	FR	1		Loire Region
+Cournon	city	FR	1		Brittany
+Cournonterral	city	FR	1			1
+Courrières	city	FR	1		Hauts-de-France
+Cranbrook	city	CA	1		British Columbia
+Crespières	city	FR	1		Ile-de-France
+Crest	city	FR	1		Auvergne-Rhone-Alpes
+Crewe	city	GB	1		England
+Criquetot-l'Esneval	city	FR	1		Normandy
+Crissey	city	FR	1		Bourgogne-Franche-Comte
+Criteuil-la-Magdeleine	city	FR	1		Nouvelle-Aquitaine
+Crowborough	city	GB	1		England
+Crowthorne	city	GB	1		England
+Croydon	city	GB	1			1
+Cruseilles	city	FR	1		Auvergne-Rhone-Alpes
+Crédin	city	FR	1		Brittany
+Crémieu	city	FR	1		Auvergne-Rhone-Alpes
+Cuauhtémoc	city	MX	1		Mexico City
+Cucq	city	FR	1		Hauts-de-France
+Cuers	city	FR	1		Provence-Alpes-Cote d'Azur
+Cuise-la-Motte	city	FR	1		Hauts-de-France
+Culoz-Béon	city	FR	1		Auvergne-Rhone-Alpes
+Custines	city	FR	1			1
+Cypress	city	US	1		California
+Cáceres	city	ES	1		Extremadura
+Dadonville	city	FR	1		Centre-Val de Loire
+Dainville	city	FR	1		Hauts-de-France
+Dambach-la-Ville	city	FR	1		Grand Est
+Damery	city	FR	1		Hauts-de-France
+Damgan	city	FR	1		Brittany
+Damigny	city	FR	1		Normandy
+Dammarie	city	FR	1		Centre-Val de Loire
+Darmstadt	city	DE	1		Hesse
+Dartford	city	GB	1		England
+Darvault	city	FR	1		Ile-de-France
+Dechy	city	FR	1		Hauts-de-France
+Decize	city	FR	1		Bourgogne-Franche-Comte
+Desvres	city	FR	1		Hauts-de-France
+Dhaka	city	BD	1	ঢাকা	Dhaka
+Dhari	city	IN	1		Uttarakhand
+Dinard	city	FR	1		Brittany
+Dingwall	city	GB	1		Scotland
+Diors	city	FR	1		Centre-Val de Loire
+Dirinon	city	FR	1		Brittany
+Distré	city	FR	1		Loire Region
+Dolus-d'Oléron	city	FR	1		Nouvelle-Aquitaine
+Domagné	city	FR	1			1
+Dombasle-sur-Meurthe	city	FR	1			1
+Domfront	city	FR	1		Hauts-de-France
+Dompaire	city	FR	1		Grand Est
+Dompierre-sur-Helpe	city	FR	1		Hauts-de-France
+Donchery	city	FR	1		Grand Est
+Donville-les-Bains	city	FR	1		Normandy
+Dormans	city	FR	1		Grand Est
+Dortmund	city	DE	1		North-Rhine-Westphalia
+Doussard	city	FR	1		Auvergne-Rhone-Alpes
+Dozulé	city	FR	1		Normandy
+Drachten	city	NL	1		Friesland
+Dracé	city	FR	1		Auvergne-Rhone-Alpes
+Dreuilhe	city	FR	1		Occitanie
+Drummondville	city	CA	1		Quebec
+Dun-le-Palestel	city	FR	1		Nouvelle-Aquitaine
+Duneau	city	FR	1		Loire Region
+Dunfermline	city	GB	1		Scotland
+Déville-lès-Rouen	city	FR	1		Normandy
+Eberbach-Seltz	city	FR	1		Grand Est
+Edmonton	city	CA	1			1
+Eeyou Istchee Baie-James	city	CA	1		Quebec
+Eindhoven	city	NL	1		North Brabant
+Ellesmere Port	city	GB	1		England
+Emmen	city	NL	1			1
+Entraigues-sur-la-Sorgue	city	FR	1		Provence-Alpes-Cote d'Azur
+Entre-deux-Guiers	city	FR	1		Auvergne-Rhone-Alpes
+Entzheim	city	FR	1		Grand Est
+Erquy	city	FR	1		Brittany
+Erstein	city	FR	1		Grand Est
+Escalquens	city	FR	1		Occitanie
+Escolives-Sainte-Camille	city	FR	1		Bourgogne-Franche-Comte
+Espelette	city	FR	1		Nouvelle-Aquitaine
+Espoo	city	FI	1			1
+Essars	city	FR	1		Hauts-de-France
+Eurville-Bienville	city	FR	1			1
+Evere	city	BE	1		Brussels
+Exincourt	city	FR	1		Bourgogne-Franche-Comte
+Falaise	city	FR	1		Normandy
+Faremoutiers	city	FR	1		Ile-de-France
+Faulquemont	city	FR	1		Grand Est
+Faverolles	city	FR	1		Centre-Val de Loire
+Favières	city	FR	1		Ile-de-France
+Fayl-Billot	city	FR	1		Grand Est
+Felletin	city	FR	1		Nouvelle-Aquitaine
+Fermoy	city	IE	1			1
+Ferrette	city	FR	1		Grand Est
+Ferrière-la-Grande	city	FR	1		Hauts-de-France
+Ferrières-sur-Ariège	city	FR	1		Occitanie
+Fleury-Mérogis	city	FR	1		Ile-de-France
+Floressas	city	FR	1		Occitanie
+Flourens	city	FR	1		Occitanie
+Fontaines-sur-Saône	city	FR	1		Auvergne-Rhone-Alpes
+Fontenay-Trésigny	city	FR	1		Ile-de-France
+Fontenay-en-Parisis	city	FR	1		Ile-de-France
+Fontvieille	city	FR	1		Provence-Alpes-Cote d'Azur
+Fort William	city	GB	1		Scotland
+Foucherans	city	FR	1		Bourgogne-Franche-Comte
+Foulayronnes	city	FR	1		Nouvelle-Aquitaine
+Fournes-en-Weppes	city	FR	1		Hauts-de-France
+Fragnes-La Loyère	city	FR	1		Bourgogne-Franche-Comte
+Fralignes	city	FR	1		Grand Est
+François	city	FR	1		Nouvelle-Aquitaine
+Fraserburgh	city	GB	1		Scotland
+Fresnoy-le-Château	city	FR	1		Grand Est
+Fretin	city	FR	1		Hauts-de-France
+Fribourg	city	CH	1		Fribourg
+Fronsac	city	FR	1		Nouvelle-Aquitaine
+Frouard	city	FR	1		Grand Est
+Frévent	city	FR	1		Hauts-de-France
+Fuengirola	city	ES	1		Andalucia
+Fumel	city	FR	1		Nouvelle-Aquitaine
+Gaillon	city	FR	1		Normandy
+Galston	city	GB	1		Scotland
+Gasny	city	FR	1		Normandy
+Gattendorf	city	DE	1		Bavaria
+Gavrelle	city	FR	1		Hauts-de-France
+Genilac	city	FR	1		Auvergne-Rhone-Alpes
+Gent	city	BE	1			1
+Giberville	city	FR	1		Normandy
+Gignac	city	FR	1		Occitanie
+Gilley	city	FR	1		Bourgogne-Franche-Comte
+Girancourt	city	FR	1		Grand Est
+Giromagny	city	FR	1		Bourgogne-Franche-Comte
+Gironcourt-sur-Vraine	city	FR	1		Grand Est
+Giussano	city	IT	1		Lombardy
+Gières	city	FR	1		Auvergne-Rhone-Alpes
+Glen Lyon	city	US	1		Pennsylvania
+Glisy	city	FR	1		Hauts-de-France
+Godalming	city	GB	1		England
+Gold Coast	city	AU	1		Queensland
+Golfech	city	FR	1		Occitanie
+Gondomar	city	PT	1			1
+Gordes	city	FR	1		Provence-Alpes-Cote d'Azur
+Gouesnou	city	FR	1		Brittany
+Gournay-en-Bray	city	FR	1		Normandy
+Gournay-sur-Marne	city	FR	1		Ile-de-France
+Gouzeaucourt	city	FR	1		Hauts-de-France
+Granadilla de Abona	city	ES	1		Canary Islands
+Grand-Aigueblanche	city	FR	1		Auvergne-Rhone-Alpes
+Grandchamps-des-Fontaines	city	FR	1		Loire Region
+Grandparigny	city	FR	1		Normandy
+Grans	city	FR	1		Provence-Alpes-Cote d'Azur
+Graz	city	AT	1		Styria
+Greenville	city	US	1			1
+Grenade	city	FR	1		Occitanie
+Grez-Neuville	city	FR	1		Loire Region
+Groix	city	FR	1		Brittany
+Gruchet-le-Valasse	city	FR	1		Normandy
+Gréasque	city	FR	1		Provence-Alpes-Cote d'Azur
+Grézieu-la-Varenne	city	FR	1		Auvergne-Rhone-Alpes
+Guadalajara	city	ES	1		Castille-La Mancha
+Guarda	city	PT	1			1
+Guebwiller	city	FR	1		Grand Est
+Gueltas	city	FR	1		Brittany
+Guignen	city	FR	1		Brittany
+Guignes	city	FR	1		Ile-de-France
+Gujan-Mestras	city	FR	1		Nouvelle-Aquitaine
+Gy	city	FR	1		Bourgogne-Franche-Comte
+Génicourt	city	FR	1		Ile-de-France
+Générac	city	FR	1		Occitanie
+Hagondange	city	FR	1		Grand Est
+Hailsham	city	GB	1		England
+Hallennes-lez-Haubourdin	city	FR	1		Hauts-de-France
+Hanches	city	FR	1		Centre-Val de Loire
+Hanoi	city	VN	1			1
+Hardricourt	city	FR	1		Ile-de-France
+Harfleur	city	FR	1		Normandy
+Harrogate	city	GB	1		England
+Hasparren	city	FR	1		Nouvelle-Aquitaine
+Hastings	city	NZ	1		Hawke's Bay
+Haudainville	city	FR	1		Grand Est
+Haute-Vigneulles	city	FR	1			1
+Hautefort	city	FR	1		Nouvelle-Aquitaine
+Hautmont	city	FR	1		Hauts-de-France
+Haverfordwest	city	GB	1		Wales
+Heidelberg	city	DE	1		Baden-Wurttemberg
+Helsinki	city	FI	1		South Finland
+Henrichemont	city	FR	1		Centre-Val de Loire
+Hersin-Coupigny	city	FR	1		Hauts-de-France
+Hesdin-la-Forêt	city	FR	1		Hauts-de-France
+Hesperange	city	LU	1			1
+Heudebouville	city	FR	1		Normandy
+Hexham	city	GB	1		England
+High Point	city	US	1		North Carolina
+Hirsingue	city	FR	1		Grand Est
+Hitiaa O te Ra	city	PF	1		Îles-du-Vent
+Hobart	city	AU	1		Tasmania
+Hoedic	city	FR	1		Brittany
+Holmestrand	city	NO	1		Vestfold
+Holtzheim	city	FR	1		Grand Est
+Hombourg-Haut	city	FR	1		Grand Est
+Honfleur	city	FR	1		Normandy
+Hounslow	city	GB	1		England
+Houssen	city	FR	1		Grand Est
+Houtaud	city	FR	1		Bourgogne-Franche-Comte
+Hoymille	city	FR	1		Hauts-de-France
+Hull	city	GB	1		England
+Hure	city	FR	1		Nouvelle-Aquitaine
+Huriel	city	FR	1		Auvergne-Rhone-Alpes
+Hurst	city	GB	1			1
+Hégenheim	city	FR	1		Grand Est
+Hải Phòng	city	VN	1			1
+Ille-sur-Têt	city	FR	1		Occitanie
+Iloilo City	city	PH	1		Western Visayas
+Imola	city	IT	1			1
+Imphy	city	FR	1		Bourgogne-Franche-Comte
+Indre	city	FR	1		Loire Region
+Ingré	city	FR	1		Centre-Val de Loire
+Ingwiller	city	FR	1		Grand Est
+Injoux-Génissiat	city	FR	1		Auvergne-Rhone-Alpes
+Inverurie	city	GB	1		Scotland
+Irigny	city	FR	1		Auvergne-Rhone-Alpes
+Isigny-le-Buat	city	FR	1		Normandy
+Isles-lès-Villenoy	city	FR	1		Ile-de-France
+Ivry-Sur-Seine	city	FR	1			1
+Ivry-la-Bataille	city	FR	1		Normandy
+Jainvillotte	city	FR	1		Grand Est
+Jaipur	city	IN	1		Rajasthan
+Jakarta	city	ID	1			1
+Janville	city	FR	1		Normandy
+Jard-sur-Mer	city	FR	1		Loire Region
+Jarville-la-Malgrange	city	FR	1		Grand Est
+Jassans-Riottier	city	FR	1			1
+Jaunay-Marigny	city	FR	1		Nouvelle-Aquitaine
+Jaén	city	ES	1		Andalucia
+Jeddah	city	SA	1	جدة		1
+Jerusalem	city	IL	1			1
+Job	city	FR	1		Auvergne-Rhone-Alpes
+Joeuf	city	FR	1		Grand Est
+Joinville	city	BR	1		Santa Catarina
+Joliet	city	US	1		Illinois
+Jouars-Pontchartrain	city	FR	1		Ile-de-France
+Jurançon	city	FR	1		Nouvelle-Aquitaine
+Kalgoorlie	city	AU	1		Western Australia
+Karlsruhe	city	DE	1		Baden-Wurttemberg
+Kembs	city	FR	1		Grand Est
+Kervignac	city	FR	1		Brittany
+Kilcullen	city	IE	1			1
+Kings Langley	city	GB	1		England
+Knokke-Heist	city	BE	1		Flanders
+Kobe-shi	city	JP	1	神戸市	Hyogo
+Kochi	city	IN	1		Kerala
+Koenigsmacker	city	FR	1		Grand Est
+Konstanz	city	DE	1			1
+Kynšperk nad Ohří	city	CZ	1		Karlovarský kraj
+L'Escarène	city	FR	1		Provence-Alpes-Cote d'Azur
+L'Isle-en-Dodon	city	FR	1		Occitanie
+L'union	city	FR	1			1
+L'Île-Bouchard	city	FR	1		Centre-Val de Loire
+La Bonneville-sur-Iton	city	FR	1		Normandy
+La Bourgonce	city	FR	1		Grand Est
+La Boussac	city	FR	1		Brittany
+La Bruffière	city	FR	1		Loire Region
+La Bâthie	city	FR	1		Auvergne-Rhone-Alpes
+La Cadière-d'Azur	city	FR	1		Provence-Alpes-Cote d'Azur
+La Capelle	city	FR	1		Hauts-de-France
+La Chapelle-Saint-Luc	city	FR	1		Grand Est
+La Chaussée-Saint-Victor	city	FR	1		Centre-Val de Loire
+La Cote-Saint-Andre	city	FR	1			1
+La Couarde-sur-Mer	city	FR	1		Nouvelle-Aquitaine
+La Coucourde	city	FR	1		Auvergne-Rhone-Alpes
+La Croix-Valmer	city	FR	1		Provence-Alpes-Cote d'Azur
+La Crèche	city	FR	1		Nouvelle-Aquitaine
+La Ferté-Alais	city	FR	1		Ile-de-France
+La Fouillade	city	FR	1		Occitanie
+La Fouillouse	city	FR	1		Auvergne-Rhone-Alpes
+La Freissinouse	city	FR	1		Provence-Alpes-Cote d'Azur
+La Grand-Combe	city	FR	1		Occitanie
+La Guérinière	city	FR	1		Loire Region
+La Haie-Fouassière	city	FR	1		Loire Region
+La Léchère	city	FR	1			1
+La Maxe	city	FR	1		Grand Est
+La Orotava	city	ES	1		Canary Islands
+La Plagne Tarentaise	city	FR	1		Auvergne-Rhone-Alpes
+La Plaine	city	FR	1		Loire Region
+La Ricamarie	city	FR	1		Auvergne-Rhone-Alpes
+La Roche-des-Arnauds	city	FR	1		Provence-Alpes-Cote d'Azur
+La Rue-Saint-Pierre	city	FR	1		Normandy
+La Salle-les-Alpes	city	FR	1		Provence-Alpes-Cote d'Azur
+La Suze-sur-Sarthe	city	FR	1		Loire Region
+La Tour-de-Salvagny	city	FR	1		Auvergne-Rhone-Alpes
+La Tranche-sur-Mer	city	FR	1		Loire Region
+La Turballe	city	FR	1		Loire Region
+La Vaupalière	city	FR	1		Normandy
+Labruguière	city	FR	1		Occitanie
+Lacq	city	FR	1		Nouvelle-Aquitaine
+Ladson	city	US	1		South Carolina
+Laferté-sur-Amance	city	FR	1		Grand Est
+Lagny-Sur-Marne	city	FR	1			1
+Lagny-le-Sec	city	FR	1		Hauts-de-France
+Lagord	city	FR	1		Nouvelle-Aquitaine
+Laissac-Sévérac l'Église	city	FR	1		Occitanie
+Lalanne-Trie	city	FR	1		Occitanie
+Lalaye	city	FR	1			1
+Laloubère	city	FR	1		Occitanie
+Lancy	city	CH	1		Geneva
+Landvetter	city	SE	1		Vastra Gotaland County
+Landévant	city	FR	1		Brittany
+Langeac	city	FR	1		Auvergne-Rhone-Alpes
+Langeais	city	FR	1		Centre-Val de Loire
+Langogne	city	FR	1		Occitanie
+Langoiran	city	FR	1		Nouvelle-Aquitaine
+Lannoy	city	FR	1		Hauts-de-France
+Lans-en-Vercors	city	FR	1		Auvergne-Rhone-Alpes
+Lanteuil	city	FR	1		Nouvelle-Aquitaine
+Lassay-les-Châteaux	city	FR	1		Loire Region
+Lassigny	city	FR	1		Hauts-de-France
+Latour-Bas-Elne	city	FR	1		Occitanie
+Lau-Balagnas	city	FR	1		Occitanie
+Laudun-l'Ardoise	city	FR	1		Occitanie
+Launaguet	city	FR	1		Occitanie
+Lavardac	city	FR	1		Nouvelle-Aquitaine
+Lavelanet	city	FR	1		Occitanie
+Lavernose-Lacasse	city	FR	1		Occitanie
+Le Barcarès	city	FR	1		Occitanie
+Le Barp	city	FR	1		Nouvelle-Aquitaine
+Le Bois-Plage-en-Ré	city	FR	1		Nouvelle-Aquitaine
+Le Boulay	city	FR	1		Centre-Val de Loire
+Le Boulou	city	FR	1		Occitanie
+Le Bourgneuf-la-Forêt	city	FR	1		Loire Region
+Le Bousquet-d'Orb	city	FR	1		Occitanie
+Le Buisson	city	FR	1		Occitanie
+Le Cabanial	city	FR	1		Occitanie
+Le Castelet	city	FR	1		Normandy
+Le Chambon-Feugerolles	city	FR	1		Auvergne-Rhone-Alpes
+Le Chambon-sur-Lignon	city	FR	1		Auvergne-Rhone-Alpes
+Le Cheylard	city	FR	1		Auvergne-Rhone-Alpes
+Le François	city	MQ	1		Martinique
+Le Gosier	city	GP	1		Guadeloupe
+Le Grand-Lemps	city	FR	1		Auvergne-Rhone-Alpes
+Le Grau-du-Roi	city	FR	1		Occitanie
+Le Hinglé	city	FR	1		Brittany
+Le May-sur-Èvre	city	FR	1		Loire Region
+Le Meux	city	FR	1		Hauts-de-France
+Le Moule	city	GP	1		Guadeloupe
+Le Muy	city	FR	1		Provence-Alpes-Cote d'Azur
+Le Mée-sur-Seine	city	FR	1		Ile-de-France
+Le Mériot	city	FR	1		Grand Est
+Le Mérévillois	city	FR	1		Ile-de-France
+Le Noirmont	city	CH	1		Jura
+Le Palais	city	FR	1		Brittany
+Le Palais-sur-Vienne	city	FR	1		Nouvelle-Aquitaine
+Le Perray-en-Yvelines	city	FR	1		Ile-de-France
+Le Pian-Médoc	city	FR	1		Nouvelle-Aquitaine
+Le Plan-de-la-Tour	city	FR	1			1
+Le Plessis-Bouchard	city	FR	1		Ile-de-France
+Le Plessis-Pâté	city	FR	1		Ile-de-France
+Le Poinçonnet	city	FR	1		Centre-Val de Loire
+Le Raincy	city	FR	1		Ile-de-France
+Le Teich	city	FR	1		Nouvelle-Aquitaine
+Le Val-Saint-Père	city	FR	1		Normandy
+Le Vieil-Évreux	city	FR	1		Normandy
+Lech	city	AT	1		Vorarlberg
+Leek	city	GB	1		England
+Leipzig	city	DE	1		Saxony
+Lemberg	city	FR	1		Grand Est
+Lemoa	city	ES	1		Basque Country
+Lentilly	city	FR	1		Auvergne-Rhone-Alpes
+Les Andelys	city	FR	1		Normandy
+Les Arcs	city	FR	1		Provence-Alpes-Cote d'Azur
+Les Barils	city	FR	1		Normandy
+Les Belleville	city	FR	1		Auvergne-Rhone-Alpes
+Les Brulais	city	FR	1		Brittany
+Les Fins	city	FR	1		Bourgogne-Franche-Comte
+Les Gets	city	FR	1		Auvergne-Rhone-Alpes
+Les Martres-de-Veyre	city	FR	1		Auvergne-Rhone-Alpes
+Les Pieux	city	FR	1		Normandy
+Les Plantiers	city	FR	1		Occitanie
+Les Tourrettes	city	FR	1		Auvergne-Rhone-Alpes
+Les Trois-Bassins	city	RE	1		Réunion
+Les Trois-Îlets	city	MQ	1		Martinique
+Lesneven	city	FR	1		Brittany
+Lessay	city	FR	1		Normandy
+Levens	city	FR	1		Provence-Alpes-Cote d'Azur
+Levin	city	NZ	1		Manawatu Whanganui
+Lewarde	city	FR	1		Hauts-de-France
+Liaochen	city	CN	1			1
+Ligueil	city	FR	1		Centre-Val de Loire
+Limbourg	city	BE	1		Wallonia
+Limeil-Brevannes	city	FR	1			1
+Limoux	city	FR	1		Occitanie
+Linas	city	FR	1		Ile-de-France
+Lingen (Ems)	city	DE	1		Lower-Saxony
+Lingolsheim	city	FR	1		Grand Est
+Little Rock	city	US	1		Arkansas
+Livorno	city	IT	1		Tuscany
+Livron-sur-Drôme	city	FR	1			1
+Locminé	city	FR	1		Brittany
+Lodève	city	FR	1		Occitanie
+Loire-sur-Rhône	city	FR	1		Auvergne-Rhone-Alpes
+Longeville-sur-Mer	city	FR	1		Loire Region
+Loos-en-Gohelle	city	FR	1		Hauts-de-France
+Lorquin	city	FR	1		Grand Est
+Loughborough	city	GB	1		England
+Loughton	city	GB	1		England
+Lourches	city	FR	1		Hauts-de-France
+Louvie-Juzon	city	FR	1		Nouvelle-Aquitaine
+Louvigny	city	FR	1		Normandy
+Loué	city	FR	1		Loire Region
+Luanda	city	AO	1			1
+Luc-la-Primaube	city	FR	1		Occitanie
+Luc-sur-Mer	city	FR	1		Normandy
+Lucciana	city	FR	1		Corsica
+Luché-Thouarsais	city	FR	1		Nouvelle-Aquitaine
+Lucé	city	FR	1		Centre-Val de Loire
+Luisant	city	FR	1		Centre-Val de Loire
+Lurcy-Lévis	city	FR	1		Auvergne-Rhone-Alpes
+Luzenac	city	FR	1		Occitanie
+Lyaud	city	FR	1		Auvergne-Rhone-Alpes
+Léognan	city	FR	1		Nouvelle-Aquitaine
+Léré	city	FR	1		Centre-Val de Loire
+Maasvlakte	city	NL	1		South Holland
+Macouria	city	GF	1		Guyane
+Macul	city	CL	1		Region Santiago Metropolitan
+Magalas	city	FR	1		Occitanie
+Magny-en-Vexin	city	FR	1		Ile-de-France
+Mahwah	city	US	1		New Jersey
+Maignelay-Montigny	city	FR	1		Hauts-de-France
+Mainz	city	DE	1		Rhineland-Palatinate
+Maldon	city	GB	1		England
+Malerkotla Sub-District	city	IN	1		Punjab
+Malmö	city	SE	1			1
+Malta	city	MT	1			1
+Malzéville	city	FR	1		Grand Est
+Mamirolle	city	FR	1		Bourgogne-Franche-Comte
+Mandaluyong	city	PH	1		National Capital Region
+Marclopt	city	FR	1		Auvergne-Rhone-Alpes
+Marconnelle	city	FR	1		Hauts-de-France
+Marcq-En-Barœul	city	FR	1			1
+Marennes	city	FR	1		Auvergne-Rhone-Alpes
+Marines	city	FR	1		Ile-de-France
+Marly-la-Ville	city	FR	1		Ile-de-France
+Marne-la-Vallée	city	FR	1	Torcy	Ile-de-France
+Marolles-en-Hurepoix	city	FR	1		Ile-de-France
+Marquise	city	FR	1		Hauts-de-France
+Marrakech	city	MA	1	مراكش	Marrakech - Safi
+Marseille-en-Beauvaisis	city	FR	1		Hauts-de-France
+Marthon	city	FR	1		Nouvelle-Aquitaine
+Martigné-Ferchaud	city	FR	1		Brittany
+Martigné-sur-Mayenne	city	FR	1		Loire Region
+Marvejols	city	FR	1		Occitanie
+Masny	city	FR	1		Hauts-de-France
+Matagami	city	CA	1		Quebec
+Matoury	city	GF	1		Guyane
+Maubourguet	city	FR	1		Occitanie
+Mauléon-Licharre	city	FR	1		Nouvelle-Aquitaine
+Maulévrier	city	FR	1		Loire Region
+Maussane-les-Alpilles	city	FR	1		Provence-Alpes-Cote d'Azur
+Mauves	city	FR	1		Auvergne-Rhone-Alpes
+Mauzé-sur-le-Mignon	city	FR	1		Nouvelle-Aquitaine
+Mazan	city	FR	1		Provence-Alpes-Cote d'Azur
+Mazères-Lezons	city	FR	1		Nouvelle-Aquitaine
+Maó	city	ES	1		Balearic Islands
+Menneval	city	FR	1		Normandy
+Meroux-Moval	city	FR	1		Bourgogne-Franche-Comte
+Meslay-du-Maine	city	FR	1		Loire Region
+Mesquer	city	FR	1			1
+Messanges	city	FR	1		Nouvelle-Aquitaine
+Messia-sur-Sorne	city	FR	1		Bourgogne-Franche-Comte
+Meulan-en-Yvelines	city	FR	1		Ile-de-France
+Meyrargues	city	FR	1		Provence-Alpes-Cote d'Azur
+Miami Beach	city	US	1		Florida
+Milford Haven	city	GB	1		Wales
+Millay	city	FR	1		Bourgogne-Franche-Comte
+Millery	city	FR	1		Auvergne-Rhone-Alpes
+Milwaukee	city	US	1			1
+Mimet	city	FR	1		Provence-Alpes-Cote d'Azur
+Minas de Riotinto	city	ES	1		Andalucia
+Mirebeau	city	FR	1		Nouvelle-Aquitaine
+Mirecourt	city	FR	1		Grand Est
+Mobile	city	US	1			1
+Molac	city	FR	1		Brittany
+Molain	city	FR	1		Bourgogne-Franche-Comte
+Moliets-et-Maa	city	FR	1		Nouvelle-Aquitaine
+Mondragon	city	FR	1		Provence-Alpes-Cote d'Azur
+Mons	city	BE	1		Wallonia
+Monsempron-Libos	city	FR	1		Nouvelle-Aquitaine
+Mont-près-Chambord	city	FR	1		Centre-Val de Loire
+Montagnac-sur-Auvignon	city	FR	1		Nouvelle-Aquitaine
+Montagnat	city	FR	1		Auvergne-Rhone-Alpes
+Montamisé	city	FR	1		Nouvelle-Aquitaine
+Montaner	city	FR	1		Nouvelle-Aquitaine
+Montastruc-la-Conseillère	city	FR	1		Occitanie
+Montereau-Sur-Le-Jard	city	FR	1			1
+Monterrey	city	MX	1		Nuevo Leon
+Montfermeil	city	FR	1		Ile-de-France
+Montfort-sur-Argens	city	FR	1		Provence-Alpes-Cote d'Azur
+Montgomery	city	US	1		Alabama
+Montigny-Lengrain	city	FR	1		Hauts-de-France
+Montlhéry	city	FR	1		Ile-de-France
+Montluel	city	FR	1		Auvergne-Rhone-Alpes
+Montmaur	city	FR	1		Provence-Alpes-Cote d'Azur
+Montmorillon	city	FR	1		Nouvelle-Aquitaine
+Montredon-des-Corbières	city	FR	1		Occitanie
+Montreuil-sur-Mer	city	FR	1		Hauts-de-France
+Montrevault-sur-Èvre	city	FR	1		Loire Region
+Montrevel-en-Bresse	city	FR	1		Auvergne-Rhone-Alpes
+Montval-sur-Loir	city	FR	1		Loire Region
+Montéléger	city	FR	1		Auvergne-Rhone-Alpes
+Monéteau	city	FR	1		Bourgogne-Franche-Comte
+Morcenx-la-Nouvelle	city	FR	1		Nouvelle-Aquitaine
+Morsang-sur-Orge	city	FR	1		Ile-de-France
+Morsang-sur-Seine	city	FR	1		Ile-de-France
+Mouans-Sartoux	city	FR	1		Provence-Alpes-Cote d'Azur
+Mouguerre	city	FR	1		Nouvelle-Aquitaine
+Moulineaux	city	FR	1		Normandy
+Moult-Chicheboville	city	FR	1		Normandy
+Muneville-le-Bingard	city	FR	1		Normandy
+Muntinlupa	city	PH	1		National Capital Region
+Murat-le-Quaire	city	FR	1		Auvergne-Rhone-Alpes
+Musièges	city	FR	1		Auvergne-Rhone-Alpes
+Mussidan	city	FR	1		Nouvelle-Aquitaine
+Muzillac	city	FR	1		Brittany
+Méaulte	city	FR	1		Hauts-de-France
+Ménesplet	city	FR	1		Nouvelle-Aquitaine
+Ménil-sur-Saulx	city	FR	1		Grand Est
+Méré	city	FR	1		Ile-de-France
+Naas	city	IE	1			1
+Nadadores	city	MX	1		Coahuila
+Nailloux	city	FR	1		Occitanie
+Namur	city	BE	1		Wallonia
+Nandy	city	FR	1		Ile-de-France
+Nantes-en-Ratier	city	FR	1		Auvergne-Rhone-Alpes
+Nanteuil-en-Vallée	city	FR	1		Nouvelle-Aquitaine
+Naucelles	city	FR	1		Auvergne-Rhone-Alpes
+Neauphle-le-Château	city	FR	1		Ile-de-France
+Neufchâtel-en-Bray	city	FR	1		Normandy
+Neuilly-en-Vexin	city	FR	1		Ile-de-France
+Neuville-Ferrières	city	FR	1		Normandy
+Neuville-sur-Oise	city	FR	1		Ile-de-France
+Neuville-sur-Sarthe	city	FR	1		Loire Region
+Newport	city	GB	1		Wales
+Newtownabbey	city	GB	1		Northern Ireland
+Neydens	city	FR	1		Auvergne-Rhone-Alpes
+Niamey	city	NE	1		Niamey
+Niederhausbergen	city	FR	1		Grand Est
+Nivolas-Vermelle	city	FR	1		Auvergne-Rhone-Alpes
+Nogent-Le-Rotrou	city	FR	1			1
+Norroy-le-Veneur	city	FR	1		Grand Est
+Norwich	city	GB	1		England
+Noyal-Muzillac	city	FR	1		Brittany
+Noyant-de-Touraine	city	FR	1		Centre-Val de Loire
+Noé	city	FR	1		Occitanie
+Nuremberg	city	DE	1	Nürnberg	Bavaria
+Nîmes	city	FR	1			1
+Oberhoffen-sur-Moder	city	FR	1		Grand Est
+Octeville-sur-Mer	city	FR	1		Normandy
+Oisemont	city	FR	1		Hauts-de-France
+Olgiate Olona	city	IT	1		Lombardy
+Omaha	city	US	1			1
+Onnaing	city	FR	1		Hauts-de-France
+Oradour-sur-Glane	city	FR	1		Nouvelle-Aquitaine
+Oraison	city	FR	1		Provence-Alpes-Cote d'Azur
+Orange	city	US	1		California
+Orcines	city	FR	1		Auvergne-Rhone-Alpes
+Orcières	city	FR	1		Provence-Alpes-Cote d'Azur
+Orliénas	city	FR	1		Auvergne-Rhone-Alpes
+Ormoy	city	FR	1		Ile-de-France
+Ornans	city	FR	1		Bourgogne-Franche-Comte
+Ornex	city	FR	1		Auvergne-Rhone-Alpes
+Orée d'Anjou	city	FR	1		Loire Region
+Otterswiller	city	FR	1		Grand Est
+Ouistreham	city	FR	1		Normandy
+Ouzouer-sur-Loire	city	FR	1		Centre-Val de Loire
+Pacy-sur-Eure	city	FR	1		Normandy
+Pagny-lès-Goin	city	FR	1		Grand Est
+Pagny-sur-Meuse	city	FR	1		Grand Est
+Paris	city	US	1		Texas
+Paris-12e-Arrondissement	city	FR	1			1
+Pas-en-Artois	city	FR	1		Hauts-de-France
+Pasay	city	PH	1			1
+Pathum Thani	city	TH	1	ปทุมธานี		1
+Pays-de-Clerval	city	FR	1		Bourgogne-Franche-Comte
+Penguily	city	FR	1		Brittany
+Percy-en-Normandie	city	FR	1		Normandy
+Perpezac-le-Noir	city	FR	1		Nouvelle-Aquitaine
+Perreux	city	FR	1		Auvergne-Rhone-Alpes
+Perrignier	city	FR	1		Auvergne-Rhone-Alpes
+Perrigny	city	FR	1		Bourgogne-Franche-Comte
+Peterborough	city	GB	1			1
+Peymeinade	city	FR	1		Provence-Alpes-Cote d'Azur
+Peyrolles-en-Provence	city	FR	1		Provence-Alpes-Cote d'Azur
+Pforzheim	city	DE	1		Baden-Wurttemberg
+Phnom Penh	city	KH	1	ភ្នំពេញ		1
+Pianottoli-Caldarello	city	FR	1		Corsica
+Pierrefitte-sur-Seine	city	FR	1		Ile-de-France
+Pierrelaye	city	FR	1		Ile-de-France
+Pierrerue	city	FR	1		Provence-Alpes-Cote d'Azur
+Pierrevert	city	FR	1		Provence-Alpes-Cote d'Azur
+Pignans	city	FR	1		Provence-Alpes-Cote d'Azur
+Pimbo	city	FR	1		Nouvelle-Aquitaine
+Pins-Justaret	city	FR	1		Occitanie
+Pinsac	city	FR	1		Occitanie
+Plancoët	city	FR	1		Brittany
+Pleudihen-sur-Rance	city	FR	1		Brittany
+Pleugriffet	city	FR	1		Brittany
+Plobannalec-Lesconil	city	FR	1		Brittany
+Ploubezre	city	FR	1		Brittany
+Plougastel-Daoulas	city	FR	1		Brittany
+Plougonvelin	city	FR	1		Brittany
+Plougoulm	city	FR	1		Brittany
+Plouguerneau	city	FR	1		Brittany
+Plouisy	city	FR	1		Brittany
+Ploumagoar	city	FR	1		Brittany
+Plouzané	city	FR	1		Brittany
+Plouzévédé	city	FR	1		Brittany
+Pluneret	city	FR	1		Brittany
+Plymouth	city	GB	1			1
+Plélan-le-Petit	city	FR	1		Brittany
+Pléneuf-Val-André	city	FR	1		Brittany
+Poligny	city	FR	1		Ile-de-France
+Polliat	city	FR	1		Auvergne-Rhone-Alpes
+Pomarez	city	FR	1		Nouvelle-Aquitaine
+Pomérols	city	FR	1		Occitanie
+Pontailler-sur-Saône	city	FR	1		Bourgogne-Franche-Comte
+Pontcharra	city	FR	1		Auvergne-Rhone-Alpes
+Pontpoint	city	FR	1		Hauts-de-France
+Porcheville	city	FR	1		Ile-de-France
+Port Sulphur	city	US	1		Louisiana
+Pouilly-en-Auxois	city	FR	1		Bourgogne-Franche-Comte
+Pouillé	city	FR	1		Loire Region
+Pouligny-Notre-Dame	city	FR	1		Centre-Val de Loire
+Pourcieux	city	FR	1		Provence-Alpes-Cote d'Azur
+Pouzauges	city	FR	1		Loire Region
+Pouzilhac	city	FR	1		Occitanie
+Pozuelo de Alarcón	city	ES	1		Community of Madrid
+Pradines	city	FR	1		Occitanie
+Prahecq	city	FR	1		Nouvelle-Aquitaine
+Prayssac	city	FR	1		Occitanie
+Presles	city	FR	1		Ile-de-France
+Primelin	city	FR	1		Brittany
+Priziac	city	FR	1		Brittany
+Prémery	city	FR	1		Bourgogne-Franche-Comte
+Puget-Ville	city	FR	1		Provence-Alpes-Cote d'Azur
+Puiseux-Pontoise	city	FR	1		Ile-de-France
+Pusey	city	FR	1		Bourgogne-Franche-Comte
+Putrajaya	city	MY	1		Wilayah Persekutuan Putrajaya
+Puurs-Sint-Amands	city	BE	1		Flanders
+Puy-Saint-Vincent	city	FR	1		Provence-Alpes-Cote d'Azur
+Puy-l'Évêque	city	FR	1		Occitanie
+Pégomas	city	FR	1		Provence-Alpes-Cote d'Azur
+Péronnas	city	FR	1		Auvergne-Rhone-Alpes
+Pétange	city	LU	1			1
+Quan Hoan Kiem	city	VN	1	Quận Hoàn Kiếm		1
+Quatre Bornes Town	city	MU	1			1
+Queenstown	city	NZ	1		Otago
+Quelaines-Saint-Gault	city	FR	1		Loire Region
+Quillan	city	FR	1		Occitanie
+Quincy-Voisins	city	FR	1		Ile-de-France
+Quint-Fonsegrives	city	FR	1		Occitanie
+Québec	city	CA	1			1
+Rabastens	city	FR	1		Occitanie
+Rabastens-de-Bigorre	city	FR	1		Occitanie
+Ramatuelle	city	FR	1		Provence-Alpes-Cote d'Azur
+Rambervillers	city	FR	1		Grand Est
+Ramsgate	city	GB	1		England
+Ravenna	city	IT	1		Emilia-Romagna
+Recey-sur-Ource	city	FR	1		Bourgogne-Franche-Comte
+Reggio nell'Emilia	city	IT	1		Emilia-Romagna
+Reignier-Ésery	city	FR	1		Auvergne-Rhone-Alpes
+Remire-Montjoly	city	GF	1		Guyane
+Rethel	city	FR	1		Grand Est
+Revel-Tourdan	city	FR	1		Auvergne-Rhone-Alpes
+Revigny-sur-Ornain	city	FR	1		Grand Est
+Rhinau	city	FR	1		Grand Est
+Ribeauvillé	city	FR	1		Grand Est
+Richelieu	city	FR	1		Centre-Val de Loire
+Richwiller	city	FR	1		Grand Est
+Rilhac-Rancon	city	FR	1		Nouvelle-Aquitaine
+Rioz	city	FR	1		Bourgogne-Franche-Comte
+Ripon	city	GB	1		England
+Rocbaron	city	FR	1		Provence-Alpes-Cote d'Azur
+Rochefort-du-Gard	city	FR	1		Occitanie
+Rochefort-sur-Loire	city	FR	1		Loire Region
+Rochester	city	GB	1			1
+Rock Hill	city	US	1		South Carolina
+Roeulx	city	FR	1		Hauts-de-France
+Rognac	city	FR	1		Provence-Alpes-Cote d'Azur
+Rognan	city	NO	1		Nordland
+Romagnat	city	FR	1		Auvergne-Rhone-Alpes
+Romans	city	FR	1		Nouvelle-Aquitaine
+Romilly-Sur-Andelle	city	FR	1			1
+Roquebillière	city	FR	1		Provence-Alpes-Cote d'Azur
+Rosenau	city	FR	1		Grand Est
+Rosiers-d'Égletons	city	FR	1		Nouvelle-Aquitaine
+Rosières-près-Troyes	city	FR	1		Grand Est
+Rosny-Sous-Bois	city	FR	1			1
+Rosny-sur-Seine	city	FR	1		Ile-de-France
+Rots	city	FR	1		Normandy
+Rouffiac-Tolosan	city	FR	1		Occitanie
+Rouillon	city	FR	1		Loire Region
+Roumengoux	city	FR	1		Occitanie
+Roussillon	city	FR	1		Auvergne-Rhone-Alpes
+Roussines	city	FR	1		Nouvelle-Aquitaine
+Routot	city	FR	1		Normandy
+Rouvray	city	FR	1		Bourgogne-Franche-Comte
+Rouxmesnil-Bouteilles	city	FR	1		Normandy
+Rozoy-sur-Serre	city	FR	1		Hauts-de-France
+Rubelles	city	FR	1		Ile-de-France
+Rueil-la-Gadelière	city	FR	1		Centre-Val de Loire
+Ruffec	city	FR	1		Nouvelle-Aquitaine
+Runcorn	city	GB	1		England
+Rzeszów	city	PL	1			1
+Réallon	city	FR	1		Provence-Alpes-Cote d'Azur
+Rémalard en Perche	city	FR	1		Normandy
+Rüsselsheim am Main	city	DE	1		Hesse
+Sacramento	city	US	1			1
+Safi	city	MA	1	آسفي	Marrakech - Safi
+Sailly	city	FR	1		Ile-de-France
+Sainghin-en-Mélantois	city	FR	1		Hauts-de-France
+Saint Geniez d'Olt et d'Aubrac	city	FR	1		Occitanie
+Saint-Affrique	city	FR	1		Occitanie
+Saint-Aignan	city	FR	1		Centre-Val de Loire
+Saint-Alban-d'Ay	city	FR	1		Auvergne-Rhone-Alpes
+Saint-Amant-de-Boixe	city	FR	1		Nouvelle-Aquitaine
+Saint-André	city	FR	1		Occitanie
+Saint-André-de-l'Eure	city	FR	1		Normandy
+Saint-Aoustrille	city	FR	1		Centre-Val de Loire
+Saint-Astier	city	FR	1		Nouvelle-Aquitaine
+Saint-Berthevin	city	FR	1		Loire Region
+Saint-Bonnet-les-Oules	city	FR	1		Auvergne-Rhone-Alpes
+Saint-Brevin-les-Pins	city	FR	1			1
+Saint-Chély-d'Apcher	city	FR	1		Occitanie
+Saint-Chéron	city	FR	1		Ile-de-France
+Saint-Cirq	city	FR	1		Occitanie
+Saint-Claude-de-Diray	city	FR	1		Centre-Val de Loire
+Saint-Clément	city	FR	1		Auvergne-Rhone-Alpes
+Saint-Denis-de-Mailloc	city	FR	1		Normandy
+Saint-Denis-lès-Bourg	city	FR	1		Auvergne-Rhone-Alpes
+Saint-Dionisy	city	FR	1		Occitanie
+Saint-Erme-Outre-et-Ramecourt	city	FR	1		Hauts-de-France
+Saint-Eusèbe	city	FR	1		Bourgogne-Franche-Comte
+Saint-Florent	city	FR	1		Corsica
+Saint-Florent-sur-Cher	city	FR	1		Centre-Val de Loire
+Saint-Geniès-de-Malgoirès	city	FR	1		Occitanie
+Saint-Georges-des-Coteaux	city	FR	1		Nouvelle-Aquitaine
+Saint-Georges-sur-Eure	city	FR	1		Centre-Val de Loire
+Saint-Germain-de-Salles	city	FR	1		Auvergne-Rhone-Alpes
+Saint-Germain-du-Corbéis	city	FR	1		Normandy
+Saint-Germain-lès-Arpajon	city	FR	1		Ile-de-France
+Saint-Gervais-la-Forêt	city	FR	1		Centre-Val de Loire
+Saint-Gilles-Croix-de-Vie	city	FR	1		Loire Region
+Saint-Hilaire-de-Chaléons	city	FR	1		Loire Region
+Saint-Hilaire-de-Riez	city	FR	1		Loire Region
+Saint-Hilaire-du-Harcouët	city	FR	1		Normandy
+Saint-Jacut-de-la-Mer	city	FR	1		Brittany
+Saint-Jean-Brévelay	city	FR	1		Brittany
+Saint-Jean-Pied-de-Port	city	FR	1		Nouvelle-Aquitaine
+Saint-Jean-du-Falga	city	FR	1		Occitanie
+Saint-Joseph	city	RE	1		Réunion
+Saint-Josse-ten-Noode	city	BE	1	Sint-Joost-ten-Node	Brussels
+Saint-Julien-de-Concelles	city	FR	1		Loire Region
+Saint-Julien-du-Sault	city	FR	1		Bourgogne-Franche-Comte
+Saint-Julien-sur-Sarthe	city	FR	1		Normandy
+Saint-Just-d'Ardèche	city	FR	1		Auvergne-Rhone-Alpes
+Saint-Just-le-Martel	city	FR	1		Nouvelle-Aquitaine
+Saint-Langis-lès-Mortagne	city	FR	1		Normandy
+Saint-Laurent-de-Mure	city	FR	1		Auvergne-Rhone-Alpes
+Saint-Laurent-des-Vignes	city	FR	1		Nouvelle-Aquitaine
+Saint-Laurent-du-Maroni	city	GF	1		Guyane
+Saint-Leu-d'Esserent	city	FR	1		Hauts-de-France
+Saint-Lizier	city	FR	1		Occitanie
+Saint-Loubès	city	FR	1		Nouvelle-Aquitaine
+Saint-Lys	city	FR	1		Occitanie
+Saint-Martin-De-Ré	city	FR	1			1
+Saint-Martin-Du-Frêne	city	FR	1			1
+Saint-Martin-d'Auxigny	city	FR	1		Centre-Val de Loire
+Saint-Martin-de-la-Porte	city	FR	1		Auvergne-Rhone-Alpes
+Saint-Martin-du-Frêne	city	FR	1		Auvergne-Rhone-Alpes
+Saint-Martin-le-Vinoux	city	FR	1		Auvergne-Rhone-Alpes
+Saint-Mathurin	city	FR	1		Loire Region
+Saint-Maurice-les-Brousses	city	FR	1		Nouvelle-Aquitaine
+Saint-Michel-de-Maurienne	city	FR	1		Auvergne-Rhone-Alpes
+Saint-Molf	city	FR	1			1
+Saint-Médard-En-Jalles	city	FR	1			1
+Saint-Médard-de-Mussidan	city	FR	1		Nouvelle-Aquitaine
+Saint-Orens-de-Gameville	city	FR	1		Occitanie
+Saint-Pardoux-Isaac	city	FR	1		Nouvelle-Aquitaine
+Saint-Pardoux-du-Breuil	city	FR	1		Nouvelle-Aquitaine
+Saint-Philbert-sur-Risle	city	FR	1		Normandy
+Saint-Pierre-de-Chandieu	city	FR	1		Auvergne-Rhone-Alpes
+Saint-Pierre-des-Fleurs	city	FR	1		Normandy
+Saint-Pierre-du-Perray	city	FR	1		Ile-de-France
+Saint-Pierre-Église	city	FR	1		Normandy
+Saint-Pons-de-Mauchiens	city	FR	1		Occitanie
+Saint-Priest-sous-Aixe	city	FR	1		Nouvelle-Aquitaine
+Saint-Prouant	city	FR	1		Loire Region
+Saint-Quentin-des-Prés	city	FR	1		Hauts-de-France
+Saint-Romain-de-Colbosc	city	FR	1			1
+Saint-Romain-de-Lerps	city	FR	1		Auvergne-Rhone-Alpes
+Saint-Romain-en-Viennois	city	FR	1		Provence-Alpes-Cote d'Azur
+Saint-Saturnin-lès-Avignon	city	FR	1		Provence-Alpes-Cote d'Azur
+Saint-Sauveur-le-Vicomte	city	FR	1		Normandy
+Saint-Sulpice-de-Pommeray	city	FR	1		Centre-Val de Loire
+Saint-Sulpice-la-Pointe	city	FR	1		Occitanie
+Saint-Sulpice-sur-Risle	city	FR	1		Normandy
+Saint-Sylvestre-Cappel	city	FR	1			1
+Saint-Symphorien-d'Ozon	city	FR	1		Auvergne-Rhone-Alpes
+Saint-Symphorien-sur-Coise	city	FR	1		Auvergne-Rhone-Alpes
+Saint-Sébastien-Sur-Loire	city	FR	1			1
+Saint-Victoret	city	FR	1		Provence-Alpes-Cote d'Azur
+Saint-Étienne-de-Baïgorry	city	FR	1		Nouvelle-Aquitaine
+Saint-Étienne-de-Tinée	city	FR	1		Provence-Alpes-Cote d'Azur
+Sainte-Adresse	city	FR	1		Normandy
+Sainte-Anastasie-sur-Issole	city	FR	1		Provence-Alpes-Cote d'Azur
+Sainte-Colombe-sur-Guette	city	FR	1		Occitanie
+Sainte-Foy-de-Longas	city	FR	1		Nouvelle-Aquitaine
+Sainte-Geneviève	city	FR	1		Hauts-de-France
+Sainte-Marie	city	FR	1		Brittany
+Sainte-Marie-Aux-Chenes	city	FR	1			1
+Sainte-Pazanne	city	FR	1		Loire Region
+Salaunes	city	FR	1		Nouvelle-Aquitaine
+Salies-du-Salat	city	FR	1		Occitanie
+Salignac-Eyvigues	city	FR	1		Nouvelle-Aquitaine
+Salives	city	FR	1		Bourgogne-Franche-Comte
+Salles-Sur-Mer	city	FR	1			1
+San-Giuliano	city	FR	1		Corsica
+Sanand	city	IN	1		Gujarat
+Sancerre	city	FR	1			1
+Sanem	city	LU	1			1
+Sant Pere de Ribes	city	ES	1		Catalonia
+Santa-Lucia-di-Moriani	city	FR	1		Corsica
+Santiago do Cacém	city	PT	1			1
+Santo Domingo	city	DO	1			1
+Saorge	city	FR	1		Provence-Alpes-Cote d'Azur
+Sargé-lès-le-Mans	city	FR	1		Loire Region
+Sarrouilles	city	FR	1		Occitanie
+Saskatoon	city	CA	1		Saskatchewan
+Sassenheim	city	NL	1		South Holland
+Satolas-et-Bonce	city	FR	1		Auvergne-Rhone-Alpes
+Saturargues	city	FR	1		Occitanie
+Saujon	city	FR	1		Nouvelle-Aquitaine
+Saulieu	city	FR	1		Bourgogne-Franche-Comte
+Sault	city	FR	1		Provence-Alpes-Cote d'Azur
+Sault-lès-Rethel	city	FR	1		Grand Est
+Sauveterre-de-Guyenne	city	FR	1		Nouvelle-Aquitaine
+Savannah	city	US	1		Georgia
+Savenay	city	FR	1		Loire Region
+Savigny-le-Temple	city	FR	1		Ile-de-France
+Savonnières-devant-Bar	city	FR	1		Grand Est
+Sayat	city	FR	1		Auvergne-Rhone-Alpes
+Saône	city	FR	1		Bourgogne-Franche-Comte
+Seascale	city	GB	1		England
+Sechelt	city	CA	1		British Columbia
+Seillans	city	FR	1		Provence-Alpes-Cote d'Azur
+Sennecey-le-Grand	city	FR	1		Bourgogne-Franche-Comte
+Septèmes-les-Vallons	city	FR	1		Provence-Alpes-Cote d'Azur
+Serres	city	FR	1		Provence-Alpes-Cote d'Azur
+Serrières	city	FR	1		Auvergne-Rhone-Alpes
+Sevrier	city	FR	1		Auvergne-Rhone-Alpes
+Seyssuel	city	FR	1		Auvergne-Rhone-Alpes
+Shawinigan	city	CA	1		Quebec
+Siegen	city	DE	1		North-Rhine-Westphalia
+Sierck-les-Bains	city	FR	1		Grand Est
+Sierentz	city	FR	1		Grand Est
+Sillé-le-Guillaume	city	FR	1		Loire Region
+Silver Spring	city	US	1		Maryland
+Simandres	city	FR	1		Auvergne-Rhone-Alpes
+Sint-Genesius-Rode	city	BE	1		Flanders
+Sintra	city	PT	1			1
+Sligo	city	IE	1			1
+Soliman	city	TN	1	سليمان		1
+Sommières	city	FR	1		Occitanie
+Sospel	city	FR	1		Provence-Alpes-Cote d'Azur
+Soucieu-en-Jarrest	city	FR	1		Auvergne-Rhone-Alpes
+Soufflenheim	city	FR	1		Grand Est
+Souillac	city	FR	1		Occitanie
+Souvigny	city	FR	1		Auvergne-Rhone-Alpes
+Soyaux	city	FR	1		Nouvelle-Aquitaine
+St Louis	city	US	1		Missouri
+St-Laurent-Du-Var	city	FR	1			1
+Staines	city	GB	1		England
+Stamford	city	US	1		Connecticut
+Stenay	city	FR	1		Grand Est
+Stockport	city	GB	1		England
+Strasbourg	city	CA	1		Saskatchewan
+Stratford upon Avon	city	GB	1		England
+Susville	city	FR	1		Auvergne-Rhone-Alpes
+Swadlincote	city	GB	1		England
+Sèvremoine	city	FR	1		Loire Region
+Sées	city	FR	1		Normandy
+Sérézin-du-Rhône	city	FR	1		Auvergne-Rhone-Alpes
+Sévérac d'Aveyron	city	FR	1		Occitanie
+Sézanne	city	FR	1		Grand Est
+Sędziszów Małopolski	city	PL	1		Podkarpackie Voivodeship
+Taichung City	city	TW	1	台中市		1
+Tallard	city	FR	1		Provence-Alpes-Cote d'Azur
+Talmont-Saint-Hilaire	city	FR	1		Loire Region
+Tangerang Kabupaten	city	ID	1		JABODETABEK
+Tarascon-sur-Ariège	city	FR	1		Occitanie
+Tashan	city	BH	1	طشان		1
+Tauranga	city	NZ	1		Bay of Plenty
+Tel Aviv-Yafo	city	IL	1	תל אביב - יפו	TA
+Tema	city	GH	1			1
+Temecula	city	US	1			1
+Templeuve-en-Pévèle	city	FR	1		Hauts-de-France
+Ternay	city	FR	1		Auvergne-Rhone-Alpes
+Terres-de-Caux	city	FR	1		Normandy
+Terssac	city	FR	1		Occitanie
+Thatcham	city	GB	1		England
+Thillois	city	FR	1		Grand Est
+Thiverny	city	FR	1		Hauts-de-France
+Thourotte	city	FR	1		Hauts-de-France
+Thurso	city	GB	1		Scotland
+Thélus	city	FR	1		Hauts-de-France
+Tianguistenco	city	MX	1		Mexico
+Tianjin	city	CN	1			1
+Tidworth	city	GB	1		England
+Tignes	city	FR	1		Auvergne-Rhone-Alpes
+Tignieu-Jameyzieu	city	FR	1		Auvergne-Rhone-Alpes
+Tijuana	city	MX	1		Baja California
+Tiruppur	city	IN	1		Tamil Nadu
+Tocane-Saint-Apre	city	FR	1		Nouvelle-Aquitaine
+Tollevast	city	FR	1		Normandy
+Tonbridge	city	GB	1		England
+Tosse	city	FR	1		Nouvelle-Aquitaine
+Toulon-sur-Arroux	city	FR	1		Bourgogne-Franche-Comte
+Toulouges	city	FR	1		Occitanie
+Tournon	city	FR	1		Auvergne-Rhone-Alpes
+Tournon-sur-Rhône	city	FR	1		Auvergne-Rhone-Alpes
+Tourrettes	city	FR	1		Provence-Alpes-Cote d'Azur
+Tours-sur-Marne	city	FR	1		Grand Est
+Trie-sur-Baïse	city	FR	1		Occitanie
+Trieste	city	IT	1		Friuli-Venezia Giulia
+Trèbes	city	FR	1		Occitanie
+Tréguier	city	FR	1		Brittany
+Trémery	city	FR	1		Grand Est
+Tshwane	city	ZA	1		Gauteng
+Tubize	city	BE	1		Wallonia
+Tucson	city	US	1		Arizona
+Tullins	city	FR	1		Auvergne-Rhone-Alpes
+Téterchen	city	FR	1		Grand Est
+Urcuit	city	FR	1		Nouvelle-Aquitaine
+Us	city	FR	1			1
+Ustaritz	city	FR	1		Nouvelle-Aquitaine
+Uzès	city	FR	1		Occitanie
+Vaiges	city	FR	1		Loire Region
+Vail	city	US	1		Colorado
+Valence-en-Brie	city	FR	1		Ile-de-France
+Valence-en-Poitou	city	FR	1		Nouvelle-Aquitaine
+Valentigney	city	FR	1		Bourgogne-Franche-Comte
+Valenton	city	FR	1		Ile-de-France
+Valleseco	city	ES	1		Canary Islands
+Vallouise-Pelvoux	city	FR	1		Provence-Alpes-Cote d'Azur
+Valmy	city	FR	1		Grand Est
+Varennes	city	CA	1		Quebec
+Varilhes	city	FR	1		Occitanie
+Varsseveld	city	NL	1		Gelderland
+Vasteras	city	SE	1	Västerås	Vastmanland County
+Vatan	city	FR	1		Centre-Val de Loire
+Venerque	city	FR	1		Occitanie
+Venice	city	IT	1	Venezia	Veneto
+Ventavon	city	FR	1		Provence-Alpes-Cote d'Azur
+Ventron	city	FR	1		Grand Est
+Verfeil	city	FR	1		Occitanie
+Vergt	city	FR	1		Nouvelle-Aquitaine
+Vernègues	city	FR	1		Provence-Alpes-Cote d'Azur
+Verosvres	city	FR	1		Bourgogne-Franche-Comte
+Verquin	city	FR	1		Hauts-de-France
+Vert-le-Petit	city	FR	1		Ile-de-France
+Vervins	city	FR	1		Hauts-de-France
+Vescemont	city	FR	1		Bourgogne-Franche-Comte
+Vesseaux	city	FR	1		Auvergne-Rhone-Alpes
+Veurey-Voroize	city	FR	1		Auvergne-Rhone-Alpes
+Veyrac	city	FR	1		Nouvelle-Aquitaine
+Victoria	city	CA	1		British Columbia
+Victoriaville	city	CA	1		Quebec
+Vieux-Boucau-les-Bains	city	FR	1		Nouvelle-Aquitaine
+Vieux-Vy-sur-Couesnon	city	FR	1		Brittany
+Vilanova i la Geltrú	city	ES	1		Catalonia
+Villa de Cos	city	MX	1		Zacatecas
+Village-Neuf	city	FR	1		Grand Est
+Villar-Saint-Pancrace	city	FR	1		Provence-Alpes-Cote d'Azur
+Villard-Bonnot	city	FR	1		Auvergne-Rhone-Alpes
+Villard-sur-Doron	city	FR	1		Auvergne-Rhone-Alpes
+Villars-les-Dombes	city	FR	1		Auvergne-Rhone-Alpes
+Villaz	city	FR	1		Auvergne-Rhone-Alpes
+Villebarou	city	FR	1		Centre-Val de Loire
+Villebon	city	FR	1		Centre-Val de Loire
+Villechétif	city	FR	1		Grand Est
+Villedieu-Les-Poêles	city	FR	1			1
+Villemandeur	city	FR	1		Centre-Val de Loire
+Villeneuve	city	FR	1		Provence-Alpes-Cote d'Azur
+Villeneuve-de-Rivière	city	FR	1		Occitanie
+Villeneuve-lès-Avignon	city	FR	1		Occitanie
+Villeparois	city	FR	1		Bourgogne-Franche-Comte
+Villepreux	city	FR	1		Ile-de-France
+Villeron	city	FR	1		Ile-de-France
+Villers-Bocage	city	FR	1		Normandy
+Villers-Saint-Paul	city	FR	1		Hauts-de-France
+Villers-le-Lac	city	FR	1		Bourgogne-Franche-Comte
+Villiers-en-Lieu	city	FR	1		Grand Est
+Virieu-le-Grand	city	FR	1		Auvergne-Rhone-Alpes
+Viuz-en-Sallaz	city	FR	1		Auvergne-Rhone-Alpes
+Voglans	city	FR	1		Auvergne-Rhone-Alpes
+Vulaines-sur-Seine	city	FR	1		Ile-de-France
+Vulbens	city	FR	1		Auvergne-Rhone-Alpes
+Véretz	city	FR	1		Centre-Val de Loire
+Waldighofen	city	FR	1		Grand Est
+Wallisellen	city	CH	1		Zurich
+Waltham	city	US	1		Massachusetts
+Warmeriville	city	FR	1		Grand Est
+Watertown	city	US	1			1
+Watford	city	GB	1		England
+Wellingborough	city	GB	1		England
+Wenden	city	DE	1		North-Rhine-Westphalia
+Westlake Village	city	US	1		California
+Westmount	city	CA	1		Quebec
+Willebroek	city	BE	1		Flanders
+Wilmslow	city	GB	1		England
+Wimereux	city	FR	1		Hauts-de-France
+Wissembourg	city	FR	1		Grand Est
+Witry-lès-Reims	city	FR	1			1
+Xonrupt-Longemer	city	FR	1		Grand Est
+Yzernay	city	FR	1		Loire Region
+Yzeure	city	FR	1		Auvergne-Rhone-Alpes
+Zuidhorn	city	NL	1		Groningen
+Écouen	city	FR	1		Ile-de-France
+Égletons	city	FR	1		Nouvelle-Aquitaine
+Éloyes	city	FR	1		Grand Est
+Épinoy	city	FR	1		Hauts-de-France
+Époisses	city	FR	1		Bourgogne-Franche-Comte
+Épouville	city	FR	1		Normandy
+Étables	city	FR	1		Auvergne-Rhone-Alpes
+Étain	city	FR	1		Grand Est
+Étrembières	city	FR	1		Auvergne-Rhone-Alpes
+Étrochey	city	FR	1		Bourgogne-Franche-Comte
+Étréchy	city	FR	1		Ile-de-France
+Évenos	city	FR	1		Provence-Alpes-Cote d'Azur
+Évian-Les-Bains	city	FR	1			1
+Évron	city	FR	1		Loire Region
+Île-d'Houat	city	FR	1		Brittany
+Đà Nẵng	city	VN	1			1
+Şişli	city	TR	1			1
+Paris	district	FR	10232
+Hauts-de-Seine	district	FR	5834
+Rhône	district	FR	2469
+Nord	district	FR	1899
+Haute-Garonne	district	FR	1885
+Bouches-du-Rhône	district	FR	1726
+Yvelines	district	FR	1497
+Gironde	district	FR	1492
+Loire-Atlantique	district	FR	1377
+Essonne	district	FR	1222
+Seine-Saint-Denis	district	FR	1006
+Val-de-Marne	district	FR	931
+Isère	district	FR	924
+Maritime Alps	district	FR	863	Alpes-Maritimes
+Ille-et-Vilaine	district	FR	824
+Seine-et-Marne	district	FR	775
+Bas-Rhin	district	FR	751
+London	district	GB	708
+Haute-Savoie	district	FR	676
+Val-d'Oise	district	FR	666
+Seine-Maritime	district	FR	644
+Finistère	district	FR	593
+Var	district	FR	569
+Hérault	district	FR	554
+Loiret	district	FR	550
+Oise	district	FR	456
+Maine-et-Loire	district	FR	453
+Morbihan	district	FR	438
+Moselle	district	FR	426
+Drôme	district	FR	412
+Indre-et-Loire	district	FR	402
+Meurthe-et-Moselle	district	FR	401
+Pas-de-Calais	district	FR	392
+Côte-d'Or	district	FR	373
+Saône-et-Loire	district	FR	356
+Manche	district	FR	342
+Loire	district	FR	331
+Pyrénées-Atlantiques	district	FR	317
+Ain	district	FR	292
+Puy-de-Dôme	district	FR	290
+Calvados	district	FR	281
+Gard	district	FR	274
+Vaucluse	district	FR	262
+Barcelona	district	ES	261
+Vienne	district	FR	258
+Marne	district	FR	252
+Charente-Maritime	district	FR	250
+Savoie	district	FR	245
+Landes	district	FR	244
+Somme	district	FR	240
+Côtes-d'Armor	district	FR	235
+Haut-Rhin	district	FR	235
+Sarthe	district	FR	231
+Cher	district	FR	230
+Eure	district	FR	221
+Haute-Vienne	district	FR	215
+Deux-Sèvres	district	FR	213
+Vendée	district	FR	196
+Eure-et-Loir	district	FR	193
+New York	district	US	193
+Hautes-Pyrénées	district	FR	188
+Doubs	district	FR	176
+Loir-et-Cher	district	FR	174
+Milan	district	IT	171	Milano
+Charente	district	FR	161
+Vosges	district	FR	159
+Aisne	district	FR	150
+Dordogne	district	FR	145
+Brussels	district	BE	141	Brussel
+Aude	district	FR	137
+Casablanca	district	MA	135	الدار البيضاء
+Indre	district	FR	135
+Corrèze	district	FR	133
+Lot-et-Garonne	district	FR	121
+Ardèche	district	FR	120
+Tarn	district	FR	116
+Mayenne	district	FR	112
+Pyrénées-Orientales	district	FR	109
+Montreal	district	CA	108	Montréal
+Yonne	district	FR	105
+Haute-Marne	district	FR	104
+Madrid	district	ES	102
+Ardennes	district	FR	101
+Aube	district	FR	99
+Alpes-de-Haute-Provence	district	FR	93
+Tarn-et-Garonne	district	FR	92
+Allier	district	FR	89
+Jura	district	FR	86
+Orne	district	FR	79
+Berlin	district	DE	77
+Harju Maakond	district	EE	76
+Aveyron	district	FR	75
+Hautes-Alpes	district	FR	74
+Nièvre	district	FR	74
+Munich	district	DE	72	München (Stadt)
+Gers	district	FR	70
+Warsaw	district	PL	64	Warszawa
+Hyderabad	district	IN	63
+Erfurt	district	DE	61
+Haute-Saône	district	FR	61
+Territoire de Belfort	district	FR	61
+Budapest	district	HU	56
+Meuse	district	FR	56
+Singapore	district	SG	55
+Ariège	district	FR	53
+Luxembourg	district	LU	52
+Haute-Loire	district	FR	47
+Lot	district	FR	47
+Cantal	district	FR	44
+Nouaceur	district	MA	44	النواصر
+Travis	district	US	42
+Corse	district	FR	41
+Cracow	district	PL	39	Kraków
+Prague	district	CZ	38	Hlavní město Praha
+Rome	district	IT	38	Roma
+San Francisco	district	US	37
+Amsterdam	district	NL	36
+Vlaams Brabant	district	BE	36
+Creuse	district	FR	34
+Guyane	district	GF	32
+Porto	district	PT	31
+Geneva	district	CH	30	Genève
+Lisbon	district	PT	30	Lisboa
+Toronto	district	CA	30
+Mayotte	district	YT	27
+Martinique	district	MQ	26
+Sedgwick	district	US	26
+Cheshire	district	GB	25
+Santa Clara	district	US	25
+Mumbai	district	IN	24
+Los Angeles	district	US	23
+Lozère	district	FR	23
+County Dublin	district	IE	22
+Réunion	district	RE	22
+Buckinghamshire	district	GB	21
+Dubai	district	AE	21	دبي
+East Sussex	district	GB	21
+Valencia	district	ES	21
+Hochtaunuskreis	district	DE	20
+Vienna	district	AT	20	Wien
+Antwerp	district	BE	18	Antwerpen
+Eastern Region	district	MT	18	Reġjun tal-Lvant
+Guadeloupe	district	GP	18
+Málaga	district	ES	18
+South Korea	district	KR	18
+Leicestershire	district	GB	17
+Oost-Vlaanderen	district	BE	17
+Tunis	district	TN	17	تونس
+Alicante	district	ES	16
+Attiki	district	GR	16	Αττική
+Hainaut	district	BE	16
+Lanarkshire	district	GB	16
+Nijmegen	district	NL	16
+Turin	district	IT	16	Torino
+Balearic Islands	district	ES	15	Illes Balears
+Johannesburg	district	ZA	15
+Metro Vancouver	district	CA	15
+Orange	district	US	15
+West Midlands	district	GB	15
+Bülach	district	CH	14
+Cluj	district	RO	14
+Liege	district	BE	14	Liège
+Lima	district	PE	14
+Suffolk	district	US	14
+Bologna	district	IT	13
+Chennai	district	IN	13
+Florence	district	IT	13	Firenze
+Las Palmas	district	ES	13
+Miami-Dade	district	US	13
+Middlesex	district	GB	13
+Sofia-City	district	BG	13	София-град
+Zaragoza	district	ES	13
+Bucharest	district	RO	12	București
+Corse-du-Sud	district	FR	12
+Dusseldorf	district	DE	12	Düsseldorf
+Grad Zagreb	district	HR	12
+Hampshire	district	GB	12
+Naples	district	IT	12	Napoli
+Padua	district	IT	12	Padova
+Santa Cruz de Tenerife	district	ES	12
+Seville	district	ES	12	Sevilla
+Somerset	district	GB	12
+Wroclaw	district	PL	12	Wrocław
+Fourth District NCR	district	PH	11
+Gautam Buddha Nagar	district	IN	11
+Grad Beograd	district	RS	11	Град Београд
+Pontevedra	district	ES	11
+Vizcaya	district	ES	11
+Bali	district	ID	10
+Bari	district	IT	10
+Castelo Branco	district	PT	10
+Essex	district	GB	10
+Heraklion	district	GR	10	Ηράκλειο
+Iasi	district	RO	10	Iași
+Lancashire	district	GB	10
+Valladolid	district	ES	10
+Zurich	district	CH	10	Zürich
+Achaia	district	GR	9	Αχαΐα
+Albacete	district	ES	9
+Almería	district	ES	9
+Balti	district	MD	9	Bălți
+Bangkok	district	TH	9	กรุงเทพมหานคร
+Banjalučka regija	district	BA	9
+Bengaluru	district	IN	9
+Bogota, D.C.	district	CO	9	Bogotá, D.C.
+Braga	district	PT	9
+Brno-město	district	CZ	9
+Burgas	district	BG	9	Бургас
+Burgos	district	ES	9
+Cadiz	district	ES	9	Cádiz
+Cahul	district	MD	9
+Cantabria	district	ES	9
+Coimbra	district	PT	9
+Cook	district	US	9
+Dallas	district	US	9
+Daugavpils	district	LV	9
+Debreceni Járás	district	HU	9
+Dnipropetrovska Oblast	district	UA	9	Дніпропетровська область
+Donetsk	district	UA	9	Донецька область
+Dubrovačko-neretvanska županija	district	HR	9
+Durres	district	AL	9	Durrës
+Gdansk	district	PL	9	Gdańsk
+Granada	district	ES	9
+Hercegovačko-Neretvanski kanton	district	BA	9
+Ida-Viru Maakond	district	EE	9
+Jelgava	district	LV	9
+Jugozapaden	district	MK	9	Југозападен
+Juzno-Backi Okrug	district	RS	9	Јужно-Бачки Округ
+Kanton Sarajevo	district	BA	9
+Kauno savivaldybė	district	LT	9
+Kiev	district	UA	9	Київ
+Klaipėdos savivaldybė	district	LT	9
+Kotayq	district	AM	9	Կոտայք
+Larnaca	district	CY	9	Λάρνακα
+Liepaja	district	LV	9	Liepāja
+Limassol	district	CY	9	Λεμεσός
+Lori	district	AM	9	Լոռի
+Lviv	district	UA	9	Львівська область
+Murcia	district	ES	9
+München (Landkreis)	district	DE	9
+Navarra	district	ES	9
+Nicosia	district	CY	9	Λευκωσία
+Nisavski Okrug	district	RS	9	Нишавски Округ
+Odesa	district	UA	9	Одеська область
+Osječko-baranjska županija	district	HR	9
+Ostrava-město	district	CZ	9
+Oxfordshire	district	GB	9
+Paphos	district	CY	9	Πάφος
+Pelagoniski	district	MK	9	Пелагониски
+Plovdiv	district	BG	9	Пловдив
+Plzeň-město	district	CZ	9
+Poloshki	district	MK	9	Полошки
+Port Region	district	MT	9	Reġjun tal-Port
+Primorsko-goranska županija	district	HR	9
+Pärnu Maakond	district	EE	9
+Pécsi Járás	district	HU	9
+Riga	district	LV	9	Rīga
+Severno-Backi Okrug	district	RS	9	Северно-Бачки Округ
+Shirak	district	AM	9	Շիրակ
+Shkoder	district	AL	9	Shkodër
+Skopski	district	MK	9	Скопски
+Splitsko-dalmatinska županija	district	HR	9
+Stockholm	district	SE	9
+Szegedi Járás	district	HU	9
+Tartu Maakond	district	EE	9
+Thessaloniki	district	GR	9	Θεσσαλονίκη
+Timiș	district	RO	9
+Tirana	district	AL	9	Tiranë
+Toledo	district	ES	9
+Tuzlanski kanton	district	BA	9
+Ungheni	district	MD	9
+Valle del Cauca	district	CO	9
+Varna	district	BG	9	Варна
+Vilniaus Miesto savivaldybė	district	LT	9
+Vlora	district	AL	9	Vlorë
+Yerevan	district	AM	9	Երեւան
+Šiauliai savivaldybė	district	LT	9
+Auckland City	district	NZ	8
+Cambridgeshire	district	GB	8
+Clark	district	US	8
+Cologne	district	DE	8	Köln
+Columbia-Shuswap	district	CA	8
+Halden	district	NO	8
+Hertfordshire	district	GB	8
+Indre Østfold	district	NO	8
+King	district	US	8
+Longueuil	district	CA	8
+Merseyside	district	GB	8
+Northumberland	district	GB	8
+Surrey	district	GB	8
+Abidjan	district	CI	7
+Arequipa	district	PE	7
+Berkshire	district	GB	7
+Buenos Aires City	district	AR	7	Ciudad de Buenos Aires
+Cordoba	district	AR	7	Córdoba
+County Antrim	district	GB	7
+Fulton	district	US	7
+Kent	district	US	7
+Pune	district	IN	7
+Rzeszow	district	PL	7	Rzeszów
+York	district	CA	7
+Alberta	district	CA	6
+Alto Paraná	district	PY	6
+Amersfoort	district	NL	6
+Antioquia	district	CO	6
+Asuncion	district	PY	6	Asunción
+Atlantico	district	CO	6	Atlántico
+Bolivar	district	CO	6	Bolívar
+Capellen	district	LU	6
+Central	district	PY	6
+Central Okanagan	district	CA	6
+County Galway	district	IE	6
+Cuenca	district	EC	6
+Cusco	district	PE	6
+Essex	district	US	6
+Guayaquil	district	EC	6
+Honolulu	district	US	6
+Itapúa	district	PY	6
+La Plata	district	AR	6
+Laval	district	CA	6
+Ljubljana	district	SI	6
+Loja	district	EC	6
+Madeira Island	district	PT	6	Ilha da Madeira
+Manta	district	EC	6
+Mendoza	district	AR	6
+Middlesex	district	US	6
+Montgomery	district	US	6
+Nordre Follo	district	NO	6
+Nottinghamshire	district	GB	6
+Ottawa	district	CA	6
+Piura	district	PE	6
+Potsdam-Mittelmark	district	DE	6
+Quito	district	EC	6
+Rosario	district	AR	6
+Santiago	district	CL	6
+Stuttgart	district	DE	6
+Taipei City	district	TW	6	台北市
+Third District NCR	district	PH	6
+Trujillo	district	PE	6
+Tyne and Wear	district	GB	6
+Wake	district	US	6
+Washtenaw	district	US	6
+Wellington	district	CA	6
+West Yorkshire	district	GB	6
+Abu Dhabi	district	AE	5	أبوظبي
+Berkeley	district	US	5
+Brabant Wallon	district	BE	5
+Caserta	district	IT	5
+Cumbria	district	GB	5
+Hradec Kralove	district	CZ	5	Hradec Králové
+Inverness-Shire	district	GB	5
+Oran	district	DZ	5	وهران
+Philadelphia	district	US	5
+San Diego	district	US	5
+Saskatchewan	district	CA	5
+Sherbrooke	district	CA	5
+Tarragona	district	ES	5
+Wayne	district	US	5
+Avon	district	GB	4
+Bedfordshire	district	GB	4
+Biel/Bienne	district	CH	4
+Brome-Missisquoi	district	CA	4
+Coruna	district	ES	4	A Coruña
+Denver	district	US	4
+Frankfurt	district	DE	4	Frankfurt am Main
+Hamburg	district	DE	4
+Kaohsiung City	district	TW	4	高雄市
+Kent	district	GB	4
+Kuala Lumpur	district	MY	4
+Marlborough District	district	NZ	4
+N'Djamena	district	TD	4
+New Delhi	district	IN	4
+Pitkin	district	US	4
+Pueblo	district	US	4
+Rensselaer	district	US	4
+Skhirat-Temara	district	MA	4	الصخيرات ـ تمارة
+Staffordshire	district	GB	4
+Utrecht	district	NL	4
+Ventura	district	US	4
+Al Wakra	district	QA	3	الوكرة
+Ariana	district	TN	3	أريانة
+Benton	district	US	3
+Bergen	district	US	3
+Brescia	district	IT	3
+Caroline	district	US	3
+City Hamilton	district	BM	3
+Copenhagen	district	DK	3	København
+Cotonou	district	BJ	3
+County Cork	district	IE	3
+Dumfriesshire	district	GB	3
+Dyfed	district	GB	3
+Entremont	district	CH	3
+Freising	district	DE	3
+Galveston	district	US	3
+Girona	district	ES	3
+Gothenburg	district	SE	3	Göteborg
+Gurugram	district	IN	3
+Haute-Corse	district	FR	3
+Invercargill City	district	NZ	3
+Jbail	district	LB	3	جبيل
+Landeck	district	AT	3
+Les Jardins-de-Napierville	district	CA	3
+Moka	district	MU	3
+Napier City	district	NZ	3
+Northamptonshire	district	GB	3
+Nyon	district	CH	3
+Palm Beach	district	US	3
+Parma	district	IT	3
+Perugia	district	IT	3
+Rabat	district	MA	3	الرباط
+Rotterdam	district	NL	3
+Shropshire	district	GB	3
+West-Vlaanderen	district	BE	3
+Aberdeenshire	district	GB	2
+Argyll	district	GB	2
+Bern-Mittelland	district	CH	2
+Bizkaia	district	ES	2	Vizcaya
+Breda	district	NL	2
+Catanzaro	district	IT	2
+Clervaux	district	LU	2
+Cleveland	district	GB	2
+County Kildare	district	IE	2
+DKI Jakarta	district	ID	2
+Dakar	district	SN	2
+Davidson	district	US	2
+Douala	district	CM	2
+Eeyou Istchee Baie-James	district	CA	2
+Esch-sur-Alzette	district	LU	2
+Gouda	district	NL	2
+Haarlemmermeer	district	NL	2
+Hamilton	district	CA	2
+Hamilton	district	US	2
+Hanover	district	DE	2	Region Hannover
+Harris	district	US	2
+Herefordshire	district	GB	2
+Istanbul	district	TR	2	İstanbul
+Jaén	district	PE	2
+Kampala	district	UG	2
+Katowice	district	PL	2
+Kiel	district	DE	2
+Kings	district	US	2
+Kolkata	district	IN	2
+La Vallée-du-Richelieu	district	CA	2
+Lausanne	district	CH	2
+Lleida	district	ES	2
+Lucerne-City	district	CH	2	Luzern-Stadt
+Lugo	district	ES	2
+Mecklenburg	district	US	2
+Mifflin	district	US	2
+Mohammedia	district	MA	2	المحمدية
+Monastir	district	TN	2	المنستير
+Nairnshire	district	GB	2
+Neustadt an der Aisch-Bad Windsheim	district	DE	2
+North Yorkshire	district	GB	2
+Obersimmental-Saanen	district	CH	2
+Offenbach	district	DE	2
+Ouest Lausannois	district	CH	2
+Peel	district	CA	2
+Pesaro e Urbino	district	IT	2
+Poznan	district	PL	2	Poznań
+Quebec	district	CA	2	Québec
+Salamanca	district	ES	2
+Sousse	district	TN	2
+South Yorkshire	district	GB	2
+St Lucie	district	US	2
+Třebíč	district	CZ	2
+Visp	district	CH	2
+West Sussex	district	GB	2
+Westchester	district	US	2
+Worcester	district	US	2
+'s-Hertogenbosch	district	NL	1
+Aachen	district	DE	1	Städteregion Aachen
+Ada	district	US	1
+Ahmedabad	district	IN	1
+Aigle	district	CH	1
+Alkmaar	district	NL	1
+Amstelveen	district	NL	1
+Arthabaska	district	CA	1
+Ayrshire	district	GB	1
+Banten	district	ID	1
+Bludenz	district	AT	1
+Bottrop	district	DE	1
+Broward	district	US	1
+Bujumbura Mairie	district	BI	1
+Bukooli	district	UG	1
+Cairo	district	EG	1	القاهرة
+Caithness	district	GB	1
+Cape Town	district	ZA	1
+Capital	district	CA	1
+Celle	district	DE	1
+Ceuta	district	ES	1
+Charleston	district	US	1
+Chatham	district	US	1
+Ciudad Real	district	ES	1
+Clay	district	US	1
+Colombo	district	LK	1
+Conakry	district	GN	1
+Constance	district	DE	1	Konstanz
+County Mayo	district	IE	1
+County Sligo	district	IE	1
+Cáceres	district	ES	1
+Darmstadt	district	DE	1
+Derbyshire	district	GB	1
+Dhaka	district	BD	1	ঢাকা
+Dortmund	district	DE	1
+Dresden	district	DE	1
+Drummond	district	CA	1
+Eagle	district	US	1
+East Kootenay	district	CA	1
+Eindhoven	district	NL	1
+Emsland	district	DE	1
+Ernakulam	district	IN	1
+Essen	district	DE	1
+Fife	district	GB	1
+Franches-Montagnes	district	CH	1
+Gloucestershire	district	GB	1
+Graz	district	AT	1
+Greater Accra	district	GH	1
+Groß-Gerau	district	DE	1
+Guadalajara	district	ES	1
+Guarda	district	PT	1
+Guilford	district	US	1
+Gwent	district	GB	1
+Hanoi	district	VN	1	Hà Nội
+Hastings District	district	NZ	1
+Heidelberg	district	DE	1
+Hof (Landkreis)	district	DE	1
+Holmestrand	district	NO	1
+Horowhenua District	district	NZ	1
+Hudson	district	US	1
+Huelva	district	ES	1
+Härryda	district	SE	1
+Hải Phòng	district	VN	1
+Iloilo	district	PH	1
+Jaipur	district	IN	1
+Jaén	district	ES	1
+Karlsruhe (City)	district	DE	1	Karlsruhe (Stadt)
+Kirkcudbrightshire	district	GB	1
+La Sarine	district	CH	1
+Labette	district	US	1
+Lamar	district	US	1
+Lambton	district	CA	1
+Leipzig (City)	district	DE	1	Leipzig (Stadt)
+Linn	district	US	1
+Linz	district	AT	1
+Livorno	district	IT	1
+Luanda	district	AO	1
+Luzerne	district	US	1
+Mainz	district	DE	1
+Mainz-Bingen	district	DE	1
+Makkah	district	SA	1	مكة
+Malerkotla	district	IN	1
+Mannheim	district	DE	1
+Marguerite-D'Youville	district	CA	1
+Maricopa	district	US	1
+Marrakech	district	MA	1	مراكش
+Marshall	district	US	1
+Mexico City	district	MX	1	Ciudad de México
+Mid Glamorgan	district	GB	1
+Midlothian	district	GB	1
+Monza e Brianza	district	IT	1
+Morges	district	CH	1
+Multnomah	district	US	1
+Nabeul	district	TN	1	نابل
+Nainital	district	IN	1
+Namur	district	BE	1
+Neuchâtel	district	CH	1
+Niamey	district	NE	1
+Norfolk	district	GB	1
+North Humberside	district	GB	1
+Northern	district	BH	1	الشمالية
+Nuremberg	district	DE	1	Nürnberg
+Olpe	district	DE	1
+Oslo	district	NO	1
+Oude IJsselstreek	district	NL	1
+Pathum Thani	district	TH	1	ปทุมธานี
+Pforzheim	district	DE	1
+Phnom Penh	district	KH	1	ភ្នំពេញ
+Pima	district	US	1
+Plaine Wilhems	district	MU	1
+Plaquemines	district	US	1
+Powiat Ropczycko-Sędziszowski	district	PL	1
+Pulaski	district	US	1
+Putrajaya	district	MY	1
+Queenstown Lakes District	district	NZ	1
+Ravenna	district	IT	1
+Reggio nell'Emilia	district	IT	1
+Riverside	district	US	1
+Ross-Shire	district	GB	1
+Safi	district	MA	1	آسفي
+Saltdal	district	NO	1
+Santander	district	CO	1
+Second District NCR	district	PH	1
+Setubal	district	PT	1	Setúbal
+Shawinigan	district	CA	1
+Siegen-Wittgenstein	district	DE	1
+Smallingerland	district	NL	1
+Sokolov	district	CZ	1
+St Louis (City)	district	US	1
+Suffolk	district	GB	1
+Sunshine Coast	district	CA	1
+Taichung City	district	TW	1	台中市
+Tauranga City	district	NZ	1
+Tel Aviv	district	IL	1	תל אביב
+Teylingen	district	NL	1
+Tiruppur	district	IN	1
+Trieste	district	IT	1
+Tshwane	district	ZA	1
+Uusimaa	district	FI	1
+VN-DN	district	VN	1	Đà Nẵng
+Varese	district	IT	1
+Vasteras	district	SE	1	Västerås
+Venice	district	IT	1	Venezia
+Verona	district	IT	1
+Vicenza	district	IT	1
+Vorpommern-Greifswald	district	DE	1
+Warwickshire	district	GB	1
+Wellington City	district	NZ	1
+Westerkwartier	district	NL	1
+Western Connecticut	district	US	1
+Will	district	US	1
+York	district	US	1
+Ile-de-France	state	FR	22036	Île-de-France
+Auvergne-Rhone-Alpes	state	FR	5903	Auvergne-Rhône-Alpes
+Occitanie	state	FR	3588
+Nouvelle-Aquitaine	state	FR	3557
+Provence-Alpes-Cote d'Azur	state	FR	3556	Provence-Alpes-Côte d'Azur
+Hauts-de-France	state	FR	3122
+Grand Est	state	FR	2543
+Loire Region	state	FR	2360	Pays de la Loire
+Brittany	state	FR	2075	Bretagne
+Centre-Val de Loire	state	FR	1680
+Normandy	state	FR	1556	Normandie
+Bourgogne-Franche-Comte	state	FR	1285	Bourgogne-Franche-Comté
+England	state	GB	981
+Catalonia	state	ES	271	Catalunya
+New York	state	US	201
+Casablanca - Settat	state	MA	181	الدار البيضاء - سطات
+Lombardy	state	IT	176	Lombardia
+Brussels	state	BE	141	Brussel
+Quebec	state	CA	141	Québec
+California	state	US	104
+Community of Madrid	state	ES	102	Comunidad de Madrid
+Bavaria	state	DE	88	Bayern
+Berlin	state	DE	77
+Woj. Mazowieckie	state	PL	64
+Telangana	state	IN	63
+Flanders	state	BE	62	Vlaanderen
+Thuringia	state	DE	61	Thüringen
+Sao Paulo	state	BR	60	São Paulo
+Texas	state	US	57
+Budapest	state	HU	56
+Corsica	state	FR	56	Corse
+Ontario	state	CA	53
+North Holland	state	NL	40	Noord-Holland
+Lesser Poland Voivodeship	state	PL	39	Woj. Małopolskie
+Latium	state	IT	38	Lazio
+Prague	state	CZ	38	Hlavní město Praha
+Scotland	state	GB	36
+Wallonia	state	BE	35	Wallonie
+British Columbia	state	CA	32
+Guyane	state	GF	32
+Maharashtra	state	IN	31
+Geneva	state	CH	30	Genève
+Hesse	state	DE	28	Hessen
+Kansas	state	US	27
+Mayotte	state	YT	27
+Tokyo	state	JP	27	東京都
+Valencian Community	state	ES	27	Comunidad Valenciana
+Victoria	state	AU	27
+Martinique	state	MQ	26
+North-Rhine-Westphalia	state	DE	26	Nordrhein-Westfalen
+Andalucia	state	ES	25	Andalucía
+New South Wales	state	AU	25
+Florida	state	US	24
+Zurich	state	CH	24	Zürich
+Massachusetts	state	US	22
+Réunion	state	RE	22
+Hong Kong SAR	state	HK	20
+Vienna	state	AT	20	Wien
+Emilia-Romagna	state	IT	18	Emilia Romagna
+Guadeloupe	state	GP	18
+National Capital Region	state	PH	18
+Campania	state	IT	17
+Galicia	state	ES	17
+Gelderland	state	NL	17
+Attiki	state	GR	16	Αττική
+Canary Islands	state	ES	16	Islas Canarias
+Gauteng	state	ZA	16
+Ostfold	state	NO	16	Østfold
+Piedmont	state	IT	16	Piemonte
+Province Sud	state	NC	16
+Balearic Islands	state	ES	15	Illes Balears
+Veneto	state	IT	15
+Lima	state	PE	14
+Tamil Nadu	state	IN	14
+Tuscany	state	IT	14	Toscana
+Aragon	state	ES	13	Aragón
+Basque Country	state	ES	13	País Vasco
+Colorado	state	US	13
+Castilla and Leon	state	ES	12	Castilla y León
+Lower Silesian Voivodeship	state	PL	12	Woj. Dolnośląskie
+Castille-La Mancha	state	ES	11	Castilla-La Mancha
+Centralna Srbija	state	RS	11	Централна Србија
+Michigan	state	US	11
+Queretaro	state	MX	11	Querétaro
+Uttar Pradesh	state	IN	11
+Washington	state	US	11
+Apulia	state	IT	10	Puglia
+Crete	state	GR	10	Κρήτη
+Illinois	state	US	10
+Mexico City	state	MX	10	Ciudad de México
+New Jersey	state	US	10
+Utrecht	state	NL	10
+Baden-Wurttemberg	state	DE	9	Baden-Württemberg
+Balti	state	MD	9	Bălți
+Baranya	state	HU	9
+Cahul	state	MD	9
+Cantabria	state	ES	9
+Chartered Community of Navarre	state	ES	9	Comunidad Foral de Navarra
+Chisinau	state	MD	9	Chișinău
+Csongrád-Csanád	state	HU	9
+Dytiki Ellada	state	GR	9	Δυτική Ελλάδα
+Federation of Bosnia Herzegovina	state	BA	9	Federacija Bosne i Hercegovine
+Hajdú-Bihar	state	HU	9
+Jihomoravský kraj	state	CZ	9
+Karnataka	state	IN	9
+Kauno Apskritis	state	LT	9
+Kentriki Makedonia	state	GR	9	Κεντρική Μακεδονία
+Klaipėdos Apskritis	state	LT	9
+Moravskoslezský kraj	state	CZ	9
+Murcia Region	state	ES	9	Región de Murcia
+North Carolina	state	US	9
+Plzeňský kraj	state	CZ	9
+Pomeranian Voivodeship	state	PL	9	Woj. Pomorskie
+Republika Srpska	state	BA	9
+Stockholm County	state	SE	9	Stockholms län
+Ungheni	state	MD	9
+Vaud	state	CH	9
+Vilniaus Apskritis	state	LT	9
+Vojvodina	state	RS	9	Војводина
+Šiaulių Apskritis	state	LT	9
+Auckland	state	NZ	8
+Bern	state	CH	8
+Georgia	state	US	8
+Nevada	state	US	8
+Pennsylvania	state	US	8
+Podkarpackie Voivodeship	state	PL	8	Woj. Podkarpackie
+Rio de Janeiro	state	BR	8
+Abidjan	state	CI	7
+Arequipa	state	PE	7
+Buenos Aires Autonomous City	state	AR	7	Ciudad Autónoma de Buenos Aires
+Cordoba	state	AR	7	Córdoba
+Northern Ireland	state	GB	7
+Rabat - Sale - Kenitra	state	MA	7	الرباط - سلا - القنيطرة
+South Carolina	state	US	7
+Akershus	state	NO	6
+Alberta	state	CA	6
+Azuay	state	EC	6
+Brandenburg	state	DE	6
+Buenos Aires	state	AR	6
+Cusco	state	PE	6
+Guanajuato	state	MX	6
+Guayas	state	EC	6
+Hawaii	state	US	6
+La Libertad	state	PE	6
+Loja	state	EC	6
+Manabí	state	EC	6
+Mendoza	state	AR	6
+Ohio	state	US	6
+Pichincha	state	EC	6
+Piura	state	PE	6
+Region Santiago Metropolitan	state	CL	6	Región Metropolitana de Santiago
+Santa Fe	state	AR	6
+South Holland	state	NL	6	Zuid-Holland
+Îles-du-Vent	state	PF	6
+Delaware	state	US	5
+Královéhradecký kraj	state	CZ	5
+Oran	state	DZ	5	وهران
+Saskatchewan	state	CA	5
+Wales	state	GB	5
+Wallis	state	CH	5	Valais
+Delhi	state	IN	4
+Hamburg	state	DE	4
+Hawke's Bay	state	NZ	4
+Lower-Saxony	state	DE	4	Niedersachsen
+Marlborough	state	NZ	4
+Maryland	state	US	4
+North Brabant	state	NL	4	Noord-Brabant
+Queensland	state	AU	4
+Vastra Gotaland County	state	SE	4	Västra Götalands län
+Wilayah Persekutuan Kuala Lumpur	state	MY	4
+Capital	state	DK	3	Hovedstaden
+Haryana	state	IN	3
+JABODETABEK	state	ID	3
+Mount Lebanon	state	LB	3	جبل لبنان
+Southland	state	NZ	3
+Tyrol	state	AT	3	Tirol
+Umbria	state	IT	3
+Western Australia	state	AU	3
+Arizona	state	US	2
+Cajamarca	state	PE	2
+Calabria	state	IT	2
+Dakar	state	SN	2
+Greater Poland Voivodeship	state	PL	2	Woj. Wielkopolskie
+Kampala	state	UG	2
+Lucerne	state	CH	2	Luzern
+Marches	state	IT	2	Marche
+Marrakech - Safi	state	MA	2	مراكش - آسفي
+Rhineland-Palatinate	state	DE	2	Rheinland-Pfalz
+Rhode Island	state	US	2
+Saxony	state	DE	2	Sachsen
+Schleswig-Holstein	state	DE	2
+Silesian Voivodeship	state	PL	2	Woj. Śląskie
+South Australia	state	AU	2
+Tennessee	state	US	2
+Vysočina	state	CZ	2
+West Bengal	state	IN	2
+Alabama	state	US	1
+Arkansas	state	US	1
+Autonomous City of Ceuta	state	ES	1	Ciudad Autónoma de Ceuta
+Baja California	state	MX	1
+Bay of Plenty	state	NZ	1
+Bugiri	state	UG	1
+Coahuila	state	MX	1	Coahuila de Zaragoza
+Conakry	state	GN	1
+Connecticut	state	US	1
+Dhaka	state	BD	1	ঢাকা
+Distrito Federal	state	BR	1
+Extremadura	state	ES	1
+Fribourg	state	CH	1
+Friesland	state	NL	1
+Friuli-Venezia Giulia	state	IT	1
+Goias	state	BR	1	Goiás
+Groningen	state	NL	1
+Gujarat	state	IN	1
+Hyogo	state	JP	1	兵庫県
+Idaho	state	US	1
+Indiana	state	US	1
+Iowa	state	US	1
+Jura	state	CH	1
+Karlovarský kraj	state	CZ	1
+Kerala	state	IN	1
+Louisiana	state	US	1
+Manawatu Whanganui	state	NZ	1
+Mecklenburg-Vorpommern	state	DE	1
+Mexico	state	MX	1	México
+Mississippi	state	US	1
+Missouri	state	US	1
+Neuchatel	state	CH	1	Neuchâtel
+Niamey	state	NE	1
+Nordland	state	NO	1
+Nuevo Leon	state	MX	1	Nuevo León
+Oregon	state	US	1
+Oslo	state	NO	1
+Otago	state	NZ	1
+Punjab	state	IN	1
+Rajasthan	state	IN	1
+Santa Catarina	state	BR	1
+South Finland	state	FI	1	Etelä-Suomi
+Styria	state	AT	1	Steiermark
+TA	state	IL	1	תל אביב
+Tasmania	state	AU	1
+Upper Austria	state	AT	1	Oberösterreich
+Uttarakhand	state	IN	1
+Vastmanland County	state	SE	1	Västmanlands län
+Vestfold	state	NO	1
+Vorarlberg	state	AT	1
+Wellington	state	NZ	1
+Western	state	LK	1
+Western Cape	state	ZA	1
+Western Visayas	state	PH	1
+Wilayah Persekutuan Putrajaya	state	MY	1
+Zacatecas	state	MX	1
+France	country	FR	54453
+United States	country	US	18024
+United Kingdom	country	GB	5573
+Canada	country	CA	1818
+Germany	country	DE	1078
+Spain	country	ES	857
+Ireland	country	IE	590
+Netherlands	country	NL	513
+Italy	country	IT	289
+Belgium	country	BE	260
+India	country	IN	211
+Morocco	country	MA	206
+Poland	country	PL	186
+Australia	country	AU	157
+Portugal	country	PT	130
+Brazil	country	BR	116
+Switzerland	country	CH	109
+Singapore	country	SG	105
+Estonia	country	EE	99
+Israel	country	IL	94
+Luxembourg	country	LU	80
+Japan	country	JP	79
+Hungary	country	HU	75
+Czech Republic	country	CZ	69
+China	country	CN	65
+New Zealand	country	NZ	62
+Mexico	country	MX	61
+United Arab Emirates	country	AE	59
+Bulgaria	country	BG	52
+Sweden	country	SE	47
+Serbia	country	RS	44
+French Guiana	country	GF	43
+Austria	country	AT	42
+Hong Kong	country	HK	39
+Romania	country	RO	39
+Mayotte	country	YT	38
+Lithuania	country	LT	37
+Martinique	country	MQ	37
+Norway	country	NO	36
+Philippines	country	PH	36
+Greece	country	GR	34
+Denmark	country	DK	33
+Reunion	country	RE	33
+Mauritius	country	MU	32
+South Korea	country	KR	32
+Tunisia	country	TN	32
+South Africa	country	ZA	31
+Malta	country	MT	30
+Guadeloupe	country	GP	29
+Croatia	country	HR	28
+New Caledonia	country	NC	27
+Peru	country	PE	27
+Indonesia	country	ID	26
+Ukraine	country	UA	26
+Colombia	country	CO	25
+Cyprus	country	CY	25
+Argentina	country	AR	24
+Latvia	country	LV	23
+Monaco	country	MC	23
+Andorra	country	AD	22
+Taiwan	country	TW	22
+Chile	country	CL	21
+Thailand	country	TH	21
+Albania	country	AL	20
+Armenia	country	AM	20
+Bosnia and Herzegovina	country	BA	20
+Gibraltar	country	GI	20
+Macedonia	country	MK	20
+Moldova	country	MD	20
+Montenegro	country	ME	20
+Uruguay	country	UY	20
+Ecuador	country	EC	18
+Ivory Coast	country	CI	18
+Algeria	country	DZ	17
+French Polynesia	country	PF	17
+Paraguay	country	PY	17
+Slovenia	country	SI	17
+Malaysia	country	MY	16
+Qatar	country	QA	16
+Saudi Arabia	country	SA	16
+Chad	country	TD	15
+Vietnam	country	VN	15
+Benin	country	BJ	14
+Bermuda	country	BM	14
+Costa Rica	country	CR	14
+Lebanon	country	LB	14
+Turkey	country	TR	14
+Uganda	country	UG	14
+Cameroon	country	CM	13
+Egypt	country	EG	13
+Finland	country	FI	13
+Senegal	country	SN	13
+Tanzania	country	TZ	13
+Angola	country	AO	12
+Bahrain	country	BH	12
+Bangladesh	country	BD	12
+Burundi	country	BI	12
+Cambodia	country	KH	12
+Dominican Republic	country	DO	12
+Ghana	country	GH	12
+Guinea	country	GN	12
+Kenya	country	KE	12
+Mali	country	ML	12
+Namibia	country	NA	12
+Niger	country	NE	12
+Slovakia	country	SK	12
+Sri Lanka	country	LK	12
+Afghanistan	country	AF	11
+Aland Islands	country	AX	11
+American Samoa	country	AS	11
+Anguilla	country	AI	11
+Antarctica	country	AQ	11
+Antigua and Barbuda	country	AG	11
+Aruba	country	AW	11
+Azerbaijan	country	AZ	11
+Bahamas	country	BS	11
+Barbados	country	BB	11
+Belarus	country	BY	11
+Belize	country	BZ	11
+Bhutan	country	BT	11
+Bolivia	country	BO	11
+Bonaire, Saint Eustatius and Saba	country	BQ	11
+Botswana	country	BW	11
+Bouvet Island	country	BV	11
+British Indian Ocean Territory	country	IO	11
+British Virgin Islands	country	VG	11
+Brunei	country	BN	11
+Burkina Faso	country	BF	11
+Cape Verde	country	CV	11
+Cayman Islands	country	KY	11
+Central African Republic	country	CF	11
+Christmas Island	country	CX	11
+Cocos Islands	country	CC	11
+Comoros	country	KM	11
+Cook Islands	country	CK	11
+Cuba	country	CU	11
+Curacao	country	CW	11
+Democratic Republic of the Congo	country	CD	11
+Djibouti	country	DJ	11
+Dominica	country	DM	11
+East Timor	country	TL	11
+El Salvador	country	SV	11
+Equatorial Guinea	country	GQ	11
+Eritrea	country	ER	11
+Ethiopia	country	ET	11
+Falkland Islands	country	FK	11
+Faroe Islands	country	FO	11
+Fiji	country	FJ	11
+French Southern Territories	country	TF	11
+Gabon	country	GA	11
+Gambia	country	GM	11
+Georgia	country	GE	11
+Greenland	country	GL	11
+Grenada	country	GD	11
+Guam	country	GU	11
+Guatemala	country	GT	11
+Guernsey	country	GG	11
+Guinea-Bissau	country	GW	11
+Guyana	country	GY	11
+Haiti	country	HT	11
+Heard Island and McDonald Islands	country	HM	11
+Honduras	country	HN	11
+Iceland	country	IS	11
+Iran	country	IR	11
+Iraq	country	IQ	11
+Isle of Man	country	IM	11
+Jamaica	country	JM	11
+Jersey	country	JE	11
+Jordan	country	JO	11
+Kazakhstan	country	KZ	11
+Kiribati	country	KI	11
+Kuwait	country	KW	11
+Kyrgyzstan	country	KG	11
+Laos	country	LA	11
+Lesotho	country	LS	11
+Liberia	country	LR	11
+Libya	country	LY	11
+Liechtenstein	country	LI	11
+Macao	country	MO	11
+Madagascar	country	MG	11
+Malawi	country	MW	11
+Maldives	country	MV	11
+Marshall Islands	country	MH	11
+Mauritania	country	MR	11
+Micronesia	country	FM	11
+Mongolia	country	MN	11
+Montserrat	country	MS	11
+Mozambique	country	MZ	11
+Myanmar	country	MM	11
+Nauru	country	NR	11
+Nepal	country	NP	11
+Nicaragua	country	NI	11
+Nigeria	country	NG	11
+Niue	country	NU	11
+Norfolk Island	country	NF	11
+North Korea	country	KP	11
+Northern Mariana Islands	country	MP	11
+Oman	country	OM	11
+Pakistan	country	PK	11
+Palau	country	PW	11
+Palestinian Territory	country	PS	11
+Panama	country	PA	11
+Papua New Guinea	country	PG	11
+Pitcairn	country	PN	11
+Puerto Rico	country	PR	11
+Republic of the Congo	country	CG	11
+Russia	country	RU	11
+Rwanda	country	RW	11
+Saint Barthelemy	country	BL	11
+Saint Helena	country	SH	11
+Saint Kitts and Nevis	country	KN	11
+Saint Lucia	country	LC	11
+Saint Martin	country	MF	11
+Saint Pierre and Miquelon	country	PM	11
+Saint Vincent and the Grenadines	country	VC	11
+Samoa	country	WS	11
+San Marino	country	SM	11
+Sao Tome and Principe	country	ST	11
+Seychelles	country	SC	11
+Sierra Leone	country	SL	11
+Sint Maarten	country	SX	11
+Solomon Islands	country	SB	11
+Somalia	country	SO	11
+South Georgia and the South Sandwich Islands	country	GS	11
+South Sudan	country	SS	11
+Sudan	country	SD	11
+Suriname	country	SR	11
+Svalbard and Jan Mayen	country	SJ	11
+Swaziland	country	SZ	11
+Syria	country	SY	11
+Tajikistan	country	TJ	11
+Togo	country	TG	11
+Tokelau	country	TK	11
+Tonga	country	TO	11
+Trinidad and Tobago	country	TT	11
+Turkmenistan	country	TM	11
+Turks and Caicos Islands	country	TC	11
+Tuvalu	country	TV	11
+U.S. Virgin Islands	country	VI	11
+United States Minor Outlying Islands	country	UM	11
+Uzbekistan	country	UZ	11
+Vanuatu	country	VU	11
+Vatican	country	VA	11
+Venezuela	country	VE	11
+Wallis and Futuna	country	WF	11
+Western Sahara	country	EH	11
+Yemen	country	YE	11
+Zambia	country	ZM	11
+Zimbabwe	country	ZW	11
