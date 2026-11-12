@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ats-jobs-engine"
-version = "0.6.8"
-description = "One search engine for applicant tracking systems: every platform's jobs in one shape, read live."
+version = "0.7.0"
+description = "One search engine for applicant tracking systems and job boards: every platform's jobs in one shape, read live, one or many at once."
 requires-python = ">=3.11"
 license = { text = "MIT" }
 dependencies = ["apify>=4.2,<5", "httpx==0.28.1", "pycountry==26.2.16"]

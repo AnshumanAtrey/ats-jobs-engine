@@ -2,7 +2,9 @@
 import asyncio
 import unittest
 from datetime import date
+from unittest.mock import patch
 
+from ats_jobs.http import BoardError, BoardMissing
 from ats_jobs.platforms.base import Board
 from ats_jobs.platforms.workday import Workday, posted_on
 
@@ -79,6 +81,30 @@ class Lookup(unittest.TestCase):
         self.assertEqual(self.status((200, {'title': 'Director', 'canApply': True})), 'open')
         self.assertEqual(self.status((200, {'title': 'Director', 'canApply': False})), 'closed')
         self.assertEqual(self.status((404, {})), 'closed')
+
+
+class Gone(unittest.TestCase):
+    def pages(self, status):
+        class Answer:
+            status_code = status
+
+        async def fake_send(http, method, url, **kwargs):
+            return Answer()
+
+        async def first_page():
+            async for page in Workday().pages(None, SESSION, None, None):
+                return page
+
+        with patch('ats_jobs.platforms.workday.send', fake_send):
+            return asyncio.run(first_page())
+
+    def test_a_career_site_its_company_took_down_is_missing_not_an_error(self):
+        # aah/wd5/External answered 410 Gone on 2026-11-13 and made a whole run partial as a board error
+        for status in (404, 410, 422):
+            with self.assertRaises(BoardMissing):
+                self.pages(status)
+        with self.assertRaises(BoardError):
+            self.pages(500)
 
 
 if __name__ == '__main__':

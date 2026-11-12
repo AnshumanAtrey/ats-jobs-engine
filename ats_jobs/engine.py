@@ -42,6 +42,7 @@ STOP_REASONS = {
     'limit': 'your spending limit for this run was reached. Raise the limit to get the rest.',
     'time': 'the run was about to reach its time limit, so the jobs read by then were used. '
             'Raise the run timeout to read the rest.',
+    'budget': 'this board reached its time limit in a run over many boards, so the jobs it read by then were used.',
 }
 # a search that finds nothing names the filter that stood in the way (rows.Filters.misses) and how to loosen it
 FILTER_NAMES = {'employmentType': 'job type', 'workType': 'work type', 'location': 'location',
@@ -154,6 +155,10 @@ class Run:
         self.by_key = by_key
         self.where = f'{platform.name} {platform.site_word}'
         self.input_notes = len(cfg.notes)  # notes past these come from the platform while it reads: the message says them
+        self.quiet = False                 # one of several platforms in a run (many.py): that run sets the status
+        self.deadline: float | None = None  # time.monotonic() by which this platform stops reading (many.py), else none
+        self.texts: dict[tuple, bytes] = {}       # (board, job id) -> compressed description, with details on
+        self.sessions: dict[str, object] = {}     # board key -> session, with details on
 
     # ---------- shared helpers ----------
 
@@ -165,7 +170,20 @@ class Run:
         if left is not None and left < RUN_SAFETY_MARGIN_S:
             self.stop = self.stop or 'time'
             return True
+        if self.deadline is not None and time.monotonic() >= self.deadline:
+            self.stop = self.stop or 'budget'
+            return True
         return False
+
+    def time_left(self) -> tuple[float | None, str]:
+        """Seconds until this platform must stop reading, and why ('time': the run's own limit, less its safety margin;
+        'budget': the platform's deadline in a run over many). (None, 'time') when neither is set."""
+        left = seconds_left_in_run()
+        run_left = None if left is None else max(left - RUN_SAFETY_MARGIN_S, 0)
+        own = None if self.deadline is None else max(self.deadline - time.monotonic(), 0)
+        if own is not None and (run_left is None or own < run_left):
+            return own, 'budget'
+        return run_left, 'time'
 
     def progress_line(self) -> str:
         if self.phase == 'boards' and self.platform.progress:      # a platform that works before its first page
@@ -189,15 +207,15 @@ class Run:
     async def run_all(self, coros) -> None:
         """The calls together, given up RUN_SAFETY_MARGIN_S before the run's time limit: a call still out then would
         let the platform stop the run before anything is delivered (one Lever list took six minutes to arrive)."""
-        progress = asyncio.create_task(self.progress_loop())
-        left = seconds_left_in_run()
+        progress = None if self.quiet else asyncio.create_task(self.progress_loop())
+        left, why = self.time_left()
         try:
-            await asyncio.wait_for(asyncio.gather(*coros),
-                                   None if left is None else max(left - RUN_SAFETY_MARGIN_S, 0))
+            await asyncio.wait_for(asyncio.gather(*coros), left)
         except TimeoutError:
-            self.stop = self.stop or 'time'
+            self.stop = self.stop or why
         finally:
-            progress.cancel()
+            if progress:
+                progress.cancel()
 
     def row(self, board: Board, job: dict, details: bool) -> dict:
         row = job_row(self.platform.key, company(board), job, self.checked_at, details)
@@ -213,11 +231,20 @@ class Run:
     # ---------- search ----------
 
     async def search(self) -> None:
+        async with client(self.platform.actor, self.platform.concurrency * 2) as http:
+            await self.deliver(http, await self.gather(http))
+        self.phase = 'saving'
+
+    async def gather(self, http) -> list:
+        """A search's first part: every board read through `http`, the matches kept, and the newest maxJobs of them
+        returned (each job once), newest first, as (posted, order, board, job). With details on, their descriptions
+        wait in self.texts and the boards' sessions in self.sessions, for deliver()."""
         cfg, platform = self.cfg, self.platform
         platform.description_terms = tuple(cfg.search_terms) if cfg.search_descriptions else ()
         now = datetime.now(timezone.utc)
         everyone = platform.search_all(self.boards, cfg)
         filters = Filters(cfg)              # after search_all, which may drop a filter its platform can never meet
+        platform.prefilter = filters
         targets = [self.board(k) for k in cfg.companies] or everyone
         if not cfg.companies and len(everyone) == 1 and everyone[0] not in self.boards:
             self.feed = everyone[0]         # one place listing every company, not one of the boards
@@ -228,9 +255,8 @@ class Run:
         window = now - timedelta(days=days) if days else None
         heap: list = []                     # (posted, order, board, job): the newest maxJobs so far
         kept: list = []                     # every match when maxJobs is empty
-        texts: dict[tuple, bytes] = {}      # (board, job id) -> compressed description, with details on
+        texts, sessions = self.texts, self.sessions
         seen: dict[tuple, datetime] = {}    # (company, title, place) -> newest date
-        sessions: dict[str, object] = {}    # board key -> session, with details on
         order = itertools.count()
 
         def floor() -> datetime | None:
@@ -296,108 +322,111 @@ class Run:
                 keep(posted, board, job)
             return hit
 
-        async with client(platform.actor, platform.concurrency * 2) as http:
-            sem = asyncio.Semaphore(platform.concurrency)
+        sem = asyncio.Semaphore(platform.concurrency)
 
-            async def placed(session, jobs: list[dict]) -> list[dict]:
-                """With a place filter, a job whose title can match and whose list entry names no place is opened."""
-                if filters.places:
-                    for i, job in enumerate(jobs):
-                        if platform.vague_place(job) and filters.title_ok(job.get('title'), job.get('description')):
-                            jobs[i] = await platform.details(http, session, job)
-                return jobs
+        async def placed(session, jobs: list[dict]) -> list[dict]:
+            """With a place filter, a job whose title can match and whose list entry names no place is opened."""
+            if filters.places:
+                for i, job in enumerate(jobs):
+                    if platform.vague_place(job) and filters.title_ok(job.get('title'), job.get('description')):
+                        jobs[i] = await platform.details(http, session, job)
+            return jobs
 
-            async def one(board: Board) -> None:
-                async with sem:
-                    if self.out_of_time():
-                        return
-                    if nothing_can_beat_this():
-                        self.enough = True
-                        return
-                    hit, read, paged = False, True, False
-                    try:
-                        session = await platform.open(http, board)
-                        if session is None:
-                            self.boards_missing.append(board.key)
-                            return
-                        if cfg.include_details:
-                            sessions[board.key] = session
-                        for term in terms:
-                            page = 0
-                            async for jobs in platform.pages(http, session, term, days):
-                                page += 1
-                                paged = True
-                                jobs = await placed(session, jobs)
-                                on_page = take(board, jobs, term is not None)
-                                hit = hit or on_page
-                                if self.out_of_time() or not jobs:
-                                    break
-                                # ranked by relevance, a page with no job for this word means the rest have none
-                                if term and platform.ranked_search and not on_page and not cfg.search_descriptions:
-                                    break
-                                if cfg.max_jobs is not None and platform.page_cap and page >= platform.page_cap:
-                                    break
-                                # a page of a newest-first board can end older than anything still wanted; a platform
-                                # that sorts by another time than postedAt names it listedAt (rows.py)
-                                last = parse_time(jobs[-1].get('listedAt') or jobs[-1].get('postedAt')) or OLDEST
-                                cut = floor()
-                                by_date = platform.newest_first and not (term and platform.ranked_search)
-                                if by_date and ((cut and last < cut) or (window and last < window)):
-                                    self.cut_short = self.cut_short or bool(cut and last < cut)
-                                    break
-                    except BoardMissing:
+        async def one(board: Board) -> None:
+            async with sem:
+                if self.out_of_time():
+                    return
+                if nothing_can_beat_this():
+                    self.enough = True
+                    return
+                hit, read, paged = False, True, False
+                try:
+                    session = await platform.open(http, board)
+                    if session is None:
                         self.boards_missing.append(board.key)
-                    except asyncio.CancelledError:
-                        # given up at the time limit: a board that gave no page is not read, so a run where nothing
-                        # answered fails; one cut after a page was read in part, and its jobs are used (Cutshort's one
-                        # feed, cut after 1,450 jobs, failed the run with 18 jobs saved, 2026-11-08)
-                        read = paged
-                        raise
-                    except Exception as exc:  # noqa: BLE001  a BoardError, or a record the platform did not expect
-                        self.board_error(board.key, exc)
-                        self.boards_failed += 1
-                    finally:
-                        if read:
-                            self.boards_read += 1
-                            self.boards_matched += 1 if hit else 0
+                        return
+                    if cfg.include_details:
+                        sessions[board.key] = session
+                    for term in terms:
+                        page = 0
+                        async for jobs in platform.pages(http, session, term, days):
+                            page += 1
+                            paged = True
+                            jobs = await placed(session, jobs)
+                            on_page = take(board, jobs, term is not None)
+                            hit = hit or on_page
+                            if self.out_of_time() or not jobs:
+                                break
+                            # ranked by relevance, a page with no job for this word means the rest have none
+                            if term and platform.ranked_search and not on_page and not cfg.search_descriptions:
+                                break
+                            if cfg.max_jobs is not None and platform.page_cap and page >= platform.page_cap:
+                                break
+                            # a page of a newest-first board can end older than anything still wanted; a platform
+                            # that sorts by another time than postedAt names it listedAt (rows.py)
+                            last = parse_time(jobs[-1].get('listedAt') or jobs[-1].get('postedAt')) or OLDEST
+                            cut = floor()
+                            by_date = platform.newest_first and not (term and platform.ranked_search)
+                            if by_date and ((cut and last < cut) or (window and last < window)):
+                                self.cut_short = self.cut_short or bool(cut and last < cut)
+                                break
+                except BoardMissing:
+                    self.boards_missing.append(board.key)
+                except asyncio.CancelledError:
+                    # given up at the time limit: a board that gave no page is not read, so a run where nothing
+                    # answered fails; one cut after a page was read in part, and its jobs are used (Cutshort's one
+                    # feed, cut after 1,450 jobs, failed the run with 18 jobs saved, 2026-11-08)
+                    read = paged
+                    raise
+                except Exception as exc:  # noqa: BLE001  a BoardError, or a record the platform did not expect
+                    self.board_error(board.key, exc)
+                    self.boards_failed += 1
+                finally:
+                    if read:
+                        self.boards_read += 1
+                        self.boards_matched += 1 if hit else 0
 
-            self.phase = 'boards'
-            await self.run_all([one(b) for b in targets])
-            # boards cut, or never opened, at the time limit held jobs that were never counted: the count is a floor
-            self.cut_short = self.cut_short or self.stop == 'time'
-            # matches the platform counted without handing them over (Platform.unopened_matches): read and matching,
-            # never kept
-            self.jobs_listed += platform.unopened_matches
-            self.matching += platform.unopened_matches
-            self.companies_matched |= set(platform.unopened_companies)
+        self.phase = 'boards'
+        await self.run_all([one(b) for b in targets])
+        # boards cut, or never opened, at the time limit held jobs that were never counted: the count is a floor
+        self.cut_short = self.cut_short or self.stop in ('time', 'budget')
+        # matches the platform counted without handing them over (Platform.unopened_matches): read and matching,
+        # never kept
+        self.jobs_listed += platform.unopened_matches
+        self.matching += platform.unopened_matches
+        self.companies_matched |= set(platform.unopened_companies)
+        return self.newest_copies(sorted(kept if cfg.max_jobs is None else heap,
+                                         key=lambda item: (item[0], item[1]), reverse=True))
 
-            chosen = self.newest_copies(sorted(kept if cfg.max_jobs is None else heap,
-                                               key=lambda item: (item[0], item[1]), reverse=True))
-            self.details_wanted = len(chosen) if cfg.include_details else 0
-            event = DETAILS_EVENT if cfg.include_details else LINK_EVENT
-            # A push chunk at a time: a chunk's details are read just before it is delivered and let go after, so memory
-            # holds one chunk of descriptions, and no details are read for jobs past the spending limit (an every-job run
-            # with details peaked at 2.1 GB when every description was read first, Lever live review 2026-11-03).
-            for start in range(0, len(chosen), PUSH_CHUNK):
-                if not self.delivery.can_pay(event):
-                    self.stop = 'limit'
-                    break
-                part = chosen[start:start + PUSH_CHUNK]
-                if cfg.include_details:
-                    await self.read_details(http, part, texts, sessions)
-                self.phase = 'saving'
-                rows = []
-                for _, _, board, job in part:
-                    has_details = cfg.include_details and platform.detailed(job)
-                    rows.append((self.row(board, job, cfg.include_details), DETAILS_EVENT if has_details else LINK_EVENT))
-                await self.deliver_all(rows)
-                for _, _, _, job in part:
-                    job.pop('description', None)
-                    job.pop('descriptionHtml', None)
-                if self.stop == 'limit':
-                    break
+    async def deliver(self, http, chosen: list) -> None:
+        """A search's second part: the chosen jobs a push chunk at a time, charged per row. A chunk's details are read
+        just before it is delivered and let go after, so memory holds one chunk of descriptions, and no details are read
+        for jobs past the spending limit (an every-job run with details peaked at 2.1 GB when every description was read
+        first, Lever live review 2026-11-03)."""
+        cfg = self.cfg
+        self.details_wanted = len(chosen) if cfg.include_details else 0
+        event = DETAILS_EVENT if cfg.include_details else LINK_EVENT
+        for start in range(0, len(chosen), PUSH_CHUNK):
+            if not self.delivery.can_pay(event):
+                self.stop = 'limit'
+                break
+            part = chosen[start:start + PUSH_CHUNK]
+            if cfg.include_details:
+                await self.read_details(http, part, self.texts, self.sessions)
+            self.phase = 'saving'
+            await self.deliver_all(self.rows_of(part))
+            for _, _, _, job in part:
+                job.pop('description', None)
+                job.pop('descriptionHtml', None)
+            if self.stop == 'limit':
+                break
 
-        self.phase = 'saving'
+    def rows_of(self, part: list) -> list[tuple[dict, str]]:
+        """(row, event) per chosen job: job-details for a row that holds what includeDetails pays for, else job."""
+        cfg, platform = self.cfg, self.platform
+        return [(self.row(board, job, cfg.include_details),
+                 DETAILS_EVENT if cfg.include_details and platform.detailed(job) else LINK_EVENT)
+                for _, _, board, job in part]
 
     def newest_copies(self, items: list) -> list:
         """Newest first -> each job once, up to maxJobs: an older copy is still held when a newer one came after it."""
@@ -452,6 +481,10 @@ class Run:
     # ---------- job links ----------
 
     async def check_links(self) -> None:
+        await self.deliver_all([(row, event) for row, event, _ in await self.checked()])
+
+    async def checked(self) -> list[tuple[dict, str, str]]:
+        """Every job link looked up live -> (row, event, the link as typed), in the order the links were given."""
         cfg, platform = self.cfg, self.platform
         by_board: dict[str, tuple[str, list]] = {}
         for key, job_id, _ in cfg.job_urls:
@@ -493,13 +526,13 @@ class Run:
                 if (row['jobId'], row['jobUrl']) in opened:      # the same job pasted in two link forms: one row
                     continue
                 opened.add((row['jobId'], row['jobUrl']))
-                rows.append((row, DETAILS_EVENT if cfg.include_details else LINK_EVENT))
+                rows.append((row, DETAILS_EVENT if cfg.include_details else LINK_EVENT, url))
             else:
                 who = company(board) if job is None else {      # a lookup can name the company of a job that is gone
                     'name': job.get('company'), 'slug': job.get('companySlug'), 'website': job.get('companyWebsite')}
                 row = {**link_row(platform.key, who, job_id, url, status, self.checked_at), **dict.fromkeys(platform.extra)}
-                rows.append(({k: v for k, v in row.items() if k not in platform.never}, LINK_EVENT))
-        await self.deliver_all(rows)
+                rows.append(({k: v for k, v in row.items() if k not in platform.never}, LINK_EVENT, url))
+        return rows
 
     # ---------- summary ----------
 

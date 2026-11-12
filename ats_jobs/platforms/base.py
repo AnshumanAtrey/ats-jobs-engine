@@ -34,6 +34,8 @@ class Platform:
     description_terms: tuple = ()     # set by the engine: the words of a run that searches descriptions, so a
                                       # platform whose job list leaves descriptions out can ask for them and skip
                                       # the text that holds none of these words
+    prefilter = None         # set by the engine: the run's rows.Filters, so a platform with a cheap first look at a
+                             # board (Ashby's short job list) skips the costly read of a board that cannot match
     incomplete = False       # set during a run that read only part of what the platform lists (a feed cut short)
     unopened_matches = 0     # set during a run: matches the platform counted and never handed over, since opening each
                              # costs a call and none can make the cut (Instahyre: a search's matches past the newest

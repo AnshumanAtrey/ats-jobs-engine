@@ -1,4 +1,5 @@
 """Every platform the engine reads."""
+from .ashby import Ashby
 from .base import Board, Platform
 from .cornerstone import Cornerstone
 from .cutshort import Cutshort
@@ -18,7 +19,7 @@ from .workable import Workable
 from .workday import Workday
 from .ycombinator import YCombinator
 
-PLATFORMS = {p.key: p for p in (Cornerstone, Cutshort, Deel, EFinancialCareers, Foundit, Greenhouse, HiringCafe, Hirist,
+PLATFORMS = {p.key: p for p in (Ashby, Cornerstone, Cutshort, Deel, EFinancialCareers, Foundit, Greenhouse, HiringCafe, Hirist,
                                 Instahyre, Lever, Naukri, SmartRecruiters, WelcomeToTheJungle, Wellfound, Workable, Workday,
                                 YCombinator)}
 __all__ = ['Board', 'PLATFORMS', 'Platform']

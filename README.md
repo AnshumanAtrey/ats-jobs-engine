@@ -1,14 +1,17 @@
 # ats-jobs-engine
 
-One search engine for applicant tracking systems: every platform's jobs in one shape, read live at run time. It powers
-the job actors on [apify.com/anshumanatrey](https://apify.com/anshumanatrey), one thin actor per platform plus an
-aggregator, and it is the `site:jobs.lever.co` Google dork done at the source.
+One search engine for applicant tracking systems and job boards: every platform's jobs in one shape, read live at run
+time. It powers the job actors on [apify.com/anshumanatrey](https://apify.com/anshumanatrey), one thin actor per platform
+plus [Job Boards Search](https://apify.com/anshumanatrey/job-boards-search), which searches all 18 at once, and it is the
+`site:jobs.lever.co` Google dork done at the source.
 
 - `ats_jobs/engine.py`: one run: reads every board, matches, keeps the newest jobs, delivers and charges.
+- `ats_jobs/many.py`: one run over many platforms at once: each platform gathers its newest jobs in parallel (with a
+  time limit per platform), then the newest of them all are delivered, a job listed on two platforms once.
 - `ats_jobs/rows.py`: the job shape, word and place matching, output rows.
 - `ats_jobs/inputs.py`: reads what people type, a pasted Google dork included. No input stops a run.
 - `ats_jobs/platforms/`: one small adapter per platform, on `platforms/base.py`: the ATSs (Greenhouse, Lever, Workday,
-  SmartRecruiters, Workable, Cornerstone, Deel), India's job boards (Naukri, foundit, Instahyre, Hirist, Cutshort) and
+  Ashby, SmartRecruiters, Workable, Cornerstone, Deel), India's job boards (Naukri, foundit, Instahyre, Hirist, Cutshort) and
   global job boards (Y Combinator's Work at a Startup; Welcome to the Jungle in Europe and the US, with the UK site
   that was Otta; eFinancialCareers, finance, banking and quant jobs in every country it serves; Wellfound, startup
   jobs from its role and place pages; HiringCafe, a search engine of jobs read from employers' own career sites).
@@ -24,7 +27,8 @@ aggregator, and it is the `site:jobs.lever.co` Google dork done at the source.
 - Instahyre's job pages and every HiringCafe call need a browser's TLS: install the `instahyre` extra (`curl_cffi`), or
   pin `curl_cffi` beside the engine as the HiringCafe actor does.
 
-An actor pins a tagged release in `requirements.txt` and runs `ats_jobs.engine.main('<platform>')`.
+An actor pins a tagged release in `requirements.txt` and runs `ats_jobs.engine.main('<platform>')`, or
+`ats_jobs.many.main_many('<actor name>')` for every platform the input picks.
 
 Tests: `python -m unittest discover -s tests -t .`
 

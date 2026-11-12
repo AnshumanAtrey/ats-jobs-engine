@@ -105,7 +105,7 @@ class Workday(Platform):
         while True:
             response = await send(http, 'POST', f'{session["api"]}/jobs', json={
                 'appliedFacets': {}, 'limit': PAGE_SIZE, 'offset': offset, 'searchText': term or ''})
-            if response.status_code in (404, 422):
+            if response.status_code in (404, 410, 422):      # 410: a career site its company took down
                 raise BoardMissing(session['home'])
             if response.status_code != 200:
                 raise BoardError(f'HTTP {response.status_code}')
