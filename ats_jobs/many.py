@@ -8,9 +8,11 @@ picked, all of them in parallel, then the newest maxJobs of all of them delivere
   another board: a link pasted in searchTerms or jobUrls goes only to the platform it is a link of, and a platform
   that none of the pasted links or companies belongs to sits the run out instead of searching everything.
 - Search: every platform gathers its own newest maxJobs at the same time (engine.Run.gather, each with its own HTTP
-  client and board concurrency, so a run takes about as long as its slowest board, not the sum of them). Workday and
-  Cornerstone (APART) search in a process of their own when other boards run too: they open a TLS connection to every
-  company's own host, thousands a search, and in one event loop those handshakes starved every other board. Then the
+  client and board concurrency, so a run takes about as long as its slowest board, not the sum of them). The company
+  career sites (APART: Greenhouse, Lever, Workday, Ashby, SmartRecruiters, Workable, Cornerstone) each search in a
+  process of their own when other boards run too, because each reads a thousand or more companies one at a time: in
+  one event loop on one core their calls starved every other board, and in their own processes the run's cores share
+  them out. Then the
   newest maxJobs of them all are chosen, and a job listed on two platforms is kept once: the same job link, or the
   same company, title and place. They are delivered newest first, a push chunk at a time, each chunk's details read
   by its platforms in parallel just before.
@@ -59,11 +61,13 @@ COMPANY_WORDS = re.compile(r'\b(?:inc|incorporated|llc|ltd|limited|corp|corporat
 TRACKING = re.compile(r'^(?:utm_\w*|src|source|ref|referr?er|gh_src|oga|lever-\w+|trk\w*|tracking\w*|campaign\w*|'
                       r'rx_\w+|iis|iisn|ccuid|mode|lang|locale)$', re.I)
 PROGRESS_EVERY_S = engine.PROGRESS_EVERY_S
-# Searched in a process of their own when the run has other boards: each search opens a TLS connection to thousands of
-# companies' own hosts. In one event loop on Apify (4 GB, one core), 18 boards averaged 8.3 s a call and 7 of them were
-# cut at their time limit; the same run without these two averaged 1.4 s a call and read every board (runs
-# X9NvV6dABaRPIkSO9 and 4PN9lxELbKGrZsF5a, 2026-11-13).
-APART = ('workday', 'cornerstone')
+# Searched in a process of their own when the run has other boards: each reads a thousand or more companies one at a
+# time, and Workday and Cornerstone open a TLS connection to each company's own host. In one event loop on Apify (4 GB,
+# one core), 18 boards averaged 8.3 s a call and 7 of them were cut at their time limit; without Workday and Cornerstone,
+# 1.4 s and every board read (runs X9NvV6dABaRPIkSO9, 4PN9lxELbKGrZsF5a, 2026-11-13). With those two apart, 8 GB read
+# every board in 226 s, Greenhouse last (o2nAAuWdvv2J3thKw). None of these uses the Apify SDK, which only the run's own
+# process holds (HiringCafe, Naukri and Wellfound use Apify's proxy through it).
+APART = ('greenhouse', 'lever', 'workday', 'ashby', 'smartrecruiters', 'workable', 'cornerstone')
 BOARD_EVENT = 'board'    # one per board a search reads, when the actor's pricing has it
 BOARD_SECONDS = 240      # a board still reading after this long in a run over many stops, and its jobs so far are used
 
