@@ -2,7 +2,7 @@
 
 One search engine for applicant tracking systems and job boards: every platform's jobs in one shape, read live at run
 time. It powers the job actors on [apify.com/anshumanatrey](https://apify.com/anshumanatrey), one thin actor per platform
-plus [Job Boards Search](https://apify.com/anshumanatrey/job-boards-search), which searches all 18 at once, and it is the
+plus [Global Job Search API](https://apify.com/anshumanatrey/global-job-search-api), which searches all 18 at once, and it is the
 `site:jobs.lever.co` Google dork done at the source.
 
 - `ats_jobs/engine.py`: one run: reads every board, matches, keeps the newest jobs, delivers and charges.
