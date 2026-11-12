@@ -8,7 +8,9 @@ picked, all of them in parallel, then the newest maxJobs of all of them delivere
   another board: a link pasted in searchTerms or jobUrls goes only to the platform it is a link of, and a platform
   that none of the pasted links or companies belongs to sits the run out instead of searching everything.
 - Search: every platform gathers its own newest maxJobs at the same time (engine.Run.gather, each with its own HTTP
-  client and board concurrency, so a run takes about as long as its slowest board, not the sum of them). Then the
+  client and board concurrency, so a run takes about as long as its slowest board, not the sum of them). Workday and
+  Cornerstone (APART) search in a process of their own when other boards run too: they open a TLS connection to every
+  company's own host, thousands a search, and in one event loop those handshakes starved every other board. Then the
   newest maxJobs of them all are chosen, and a job listed on two platforms is kept once: the same job link, or the
   same company, title and place. They are delivered newest first, a push chunk at a time, each chunk's details read
   by its platforms in parallel just before.
@@ -20,8 +22,10 @@ picked, all of them in parallel, then the newest maxJobs of all of them delivere
 """
 import asyncio
 import contextlib
+import importlib
 import itertools
 import math
+import multiprocessing
 import re
 import time
 from urllib.parse import parse_qsl, urlencode, urlparse
@@ -30,7 +34,7 @@ from apify import Actor
 
 from . import engine
 from .engine import DETAILS_EVENT, LINK_EVENT, PUSH_CHUNK, START_EVENT, Delivery, Run, name_index, now_iso, plural
-from .http import STATS
+from .http import STATS, BoardError
 from .inputs import DORK_OPERATOR, DORK_TEXT, IS_URL, _clean, _items, _links_whole, parse_input
 from .platforms import PLATFORMS
 from .rows import dedupe_key, fold, parse_time, words
@@ -55,6 +59,11 @@ COMPANY_WORDS = re.compile(r'\b(?:inc|incorporated|llc|ltd|limited|corp|corporat
 TRACKING = re.compile(r'^(?:utm_\w*|src|source|ref|referr?er|gh_src|oga|lever-\w+|trk\w*|tracking\w*|campaign\w*|'
                       r'rx_\w+|iis|iisn|ccuid|mode|lang|locale)$', re.I)
 PROGRESS_EVERY_S = engine.PROGRESS_EVERY_S
+# Searched in a process of their own when the run has other boards: each search opens a TLS connection to thousands of
+# companies' own hosts. In one event loop on Apify (4 GB, one core), 18 boards averaged 8.3 s a call and 7 of them were
+# cut at their time limit; the same run without these two averaged 1.4 s a call and read every board (runs
+# X9NvV6dABaRPIkSO9 and 4PN9lxELbKGrZsF5a, 2026-11-13).
+APART = ('workday', 'cornerstone')
 BOARD_EVENT = 'board'    # one per board a search reads, when the actor's pricing has it
 BOARD_SECONDS = 240      # a board still reading after this long in a run over many stops, and its jobs so far are used
 
@@ -180,6 +189,7 @@ class Many:
         self.stop: str | None = None
         self.mode = 'search'
         self.http: dict[str, object] = {}
+        self.raws: dict[str, dict] = {}              # platform -> the input it read (a worker reads it again)
         self.build()
 
     # ---------- the input, per platform ----------
@@ -217,7 +227,7 @@ class Many:
             tally = Tally(self.delivery)
             run = Run(platform, cfg, boards, updated, tally)
             run.quiet = True
-            self.runs[key], self.tallies[key] = run, tally
+            self.runs[key], self.tallies[key], self.raws[key] = run, tally, raw
             per_platform_notes[key] = [n for n in cfg.notes if not n.startswith('None of the companies could be read')]
             per_platform_skipped[key] = cfg.skipped
         self.merge_notes(per_platform_notes, per_platform_skipped)
@@ -286,11 +296,13 @@ class Many:
         if not self.runs:
             return
         progress = asyncio.create_task(self.progress_loop())
+        apart = self.apart()
         try:
             async with contextlib.AsyncExitStack() as stack:
                 for key, run in self.runs.items():
-                    self.http[key] = await stack.enter_async_context(
-                        engine.client(run.platform.actor, run.platform.concurrency * 2))
+                    if key not in apart:
+                        self.http[key] = await stack.enter_async_context(
+                            engine.client(run.platform.actor, run.platform.concurrency * 2))
                 if self.mode == 'check':
                     await self.check()
                 else:
@@ -313,21 +325,33 @@ class Many:
             run.deadline = None                      # the details of its chosen jobs answer to the run's time only
             self.took[key] = round(time.monotonic() - self.started, 1)
 
+    def apart(self) -> list[str]:
+        """The platforms that search in a process of their own: the APART ones, in a search with other boards too."""
+        return [k for k in self.runs if k in APART] if self.mode == 'search' and len(self.runs) > 1 else []
+
     async def search(self) -> None:
         keys = list(self.runs)
-        gathered = await asyncio.gather(*(self.gather_one(k) for k in keys))
-        # each platform's list is already newest first in its own order (engine.Run.gather): a stable sort by date
-        # keeps that order, and the order of the platforms, among jobs of the same time
-        items = [(posted, None, order, key, board, job)
-                 for key, chosen in zip(keys, gathered) for posted, order, board, job in chosen]
-        items.sort(key=lambda i: i[0], reverse=True)
-        cfg = self.first_cfg()
-        picked = self.once_each(items)
-        if cfg.max_jobs is not None:
-            picked = picked[:cfg.max_jobs]
-        for key in keys:
-            self.runs[key].details_wanted = sum(1 for i in picked if i[3] == key) if cfg.include_details else 0
-        await self.deliver(picked, cfg.include_details)
+        workers = {k: Worker(self, k) for k in self.apart()}
+        try:
+            gathered = await asyncio.gather(*(workers[k].gather() if k in workers else self.gather_one(k) for k in keys))
+            # each platform's list is already newest first in its own order (engine.Run.gather): a stable sort by date
+            # keeps that order, and the order of the platforms, among jobs of the same time
+            items = [(posted, index, order, key, board, job) for key, chosen in zip(keys, gathered)
+                     for index, (posted, order, board, job) in enumerate(chosen)]
+            items.sort(key=lambda i: i[0], reverse=True)
+            cfg = self.first_cfg()
+            picked = self.once_each(items)
+            if cfg.max_jobs is not None:
+                picked = picked[:cfg.max_jobs]
+            for key in keys:
+                self.runs[key].details_wanted = sum(1 for i in picked if i[3] == key) if cfg.include_details else 0
+            wanted = {k: [i[1] for i in picked if i[3] == k] for k in workers}
+            replies = await asyncio.gather(*(workers[k].rows(wanted[k], cfg.include_details) for k in workers))
+            ready = {(k, index): row for k, rows in zip(workers, replies) for index, row in zip(wanted[k], rows)}
+            await self.deliver(picked, cfg.include_details, ready)
+        finally:
+            for worker in workers.values():
+                worker.close()
 
     def once_each(self, items: list) -> list:
         """Newest first -> each job once: a job is left out when a platform before it in the list holds the same job
@@ -355,7 +379,10 @@ class Many:
             out.append(item)
         return out
 
-    async def deliver(self, picked: list, include_details: bool) -> None:
+    async def deliver(self, picked: list, include_details: bool, ready: dict | None = None) -> None:
+        """The chosen jobs in order, a push chunk at a time. ready: (platform, index) -> (row, event), the rows a worker
+        already made; the other platforms' details are read here, a chunk at a time."""
+        ready = ready or {}
         event = DETAILS_EVENT if include_details else LINK_EVENT
         for start in range(0, len(picked), PUSH_CHUNK):
             if not self.delivery.can_pay(event):
@@ -365,13 +392,19 @@ class Many:
             if include_details:
                 by_platform: dict[str, list] = {}
                 for posted, _, order, key, board, job in part:
-                    by_platform.setdefault(key, []).append((posted, order, board, job))
+                    if key in self.http:
+                        by_platform.setdefault(key, []).append((posted, order, board, job))
                 await asyncio.gather(*(self.runs[k].read_details(self.http[k], chunk, self.runs[k].texts,
                                                                  self.runs[k].sessions)
                                        for k, chunk in by_platform.items()))
             rows = []
-            for _, _, _, key, board, job in part:
-                (row, ev), = self.runs[key].rows_of([(None, None, board, job)])
+            for _, index, _, key, board, job in part:
+                if key in self.http:
+                    (row, ev), = self.runs[key].rows_of([(None, None, board, job)])
+                elif (key, index) in ready:
+                    row, ev = ready[(key, index)]
+                else:
+                    continue                             # its worker stopped before it sent the row
                 rows.append((row, ev, key))
             await self.push(rows)
             for *_, job in part:
@@ -564,6 +597,133 @@ class Many:
             await Actor.set_value('OUTPUT', self.output(self.status() if final else 'running'))
         except Exception as exc:  # noqa: BLE001
             Actor.log.warning(f'Could not write the OUTPUT record: {exc}')
+
+
+class _Unpaid:
+    """A worker's run never delivers: rows go back to the run that charges for them."""
+    rows, ppe, limit = 0, False, False
+
+    def can_pay(self, event: str) -> bool:
+        return True
+
+
+def _worker_entry(conn, payload: dict) -> None:
+    """One platform's search in a process of its own (Worker): its own event loop, so its calls never wait behind
+    another platform's."""
+    try:
+        asyncio.run(_worker(conn, payload))
+    except BaseException as exc:  # noqa: BLE001  whatever stops it is said to the run, which goes on without it
+        try:
+            conn.send(('error', f'{type(exc).__name__}: {exc}'[:200]))
+        except Exception:  # noqa: BLE001
+            pass
+    finally:
+        conn.close()
+
+
+async def _worker(conn, payload: dict) -> None:
+    module, name = payload['cls'].split(':')
+    platform = getattr(importlib.import_module(module), name)()
+    platform.actor = payload['actor']
+    deadline = payload['deadline']
+    if deadline is not None:                         # the run's time limit, as the run that started it reads it
+        engine.seconds_left_in_run = lambda: deadline - time.time()
+    boards, updated = platform.boards()
+    run = Run(platform, parse_input(payload['raw'], platform, name_index(platform, boards)), boards, updated, _Unpaid())
+    run.quiet = True
+
+    async def report() -> None:
+        while True:
+            await asyncio.sleep(PROGRESS_EVERY_S / 2)
+            conn.send(('progress', run.state()))
+
+    async with engine.client(platform.actor, platform.concurrency * 2) as http:
+        ticker = asyncio.create_task(report())
+        if payload['seconds'] is not None:
+            run.deadline = time.monotonic() + payload['seconds']
+        try:
+            chosen = await run.gather(http)
+        except Exception as exc:  # noqa: BLE001  its whole search broke: the run hears it as a board error
+            run.board_error(platform.key, exc)
+            run.boards_failed += 1
+            chosen = []
+        finally:
+            ticker.cancel()
+            run.deadline = None
+        conn.send(('gathered', (run.state(), chosen)))
+        _, indices, details = await asyncio.to_thread(conn.recv)
+        part = [chosen[i] for i in indices]
+        if details and part:
+            run.details_wanted = len(part)
+            for start in range(0, len(part), PUSH_CHUNK):
+                await run.read_details(http, part[start:start + PUSH_CHUNK], run.texts, run.sessions)
+        conn.send(('rows', (run.state(), run.rows_of(part))))
+
+
+class Worker:
+    """A platform searched in a process of its own (APART), started with spawn so it holds nothing of this run's
+    event loop or Apify client. It sends its run's state as it reads (the twin Run here takes it, so progress, message
+    and OUTPUT read as for any platform), then its newest jobs; the rows of the ones chosen across every board come
+    back on request, with their details when asked. Charging and delivery stay in this process."""
+
+    SPARE_S = 90                     # past its time limit, a worker that has said nothing more is given up
+
+    def __init__(self, many: Many, key: str):
+        self.many, self.key, self.run = many, key, many.runs[key]
+        ctx = multiprocessing.get_context('spawn')
+        self.conn, child = ctx.Pipe()
+        left = engine.seconds_left_in_run()
+        cls = PLATFORMS[key]
+        payload = {'cls': f'{cls.__module__}:{cls.__qualname__}', 'raw': many.raws[key], 'actor': many.actor,
+                   'seconds': many.board_seconds, 'deadline': None if left is None else time.time() + left}
+        self.process = ctx.Process(target=_worker_entry, args=(child, payload), daemon=True, name=f'jobs-{key}')
+        self.process.start()
+        child.close()
+        limits = [x for x in (many.board_seconds, left) if x is not None]
+        self.patience = min(limits) + self.SPARE_S if limits else None
+
+    def failed(self, why: str) -> None:
+        self.run.board_error(self.key, BoardError(f'its search stopped: {why}'))
+        self.run.boards_failed += 1
+
+    async def receive(self, until: str):
+        """Messages until one of kind `until`; progress on the way is taken into the twin Run."""
+        while True:
+            kind, body = await asyncio.to_thread(self.conn.recv)
+            if kind == 'progress':
+                self.run.restore(body)
+            elif kind == until:
+                return body
+            else:
+                raise BoardError(str(body))
+
+    async def gather(self) -> list:
+        try:
+            state, chosen = await asyncio.wait_for(self.receive('gathered'), self.patience)
+            self.run.restore(state)
+            return chosen
+        except (TimeoutError, EOFError, OSError, BoardError) as exc:
+            self.failed(str(exc) or type(exc).__name__)
+            return []
+        finally:
+            self.run.phase = 'gathered'
+            self.many.took[self.key] = round(time.monotonic() - self.many.started, 1)
+
+    async def rows(self, indices: list[int], details: bool) -> list:
+        try:
+            self.conn.send(('rows', indices, details))
+            state, rows = await asyncio.wait_for(self.receive('rows'), self.patience)
+            self.run.restore(state)
+            return rows
+        except (TimeoutError, EOFError, OSError, BoardError):
+            return []
+
+    def close(self) -> None:
+        with contextlib.suppress(OSError):
+            self.conn.close()
+        self.process.join(timeout=5)
+        if self.process.is_alive():
+            self.process.kill()
 
 
 async def charge_boards(many: Many, delivery, first_event: str) -> bool:

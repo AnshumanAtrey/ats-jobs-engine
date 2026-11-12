@@ -38,6 +38,10 @@ RUN_SAFETY_MARGIN_S = 30           # stop reading boards this close to the run's
 PROGRESS_EVERY_S = 5
 PUSH_CHUNK = 500
 OLDEST = datetime.min.replace(tzinfo=timezone.utc)
+RUN_STATE = ('stop', 'enough', 'cut_short', 'phase', 'boards_total', 'boards_read', 'boards_matched', 'details_read',
+             'boards_failed', 'details_failed', 'jobs_listed', 'matching', 'duplicates', 'older_copies', 'near_misses',
+             'missed_first', 'missed_only', 'companies_matched', 'boards_missing', 'board_errors', 'links', 'feed')
+PLATFORM_STATE = ('incomplete', 'unopened_matches', 'unopened_companies', 'count_is_floor', 'progress', 'searched_nothing')
 STOP_REASONS = {
     'limit': 'your spending limit for this run was reached. Raise the limit to get the rest.',
     'time': 'the run was about to reach its time limit, so the jobs read by then were used. '
@@ -161,6 +165,20 @@ class Run:
         self.sessions: dict[str, object] = {}     # board key -> session, with details on
 
     # ---------- shared helpers ----------
+
+    def state(self) -> dict:
+        """What a run has counted and met so far, its platform's own run-time flags and the notes it added: everything the
+        message and OUTPUT read. A run in another process (many.py) sends it, so its twin here can say the same."""
+        return {'run': {k: getattr(self, k) for k in RUN_STATE},
+                'platform': {k: getattr(self.platform, k) for k in PLATFORM_STATE},
+                'notes': list(self.cfg.notes)}
+
+    def restore(self, state: dict) -> None:
+        for k, v in state['run'].items():
+            setattr(self, k, v)
+        for k, v in state['platform'].items():
+            setattr(self.platform, k, v)
+        self.cfg.notes[:] = state['notes']
 
     def board(self, key: str) -> Board:
         return self.by_key.get(key.lower()) or Board(key, key.split('/')[0])

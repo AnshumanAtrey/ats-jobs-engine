@@ -1,6 +1,7 @@
 """One run over many platforms (ats_jobs/many.py), on fake platforms: which run, in what order the jobs come, what is
 kept once, and that the platforms are read at the same time."""
 import asyncio
+import multiprocessing
 import re
 import time
 import unittest
@@ -65,6 +66,22 @@ class Base(Platform):
 
 def make(key, sites, **attrs):
     return type(key.title(), (Base,), {'key': key, 'name': key.title(), 'actor': key, 'sites': sites, **attrs})
+
+
+class ApartSite(Base):
+    """A platform importable by a spawned worker process (many.Worker), for the tests of APART."""
+    key, name, actor = 'apartsite', 'Apart', 'apart'
+    sites = {'acme': [[job('w1', 'Engineer W', posted=0), job('w2', 'Engineer X', posted=4)]]}
+
+
+class BrokenApart(Base):
+    key, name, actor = 'brokenapart', 'Broken', 'broken'
+    sites = {'acme': []}
+
+    def boards(self):
+        if multiprocessing.parent_process() is not None:      # only in the worker process
+            raise RuntimeError('no board list')
+        return super().boards()
 
 
 class Delivered:
@@ -363,6 +380,32 @@ class Boards(unittest.TestCase):
         ok, calls, run = self.charged('0.007')
         self.assertFalse(ok)
         self.assertEqual(calls, [])
+
+
+class Apart(unittest.TestCase):
+    def test_a_platform_apart_searches_in_a_process_of_its_own_and_its_rows_come_back_in_order(self):
+        beta = make('beta', {'zeta': [[job('b1', 'Engineer B', posted=2)]]})
+        with patch.object(many, 'APART', ('apartsite',)):
+            run, d = run_many({'includeDetails': True}, ApartSite, beta)
+        self.assertEqual(d.pushed, [('apartsite', 'w1', 'job-details'), ('beta', 'b1', 'job-details'),
+                                    ('apartsite', 'w2', 'job-details')])
+        board = run.final['boards'][0]
+        self.assertEqual((board['matchingJobs'], board['jobsSaved'], board['status']), (2, 2, 'done'))
+        self.assertIn('Found and saved 3 matching jobs on 2 boards', run.final['message'])
+
+    def test_a_worker_that_breaks_costs_its_board_and_the_run_goes_on(self):
+        beta = make('beta', {'zeta': [[job('b1', 'Engineer B')]]})
+        with patch.object(many, 'APART', ('brokenapart',)):
+            run, d = run_many({}, BrokenApart, beta)
+        self.assertEqual([p for p, _, _ in d.pushed], ['beta'])
+        self.assertEqual(run.final['status'], 'partial')
+        self.assertIn('Could not read Broken (its search stopped', run.final['message'])
+
+    def test_alone_it_searches_in_this_process(self):
+        with patch.object(many, 'APART', ('apartsite',)):
+            run, d = run_many({}, ApartSite)
+        self.assertEqual(run.apart(), [])
+        self.assertEqual([j for _, j, _ in d.pushed], ['w1', 'w2'])
 
 
 class Parallel(unittest.TestCase):
