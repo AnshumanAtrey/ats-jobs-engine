@@ -47,6 +47,12 @@ Cloudflare in front challenges a caller (403, or 429 past its rate, with cf-miti
   datacenter addresses are challenged and keeps Apify's residential proxy on, so a run starts direct and moves at the
   first challenge to the proxy the user set, else (on Apify) to Apify Proxy's RESIDENTIAL group, a fresh address for
   each challenge. About 700 bytes a job on the wire: $0.0056 per 1,000 jobs at Apify's $8 per GB.
+  Residential addresses are challenged too, by country. On 2026-11-13 Cloudflare challenged 13 of 13 fresh addresses
+  in GB and 13 of 13 in IN; of any country, 56 of about 62, and two runs failed after 13 in a row (one a user's daily
+  task); in the US, 23 of about 31 over 6 runs, at most 7 in a row. So the automatic proxy is RESIDENTIAL in the US
+  (PROXY_COUNTRY), and a run gives up only after ROTATIONS challenged addresses in a row. HiringCafe's MCP servers for
+  AI assistants (/api/mcp, /api/chatgpt/mcp) answer any address, even Python's own TLS, but give at most 25 jobs a
+  search, with no paging and no employer apply link.
 - by rate: one address got 40 calls in a row (13 a second, after 5 quiet minutes) and then a challenge on every call,
   the search too, for 5 to 6 minutes. At one call every 2 s a 429 came after about 80 calls, and after each wait (1 to 2
   minutes) again after about 25; at one every 5 s, on an address busy minutes before, after about 70; 100 calls 10 s
@@ -100,9 +106,11 @@ SLOW_GAP_S = 10.0                         # after a 429 without a proxy: at 2 s 
                                           # and 100 calls 10 s apart met none (2026-11-10)
 PROXY_GAP_S = 0.5                         # through a proxy, where the address changes every CALLS_PER_ADDRESS calls
 CALLS_PER_ADDRESS = 30
-ROTATIONS = 12                            # fresh proxy addresses challenged in a row before a run gives up
+PROXY_COUNTRY = 'US'                      # Apify Proxy's residential addresses Cloudflare challenges least (2026-11-13)
+ROTATIONS = 60                            # fresh proxy addresses challenged in a row before a run gives up: about 15 KB
+                                          # ($0.0001) and a second each
 WAITS = (60, 120, 180)                    # without a proxy, seconds a 429 is waited out (the block lasted 5 to 6 minutes)
-TRIES = 6                                 # tries of one call: errors, server trouble, challenges
+TRIES = 6                                 # tries of one call on network errors, and on server trouble, each its own count
 EXPAND_PAGES = 25                         # pages of one employer's own list a search reads: 1,000 jobs
 MAX_PLACES = 40                           # place objects one search sends
 BARE_PLACE_JOBS = 40                      # jobs of the place census naming a city or state for it to read alone at
@@ -332,7 +340,8 @@ class Connection:
         self.retired, self.session = [], None
 
     async def setup_proxy(self, automatic: bool) -> bool:
-        """The proxy to move to: the user's, or Apify's RESIDENTIAL group when automatic and the run is on Apify."""
+        """The proxy to move to: the user's, or Apify's RESIDENTIAL group in PROXY_COUNTRY when automatic and the run is
+        on Apify."""
         if not self.proxy_ready:
             self.proxy_ready = True
             from apify import Actor
@@ -340,7 +349,8 @@ class Connection:
                 if self.proxy_input:
                     self.proxy = await Actor.create_proxy_configuration(actor_proxy_input=self.proxy_input)
                 elif automatic and self.at_home():
-                    self.proxy = await Actor.create_proxy_configuration(groups=['RESIDENTIAL'])
+                    self.proxy = await Actor.create_proxy_configuration(groups=['RESIDENTIAL'],
+                                                                        country_code=PROXY_COUNTRY)
             except Exception as exc:  # noqa: BLE001  a proxy the platform cannot use (no access, a typo)
                 why = str(exc).splitlines()[0][:160] if str(exc) else type(exc).__name__
                 self.platform.note(f'The proxy could not be used ({why}), so the run kept its own address.', 'proxy')
@@ -359,13 +369,16 @@ class Connection:
         self.counts['proxyAddresses'] += 1
 
     async def get(self, url: str, params=None, *, expect: tuple = (200,)):
-        """One GET in its turn -> the response (any status but Cloudflare's). Refused when no address gets through."""
+        """One GET in its turn -> the response (any status but Cloudflare's). Refused when no address gets through.
+        Network errors, server trouble and challenged addresses are each counted on their own: one shared count let a
+        network error after 12 challenges end a run as if every try was spent (6Z5qYHeiSdQ9XtDso, 2026-11-13)."""
         # the user's proxy from the first call; on Apify, Apify Proxy's RESIDENTIAL group from the first call too, since
         # Cloudflare challenged Apify's own address on the first call of 10 runs of 10 (2026-11-10)
         if self.proxy_url is None and not self.proxy_ready and (self.proxy_input or self.at_home()) \
                 and await self.setup_proxy(automatic=True):
             await self.rotate()
-        for attempt in range(TRIES + ROTATIONS + len(WAITS)):
+        errors = troubles = 0
+        for _ in range(2 * (TRIES + ROTATIONS) + len(WAITS) + 2):   # a bound: calls at once share the address count
             if self.proxy_url and self.address_calls >= CALLS_PER_ADDRESS:
                 await self.rotate()
             await self.pace.turn(PROXY_GAP_S if self.proxy_url else self.gap)
@@ -374,19 +387,21 @@ class Connection:
                 response = await self.client().get(url, params=params, proxy=self.proxy_url)
             except Exception as exc:  # noqa: BLE001  curl_cffi raises its own errors on network trouble
                 STATS['retries'][type(exc).__name__] += 1
-                if attempt >= TRIES:
+                errors += 1
+                if errors > TRIES:
                     raise BoardError(f'HiringCafe did not answer: {type(exc).__name__}') from exc
                 if self.proxy_url:
                     await self.rotate()
-                await self.sleep(1 + attempt)
+                await self.sleep(errors)
                 continue
             STATS['calls'] += 1
             STATS['seconds'] += time.monotonic() - started
             self.counts['calls'] += 1
             self.address_calls += 1
-            if response.status_code in (500, 502, 504) and attempt < TRIES:
+            if response.status_code in (500, 502, 504) and troubles < TRIES:
                 STATS['retries'][str(response.status_code)] += 1
-                await self.sleep(1 + 2 * attempt)
+                await self.sleep(1 + 2 * troubles)
+                troubles += 1
                 continue
             if not challenged(response) or response.status_code in expect:
                 if not challenged(response):
@@ -401,7 +416,8 @@ class Connection:
                 continue
             if self.proxy_url is not None:
                 if self.rotations >= ROTATIONS:
-                    raise Refused(f'Cloudflare challenged {self.rotations + 1} proxy addresses in a row')
+                    raise Refused(f'Cloudflare challenged {self.rotations + 1} proxy addresses in a row. Run it again in '
+                                  f'a few minutes')
                 self.rotations += 1
                 await self.rotate()
                 continue

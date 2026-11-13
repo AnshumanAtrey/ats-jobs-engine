@@ -760,7 +760,7 @@ class Connection(unittest.TestCase):
             with patch.object(hc_actor(), 'create_proxy_configuration', configure):
                 self.assertTrue(run(platform.conn.setup_proxy(automatic=True)))
             self.assertIn(want, asked[-1], raw)
-        self.assertEqual(asked[-1], {'groups': ['RESIDENTIAL']})
+        self.assertEqual(asked[-1], {'groups': ['RESIDENTIAL'], 'country_code': 'US'})
 
     def test_a_proxy_the_user_set_is_used_from_the_first_call(self):
         platform = made({'proxyConfiguration': {'useApifyProxy': True, 'apifyProxyGroups': ['RESIDENTIAL']}})
@@ -778,6 +778,22 @@ class Connection(unittest.TestCase):
         connected(platform, [OSError('reset')])
         with self.assertRaises(BoardError):
             run(platform.conn.get('https://hiringcafe.com/x'))
+
+    def test_a_network_error_after_many_challenges_takes_one_more_address(self):
+        # run 6Z5qYHeiSdQ9XtDso (2026-11-13): 12 challenged addresses, then a network error on the 13th, failed the run
+        # as if every try was spent; challenges, errors and server trouble now have a count each
+        platform = made()
+        proxy = Proxy()
+        connected(platform, [challenge()] * 12 + [OSError('reset'), Response(502, {}), Response(200, {'ok': 1})], proxy)
+        platform.conn.at_home = lambda: True                  # on Apify: the first call goes through the proxy
+        self.assertEqual(run(platform.conn.get('https://hiringcafe.com/x')).status_code, 200)
+        self.assertEqual(len(proxy.sessions), 14)            # the first address, 12 after challenges, 1 after the error
+
+    def test_server_trouble_is_tried_again_then_given_back(self):
+        platform = made()
+        session = connected(platform, [Response(502, {})])
+        self.assertEqual(run(platform.conn.get('https://hiringcafe.com/x')).status_code, 502)
+        self.assertEqual(len(session.calls), hc.TRIES + 1)
 
 
 class DetailsAndLinks(unittest.TestCase):
